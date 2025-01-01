@@ -3,11 +3,20 @@ import Navbar from '@/Components/Navbar';
 import Home from "./Pages/Home";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
+import { useEffect } from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { getUser } from "./Store/Slices/User_Slice";
+
 
 
 function App() {
- 
-
+  const logedUser=useSelector((state)=>state?.user?.data)
+  const dispatch=useDispatch();
+  useEffect(()=>{
+     if(!logedUser){
+      dispatch(getUser())
+     }
+  },[]);
   return (
     <Router>
          <Navbar/>

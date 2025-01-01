@@ -4,7 +4,7 @@ import { Button } from '@/Components/ui/button';
 export default function Home() {
   return (
     <main >
-        <headContainer className="w-[100vw] h-[100vh] bg-white">
+        <div className="w-[100vw] h-[100vh] bg-white">
           <div className='flex flex-row justify-evenly items-center md:-mt-8'>
             <div className='flex flex-col md:gap-20 -mt-15'>
             <div className='flex flex-col gap-2'>
@@ -22,7 +22,7 @@ export default function Home() {
             <img src="images/homebg.png" alt="home background" className='md:w-[700px] md:h-[550px] -mt-10'/>
             </div>
           </div>
-        </headContainer>
+        </div>
 
       
     </main>

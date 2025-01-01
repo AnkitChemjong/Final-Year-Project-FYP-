@@ -24,6 +24,11 @@ const userSchema=new Schema({
         type:String,
         required:false
     },
+    userRole:{
+       type:[String],
+       enum:['student','teacher','admin'],
+       default:['student']
+    },
     salt:{
         type:String,
         required:false

@@ -1,22 +1,15 @@
-export const NavItem=
-[ 
-{
- name:"Home",
- path:"/",
- show:true
-},
-{
-    name:"Register",
-    path:"signup",
-    show:true
-},
-{
-    name:"Login",
-    path:"signin",
-    show:true
-},
-]
 
+export const initialLogData={
+    email:"",
+    password:"",
+    confirmPassword:""
+}
+export const initialSignData={
+    email:"",
+    userName:"",
+    password:"",
+    confirmPassword:""
+}
 export const registerForm=[
     {
     Label:'Email',

@@ -8,15 +8,11 @@ import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Link } from 'react-router-dom';
 import signupValidation from '@/FormValidation';
+import { initialSignData } from '@/Utils';
 
 export default function SignupForm({func}) {
 const [error, setError] = useState({});
-const [data,setData]=useState({
-    email:"",
-    userName:"",
-    password:"",
-    confirmPassword:""
-});
+const [data,setData]=useState(initialSignData);
 const handleChange=(e)=>{
     const {name,value}=e.target;
     setData((prev)=>({...prev,[name]:value}))

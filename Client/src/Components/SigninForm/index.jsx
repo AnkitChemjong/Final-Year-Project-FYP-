@@ -8,14 +8,11 @@ import { Input } from '@/Components/ui/input';
 import { loginForm } from '@/Utils';
 import { Link } from 'react-router-dom';
 import { signinValidation } from '@/FormValidation';
+import { initialLogData } from '@/Utils';
 
-export default function SigninForm() {
+export default function SigninForm({func}) {
   const [error, setError] = useState({});
-  const [data,setData]=useState({
-      email:"",
-      password:"",
-      confirmPassword:""
-  });
+  const [data,setData]=useState(initialLogData);
   const handleChange=(e)=>{
       const {name,value}=e.target;
       setData((prev)=>({...prev,[name]:value}))
@@ -26,7 +23,7 @@ export default function SigninForm() {
     if(error.email === '' &&
       error.password === '' &&
       error.confirmPassword === ''){
-      // func(data);
+      func(data);
     }}
   return (
     <main className='w-[100vw] h-100% flex justify-center items-center gap-20'>

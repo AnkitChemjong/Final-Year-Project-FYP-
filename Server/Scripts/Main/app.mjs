@@ -2,6 +2,10 @@ import express from 'express';
 import connect from '../Connection/index.mjs';
 import userRoute from '../Routes/User_Routes/index.mjs';
 import cors from 'cors';
+import passport from 'passport';
+import session from 'express-session';
+import '../Passport/LocalStrategy/index.mjs';
+import storeDB from '../Store/Mongo_Session_Store.mjs';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -26,7 +30,20 @@ const main=()=>{
             "Content-Type", 
             "Authorization"
         ]
+    }));
+    const store=storeDB(session);
+    app.use(session({
+    secret: 'secret',
+    resave:false,
+    saveUninitialized:true,
+    store:store,
+    cookie:{
+        maxAge:24*60*60*1000,
+    },
+    name:"cook",
     }))
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use('/user',userRoute);
     app.listen(PORT,()=>console.log("listining at port "+ PORT));
 }

@@ -1,4 +1,4 @@
-import UserClass from "../../Services/UserService/index.mjs"
+import UserClass from "../../../Services/UserService/index.mjs"
 
 
 export const createUser=async (req,res)=>{
@@ -16,3 +16,4 @@ try{
     })
 }
 }
+
