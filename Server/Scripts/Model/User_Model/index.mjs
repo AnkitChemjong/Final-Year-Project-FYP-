@@ -32,6 +32,11 @@ const userSchema=new Schema({
     salt:{
         type:String,
         required:false
+    },
+    userImage:{
+        type:String,
+        required:false,
+        default:'UserImage/user.png'
     }
 },{timestamps:true})
 

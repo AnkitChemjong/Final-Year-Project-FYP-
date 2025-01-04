@@ -9,6 +9,9 @@ import { Input } from '@/Components/ui/input';
 import { Link } from 'react-router-dom';
 import signupValidation from '@/FormValidation';
 import { initialSignData } from '@/Utils';
+import { handleGoogle } from '../ThirdAuth';
+import { handleGithub } from '../ThirdAuth';
+import { handleFacebook } from '../ThirdAuth';
 
 export default function SignupForm({func}) {
 const [error, setError] = useState({});
@@ -29,13 +32,14 @@ const onFormSubmit=(e)=>{
   }
 }
 
+
   return (
     <main className='w-[100vw] h-100% flex justify-center items-center gap-20'>
         <img src="images/signup.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-00'/>
       <div className='flex flex-col gap-6 justify-center items-center relative bottom-10'>
-           <FaFacebook className='cursor-pointer' size={30}/>
-           <FcGoogle className='cursor-pointer' size={30}/>
-           <TfiGithub className='cursor-pointer' size={30}/>
+           <FaFacebook onClick={handleFacebook} className='cursor-pointer' size={30}/>
+           <FcGoogle onClick={handleGoogle} className='cursor-pointer' size={30}/>
+           <TfiGithub onClick={handleGithub} className='cursor-pointer' size={30}/>
       </div>
       <div className='flex flex-col gap-5 justify-center items-center '>
         <h1 className='font-bold text-3xl relative bottom-10'>Create New Account</h1>

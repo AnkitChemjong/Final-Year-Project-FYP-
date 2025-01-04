@@ -13,8 +13,16 @@ export default function Signup() {
        const returnData=await axiosService.post(User_Route,data,{
         headers: { "Content-Type": "application/json" },
       });
-       toast.success(returnData?.data?.message);
-       navigate('/signin')
+      if(returnData?.status===200){
+        toast.success(returnData?.data?.message);
+        navigate('/signin')
+      }
+      if(returnData?.status===400){
+        toast.error(returnData?.data?.message);
+      }
+      if(returnData?.status===500){
+        toast.error(returnData?.data?.message);
+      }
     }
     catch(error){
          toast.error(error?.message || "Something went wrong!")

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link,useLocation } from 'react-router-dom';
+import { Link,useLocation} from 'react-router-dom';
 import { useSelector,useDispatch} from 'react-redux';
 
 
@@ -50,10 +50,11 @@ export default function Navbar() {
                 ) :null
             })
         }
-        {logedUser && (logedUser?.userImage? null:(
-          <div className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full'>
-            <p>{logedUser?.userName?.split("")[0].toUpperCase()}</p>
-          </div>
+        {logedUser && (logedUser?.userImage? <Link to="/profile" className='flex justify-center items-center'>
+        <img src={`${logedUser?.userImage}`||`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} alt="" className='w-10 h-10 rounded-full' />
+        </Link>:(
+            <Link to="/profile" className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full cursor-pointer'>{logedUser?.userName?.split("")[0].toUpperCase()}</Link>
+
         ))}
       </div>
     </nav>

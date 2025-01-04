@@ -16,9 +16,21 @@ export default function Signin() {
         withCredentials:true,
         headers: { "Content-Type": "application/json" },
       });
-      dispatch(getUser());
-       toast.success(returnData?.data?.message);
-       navigate('/')
+      if(returnData?.status===200){
+
+        dispatch(getUser());
+         toast.success(returnData?.data?.message);
+         navigate('/')
+      }
+      if(returnData?.status===500){
+        toast.success(returnData?.data?.message);
+      }
+      if(returnData?.status===401){
+        toast.success(returnData?.data?.message);
+      }
+      if(returnData?.status===402){
+        toast.success(returnData?.data?.message);
+      }
     }
     catch(error){
          toast.error(error?.message || "Something went wrong!")

@@ -5,7 +5,12 @@ import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
 import '../Passport/LocalStrategy/index.mjs';
+import '../Passport/GoogleStrategy/index.mjs';
+import '../Passport/GithubStrategy/index.mjs';
+import '../Passport/FacebookStrategy/index.mjs';
 import storeDB from '../Store/Mongo_Session_Store.mjs';
+import authRoute from '../Routes/User_Routes/ThirdReturnAuth/index.mjs';
+import path from 'path';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -39,12 +44,15 @@ const main=()=>{
     store:store,
     cookie:{
         maxAge:24*60*60*1000,
+        httpOnly:true,
     },
-    name:"cook",
+    name:"hook",
     }))
+    app.use(express.static(path.resolve("../Upload/")));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use('/user',userRoute);
+    app.use('/',authRoute);
     app.listen(PORT,()=>console.log("listining at port "+ PORT));
 }
 main();

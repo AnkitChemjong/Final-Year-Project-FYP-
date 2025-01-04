@@ -9,17 +9,17 @@ passport.use(new LocalStrategy(
         const user = await User.findOne({ email:email });
         //console.log(user);
         if (!user) {
-          return done(null, false, { message: 'Incorrect username.' });
+          return done(null, false, { message: 'User is not avilable.',status:401});
         }
   
         const isMatch = await user.verifyPassword(password);
         if (!isMatch) {
-          return done(null, false, { message: 'Incorrect password.' });
+          return done(null, false, { message: 'Incorrect password.',status:402});
         }
   
-        return done(null, user);
-      } catch (err) {
-        return done(err,null);
+        return done(null, user,{message:"Loged in successfully",status:200});
+      } catch (error) {
+        return done(err,null,{message:"Error in login",status:500});
       }
     }
   ));

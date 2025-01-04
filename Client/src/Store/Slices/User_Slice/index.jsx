@@ -5,7 +5,7 @@ import { User_Route } from "@/Routes";
 
 export const getUser=createAsyncThunk("getUser",async ()=>{
   try{
-     const logedInUser=await axiosService.get(User_Route,{ withCredentials:true});
+     const logedInUser=await axiosService.get(User_Route,{withCredentials:true});
      return logedInUser?.data?.user;
   }
   catch(error){

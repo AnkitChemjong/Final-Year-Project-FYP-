@@ -9,6 +9,9 @@ import { loginForm } from '@/Utils';
 import { Link } from 'react-router-dom';
 import { signinValidation } from '@/FormValidation';
 import { initialLogData } from '@/Utils';
+import { handleGoogle } from '../ThirdAuth';
+import { handleGithub } from '../ThirdAuth';
+import { handleFacebook } from '../ThirdAuth';
 
 export default function SigninForm({func}) {
   const [error, setError] = useState({});
@@ -29,9 +32,9 @@ export default function SigninForm({func}) {
     <main className='w-[100vw] h-100% flex justify-center items-center gap-20'>
             <img src="images/login.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-10'/>
           <div className='flex flex-col gap-6 justify-center items-center relative bottom-10'>
-               <FaFacebook className='cursor-pointer' size={30}/>
-               <FcGoogle className='cursor-pointer' size={30}/>
-               <TfiGithub className='cursor-pointer' size={30}/>
+               <FaFacebook onClick={handleFacebook} className='cursor-pointer' size={30}/>
+               <FcGoogle onClick={handleGoogle} className='cursor-pointer' size={30}/>
+               <TfiGithub onClick={handleGithub} className='cursor-pointer' size={30}/>
           </div>
           <div className='flex flex-col gap-5 justify-center items-center'>
             
