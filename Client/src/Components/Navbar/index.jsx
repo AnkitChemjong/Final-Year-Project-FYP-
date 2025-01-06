@@ -19,6 +19,16 @@ export default function Navbar() {
  show:true
 },
 {
+  name:"Course",
+  path:"course",
+  show:!logedUser
+},
+{
+  name:"Teacher",
+  path:"teacher",
+  show:!logedUser
+},
+{
     name:"Register",
     path:"signup",
     show:!logedUser

@@ -10,6 +10,7 @@ passport.use(
       clientID: process.env.FCID,
       clientSecret: process.env.FCS,
       callbackURL: "http://localhost:8000/auth/callback/facebook",
+      passReqToCallback:true,
       profileFields: ['id', 'displayName', 'photos', 'email'], // Request email
     },
     async (accessToken, refreshToken, profile, done) => {

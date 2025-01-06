@@ -12,9 +12,6 @@ passport.use(new GoogleStrategy({
     scope:['email','profile']
   },
  async function(request,accessToken, refreshToken, profile, cb) {
-    // const user=User.findOne({ userId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
     let user=await User.findOne({ userId: profile.id });
     if(!user){
        user=await User.create({userId:profile.id,userName:profile._json.name,email:profile._json.email,userImage:profile._json.picture,password:profile.id});

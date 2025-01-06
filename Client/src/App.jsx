@@ -7,6 +7,9 @@ import { useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { getUser } from "./Store/Slices/User_Slice";
 import Profile from "./Pages/Profile";
+import Teacher from "./Pages/Teacher";
+import Course from "./Pages/Course";
+import NotFound from "./Pages/NotFound";
 
 
 
@@ -26,6 +29,9 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/signin" element={<Signin/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/course" element={<Course/>}/>
+        <Route path="/teacher" element={<Teacher/>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </Router>
   )
