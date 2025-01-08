@@ -37,6 +37,14 @@ const userSchema=new Schema({
         type:String,
         required:false,
         default:'UserImage/user.png'
+    },
+    resetCode:{
+        type:String,
+        required:false
+    },
+    codeDueTime:{
+        type:Date,
+        required:false
     }
 },{timestamps:true})
 
@@ -61,9 +69,9 @@ userSchema.methods.verifyPassword =async function(password) {
        const userPassword=this.password;
        const comparePassword=await bcrypt.compare(password,userPassword);
        if(comparePassword){
-          return false;
+          return true;
        }
-        return true;
+        return false;
    }
    catch(error){
    console.log(error?.message);

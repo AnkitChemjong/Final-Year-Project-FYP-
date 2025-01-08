@@ -21,12 +21,12 @@ export default function Navbar() {
 {
   name:"Course",
   path:"course",
-  show:!logedUser
+  show:true
 },
 {
   name:"Teacher",
   path:"teacher",
-  show:!logedUser
+  show:true
 },
 {
     name:"Register",
@@ -38,10 +38,15 @@ export default function Navbar() {
     path:"signin",
     show:!logedUser
 },
+{
+  name:"Dashboard",
+  path:"dashboard",
+  show:logedUser?.userRole?.includes("admin")
+},
 ]
  
   return (
-    <nav className='flex flex-row flex-wrap justify-between items-center px-4 -mt-5'>
+    <nav className='flex flex-row flex-wrap justify-between items-center z-50 px-4 -mt-5'>
       <div className='flex flex-row justify-center items-center gap-5'>
         <div>
          <img src="images/logo.png" alt="logo if efficient pathsalsa"  className='md:w-[160px] md:h-[160px]'/>

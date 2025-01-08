@@ -7,7 +7,7 @@ try{
      const userCreation=await UserClass?.createUserModel(email,userName,password);
      if(userCreation){
         return res.status(200).json({
-           message:"User Created Successfully"
+           message:"User created successfully"
         })
      }
      return res.status(400).json({

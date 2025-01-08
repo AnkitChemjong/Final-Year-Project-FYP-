@@ -10,6 +10,9 @@ import Profile from "./Pages/Profile";
 import Teacher from "./Pages/Teacher";
 import Course from "./Pages/Course";
 import NotFound from "./Pages/NotFound";
+import Dashboard from "./Pages/Dashboard";
+import ResetCode from "./Pages/ResetCode";
+import ChangePass from "./Pages/ChangePass";
 
 
 
@@ -31,6 +34,9 @@ function App() {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/course" element={<Course/>}/>
         <Route path="/teacher" element={<Teacher/>}/>
+        <Route path="dashboard" element={<Dashboard/>}/>
+        <Route path="resetcode" element={<ResetCode/>}/>
+        <Route path="changePass" element={<ChangePass/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
     </Router>

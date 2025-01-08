@@ -12,8 +12,18 @@ import { initialLogData } from '@/Utils';
 import { handleGoogle } from '../ThirdAuth';
 import { handleGithub } from '../ThirdAuth';
 import { handleFacebook } from '../ThirdAuth';
+import { DialogForm } from '../DialogForm';
+import { axiosService } from "@/Services";
+import { User_Token_Gen_Route } from '@/Routes';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function SigninForm({func}) {
+  const navigate=useNavigate();
+  const [dialog,setDialog]=useState(false);
+  const toggleDialog=()=>{
+    setDialog(!dialog)
+  }
   const [error, setError] = useState({});
   const [data,setData]=useState(initialLogData);
   const handleChange=(e)=>{
@@ -28,6 +38,23 @@ export default function SigninForm({func}) {
       error.confirmPassword === ''){
       func(data);
     }}
+    const handleEvent=async (data)=>{
+      try{
+            const returnData=await axiosService.post(User_Token_Gen_Route,data,{withCredentials:true,headers:{"Content-Type":"application/json"}});
+             if(returnData.status===200){
+                toast.success(returnData?.data?.message)
+                navigate('/resetcode',{state:returnData?.data?.email});
+             }
+             if(returnData.status===400){
+              toast.error(returnData?.data?.message)
+              window.location.reload();
+
+           }
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
   return (
     <main className='w-[100vw] h-100% flex justify-center items-center gap-20'>
             <img src="images/login.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-10'/>
@@ -55,7 +82,8 @@ export default function SigninForm({func}) {
             }
             
             </div>
-            <Link to="/signup" className='text-green-600 relative bottom-10 hover:text-blue-700'>Forget Password?</Link>
+            <Link onClick={toggleDialog} className='text-green-600 relative bottom-10 hover:text-blue-700'>Forget Password?</Link>
+            <DialogForm dialog={dialog} setDialog={setDialog} func={handleEvent}/>
              <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">Login</Button>
               </form>
              <div className='flex flex-row items-center justify-center gap-5 relative bottom-10'>
