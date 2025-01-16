@@ -5,6 +5,7 @@ import { User_Check_Code_Route } from '@/Routes';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '@/Components/Navbar';
 
 export default function ResetCode() {
     const location=useLocation();
@@ -44,6 +45,7 @@ export default function ResetCode() {
     }
   return (
     <div>
+      <Navbar/>
       <ResetForm type="code" value={value} func={handleCheckCode}/>
     </div>
   )

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
-import Navbar from '@/Components/Navbar';
 import Home from "./Pages/Home";
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
@@ -13,7 +12,45 @@ import NotFound from "./Pages/NotFound";
 import Dashboard from "./Pages/Dashboard";
 import ResetCode from "./Pages/ResetCode";
 import ChangePass from "./Pages/ChangePass";
+import { Navigate } from "react-router-dom";
 
+const PrivateRoute = ({ children }) => {
+  const logedUser = useSelector((state) => state?.user?.data);
+  const isAuthenticated = !!logedUser; 
+  if(isAuthenticated){
+    if(logedUser?.userRole?.includes('admin')){
+      return <Navigate to="/dashboard"/>
+    }
+    else if(!logedUser?.userRole?.includes('admin')){
+       return children;
+    }
+  }
+  else{
+    return <Navigate to="/signup"/>
+  }
+};
+
+const AuthRoute=({children})=>{
+  const logedUser=useSelector((state)=>state?.user?.data)
+  const user=!!logedUser;
+  return user? <Navigate to="/"/>:children;
+}
+function AdminRoute({ children }) {
+  const logedUser = useSelector((state) => state?.user?.data);
+  if (!logedUser || !logedUser?.userRole?.includes("admin")) {
+    return <Navigate to="/" />;
+  }
+  return children;
+}
+function HomeRestrictForAdmin({children}){
+  const logedUser = useSelector((state) => state?.user?.data);
+  if(logedUser?.userRole?.includes("admin")){
+    return <Navigate to="/dashboard" />
+  }
+  else{
+    return children;
+  }
+}
 
 
 function App() {
@@ -24,17 +61,17 @@ function App() {
       dispatch(getUser())
      }
   },[]);
+  
   return (
     <Router>
-         <Navbar/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/signup" element={<Signup/>}/>
-        <Route path="/signin" element={<Signin/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/course" element={<Course/>}/>
-        <Route path="/teacher" element={<Teacher/>}/>
-        <Route path="dashboard" element={<Dashboard/>}/>
+        <Route path="/" element={<HomeRestrictForAdmin><Home/></HomeRestrictForAdmin>}/>
+        <Route path="/signup" element={<AuthRoute><Signup/></AuthRoute>}/>
+        <Route path="/signin" element={<AuthRoute><Signin/></AuthRoute>}/>
+        <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}/>
+        <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
+        <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
+        <Route path="dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
         <Route path="resetcode" element={<ResetCode/>}/>
         <Route path="changePass" element={<ChangePass/>}/>
         <Route path="*" element={<NotFound/>}/>

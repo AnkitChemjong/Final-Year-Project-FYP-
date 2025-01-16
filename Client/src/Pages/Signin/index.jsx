@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { axiosService } from '@/Services';
 import { useDispatch } from 'react-redux';
 import { getUser } from '@/Store/Slices/User_Slice';
+import Navbar from '@/Components/Navbar';
 
 export default function Signin() {
   const dispatch=useDispatch();
@@ -17,10 +18,14 @@ export default function Signin() {
         headers: { "Content-Type": "application/json" },
       });
       if(returnData?.status===200){
-
         dispatch(getUser());
          toast.success(returnData?.data?.message);
-         navigate('/')
+         if(returnData?.data?.user?.userRole?.includes("admin")){
+          navigate('/dashboard');
+         }
+         else{
+           navigate('/')
+         }
       }
       if(returnData?.status===500){
         toast.success(returnData?.data?.message);
@@ -38,6 +43,7 @@ export default function Signin() {
   }
   return (
     <div>
+      <Navbar/>
       <SigninForm func={handlePost}/>
     </div>
   )

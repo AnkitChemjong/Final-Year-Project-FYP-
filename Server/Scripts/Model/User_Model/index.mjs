@@ -45,7 +45,24 @@ const userSchema=new Schema({
     codeDueTime:{
         type:Date,
         required:false
+    },
+    address:{
+        type:String,
+        required:false
+    },
+    phone:{
+        type:Number,
+        required:false
+    },
+    gender:{
+        type:String,
+        required:false
+    },
+    DOB:{
+        type:Date,
+        required:false
     }
+
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){

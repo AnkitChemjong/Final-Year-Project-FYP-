@@ -4,6 +4,7 @@ import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { codeValidation } from '@/FormValidation';
 import { passwordValidation } from '@/FormValidation';
+import CommonButton from '../CommonButton';
 
 export default function ResetForm({type,value,func}) {
     const [error, setError] = useState({});
@@ -32,7 +33,9 @@ export default function ResetForm({type,value,func}) {
             }
 
   return (
-        <div className='flex flex-col gap-5 justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-gray-900 md:p-24 bg-cyan-300 rounded-2xl hover:shadow-lg'>
+        <div className='flex flex-col gap-5 justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  md:p-5 '>
+          <img src="" alt="" />
+          <div className='flex flex-col gap-2'>
             {value?.map((item,index)=>{
                 return(
                     <div className='flex flex-col gap-2 justify-center items-center'>
@@ -45,7 +48,8 @@ export default function ResetForm({type,value,func}) {
                 )
 
     })}
-           <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700" onClick={handleSubmit}>Submit</Button>
+           <CommonButton func={handleSubmit} text="Submit"/>
+          </div>
         </div>
     
   )

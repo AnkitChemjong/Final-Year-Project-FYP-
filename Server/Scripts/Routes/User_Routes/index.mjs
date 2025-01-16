@@ -17,7 +17,7 @@ userRoute.post('/code',GenCode);
 userRoute.post('/check',CheckCode);
 userRoute.patch('/changePass',ChangePassword)
 userRoute.post('/log', passport.authenticate('local'),(req,res)=>{
-    res.status(200).json({message:"logedin successfully"})
+    res.status(200).json({message:"logedin successfully",user:req.user});
 });
 userRoute.get('/auth/google',passport.authenticate('google'))
 userRoute.get('/auth/github',passport.authenticate('github'))

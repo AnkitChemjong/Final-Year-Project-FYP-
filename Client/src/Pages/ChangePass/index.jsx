@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { User_Change_Pass_Route } from '@/Routes';
 import { axiosService } from '@/Services';
+import Navbar from '@/Components/Navbar';
 
 export default function ChangePass() {
     const navigate=useNavigate();
@@ -42,6 +43,7 @@ export default function ChangePass() {
         }
   return (
     <div>
+      <Navbar/>
       <ResetForm type="password" value={value} func={handleEvent}/>
     </div>
   )

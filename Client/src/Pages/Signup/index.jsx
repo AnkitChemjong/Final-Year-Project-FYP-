@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { axiosService } from '@/Services';
 import { User_Route } from '@/Routes';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '@/Components/Navbar';
 
 
 export default function Signup() {
@@ -30,6 +31,7 @@ export default function Signup() {
   }
   return (
     <div>
+      <Navbar/>
       <SignupForm func={handlePost}/>
     </div>
   )

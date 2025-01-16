@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import CommonButton from "../CommonButton";
 import {
   Dialog,
   DialogContent,
@@ -48,7 +49,7 @@ export function DialogForm({dialog,setDialog,func}) {
             {error.email? <span className="text-xs text-red-700">{error.email}</span>:null}
         </div>
         <DialogFooter>
-          <Button onClick={handleSubmit} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">Send</Button>
+          <CommonButton func={handleSubmit} text="Send"/>
         </DialogFooter>
       </DialogContent>
       

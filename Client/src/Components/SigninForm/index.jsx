@@ -56,7 +56,7 @@ export default function SigninForm({func}) {
       }
     }
   return (
-    <main className='w-[100vw] h-100% flex justify-center items-center gap-20'>
+    <main className='w-[100vw] flex justify-center items-center gap-20'>
             <img src="images/login.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-10'/>
           <div className='flex flex-col gap-6 justify-center items-center relative bottom-10'>
                <FaFacebook onClick={handleFacebook} className='cursor-pointer' size={30}/>
