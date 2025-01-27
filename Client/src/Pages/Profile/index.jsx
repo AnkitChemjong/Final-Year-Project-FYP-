@@ -10,17 +10,57 @@ import { BsGenderAmbiguous } from "react-icons/bs";
 import { Button } from '@/Components/ui/button';
 import { Avatar,AvatarImage } from '@/Components/ui/avatar';
 import {FaPlus,FaTrash} from 'react-icons/fa';
-import { User_Upload_Profile_Image,User_Delete_Profile_Image } from '@/Routes';
+import { User_Upload_Profile_Image,User_Delete_Profile_Image,User_Info_Update } from '@/Routes';
 import { getUser } from '@/Store/Slices/User_Slice';
 import { toast } from 'react-toastify';
 import { axiosService } from '@/Services';
+import { updateProfileInitialState } from '@/Utils';
+import { DialogForm } from '@/Components/DialogForm';
+import moment from 'moment';
 
 
 export default function Profile() {
    const user=useSelector(state=>state?.user?.data);
    const [hover,setHover]=useState(false);
    const upProfileImage=useRef();
+   const [dialog,setDialog]=useState(false);
    const dispatch=useDispatch();
+   const updateProfileInputs=[
+    {
+        label:"User Name",
+        name:"userName",
+        placeholder:user?.userName,
+        type:'text',
+        componentType:"input"
+    },
+    {
+      label:"Address",
+      name:"address",
+      placeholder:user?.address|| "Enter Your Address.",
+      type:'text',
+      componentType:"input"
+  },
+  {
+    label:"Phone",
+    name:"phone",
+    placeholder:user?.phone|| "Enter Your Contact Number.",
+    type:'number',
+    componentType:"number"
+},
+{
+  label:"Gender",
+  name:"gender",
+  type:'radio',
+  componentType:"gender"
+},
+{
+  label:"Date Of Birth",
+  name:"DOB",
+  type:'date',
+  componentType:"date"
+},
+
+]
    const details=[
     {
       icon:FcGoogle,
@@ -46,7 +86,7 @@ export default function Profile() {
     },
     {
       icon:CiCalendarDate,
-      text:user?.DOB||"null",
+      text:moment(user?.DOB).format('MMMM DD, YYYY')||"null",
       size:20
     },
    ]
@@ -96,6 +136,30 @@ export default function Profile() {
         console.log(error);
         toast.error(error.message)
        }
+  }
+
+  const handleEvent=async (data)=>{
+     try{
+         const response=await axiosService.patch(User_Info_Update,data,{headers:{
+          "Content-Type":'application/json'
+        },
+        withCredentials:true});
+        if(response?.status===200){
+          dispatch(getUser());
+          setDialog(false);
+          toast.success(response?.data?.message)
+        }
+        else{
+          toast.success(response?.data?.message)
+        }
+     }
+     catch(error){
+      console.log(error);
+      toast.error(error.message)
+     }
+  }
+  const toggleDialog=()=>{
+    setDialog(!dialog)
   }
   return (
     <div>
@@ -187,7 +251,8 @@ export default function Profile() {
                  }
                   </div>
                   <div className='w-full flex flex-row justify-center items-center md:gap-80'>
-                  <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">Update Info</Button>
+                  <Button onClick={toggleDialog} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">Update Info</Button>
+                   <DialogForm title="Update Profile Info" description="Enter New Profile Data." dialog={dialog} setDialog={setDialog} func={handleEvent} type="updateProfile" componentInputs={updateProfileInputs} initialState={updateProfileInitialState}/>
                   {
                     user?.userRole?.includes("teacher") &&
                   <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">My CV</Button>

@@ -8,6 +8,7 @@ import CheckCode from "../../Controllers/User_Controller/CheckCode/index.mjs";
 import ChangePassword from "../../Controllers/User_Controller/ChangePassword/index.mjs";
 import ProfileImage from "../../Controllers/User_Controller/ProfileImage/index.mjs";
 import upload from "../../Services/UserService/Multer/index.mjs";
+import UserInfoUpdate from "../../Controllers/User_Controller/UserInfoUpdate/index.mjs";
 
 
 const userRoute=Router();
@@ -25,7 +26,9 @@ userRoute.get('/auth/google',passport.authenticate('google'))
 userRoute.get('/auth/github',passport.authenticate('github'))
 userRoute.get('/auth/facebook',passport.authenticate('facebook'))
 userRoute.patch('/userImageUpdate',upload.single('profile-image'),ProfileImage.updateProfileImage)
-userRoute.delete('/userImageDelete',ProfileImage.deleteProfileImage)
+userRoute.delete('/userImageDelete',ProfileImage.deleteProfileImage);
+userRoute.patch('/userInfoUpdation',UserInfoUpdate.updateUserInfo);
+
   
 
 export default userRoute;

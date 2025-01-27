@@ -32,7 +32,7 @@ class ProfileImage{
                         console.log('File deleted successfully!');
                       }
                 })
-                await User.findByIdAndUpdate(user?._id,{userImage:null});
+                await User.findByIdAndUpdate(user?._id,{$unset:{userImage:""}});
                 return res.status(200).json({message:"Profile image removed successfully"});
             }
         }

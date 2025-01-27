@@ -10,7 +10,7 @@ import Navbar from '@/Components/Navbar';
 export default function ResetCode() {
     const location=useLocation();
     const email=location?.state || null;
-    console.log(email);
+    //console.log(email);
     const navigate=useNavigate();
     const value=[
         {

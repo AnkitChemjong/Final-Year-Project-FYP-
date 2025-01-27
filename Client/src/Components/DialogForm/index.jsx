@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import CommonButton from "../CommonButton";
+import CommonRenderFormInput from "../CommonRenderFormInput";
 import {
   Dialog,
   DialogContent,
@@ -9,45 +9,56 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { emailValidation } from "@/FormValidation";
+import { emailValidation,updateProfileInfoValidation } from "@/FormValidation";
 
 
 
-export function DialogForm({dialog,setDialog,func}) {
+export function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs}) {
     const [error, setError] = useState({});
-  const [email,setEmail]=useState("");
-  const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const [data,setData]=useState(initialState);
   const handleSubmit=(e)=>{
-    setError(emailValidation(email));
-    if(!error.email){
-      func({email:email});
-    }}
+    if(type==="email"){
+      setError(emailValidation(data));
+      if(!error.email){
+        func(data);
+      }
+    }
+    if(type==="updateProfile"){
+     setError(updateProfileInfoValidation(data));
+     if(error.userName===""&&
+      error.address===""&&
+      error.phone===""&&
+      error.gender===""&&
+      error.DOB===""
+     ){
+      func(data);
+     }
+    }
+  }
   return (
     <Dialog open={dialog} onOpenChange={(e)=>{
         setDialog(e);
         setError({});
+        setData(initialState)
         }}>
        
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Update Password</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            Enter your registered email here.
+            {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid py-4 gap-2 text-center">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input onChange={handleChange} id="email" name="email" type="email" className="col-span-3" />
-          </div>
-            {error.email? <span className="text-xs text-red-700">{error.email}</span>:null}
+        <div className="flex flex-col gap-2">
+        {
+          componentInputs?.map((item,index)=>{
+            return (
+              <CommonRenderFormInput getCurrentControl={item} data={data} setData={setData} error={error}/>
+            )
+          })
+        }
         </div>
+        
         <DialogFooter>
           <CommonButton func={handleSubmit} text="Send"/>
         </DialogFooter>

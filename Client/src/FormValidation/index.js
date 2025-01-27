@@ -93,11 +93,11 @@ export function emailValidation(value) {
     let error={};
     const email_pattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    if (value===""){
+    if (value?.email===""){
         error.email="Email should not be empty";
 
     }
-    else if(!email_pattern.test(value)){
+    else if(!email_pattern.test(value?.email)){
         error.email="Use correct format of email!"
 
     }
@@ -146,3 +146,49 @@ export function passwordValidation(value) {
     }
   return error;
 };
+
+
+export function updateProfileInfoValidation(value) {
+    let error={};
+    
+    if (value?.userName===""){
+        error.userName="User Name should not be empty";
+
+    }
+    else{
+        error.userName="";
+    }
+    if (value?.address===""){
+        error.address="Address should not be empty";
+
+    }
+    else{
+        error.address="";
+    }
+    if (value?.phone===""){
+        error.phone="Phone Number should not be empty";
+
+    }
+    else if(value?.phone?.length>10){
+        error.phone="Phone Number cannot be more then 10 digits."
+    }
+    else{
+        error.phone="";
+    }
+    if (value?.gender===""){
+        error.gender="You should select the Gender";
+
+    }
+    else{
+        error.gender="";
+    }
+    if (value?.DOB===""){
+        error.DOB="Select DOB";
+
+    }
+    else{
+        error.DOB="";
+    }
+    
+    return error;
+}

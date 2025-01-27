@@ -27,7 +27,6 @@ const onFormSubmit=(e)=>{
     error.userName === '' &&
     error.password === '' &&
     error.confirmPassword === ''){
-      console.log("hello")
     func(data);
   }
 }

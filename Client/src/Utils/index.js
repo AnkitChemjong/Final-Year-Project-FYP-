@@ -64,3 +64,23 @@ export const loginForm=[
 
 },
 ]
+export const emailDialogInitialState={email:""}
+
+export const emailInputs=[
+    {
+        label:"Email",
+        name:"email",
+        placeholder:"Enter User Email.",
+        type:'email',
+        componentType:"input"
+    }
+]
+
+export const updateProfileInitialState={
+    userName:"",
+    address:"",
+    phone:"",
+    gender:"",
+    DOB:""
+}
+
