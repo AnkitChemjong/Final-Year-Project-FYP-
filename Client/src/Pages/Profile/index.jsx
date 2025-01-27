@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import { useSelector,useDispatch } from 'react-redux';
 import { FcGoogle } from "react-icons/fc";
@@ -8,10 +8,19 @@ import { GrCircleInformation } from "react-icons/gr";
 import { CiCalendarDate } from "react-icons/ci";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { Button } from '@/Components/ui/button';
+import { Avatar,AvatarImage } from '@/Components/ui/avatar';
+import {FaPlus,FaTrash} from 'react-icons/fa';
+import { User_Upload_Profile_Image,User_Delete_Profile_Image } from '@/Routes';
+import { getUser } from '@/Store/Slices/User_Slice';
+import { toast } from 'react-toastify';
+import { axiosService } from '@/Services';
 
 
 export default function Profile() {
    const user=useSelector(state=>state?.user?.data);
+   const [hover,setHover]=useState(false);
+   const upProfileImage=useRef();
+   const dispatch=useDispatch();
    const details=[
     {
       icon:FcGoogle,
@@ -42,6 +51,52 @@ export default function Profile() {
     },
    ]
 
+   const handleFileInputClick=()=>{
+    upProfileImage.current.click();
+  }
+  const handleImageChange=async (e)=>{
+    try{
+
+      const file=e.target.files[0];
+      //console.log(file);
+      if(file){
+        const formData=new FormData();
+        formData.append("profile-image",file);
+        const response=await  axiosService.patch(User_Upload_Profile_Image,formData,
+          {headers:{
+            "Content-Type":'multipart/form-data'
+          },withCredentials:true
+        })
+        if(response.status===200){
+          dispatch(getUser());
+          toast.success(response?.data?.message);
+        }
+      }
+      else{
+        toast.error(response?.data?.message);
+      }
+    }
+    catch(error){
+      console.log(error);
+      toast.error(error.message)
+    }
+  }
+  const handleProfileImageDelete=async ()=>{
+       try{
+            const response=await axiosService.delete(User_Delete_Profile_Image,{withCredentials:true});
+            if(response?.status===200){
+              dispatch(getUser());
+              toast.success(response?.data?.message)
+            }
+            else{
+              toast.success(response?.data?.message)
+            }
+       }
+       catch(error){
+        console.log(error);
+        toast.error(error.message)
+       }
+  }
   return (
     <div>
       <Navbar/>
@@ -49,13 +104,31 @@ export default function Profile() {
       <div className='w-full flex flex-row justify-between items-center'>
           <div className='w-1/2 h-64 border-b-2 border-black flex flex-col gap-10 justify-center items-center'>
               <div className='flex flex-row justify-between items-center gap-40'>
-                <div className=''>
-                {user && (user?.userImage? <div className='flex justify-center items-center'>
-        <img src={`${user?.userImage}`||`${import.meta.env.VITE_BACKEND_URL}/${user?.userImage}`} alt="" className='w-24 h-24 rounded-full' />
-        </div>:(
-            <div id="user-menu-button" className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full'>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
+              <div className=' relative flex items-center justify-center'
+          onMouseEnter={()=>setHover(true)}
+          onMouseLeave={()=>setHover(false)}
+          > 
+                <Avatar className="h-24 w-24 md:w-28 md:h-28 rounded-full cursor-pointer flex justify-center items-center">
+                {user && (user?.userImage ? <AvatarImage 
+        src={user?.userImage.startsWith("http") ? user?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${user?.userImage}`} alt="profilepage"/>
+        :(
+            <div className=' bg-slate-400 w-full h-full flex justify-center items-center px-5 py-3 rounded-full border-2 '>{user?.userName?.split("")[0].toUpperCase()}</div>
         ))}
-                </div>
+                </Avatar>
+                {
+                  hover && (
+                    <div className='absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 rounded-full'
+                    onClick={user?.userImage? handleProfileImageDelete:handleFileInputClick}
+                    >
+                      {
+                        user?.userImage ? <FaTrash className='text-white text-3xl cursor-pointer'/> :<FaPlus className='text-white text-3xl cursor-pointer'/>
+                      }
+                    </div>
+                  )
+                 }
+                 <input type="file" ref={upProfileImage} onChange={handleImageChange}  className="hidden" 
+                 name="profile-image" accept=".png, .jpg, .jpeg, .svg, .webp"/>
+          </div>
                 <div className='flex flex-col justify-center items-center gap-2'>
                    <h1 className='text-3xl font-bold'>{user?.userName}</h1>
                   <div>
@@ -73,6 +146,7 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
+
               <div className='flex flex-row justify-center items-center md:gap-28'>
                   {
                     user?.userRole?.includes("teacher")?

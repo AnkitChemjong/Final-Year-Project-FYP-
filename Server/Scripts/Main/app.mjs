@@ -48,7 +48,7 @@ const main=()=>{
     },
     name:"hook",
     }))
-    app.use(express.static(path.resolve("../Upload/")));
+    app.use(express.static(path.resolve("./Scripts/Upload/")));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use('/user',userRoute);

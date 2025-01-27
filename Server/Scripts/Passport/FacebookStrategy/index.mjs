@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import dotenv from 'dotenv';
 import User from '../../Model/User_Model/index.mjs';
+
 dotenv.config();
 
 passport.use(
@@ -10,13 +11,14 @@ passport.use(
       clientID: process.env.FCID,
       clientSecret: process.env.FCS,
       callbackURL: "http://localhost:8000/auth/callback/facebook",
-      passReqToCallback:true,
+      passReqToCallback: true,
       profileFields: ['id', 'displayName', 'photos', 'email'], // Request email
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0]?.value; // Access email
-        console.log(email);
+        const email = profile.emails?.[0]?.value || null; // Handle undefined email
+        console.log('Email:', email);
+
         let user = await User.findOne({ userId: profile.id });
 
         if (!user) {
@@ -26,13 +28,14 @@ passport.use(
             email,
             userImage: profile.photos?.[0]?.value || null,
             password: profile.id,
+            provider:"Facebook"
           });
         }
 
-        return done(null, user);
+        return done(null, user); // Pass user to Passport
       } catch (err) {
-        console.error("Error in Facebook strategy:", err);
-        return done(err, null);
+        console.error('Error in Facebook strategy:', err);
+        return done(err, null); // Handle errors gracefully
       }
     }
   )

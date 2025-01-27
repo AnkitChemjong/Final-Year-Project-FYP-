@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
  async function(request,accessToken, refreshToken, profile, cb) {
     let user=await User.findOne({ userId: profile.id });
     if(!user){
-       user=await User.create({userId:profile.id,userName:profile._json.name,email:profile._json.email,userImage:profile._json.picture,password:profile.id});
+       user=await User.create({userId:profile.id,userName:profile._json.name,email:profile._json.email,userImage:profile._json.picture,password:profile.id,provider:"Google"});
        return cb(null, user);
     }
     else

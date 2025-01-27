@@ -36,7 +36,6 @@ const userSchema=new Schema({
     userImage:{
         type:String,
         required:false,
-        default:'UserImage/user.png'
     },
     resetCode:{
         type:String,
@@ -60,6 +59,10 @@ const userSchema=new Schema({
     },
     DOB:{
         type:Date,
+        required:false
+    },
+    provider:{
+        type:String,
         required:false
     }
 

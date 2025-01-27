@@ -12,7 +12,19 @@ async function fetchGitHubEmails(accessToken) {
         
       }}
     )
-    console.log(response);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch emails: ${response.statusText}`);
+    }
+
+    const emails = await response.json(); // Parse the body as JSON
+
+    console.log('Emails:', emails);
+
+    // Retrieve the primary email
+    const primaryEmail = emails.find((email) => email.primary)?.email || 'No primary email found';
+    console.log('Primary Email:', primaryEmail);
+
+    return primaryEmail;
 };
 
 passport.use(new GithubStrategy({
@@ -23,14 +35,11 @@ passport.use(new GithubStrategy({
     scope:['user:email']
   },
  async function(request,accessToken, refreshToken, profile, cb) {
-    // const user=User.findOne({ userId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
     let user=await User.findOne({ userId: profile.id });
     if(!user){
         // GitHub emails can be private, so fetch emails explicitly if null
         const email = profile._json.email || (await fetchGitHubEmails(accessToken));
-       user=await User.create({userId:profile.id,userName:profile._json.name,email:email,userImage:profile._json.avatar_url,password:profile.id});
+       user=await User.create({userId:profile.id,userName:profile._json.name,email:email,userImage:profile._json.avatar_url,password:profile.id,provider:"Github"});
        return cb(null, user);
     }
     else
@@ -38,10 +47,6 @@ passport.use(new GithubStrategy({
 
         return cb(null, user);
     }
-    // console.log(profile.id)
-    // console.log(profile._json.email)
-    // console.log(profile._json.picture)
-    // console.log(profile._json.name)
   }
 ));
 
