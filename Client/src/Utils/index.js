@@ -84,3 +84,48 @@ export const updateProfileInitialState={
     DOB:""
 }
 
+export const changePasswordInitialState={
+    currentPassword:"",
+    newPassword:"",
+    confirmPassword:"",
+}
+
+
+export const changePasswordForm=[
+    {
+        label:"Current Password",
+        name:"currentPassword",
+        placeholder:"Enter current Password",
+        type:'password',
+        componentType:"input"
+    },
+    {
+        label:"New Password",
+        name:"newPassword",
+        placeholder:"Make New Password",
+        type:'password',
+        componentType:"input"
+    },
+    {
+        label:"Confirm Password",
+        name:"confirmPassword",
+        placeholder:"Confirm Password",
+        type:'password',
+        componentType:"input"
+    }
+]
+
+
+export const becomeTeacherForm=[ 
+    {
+        label:"Your CV",
+        name:"cv",
+        placeholder:"Upload Your CV",
+        type:'file',
+        componentType:"file"
+    }
+]
+
+export const becomeTeacherInitialState={
+   cv:""
+}

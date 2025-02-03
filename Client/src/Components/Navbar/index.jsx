@@ -137,7 +137,7 @@ const handleLogout=async ()=>{
           <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
         {logedUser && (logedUser?.userImage ? 
         <AvatarImage 
-        src={logedUser?.userImage.startsWith("http") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
+        src={logedUser?.userImage.startsWith("https") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
         alt="navimage"  />:(
             <div className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
         ))}

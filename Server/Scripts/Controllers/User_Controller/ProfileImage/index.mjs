@@ -9,7 +9,7 @@ class ProfileImage{
              return res.status(400).json({message:"File is Required"});
             }
             const fileName=`UserImage/${req.file.filename}`;
-            const updateUser=await User.findByIdAndUpdate(user?._id,{userImage:fileName},{
+            await User.findByIdAndUpdate(user?._id,{userImage:fileName},{
              new:true,runValidators:true
             });
             //console.log(updateUser);

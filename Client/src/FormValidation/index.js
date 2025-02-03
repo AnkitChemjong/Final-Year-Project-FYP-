@@ -192,3 +192,54 @@ export function updateProfileInfoValidation(value) {
     
     return error;
 }
+
+export function changePasswordValidation(value) {
+    let error={};
+    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    
+    if (value.currentPassword===""){
+        error.currentPassword="This field should not be empty";
+
+    }
+    else{
+        error.currentPassword="";
+    }
+
+    if (value.newPassword===""){
+        error.newPassword="This field should not be empty";
+
+    }
+    //else if(!pass_pattern.test(value.password)){
+    //     error.password="Use correct format of password!"
+
+    // }
+    else{
+        error.newPassword="";
+    }
+    
+    if (value.confirmPassword===""){
+        error.confirmPassword="confirmPassword should not be empty";
+
+    }
+    else if(value.confirmPassword!=value.newPassword){
+        error.confirmPassword="Both password should match";
+
+    }
+    else{
+        error.confirmPassword="";
+    }
+  return error;
+};
+
+export function becomeTeacherValidation(value) {
+    let error={};
+    
+    if (value?.cv===""){
+        error.cv="field should not be empty";
+
+    }
+    else{
+        error.cv="";
+    }
+    return error;
+}

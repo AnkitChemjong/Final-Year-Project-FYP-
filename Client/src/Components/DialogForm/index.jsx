@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { emailValidation,updateProfileInfoValidation } from "@/FormValidation";
+import { changePasswordValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation } from "@/FormValidation";
 
 
 
-export function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs}) {
+export function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
     const [error, setError] = useState({});
   const [data,setData]=useState(initialState);
   const handleSubmit=(e)=>{
@@ -34,6 +34,21 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
       func(data);
      }
     }
+    if(type==="updatePassword"){
+      setError(changePasswordValidation(data));
+      if(error.currentPassword==="" && 
+        error.newPassword==="" &&
+        error.confirmPassword===""
+      ){
+        func(data);
+      }
+    }
+    if(type==="becomeTeacher"){
+      setError(becomeTeacherValidation(data));
+      if(error.cv===""){
+        func(data);
+      }
+    }
   }
   return (
     <Dialog open={dialog} onOpenChange={(e)=>{
@@ -53,7 +68,7 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
         {
           componentInputs?.map((item,index)=>{
             return (
-              <CommonRenderFormInput getCurrentControl={item} data={data} setData={setData} error={error}/>
+              <CommonRenderFormInput key={index} accept={accept} getCurrentControl={item} data={data} setData={setData} error={error}/>
             )
           })
         }

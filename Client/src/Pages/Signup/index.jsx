@@ -26,7 +26,7 @@ export default function Signup() {
       }
     }
     catch(error){
-         toast.error(error?.message || "Something went wrong!")
+         toast.error(error?.response?.data?.message);
     }
   }
   return (

@@ -27,18 +27,9 @@ export default function Signin() {
            navigate('/')
          }
       }
-      if(returnData?.status===500){
-        toast.success(returnData?.data?.message);
-      }
-      if(returnData?.status===401){
-        toast.success(returnData?.data?.message);
-      }
-      if(returnData?.status===402){
-        toast.success(returnData?.data?.message);
-      }
     }
     catch(error){
-         toast.error(error?.message || "Something went wrong!")
+         toast.error(error?.response?.data?.message);
     }
   }
   return (

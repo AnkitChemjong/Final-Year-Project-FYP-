@@ -10,9 +10,11 @@ try{
            message:"User created successfully"
         })
      }
-     return res.status(400).json({
-        message:"User already exist"
-        });
+     else{
+        return res.status(400).json({
+           message:"User already exist"
+           });
+     }
      }
 catch(error){
     return res.status(500).json({
