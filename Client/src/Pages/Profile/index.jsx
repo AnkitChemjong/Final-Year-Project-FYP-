@@ -233,7 +233,7 @@ export default function Profile() {
                     (user?.userImage ? (
                       <AvatarImage
                         src={
-                          user?.userImage.startsWith("https")
+                          user?.userImage.startsWith("http")
                             ? user?.userImage
                             : `${import.meta.env.VITE_BACKEND_URL}/${
                                 user?.userImage
@@ -389,7 +389,7 @@ export default function Profile() {
         </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-1/2 h-64 flex flex-col justify-center items-center">
-            <h1 className="text-3xl font-bold">Purchased Course</h1>
+            <h1 className="text-3xl font-bold">Enrolled Courses</h1>
             <div className="flex flex-col justify-center items-center mt-10">
               <p>Empty</p>
             </div>

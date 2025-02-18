@@ -11,13 +11,14 @@ const becomeTeacherSchema=new Schema({
         type:String,
         required:true,
     },
-    userImage:{
-        type:String,
-        required:true
-    },
     userCV:{
         type:String,
         required:true
+    },
+    status:{
+        type:[String],
+        enum:['pending','approved','rejected'],
+        default:['pending']
     }
 },{timestamps:true});
 const BecomeTeacherApp=model("BecomeTeacherApp",becomeTeacherSchema);

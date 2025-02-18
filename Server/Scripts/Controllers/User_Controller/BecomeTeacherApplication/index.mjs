@@ -9,7 +9,7 @@ class BecomeTeacher{
              return res.status(400).json({message:"File is Required"});
             }
             const fileName=`becomeTeacher/${req.file.filename}`;
-            await BecomeTeacherApp.create({userId:user?._id,userName:user?.userName,userImage:user?.userImage,userCV:fileName});
+            await BecomeTeacherApp.create({userId:user?._id,userName:user?.userName,userCV:fileName});
             const subject="Details about Becoming Teacher."
             const text=`You have successfully uploaded the CV.\n\n wait for few days for the details and we will inform \n you in the mail if you are approved or not.\n\nRegards,\nEfficient Pathsala`
             const email=user?.email;

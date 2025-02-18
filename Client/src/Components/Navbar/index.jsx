@@ -117,7 +117,7 @@ const handleLogout=async ()=>{
         <div>
          <img src="images/logo.png" alt="logo if efficient pathsalsa"  className='md:w-[160px] md:h-[160px]'/>
         </div>
-        <h1 className='font-bold text-3xl'>Efficient Pathsala</h1>
+        <h1 className='font-bold text-3xl'>E-Pathsala</h1>
       </div>
       <div className='flex flex-row justify-center items-center gap-20' >
         {
@@ -137,7 +137,7 @@ const handleLogout=async ()=>{
           <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
         {logedUser && (logedUser?.userImage ? 
         <AvatarImage 
-        src={logedUser?.userImage.startsWith("https") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
+        src={logedUser?.userImage.startsWith("http") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
         alt="navimage"  />:(
             <div className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
         ))}
