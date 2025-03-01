@@ -243,3 +243,87 @@ export function becomeTeacherValidation(value) {
     }
     return error;
 }
+
+export function courseLandingFormValidation(value) {
+    let error={};
+    if(value.title===""){
+        error.title=`Field Cannot be empty.`
+    }
+    else{
+        error.title=""
+    }
+    if(value.category===""){
+        error.category=`Field Cannot be empty.`
+    }
+    else{
+        error.category=""
+    }
+    if(value.level===""){
+        error.level=`Field Cannot be empty.`
+    }
+    else{
+        error.level=""
+    }
+    if(value.primaryLanguage===""){
+        error.primaryLanguage=`Field Cannot be empty.`
+    }
+    else{
+        error.primaryLanguage=""
+    }
+    if(value.subtitle===""){
+        error.subtitle=`Field Cannot be empty.`
+    }
+    else{
+        error.subtitle=""
+    }
+    if(value.description===""){
+        error.description=`Field Cannot be empty.`
+    }
+    else{
+        error.description=""
+    }
+    if(value.pricing===""){
+        error.pricing=`Field Cannot be empty.`
+    }
+    else{
+        error.pricing=""
+    }
+    if(value.objectives===""){
+        error.objectives=`Field Cannot be empty.`
+    }
+    else{
+        error.objectives=""
+    }
+    if(value.welcomeMessage===""){
+        error.welcomeMessage=`Field Cannot be empty.`
+    }
+    else{
+        error.welcomeMessage=""
+    }
+    if(value.image===""){
+        error.image=`Field Cannot be empty.`
+    }
+    else{
+        error.image=""
+    }
+    return error;
+}
+export function courseCurriculumValidation(value) {
+    let error={};
+    
+    if (value?.title===""){
+        error.title="field should not be empty";
+
+    }
+    else{
+        error.title="";
+    }
+    if (value?.videoUrl===""){
+        error.videoUrl="field should not be empty";
+
+    }
+    else{
+        error.videoUrl="";
+    }
+    return error;
+}

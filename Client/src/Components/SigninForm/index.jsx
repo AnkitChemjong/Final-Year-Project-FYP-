@@ -43,7 +43,7 @@ export default function SigninForm({func}) {
       try{
             const returnData=await axiosService.post(User_Token_Gen_Route,data,{withCredentials:true,headers:{"Content-Type":"application/json"}});
              if(returnData.status===200){
-                toast.success(returnData?.data?.message)
+                toast.success(returnData?.data?.message);
                 navigate('/resetcode',{state:returnData?.data?.email});
              }
              if(returnData.status===400){

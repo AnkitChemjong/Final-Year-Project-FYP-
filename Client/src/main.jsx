@@ -5,12 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from 'react-toastify';
 import { Provider } from 'react-redux';
 import store from './Store';
+import ContextApi from './Components/ContextApi';
 
 
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
+    <ContextApi>
     <App />
+    </ContextApi>
     <ToastContainer
         position="top-right" 
         autoClose={2000}   

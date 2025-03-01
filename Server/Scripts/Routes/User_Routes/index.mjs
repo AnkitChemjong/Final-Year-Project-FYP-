@@ -11,6 +11,7 @@ import upload from "../../Services/UserService/Multer/profileImage/index.mjs";
 import UserInfoUpdate from "../../Controllers/User_Controller/UserInfoUpdate/index.mjs";
 import uploadCV from "../../Services/UserService/Multer/becomeTeacher/index.mjs";
 import BecomeTeacher from "../../Controllers/User_Controller/BecomeTeacherApplication/index.mjs";
+import HandleCV from "../../Controllers/User_Controller/HandleCV/index.mjs";
 
 
 const userRoute=Router();
@@ -41,13 +42,14 @@ userRoute.post('/log', (req, res, next) => {
     })(req, res, next);
 });
 
-userRoute.get('/auth/google',passport.authenticate('google'))
-userRoute.get('/auth/github',passport.authenticate('github'))
-userRoute.get('/auth/facebook',passport.authenticate('facebook'))
+userRoute.get('/auth/google',passport.authenticate('google'));
+userRoute.get('/auth/github',passport.authenticate('github'));
+userRoute.get('/auth/facebook',passport.authenticate('facebook'));
 userRoute.patch('/userImageUpdate',upload.single('profile-image'),ProfileImage.updateProfileImage)
 userRoute.delete('/userImageDelete',ProfileImage.deleteProfileImage);
 userRoute.patch('/userInfoUpdation',UserInfoUpdate.updateUserInfo);
 userRoute.post('/becomeTeacher',uploadCV.single("cv"),BecomeTeacher.uploadCV);
+userRoute.patch('/updateCV',uploadCV.single("cv"),HandleCV.updateCV);
 
   
 

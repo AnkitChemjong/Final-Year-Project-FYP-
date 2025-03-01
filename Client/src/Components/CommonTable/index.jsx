@@ -1,0 +1,115 @@
+import React, { useState } from 'react';
+import { Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow, } from '../ui/table';
+  
+  import moment from 'moment';
+ import CommonButton from '../CommonButton';
+ import CommonDrawer from '../CommonDrawer';
+ import { RiDeleteBin6Line } from "react-icons/ri";
+ import { Delete_Single_Application,Delete_All_Application } from '@/Routes';
+ import { axiosService } from '@/Services';
+ import { toast } from 'react-toastify';
+ import { useDispatch } from 'react-redux';
+ import { getApplication } from '@/Store/Slices/ApplicationSlice';
+
+export default function CommonTable({data,header,type}){
+  const dispatch=useDispatch();
+  const [handleDrawer,setHandleDrawer]=useState(false);
+  const handleDrawerFunction=()=>{
+    setHandleDrawer(true);  
+  }
+
+  const deleteApplication=async ({data=null,type,status=null})=>{
+    try{
+      if(type === "all" ){
+        const response=await axiosService.delete(Delete_All_Application,{data:{status}},{withCredentials:true, headers: {
+          "Content-Type": "application/json"
+  }});
+  if(response.status===200){
+    dispatch(getApplication());
+    toast.success(response?.data?.message);
+  }
+        
+      }   
+      else{
+        const response=await axiosService.delete(Delete_Single_Application,{data:{data}},{withCredentials:true, headers: {
+                "Content-Type": "application/json"
+        }});
+        if(response.status===200){
+          dispatch(getApplication());
+          toast.success(response?.data?.message);
+        }
+          
+        }
+      }
+        catch(error){
+      toast.error(error?.response?.data?.message);
+    }
+  }
+
+  
+  return (
+    <div className='flex flex-col justify-center items-center gap-2'>
+      <p className=" text-slate-500 text-sm">A list of {type} Applications.</p>
+        <div className="flex flex-row justify-evenly items-center w-full">
+          <div className='flex flex-row gap-2'>
+          <p className="text-black">Total Applications =</p>
+          <p className=" text-black">{data?.length}</p>
+          </div>
+          <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
+          <RiDeleteBin6Line onClick={()=>deleteApplication({type:"all",status:type})} className='cursor-pointer text-black' size={20}/>
+          </div>
+        </div>
+       <Table >
+      <TableHeader className="bg-gray-200 rounded-t-lg">
+  <TableRow>
+    {header && header.map((item, index) => (
+      <TableHead 
+        key={index} 
+        className="w-[100px] text-black first:rounded-tl-lg last:rounded-tr-lg"
+      >
+        {item}
+      </TableHead>
+    ))}
+  </TableRow>
+</TableHeader>
+      
+      <TableBody>
+        {data.map((item,index) => (
+          <TableRow key={index}>
+            <TableCell className="font-medium">{data?.indexOf(item)+1}</TableCell>
+            <TableCell>{item?._id}</TableCell>
+            <TableCell>{item?.user?.userId}</TableCell>
+            <TableCell>{item?.user?.userName}</TableCell>
+            <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
+            <TableCell >{item?.status}</TableCell>
+
+            <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
+            {
+              type!=="all" && (
+                <>
+              <CommonButton func={handleDrawerFunction} text="View"/>
+              <CommonDrawer 
+            handleDrawer={handleDrawer} 
+            setHandleDrawer={setHandleDrawer} 
+            data={item} 
+          />
+                </>
+              )
+            }
+              
+            <RiDeleteBin6Line onClick={()=>deleteApplication({data:item,type:"single"})} className='cursor-pointer' size={20}/>
+            </TableCell>
+            
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+
+    </div>
+  )
+}

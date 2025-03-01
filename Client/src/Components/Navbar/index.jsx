@@ -5,7 +5,7 @@ import Logout from '@/Components/LogoutFunc';
 import { toast } from 'react-toastify';
 import { getUser } from '@/Store/Slices/User_Slice';
 import { useNavigate } from 'react-router-dom';
-import { Avatar,AvatarImage } from '../ui/avatar';
+import { Avatar,AvatarImage,AvatarFallback } from '../ui/avatar';
 
 
 
@@ -137,10 +137,12 @@ const handleLogout=async ()=>{
           <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
         {logedUser && (logedUser?.userImage ? 
         <AvatarImage 
+        className="rounded-full"
         src={logedUser?.userImage.startsWith("http") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
         alt="navimage"  />:(
             <div className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
         ))}
+        <AvatarFallback>{logedUser?.userName?.name?.charAt(0) || "?"}</AvatarFallback>
       </Avatar>
         </div>
           )

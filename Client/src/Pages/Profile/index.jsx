@@ -11,6 +11,7 @@ import { BsGenderAmbiguous } from "react-icons/bs";
 import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import DialogForCV from "@/Components/DialogForCV";
 import {
   User_Upload_Profile_Image,
   User_Delete_Profile_Image,
@@ -18,7 +19,9 @@ import {
   User_Update_Pass_Route,
   User_Become_Teacher
 } from "@/Routes";
+import { Badge } from "@/Components/ui/badge";
 import { getUser } from "@/Store/Slices/User_Slice";
+import { getApplication } from "@/Store/Slices/ApplicationSlice";
 import { toast } from "react-toastify";
 import { axiosService } from "@/Services";
 import { updateProfileInitialState,changePasswordForm,changePasswordInitialState, becomeTeacherForm, becomeTeacherInitialState } from "@/Utils";
@@ -27,11 +30,13 @@ import moment from "moment";
 
 export default function Profile() {
   const user = useSelector((state) => state?.user?.data);
+  const userApplication=useSelector(state=>state?.application?.data);
   const [hover, setHover] = useState(false);
   const upProfileImage = useRef();
   const [dialog1, setDialog1] = useState(false);
   const [dialog2, setDialog2] = useState(false);
   const [dialog3, setDialog3] = useState(false);
+  const [dialog4, setDialog4] = useState(false);
   const dispatch = useDispatch();
   const updateProfileInputs = [
     {
@@ -120,6 +125,7 @@ export default function Profile() {
         );
         if (response.status === 200) {
           dispatch(getUser());
+          dispatch(getApplication());
           toast.success(response?.data?.message);
         }
       } else {
@@ -137,6 +143,7 @@ export default function Profile() {
       });
       if (response?.status === 200) {
         dispatch(getUser());
+        dispatch(getApplication());
         toast.success(response?.data?.message);
       } else {
         toast.success(response?.data?.message);
@@ -157,6 +164,7 @@ export default function Profile() {
       });
       if (response?.status === 200) {
         dispatch(getUser());
+        dispatch(getApplication());
         setDialog1(false);
         toast.success(response?.data?.message);
       }
@@ -176,6 +184,7 @@ export default function Profile() {
       });
       if (response?.status === 200) {
         dispatch(getUser());
+        dispatch(getApplication())
         setDialog2(false);
         toast.success(response?.data?.message);
       } 
@@ -197,6 +206,7 @@ export default function Profile() {
       });
       if (response?.status === 200) {
         dispatch(getUser());
+        dispatch(getApplication())
         setDialog3(false);
         toast.success(response?.data?.message);
       } 
@@ -212,6 +222,9 @@ export default function Profile() {
   };
   const toggleDialog3 = () => {
     setDialog3(!dialog3);
+  };
+  const toggleDialog4 = () => {
+    setDialog4(!dialog4);
   };
   return (
     <div>
@@ -240,6 +253,7 @@ export default function Profile() {
                               }`
                         }
                         alt="profilepage"
+                        className="rounded-full"
                       />
                     ) : (
                       <div className=" bg-slate-400 w-full h-full flex justify-center items-center px-5 py-3 rounded-full border-2 ">
@@ -293,15 +307,10 @@ export default function Profile() {
               />
                   </div>
                 </div>
-                <div>
+                <div className=" flex flex-row gap-2">
                   {user?.userRole?.map((item, index) => {
                     return (
-                      <div
-                        key={index}
-                        className="w-20 h-10 flex justify-center items-center px-2 bg-green-600 rounded-2xl"
-                      >
-                        <p className="text-white">{item}</p>
-                      </div>
+                      <Badge className="bg-green-600 px-2 cursor-pointer" key={index}>{item}</Badge>
                     );
                   })}
                 </div>
@@ -314,13 +323,13 @@ export default function Profile() {
                   Upload Course
                 </Button>
               ) : (
-                <Button onClick={toggleDialog3} disabled={!user?.DOB} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
-                  Become Teacher
+                <Button onClick={toggleDialog3} disabled={!user?.DOB|| userApplication?.find(data=>data?.user?._id===user?._id)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
+                  {userApplication?.find(data=>data?.user?._id===user?._id)? "Processing":"Become Teacher"}
                 </Button>
               )}
               <DialogForm
                 title="Become Teacher"
-                description="Provide your valid CV."
+                description="Provide your valid CV in pdf format."
                 dialog={dialog3}
                 setDialog={setDialog3}
                 func={handleEvent3}
@@ -380,9 +389,12 @@ export default function Profile() {
                 initialState={updateProfileInitialState}
               />
               {user?.userRole?.includes("teacher") && (
-                <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
+                <>
+                <Button onClick={toggleDialog4} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
                   My CV
                 </Button>
+                <DialogForCV dialog4={dialog4} setDialog4={setDialog4} title={"Your CV"} description={"View and update your CV to keep your profile up-to-date."} user={user}/>
+                </>
               )}
             </div>
           </div>

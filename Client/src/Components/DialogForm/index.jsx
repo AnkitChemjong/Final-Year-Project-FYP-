@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { changePasswordValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation } from "@/FormValidation";
 
 
@@ -40,10 +40,17 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
         error.newPassword==="" &&
         error.confirmPassword===""
       ){
+
         func(data);
       }
     }
     if(type==="becomeTeacher"){
+      setError(becomeTeacherValidation(data));
+      if(error.cv===""){
+        func(data);
+      }
+    }
+    if(type==="updateCV"){
       setError(becomeTeacherValidation(data));
       if(error.cv===""){
         func(data);

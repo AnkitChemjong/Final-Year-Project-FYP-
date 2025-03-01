@@ -1,10 +1,19 @@
 import React from 'react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 
-export default function CommonRenderFormInput({getCurrentControl,data,setData,error,accept}) {
+export default function CommonRenderFormInput({getCurrentControl,data,setData,error,accept=""}) {
  let content = null;
+ const currentControlItemValue =data[getCurrentControl.name] || "";
     switch (getCurrentControl.componentType) {
       case "input":
         content = (
@@ -59,6 +68,65 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
             {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
         </div>
           
+        );
+        break;
+        case "select":
+        content = (
+          <div key={getCurrentControl.name} className="grid py-4 gap-2 text-center">
+          <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor={getCurrentControl?.name} className="text-right">
+              {getCurrentControl?.label}:
+            </Label>
+          <Select
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                [getCurrentControl.name]: value,
+              })
+            }
+            value={currentControlItemValue}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={getCurrentControl.label} />
+            </SelectTrigger>
+            <SelectContent>
+              {getCurrentControl.options && getCurrentControl.options.length > 0
+                ? getCurrentControl.options.map((optionItem) => (
+                    <SelectItem key={optionItem.id} value={optionItem.id}>
+                      {optionItem.label}
+                    </SelectItem>
+                  ))
+                : null}
+            </SelectContent>
+          </Select>
+          </div>
+            {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
+          </div>
+        );
+        break;
+      case "textarea":
+        content = (
+          <div key={getCurrentControl.name} className="grid py-4 gap-2 text-center">
+          <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor={getCurrentControl?.name} className="text-right">
+              {getCurrentControl?.label}:
+            </Label>
+            <Textarea
+              id={getCurrentControl.name}
+              name={getCurrentControl.name}
+              placeholder={getCurrentControl.placeholder}
+              value={currentControlItemValue}
+              onChange={(event) =>
+                setData({
+                  ...data,
+                  [getCurrentControl.name]: event.target.value,
+                })
+              }
+  
+            />
+            </div>
+            {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
+          </div>
         );
         break;
         

@@ -1,5 +1,6 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 
 const checkImage=(req,file,cb)=>{
@@ -16,7 +17,12 @@ const checkImage=(req,file,cb)=>{
 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-      const dest=path.resolve('./Scripts/Upload/UserImage/');
+       const user=req.user;
+              const filePathFolder=`./Scripts/Upload/${user?.userId}/UserImage`;
+              if(!fs.existsSync(filePathFolder)){
+                  fs.mkdirSync(filePathFolder, { recursive: true });
+              }
+            const dest=path.resolve(filePathFolder);
        return cb(null,dest);
     },
     filename:(req,file,cb)=>{

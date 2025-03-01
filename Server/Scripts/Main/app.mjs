@@ -11,6 +11,8 @@ import '../Passport/FacebookStrategy/index.mjs';
 import storeDB from '../Store/Mongo_Session_Store.mjs';
 import authRoute from '../Routes/User_Routes/ThirdReturnAuth/index.mjs';
 import path from 'path';
+import courseRouter from '../Routes/Course_Routes/index.mjs';
+import appRouter from '../Routes/Application_Routes/index.mjs';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -53,6 +55,8 @@ const main=()=>{
     app.use(passport.session());
     app.use('/user',userRoute);
     app.use('/',authRoute);
+    app.use('/application',appRouter);
+    app.use('/course',courseRouter);
     app.listen(PORT,()=>console.log("listining at port "+ PORT));
 }
 main();

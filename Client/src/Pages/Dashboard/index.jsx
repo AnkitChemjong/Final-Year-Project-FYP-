@@ -3,21 +3,21 @@ import { toast } from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux';
 import { getUser } from '@/Store/Slices/User_Slice';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/Components/ui/button';
 import Logout from '@/Components/LogoutFunc';
 import { IoIosLogOut } from "react-icons/io";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { axiosService } from '@/Services';
+import { Link } from 'react-router-dom';
+import Applications from '@/Components/Applications';
+import Courses from '@/Components/Courses';
 import {
   User_Upload_Profile_Image,
   User_Delete_Profile_Image,
 } from "@/Routes";
-import { Avatar, AvatarImage } from "@/Components/ui/avatar";
+import { Avatar, AvatarImage,AvatarFallback } from "@/Components/ui/avatar";
 import {
   Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@/components/ui/tabs"
 
 
@@ -105,17 +105,26 @@ const handleFileInputClick = () => {
 
   return (
   <Tabs defaultValue={tabValue} value={tabValue} className="flex flex-row">
-    <div className='h-screen w-fit p-2 flex flex-col bg-slate-300 rounded-tr-xl rounded-br-xl'>
+    <div className='h-screen md:min-w-80 w-fit p-2 flex flex-col bg-slate-300 rounded-tr-xl rounded-br-xl fixed'>
   <div className='flex flex-row justify-center items-center relative right-5 bottom-10'>
     <img className='w-40 h-40' src="images/logo.png" alt="logo of efficient pathsalsa" />
     <h1 className='font-bold text-2xl text-center'>E-Pathsala</h1>
   </div>
       <div className='flex flex-col gap-2'>
         <div>
-          <p className='text-lg cursor-pointer' onClick={()=>handleTabValue('dashboard')}>Dashboard</p>
+          <Link className='text-lg cursor-pointer' onClick={()=>handleTabValue('dashboard')}>Dashboard</Link>
         </div>
         <div>
-          <p className='text-lg cursor-pointer' onClick={()=>handleTabValue('customers')}>Customers</p>
+          <Link className='text-lg cursor-pointer' onClick={()=>handleTabValue('customers')}>Customers</Link>
+        </div>
+        <div>
+          <Link className='text-lg cursor-pointer' onClick={()=>handleTabValue('teachers')}>Teachers</Link>
+        </div>
+        <div>
+          <Link className='text-lg' onClick={()=>handleTabValue('courses')}>Courses</Link>
+        </div>
+        <div>
+          <Link className='text-lg cursor-pointer' onClick={()=>handleTabValue('applications')}>Applications</Link>
         </div>
       </div>
   <div className='flex flex-col absolute bottom-0 p-5 gap-3'>
@@ -137,12 +146,14 @@ const handleFileInputClick = () => {
                                     }`
                               }
                               alt="profileImage"
+                              className="rounded-full"
                             />
                           ) : (
                             <div className=" bg-slate-400 w-full h-full flex justify-center items-center px-5 py-3 rounded-full border-2 ">
                               {admin?.userName?.split("")[0].toUpperCase()}
                             </div>
                           ))}
+                          <AvatarFallback>{admin?.userName?.charAt(0) || "?"}</AvatarFallback>
                       </Avatar>
                       {hover && (
                         <div
@@ -178,7 +189,7 @@ const handleFileInputClick = () => {
     </div>
   </div>
 </div>
-
+<div className='flex h-screen w-screen justify-center items-center md:ml-80'>
 <TabsContent value="dashboard">
   <p>Dashboard</p>
       </TabsContent>
@@ -186,6 +197,18 @@ const handleFileInputClick = () => {
   <p>Customers</p>
     
 </TabsContent>
+<TabsContent value="teachers">
+  <p>Teachers</p>
+    
+</TabsContent>
+<TabsContent value="courses">
+  <Courses/>
+    
+</TabsContent>
+<TabsContent value="applications">
+  <Applications/>  
+</TabsContent>
+</div>
 </Tabs>
   )
 }

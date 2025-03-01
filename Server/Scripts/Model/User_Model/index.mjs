@@ -26,10 +26,13 @@ const userSchema=new Schema({
     },
     userRole:{
        type:[String],
-       enum:['student','teacher','admin'],
        default:['student']
     },
     salt:{
+        type:String,
+        required:false
+    },
+    myCV:{
         type:String,
         required:false
     },
@@ -64,7 +67,13 @@ const userSchema=new Schema({
     provider:{
         type:String,
         required:false
-    }
+    },
+    enrolledCourses:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Course"
+        }
+    ]
 
 },{timestamps:true})
 

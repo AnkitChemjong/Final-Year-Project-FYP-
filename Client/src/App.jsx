@@ -13,9 +13,15 @@ import Dashboard from "./Pages/Dashboard";
 import ResetCode from "./Pages/ResetCode";
 import ChangePass from "./Pages/ChangePass";
 import { Navigate } from "react-router-dom";
+import { getApplication } from "./Store/Slices/ApplicationSlice";
+import { UseContextApi } from "./Components/ContextApi";
+import { useContext } from "react";
+import CommonSkeleton from "./Components/CommonSkeleton";
+import CreateNewCourse from "./Pages/CreateNewCourse";
 
 const PrivateRoute = ({ children }) => {
   const logedUser = useSelector((state) => state?.user?.data);
+
   const isAuthenticated = !!logedUser; 
   if(isAuthenticated){
     if(logedUser?.userRole?.includes('admin')){
@@ -54,30 +60,46 @@ function HomeRestrictForAdmin({children}){
 
 
 function App() {
-  const logedUser=useSelector((state)=>state?.user?.data)
+  const {loading,setLoading}=useContext(UseContextApi);
+  const logedUser=useSelector((state)=>state?.user)
+  const applications=useSelector(state=>state?.application);
   const dispatch=useDispatch();
   useEffect(()=>{
-     if(!logedUser){
-      dispatch(getUser())
+     if(!logedUser?.data){
+      setLoading(true);
+      dispatch(getUser()); 
      }
+     if(!applications?.data){
+      setLoading(true);
+       dispatch(getApplication());
+     }
+     setLoading(false)
   },[]);
-  
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomeRestrictForAdmin><Home/></HomeRestrictForAdmin>}/>
-        <Route path="/signup" element={<AuthRoute><Signup/></AuthRoute>}/>
-        <Route path="/signin" element={<AuthRoute><Signin/></AuthRoute>}/>
-        <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}/>
-        <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
-        <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
-        <Route path="dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
-        <Route path="resetcode" element={<ResetCode/>}/>
-        <Route path="changePass" element={<ChangePass/>}/>
-        <Route path="*" element={<NotFound/>}/>
-      </Routes>
-    </Router>
+if(loading){
+  return(
+     <CommonSkeleton/>
   )
+}
+else{
+
+  return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomeRestrictForAdmin><Home/></HomeRestrictForAdmin>}/>
+          <Route path="/signup" element={<AuthRoute><Signup/></AuthRoute>}/>
+          <Route path="/signin" element={<AuthRoute><Signin/></AuthRoute>}/>
+          <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}/>
+          <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
+          <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
+          <Route path="/dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
+          <Route path="/createnewcourse" element={<AdminRoute><CreateNewCourse/></AdminRoute>}/>
+          <Route path="/resetcode" element={<ResetCode/>}/>
+          <Route path="/changePass" element={<ChangePass/>}/>
+          <Route path="*" element={<NotFound/>}/>
+        </Routes>
+      </Router>
+    )
+}
 }
 
 export default App
