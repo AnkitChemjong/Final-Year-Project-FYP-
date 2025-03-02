@@ -26,3 +26,4 @@ export const Delete_All_Application=`${Get_All_Applications}/deleteAll`;
 //Course Routes
 export const Get_All_Course='/course';
 export const Upload_Course_File=`${Get_All_Course}/upload`
+export const Delete_Course_File=`${Get_All_Course}/delete`

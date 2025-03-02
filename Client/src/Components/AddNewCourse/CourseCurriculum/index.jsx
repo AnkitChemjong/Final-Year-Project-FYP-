@@ -1,4 +1,4 @@
-import React,{ useContext,useState } from 'react'
+import React,{ useContext } from 'react'
 import { UseContextApi } from '@/Components/ContextApi';
 import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/card';
 import CommonButton from '@/Components/CommonButton';
@@ -6,22 +6,24 @@ import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Switch } from '@/Components/ui/switch';
 import { axiosService } from '@/Services';
-import { Upload_Course_File } from '@/Routes';
+import { Upload_Course_File,Delete_Course_File } from '@/Routes';
 import { toast } from 'react-toastify';
 import ProgressBar from '@/Components/ProgressBar';
-
+import VideoPlayer from '@/Components/VideoPlayer';
 
 export default function CourseCurriculum() {
     const {courseCurriculumFormData,
       setCourseCurriculumFormData,mediaUploadProgress, setMediaUploadProgress
       ,mediaUploadProgressPercentage, 
       setMediaUploadProgressPercentage}=useContext(UseContextApi);
-      
   const handleAddContent=()=>{
     setCourseCurriculumFormData([
       ...courseCurriculumFormData,
       {
-          ...courseCurriculumFormData[0]
+        title: "",
+        videoUrl: "",
+        freePreview: false,
+        public_id: ""
       }
      ])
   }
@@ -81,6 +83,78 @@ export default function CourseCurriculum() {
     }
   }
 
+  const courseCurriculumFormDataValidation=()=>{
+    return courseCurriculumFormData.every(item=>{
+      return item && typeof item === 'object' &&
+      item.title.trim() !== '' && item.videoUrl.trim() !== ''
+    })
+  }
+
+  const handleReplaceVideo=async (lectureIndex)=>{
+    try{
+      setMediaUploadProgress(true);
+      let copyCourseCurricullumFormData=[...courseCurriculumFormData];
+      const getCurrentLecturePublicId=copyCourseCurricullumFormData[lectureIndex]?.public_id;
+      const response=await axiosService.delete(`${Delete_Course_File}/${getCurrentLecturePublicId}`,{
+        onUploadProgress:(progressEvent)=>{
+          const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
+         setMediaUploadProgressPercentage(percentage);
+       }
+      });
+      if(response.status===200){
+        let copyCourseCurricullumFormData=[...courseCurriculumFormData];
+
+        copyCourseCurricullumFormData[lectureIndex]={
+         ...copyCourseCurricullumFormData[lectureIndex],
+         videoUrl:"",
+         public_id:""
+        }
+       setCourseCurriculumFormData(copyCourseCurricullumFormData);
+       setMediaUploadProgress(false);
+       toast.success(response?.data?.message)
+      }
+    }
+    catch(error){
+      toast.error(error?.response?.data?.error);
+    }
+  }
+
+  const handleDeleteLecture=async (lectureIndex)=>{
+    try{
+      setMediaUploadProgress(true);
+      let copyCourseCurricullumFormData=[...courseCurriculumFormData];
+      const getCurrentLecturePublicId=copyCourseCurricullumFormData[lectureIndex]?.public_id;
+      const response=await axiosService.delete(`${Delete_Course_File}/${getCurrentLecturePublicId}`,{
+        onUploadProgress:(progressEvent)=>{
+          const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
+         setMediaUploadProgressPercentage(percentage);
+       }
+      });
+      if(response.status===200){
+        let copyCourseCurricullumFormData=[...courseCurriculumFormData];
+        if(copyCourseCurricullumFormData.length<=1){
+          copyCourseCurricullumFormData[lectureIndex]={
+           ...copyCourseCurricullumFormData[lectureIndex],
+           title:"",
+           videoUrl:"",
+           freePreview:false,
+           public_id:""
+        }
+      }
+        else{
+          copyCourseCurricullumFormData=copyCourseCurricullumFormData.filter(item=>item?.public_id!==getCurrentLecturePublicId);
+        }
+        setCourseCurriculumFormData(copyCourseCurricullumFormData);
+        setMediaUploadProgress(false);
+        toast.success(response?.data?.message)
+        }
+      }
+    catch(error){
+      toast.error(error?.response?.data?.error);
+    }
+  }
+
+
 
   
   return (
@@ -89,7 +163,7 @@ export default function CourseCurriculum() {
             <CardTitle>Create Course Curriculum</CardTitle>
         </CardHeader>
         <CardContent>
-            <CommonButton func={handleAddContent} text="Add Content"/>
+            <CommonButton disable={!courseCurriculumFormDataValidation() || mediaUploadProgress} func={handleAddContent} text="Add Content"/>
             {
               mediaUploadProgress && 
               <ProgressBar isUploading={mediaUploadProgress}
@@ -126,12 +200,26 @@ export default function CourseCurriculum() {
                                  </div>
                             </div>
                           <div className='mt-6 flex flex-col'>
+                            {
+                              courseCurriculumFormData[index]?.videoUrl ?
+                              (
+                                <div className='flex gap-3'>
+                                  <VideoPlayer url={courseCurriculumFormData[index]?.videoUrl}
+                                   width='450px'
+                                   height='200px'
+                                  />
+                                   <CommonButton func={()=>handleReplaceVideo(index)}  text="Replace Video"/>
+                                   <CommonButton func={()=>handleDeleteLecture(index)}  text="Delete Content"/>
+                                </div>
+            
+                              ):
                             <Input
                             type="file"
                             accept="video/*" 
                             className="mb-4"
                             onChange={(event)=>handleSingleFileUpload(event,index)}
                             />
+                            }
                           </div>
                         </div>
                     )

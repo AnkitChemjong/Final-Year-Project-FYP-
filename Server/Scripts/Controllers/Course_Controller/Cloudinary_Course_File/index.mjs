@@ -1,4 +1,4 @@
-import { uploadToCloudinary,deleteFromCloudinary } from "../../Services/CourseService/index.mjs";
+import { uploadToCloudinary,deleteFromCloudinary } from "../../../Services/CourseService/index.mjs";
 import fs from 'fs';
 
 class CloudinaryControl{
@@ -29,7 +29,7 @@ class CloudinaryControl{
                 return res.status(400).json({message:"Public Id is needed.",error:"Id messing"});
             }
             await deleteFromCloudinary(id);
-            return res.status(200).json({message:"All application successfully Uploded.",error:null});
+            return res.status(200).json({message:"File Successfully deleted.",error:null});
         }
         catch(error){
             console.log(error)
