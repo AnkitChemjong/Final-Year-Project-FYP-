@@ -1,5 +1,5 @@
 import {Schema,model} from 'mongoose';
-import LectureModel from './Lecture_Model/index.mjs';
+import lectureSchema from './Lecture_Schema/index.mjs';
 
 
 const courseSchema=new Schema({
@@ -16,7 +16,7 @@ const courseSchema=new Schema({
         type:String,
         required:true
     },
-    lavel:{
+    level:{
         type:String,
         required:true
     },
@@ -40,6 +40,10 @@ const courseSchema=new Schema({
         type:String,
         required:true
     },
+    image_public_id:{
+        type:String,
+        required:true
+    },
     welcomeMessage:{
         type:String,
         required:true
@@ -57,13 +61,8 @@ const courseSchema=new Schema({
         }
     }
     ],
-    curriculum: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "LectureModel", 
-        }
-    ],
-    isPublised:{
+    curriculum: [lectureSchema],
+    isPublished:{
         type:Boolean,
     }
 },{timestamps:true});

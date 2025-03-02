@@ -18,6 +18,7 @@ import { UseContextApi } from "./Components/ContextApi";
 import { useContext } from "react";
 import CommonSkeleton from "./Components/CommonSkeleton";
 import CreateNewCourse from "./Pages/CreateNewCourse";
+import { getCourse } from "./Store/Slices/Course_Slice";
 
 const PrivateRoute = ({ children }) => {
   const logedUser = useSelector((state) => state?.user?.data);
@@ -63,6 +64,7 @@ function App() {
   const {loading,setLoading}=useContext(UseContextApi);
   const logedUser=useSelector((state)=>state?.user)
   const applications=useSelector(state=>state?.application);
+  const courses=useSelector(state=>state?.course);
   const dispatch=useDispatch();
   useEffect(()=>{
      if(!logedUser?.data){
@@ -73,7 +75,11 @@ function App() {
       setLoading(true);
        dispatch(getApplication());
      }
-     setLoading(false)
+     if(!courses?.data){
+      setLoading(true);
+       dispatch(getCourse());
+     }
+     setLoading(false);
   },[]);
 if(loading){
   return(
@@ -93,6 +99,7 @@ else{
           <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
           <Route path="/dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminRoute><CreateNewCourse/></AdminRoute>}/>
+          <Route path="/edit_course/:courseId" element={<AdminRoute><CreateNewCourse/></AdminRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="*" element={<NotFound/>}/>

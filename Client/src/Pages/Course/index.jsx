@@ -5,7 +5,8 @@ import Navbar from '@/Components/Navbar';
 
 export default function Course() {
     const navigate=useNavigate();
-    const user=useSelector((state)=>state?.user?.data)
+    const user=useSelector((state)=>state?.user?.data);
+    
 
   return (
     <div>

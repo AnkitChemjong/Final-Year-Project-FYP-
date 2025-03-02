@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Checkbox } from '../ui/checkbox';
 import { Table,
   TableBody,
   TableCell,
@@ -10,7 +11,7 @@ import { Table,
  import CommonButton from '../CommonButton';
  import CommonDrawer from '../CommonDrawer';
  import { RiDeleteBin6Line } from "react-icons/ri";
- import { Delete_Single_Application,Delete_All_Application } from '@/Routes';
+ import { Delete_Single_Application,Delete_All_Application,Delete_Selected_Application } from '@/Routes';
  import { axiosService } from '@/Services';
  import { toast } from 'react-toastify';
  import { useDispatch } from 'react-redux';
@@ -22,18 +23,34 @@ export default function CommonTable({data,header,type}){
   const handleDrawerFunction=()=>{
     setHandleDrawer(true);  
   }
+  const [selectedApplication,setSelectedApplication]=useState([]);
 
   const deleteApplication=async ({data=null,type,status=null})=>{
     try{
       if(type === "all" ){
-        const response=await axiosService.delete(Delete_All_Application,{data:{status}},{withCredentials:true, headers: {
-          "Content-Type": "application/json"
-  }});
-  if(response.status===200){
-    dispatch(getApplication());
-    toast.success(response?.data?.message);
-  }
+        if(selectedApplication.length<1){
+          const response=await axiosService.delete(Delete_All_Application,{data:{status}},{withCredentials:true, headers: {
+            "Content-Type": "application/json"
+    }});
+    if(response.status===200){
+      dispatch(getApplication());
+      toast.success(response?.data?.message);
+    }
+        }
         
+        else{
+              const response=await axiosService.delete(Delete_Selected_Application,{data:{data:selectedApplication}},{withCredentials:true,
+                headers: {
+                  "Content-Type": "application/json"
+          }
+              });
+              if(response.status===200){
+                setSelectedApplication([]);
+                dispatch(getApplication());
+                toast.success(response?.data?.message);
+              }
+    
+          }
       }   
       else{
         const response=await axiosService.delete(Delete_Single_Application,{data:{data}},{withCredentials:true, headers: {
@@ -50,6 +67,14 @@ export default function CommonTable({data,header,type}){
       toast.error(error?.response?.data?.message);
     }
   }
+
+  const handleAddApplication = (data, checked) => {
+    if (checked) {
+      setSelectedApplication((prev) => [...prev, data]); 
+    } else {
+      setSelectedApplication((prev) => prev.filter((app) => app !== data)); 
+    }
+  };
 
   
   return (
@@ -81,9 +106,10 @@ export default function CommonTable({data,header,type}){
       <TableBody>
         {data.map((item,index) => (
           <TableRow key={index}>
-            <TableCell className="font-medium">{data?.indexOf(item)+1}</TableCell>
-            <TableCell>{item?._id}</TableCell>
-            <TableCell>{item?.user?.userId}</TableCell>
+            <TableCell className="font-medium">
+              <Checkbox checked={selectedApplication.includes(item)} onCheckedChange={(checked)=>handleAddApplication(item,checked)}/>
+            </TableCell>
+            <TableCell>{data?.indexOf(item)+1}</TableCell>
             <TableCell>{item?.user?.userName}</TableCell>
             <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
             <TableCell >{item?.status}</TableCell>

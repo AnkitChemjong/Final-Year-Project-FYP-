@@ -131,8 +131,8 @@ export const becomeTeacherInitialState={
 }
 
 
-export const formatForAllApplication=['S.N',"ID","UserID","Applicant Name","Date","Status","action"];
-export const formatForAllCourses=['S.N',"Course","Students","Date","Revenue","action"];
+export const formatForAllApplication=["",'S.N',"Applicant Name","Date","Status","action"];
+export const formatForAllCourses=["",'S.N',"Course","Students","Date","Revenue","action"];
 
 
 
@@ -251,6 +251,7 @@ export const languageOptions = [
     objectives: "",
     welcomeMessage: "",
     image: "",
+    image_public_id:""
   };
   
   export const courseCurriculumInitialFormData = [

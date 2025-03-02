@@ -1,13 +1,12 @@
 import User from "../../../Model/User_Model/index.mjs";
 import bcrypt from 'bcrypt';
-import {v4 as uuid} from "uuid";
 import sendMailToUser from "../../../Services/UserService/Nodemailer/index.mjs";
 
 const GenCode=async (req,res)=>{
     const {email}=req.body;
     const user=await User.findOne({email});
     if(user){
-         const code=uuid();
+         const code =Math.floor(100000 + Math.random() * 900000).toString();
          const salt=await bcrypt.genSalt(10);
          const hashedCode=await bcrypt.hash(code,salt);
          await user.updateOne({ $set: { resetCode:hashedCode,codeDueTime:Date.now()+10*60*1000 } }, { new: true });

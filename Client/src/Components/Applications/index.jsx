@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs,TabsContent,TabsList,TabsTrigger } from '../ui/tabs';
-import { useSelector,useDispatch } from 'react-redux';
-import { getApplication } from '@/Store/Slices/ApplicationSlice';
+import { useSelector } from 'react-redux';
 import { formatForAllApplication } from '@/Utils';
-import CommonTable from '../CommonTable';
+import CommonTable from '../CommonTableForApplication';
 
 
 export default function Applications() {
   const [tabValue,setTabValue]=useState("all");
-    const dispatch=useDispatch();
     const applications=useSelector(state=>state?.application?.data);
-    
-    // useEffect(()=>{
-    //  if(!applications){
-    //  dispatch(getApplication());
-    //  }
-    // },[]);
     const uniqueStatus=[
         ...new Set(
           applications?.map((applicantItem) => applicantItem.status).flat(1)

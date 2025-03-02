@@ -21,9 +21,15 @@ export const Get_All_Applications='/application';
 export const Update_Application=`${Get_All_Applications}/updateApplication`;
 export const Delete_Single_Application=`${Get_All_Applications}/deleteSingle`;
 export const Delete_All_Application=`${Get_All_Applications}/deleteAll`;
+export const Delete_Selected_Application=`${Get_All_Applications}/deleteSelected`;
 
 
 //Course Routes
 export const Get_All_Course='/course';
 export const Upload_Course_File=`${Get_All_Course}/upload`
 export const Delete_Course_File=`${Get_All_Course}/delete`
+export const Add_New_Course=`${Get_All_Course}/add`
+export const Update_Course=`${Get_All_Course}/update`
+export const Delete_Single_Course=`${Get_All_Course}/deleteSingle`
+export const Delete_All_Course=`${Get_All_Course}/deleteAll`
+export const Delete_Selected_Course=`${Get_All_Course}/deleteSelected`

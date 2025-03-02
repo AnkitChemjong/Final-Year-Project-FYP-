@@ -10,6 +10,7 @@ appRouter.get('/',getAllApplication);
 appRouter.patch('/updateApplication',updateApplication);
 appRouter.delete('/deleteSingle',DeleteApplication.deleteSingleApplication);
 appRouter.delete('/deleteAll',DeleteApplication.deleteAllApplication);
+appRouter.delete('/deleteSelected',DeleteApplication.deleteSelectedApplication);
 
 
 export default appRouter;

@@ -73,5 +73,31 @@ static deleteAllApplication=async (req,res)=>{
     }
 
 }
+
+static deleteSelectedApplication=async (req,res)=>{
+    try{
+        const {data}=req.body;
+            data.forEach(async (item)=>{
+                if(item?.status !== "recruted" ){
+                                            const fileName=`Scripts/Upload/${item?.userCV}`;
+                                            fs.unlink(fileName,(err)=>{
+                                                if (err) {
+                                                    console.error('Error deleting file:', err);
+                                                  } else {
+                                                    console.log('File deleted successfully!');
+                                                  }
+                                            })
+                    }
+
+                await BecomeTeacherApp.findByIdAndDelete(item._id);
+            })
+            return res.status(200).json({message:"All selected application successfully deleted.",error:null});    
+        }
+    catch(error){
+        console.log(error)
+        return res.json({message:"Error on deleting selected application",error:error?.message});
+    }
+
+}
 }
 export default DeleteApplication;

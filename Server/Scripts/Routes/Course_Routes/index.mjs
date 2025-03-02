@@ -5,6 +5,7 @@ import addNewCourse from "../../Controllers/Course_Controller/AddNewCourse/index
 import getAllCourses from "../../Controllers/Course_Controller/GetAllCourses/index.mjs";
 import updateCourse from "../../Controllers/Course_Controller/UpdateCourse/index.mjs";
 import getCourseDetails from "../../Controllers/Course_Controller/GetCourseDetails/index.mjs";
+import DeleteCourse from "../../Controllers/Course_Controller/DeleteCourse/index.mjs";
 
 const courseRouter=Router();
 
@@ -14,4 +15,7 @@ courseRouter.post('/add',addNewCourse);
 courseRouter.put('/update/:id',updateCourse);
 courseRouter.get('/get/details/:id',getCourseDetails);
 courseRouter.get("/",getAllCourses);
+courseRouter.delete('/deleteSingle',DeleteCourse.deleteSingleCourse);
+courseRouter.delete('/deleteAll',DeleteCourse.deleteAllCourses);
+courseRouter.delete('/deleteSelected',DeleteCourse.deleteSelectedCourses);
 export default courseRouter;

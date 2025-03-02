@@ -2,12 +2,12 @@ import CourseModel from "../../../Model/Course_Model/index.mjs";
 
 const getAllCourses=async (req,res)=>{
     try{
-       const allCourses=await CourseModel.find({}).populate(['creator','students','curriculum']).sort({createdAt:-1});
+       const allCourses=await CourseModel.find({}).populate('creator').populate('students.studentId').sort({createdAt:-1});
        if(allCourses){
            return res.status(200).json({message:"Fetched all Successfully",
-            data:allCourses,
+            course:allCourses,
             error:null
-           })
+           });
        }
     }
     catch(error){

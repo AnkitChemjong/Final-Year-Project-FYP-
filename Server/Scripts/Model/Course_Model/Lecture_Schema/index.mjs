@@ -19,5 +19,5 @@ const lectureSchema=new Schema({
     }
 });
 
-const LectureModel=model('LectureModel',lectureSchema);
-export default LectureModel;
+
+export default lectureSchema;

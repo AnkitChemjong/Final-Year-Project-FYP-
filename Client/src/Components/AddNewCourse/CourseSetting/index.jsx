@@ -32,7 +32,8 @@ export default function CourseSetting() {
             if(response.status===200){
                 setCourseLandingFormData({
                     ...courseLandingFormData,
-                    image:response?.data?.data?.url
+                    image:response?.data?.data?.url,
+                    image_public_id:response?.data?.data?.public_id
                 })
                 setMediaUploadProgress(false);
                 e.target.value=""

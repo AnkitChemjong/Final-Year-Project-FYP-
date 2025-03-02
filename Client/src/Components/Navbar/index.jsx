@@ -112,7 +112,7 @@ const handleLogout=async ()=>{
     navigate('/profile');
   }
   return (
-    <nav className='flex flex-row flex-wrap justify-between items-center z-50 px-2 -mt-5'>
+    <nav className='flex flex-row flex-wrap justify-between items-center z-50 px-20 -mt-5'>
       <div className='flex flex-row justify-center items-center gap-5'>
         <div>
          <img src="images/logo.png" alt="logo if efficient pathsalsa"  className='md:w-[160px] md:h-[160px]'/>
