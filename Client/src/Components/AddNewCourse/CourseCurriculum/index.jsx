@@ -1,21 +1,24 @@
-import React,{ useContext } from 'react'
+import React,{ useContext, useRef } from 'react'
 import { UseContextApi } from '@/Components/ContextApi';
 import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/card';
 import CommonButton from '@/Components/CommonButton';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
+import { Button } from '@/Components/ui/button';
 import { Switch } from '@/Components/ui/switch';
 import { axiosService } from '@/Services';
-import { Upload_Course_File,Delete_Course_File } from '@/Routes';
+import { Upload_Course_File,Delete_Course_File,Upload_Bulk_File } from '@/Routes';
 import { toast } from 'react-toastify';
 import ProgressBar from '@/Components/ProgressBar';
 import VideoPlayer from '@/Components/VideoPlayer';
+import { MdDriveFolderUpload } from "react-icons/md";
 
 export default function CourseCurriculum() {
     const {courseCurriculumFormData,
       setCourseCurriculumFormData,mediaUploadProgress, setMediaUploadProgress
       ,mediaUploadProgressPercentage, 
       setMediaUploadProgressPercentage}=useContext(UseContextApi);
+      const bulkUploadRef=useRef(null);
   const handleAddContent=()=>{
     setCourseCurriculumFormData([
       ...courseCurriculumFormData,
@@ -79,6 +82,7 @@ export default function CourseCurriculum() {
       }
     }
     catch(error){
+      setMediaUploadProgress(false);
       toast.error(error?.response?.data?.message);
     }
   }
@@ -153,14 +157,88 @@ export default function CourseCurriculum() {
       toast.error(error?.response?.data?.error);
     }
   }
+  
+  const openBulkUpload=()=>{
+    bulkUploadRef.current.click();
+  }
 
+  const checkCourseCurriculumFormEmpty=(arr)=>{
+    return arr.every((obj) => {
+      return Object.entries(obj).every(([key, value]) => {
+        if (typeof value === "boolean") {
+          return true;
+        }
+        return value === "";
+      });
+    });
+  }
+
+  const handleBulkUpload=async(event)=>{
+    try{
+      const files=Array.from(event.target.files);
+      if(files){
+       const formData=new FormData();
+       files.forEach(item=>formData.append('files',item));
+       setMediaUploadProgress(true);
+       const response=await axiosService.post(Upload_Bulk_File,formData,{
+        withCredentials:true,
+        onUploadProgress:(progressEvent)=>{
+           const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
+          setMediaUploadProgressPercentage(percentage);
+        }
+       });
+       console.log(response);
+       if(response.status===200){
+        let copyCourseCurricullumFormData=checkCourseCurriculumFormEmpty(courseCurriculumFormData)? []:[...courseCurriculumFormData];
+         copyCourseCurricullumFormData=[
+          ...copyCourseCurricullumFormData,
+          ...response?.data?.data?.map((item,index)=>({
+            videoUrl:item?.url,
+            public_id:item?.public_id,
+            title:`Lecture ${copyCourseCurricullumFormData.length+(index+1)}`,
+            freePreview:false
+          }))
+         ]
+         setCourseCurriculumFormData(copyCourseCurricullumFormData);
+         setMediaUploadProgress(false);
+         event.target.value="";
+         toast.success(response?.data?.message)
+       }
+   }
+  }
+    catch(error){
+      setMediaUploadProgress(false);
+      toast.error(error?.response?.data?.error);
+    }
+  }
 
 
   
   return (
     <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row justify-between">
             <CardTitle>Create Course Curriculum</CardTitle>
+            <div>
+              <Input
+              type="file"
+              ref={bulkUploadRef}
+              accept="video/*"
+              multiple
+              className="hidden"
+              id="bulk-video-upload"
+              onChange={(event)=>handleBulkUpload(event)}
+              />
+              <Button
+               as="label"
+               htmlFor="bulk-video-upload"
+               variant="outline"
+               className="cursor-pointer"
+               onClick={openBulkUpload}
+              >
+                <MdDriveFolderUpload className='w-4 h-5 mr-2'/>
+                Upload Bulk
+              </Button>
+            </div>
         </CardHeader>
         <CardContent>
             <CommonButton disable={!courseCurriculumFormDataValidation() || mediaUploadProgress} func={handleAddContent} text="Add Content"/>

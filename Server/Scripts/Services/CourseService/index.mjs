@@ -22,8 +22,13 @@ catch(error){
 
 export const deleteFromCloudinary=async(publicId)=>{
     try{
-         await cloudinary.uploader.destroy(publicId);
-        
+    //     // Optimize delivery by resizing and applying auto-format and auto-quality
+    // const optimizeUrl = cloudinary.url(publicId, {
+    //     fetch_format: 'auto',
+    //     quality: 'auto'
+    // });
+    // console.log(optimizeUrl)
+         const result=await cloudinary.uploader.destroy(publicId);
       }
       catch(error){
           console.log(error);

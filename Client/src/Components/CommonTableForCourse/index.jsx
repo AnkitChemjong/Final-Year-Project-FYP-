@@ -119,7 +119,7 @@ export default function CommonTableForCourse({data,header,type}){
                  <TableCell>{item?.title}</TableCell>
                  <TableCell className="text-center">{item?.students.length}</TableCell>
                  <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
-                 <TableCell className="text-center">{item?.students.length*item?.pricing}</TableCell>
+                 <TableCell className="text-center">Rs.{item?.students.length*item?.pricing}</TableCell>
      
                  <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
                    <FaRegEdit className='cursor-pointer' onClick={()=>handleCourseEditId(item?._id)} size={20}/>

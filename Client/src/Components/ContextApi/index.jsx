@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createContext } from 'react';
 import { courseLandingInitialFormData,courseCurriculumInitialFormData } from '@/Utils';
 
+
 export const UseContextApi=createContext();
 
 export default function ContextApi({children}) {
@@ -17,13 +18,15 @@ export default function ContextApi({children}) {
   const [mediaUploadProgressPercentage, setMediaUploadProgressPercentage] =
     useState(0);
   const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null);
+
+  const [allCourses,setAllCourses]=useState([]);
   return (
    <UseContextApi.Provider  value={{loading,setLoading,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
     setCourseCurriculumFormData,
     mediaUploadProgress, setMediaUploadProgress,
     mediaUploadProgressPercentage, setMediaUploadProgressPercentage,
-    currentEditedCourseId, setCurrentEditedCourseId}}>
+    currentEditedCourseId, setCurrentEditedCourseId,allCourses,setAllCourses}}>
      {children}
    </UseContextApi.Provider>
   )
