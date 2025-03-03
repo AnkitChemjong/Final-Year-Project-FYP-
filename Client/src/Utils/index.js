@@ -268,6 +268,8 @@ export const languageOptions = [
     { id: "price-hightolow", label: "Price: High to Low" },
     { id: "title-atoz", label: "Title: A to Z" },
     { id: "title-ztoa", label: "Title: Z to A" },
+    { id: "create-rtoo", label: "Create: R to O" },
+    { id: "create-otor", label: "Create: O to R" }
   ];
   
   export const filterOptions = {

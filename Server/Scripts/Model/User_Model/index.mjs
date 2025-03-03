@@ -68,12 +68,6 @@ const userSchema=new Schema({
         type:String,
         required:false
     },
-    enrolledCourses:[
-        {
-            type:Schema.Types.ObjectId,
-            ref:"Course"
-        }
-    ]
 
 },{timestamps:true})
 

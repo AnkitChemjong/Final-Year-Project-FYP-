@@ -1,5 +1,5 @@
 import React,{useContext, useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
 import {
   DropdownMenu,
@@ -15,17 +15,84 @@ import { Label } from '@/Components/ui/label';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { UseContextApi } from '@/Components/ContextApi';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { getCourse } from '@/Store/Slices/Course_Slice';
 
 export default function Course() {
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const courses=useSelector(state=>state?.course?.data);
-    const [sort,setSort]=useState("");
+    const [sort,setSort]=useState("price-lowtohigh");
+    const [searchParams,setSearchParams]=useSearchParams();
     const [filters, setFilters] = useState({});
     const {allCourses,setAllCourses}=useContext(UseContextApi);
+
     useEffect(()=>{
            setAllCourses(courses);
     },[courses]);
+
+     useEffect(()=>{
+      if(filters !== null || sort !== null){
+          dispatch(getCourse({filters,sort}));
+      }
+     },[filters,sort]);
+    const handleFilterOnChange=(getSectionId, getCurrentOption)=>{
+      let copyFilters = { ...filters };
+      const indexOfCurrentSection =
+        Object.keys(copyFilters).indexOf(getSectionId);
+      if (indexOfCurrentSection === -1) {
+        copyFilters = {
+          ...copyFilters,
+          [getSectionId]: [getCurrentOption.id],
+        };
+      } else {
+        const indexOfCurrentOption = copyFilters[getSectionId].indexOf(
+          getCurrentOption.id
+        );
+  
+        if (indexOfCurrentOption === -1){
+
+          copyFilters[getSectionId].push(getCurrentOption.id);
+        }
+        else {
+          copyFilters[getSectionId].splice(indexOfCurrentOption, 1);
+        }
+      }
+  
+      setFilters(copyFilters);
+      sessionStorage.setItem("filters", JSON.stringify(copyFilters));
+    }
+    
+    
+    const createSearchParamsMaker=(filterData)=>{
+      const queryParams=[];
+      for(const [key,value] of Object.entries(filterData)){
+        if(Array.isArray(value) && value.length >0){
+          const paramData=value.join(',');
+          queryParams.push(`${key}=${encodeURIComponent(paramData)}`)
+        }
+      }
+      return queryParams.join('&');
+    }
+
+
+    useEffect(()=>{
+     const queryStringForFilter=createSearchParamsMaker(filters);
+     setSearchParams(new URLSearchParams(queryStringForFilter))
+    },[filters])
+
+
+    useEffect(() => {
+      setSort("price-lowtohigh");
+      setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+    }, []);
+     
+    useEffect(() => {
+      return () => {
+        sessionStorage.removeItem("filters");
+      };
+    }, []);
+
   return (
     <div>
       <Navbar/>
@@ -49,9 +116,9 @@ export default function Course() {
                           filters[item] &&
                           filters[item].indexOf(option.id) > -1
                         }
-                        // onCheckedChange={() =>
-                        //   handleFilterOnChange(item, option)
-                        // }
+                        onCheckedChange={() =>
+                          handleFilterOnChange(item, option)
+                        }
                       />
                       {option.label}
                     </Label>
@@ -90,7 +157,7 @@ export default function Course() {
                 </DropdownMenuContent>
               </DropdownMenu>
               <span className='text-sm text-black font-bold'>
-              10 Results
+              {allCourses?.length} Results
               </span>
             </div>
             <div className='space-y-4'>
@@ -98,12 +165,30 @@ export default function Course() {
                 allCourses && allCourses.length > 0?
                 allCourses.map((item,index)=>{
                   return (
-                    <Card key={index}>
+                    <Card className="cursor-pointer" key={index}>
                       <CardContent className="flex p-4 gap-4 ">
                         <div className="w-48 h-32 flex-shrink-0">
                           <img src={item?.image}
                           className='w-full h-full object-cover'
                            alt="Course Thumbnail" />
+
+                        </div>
+                        <div className='felx-1'>
+                          <CardTitle className="text-xl mb-2">
+                            {item?.title}
+                          </CardTitle>
+                           <p className='text-sm text-gray-500 mb-1'>
+                           Prblished By: <span className='font-bold'>
+                            {item?.creator?.userName}
+                            </span> 
+                            </p>
+                            <p className='text-[16px] text-gray-800 mb-2 mt-3'>
+                               {
+                                `${item?.curriculum?.length} ${item?.curriculum?.length<=1? "Content":"Contents"} 
+                                - ${item?.level?.toUpperCase()}`
+                               }
+                            </p>
+                            <p className='font-bold text-lg'>Rs. {item?.pricing}</p>
                         </div>
                       </CardContent>
                     </Card>
