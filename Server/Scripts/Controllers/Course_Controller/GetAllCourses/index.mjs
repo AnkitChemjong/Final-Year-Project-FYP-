@@ -2,7 +2,7 @@ import CourseModel from "../../../Model/Course_Model/index.mjs";
 
 const getAllCourses=async (req,res)=>{
     try{
-        const {category=[],level=[],primaryLanguage=[],sortBy="price-lowtohigh"}=req.query;
+        const {category=[],level=[],primaryLanguage=[],sortBy="create-rtoo"}=req.query;
         let filters={};
         if(category.length){
             filters.category={$in:category.split(',')};
@@ -39,7 +39,7 @@ const getAllCourses=async (req,res)=>{
             break;
         }
         
-       const allCourses=(sortBy || filters)? await CourseModel.find(filters).sort(sortParam).populate('creator').populate('students.studentId'):await CourseModel.find({}).populate('creator').populate('students.studentId').sort({createdAt:-1});
+       const allCourses=await CourseModel.find(filters).sort(sortParam).populate('creator').populate('students.studentId');
        if(allCourses){
            return res.status(200).json({message:"Fetched all Successfully",
             course:allCourses,

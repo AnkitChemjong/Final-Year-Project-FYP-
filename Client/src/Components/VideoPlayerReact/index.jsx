@@ -2,7 +2,7 @@ import React, { useRef, useState,useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 
-export default function VideoPlayer({width="100%",height="100%",url}) {
+export default function VideoPlayerReact({width="100%",height="100%",url}) {
     const [playing,setPlaying]=useState(false);
 
     const playerRef=useRef(null);

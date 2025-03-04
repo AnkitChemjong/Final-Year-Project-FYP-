@@ -230,7 +230,7 @@ export const languageOptions = [
       label: "Objectives",
       componentType: "textarea",
       type: "text",
-      placeholder: "Enter course objectives",
+      placeholder: "Enter course objectives seperate each by ,",
     },
     {
       name: "welcomeMessage",

@@ -19,23 +19,29 @@ import { useContext } from "react";
 import CommonSkeleton from "./Components/CommonSkeleton";
 import CreateNewCourse from "./Pages/CreateNewCourse";
 import { getCourse } from "./Store/Slices/Course_Slice";
+import CourseDetails from "./Pages/CourseDetails";
+
 
 const PrivateRoute = ({ children }) => {
   const logedUser = useSelector((state) => state?.user?.data);
+  const { loading } = useContext(UseContextApi); 
 
-  const isAuthenticated = !!logedUser; 
-  if(isAuthenticated){
-    if(logedUser?.userRole?.includes('admin')){
-      return <Navigate to="/dashboard"/>
-    }
-    else if(!logedUser?.userRole?.includes('admin')){
-       return children;
-    }
+  if (loading) {
+    return <CommonSkeleton />; 
   }
-  else{
-    return <Navigate to="/signup"/>
+
+  if (logedUser) {
+    if (logedUser?.userRole?.includes('admin')) {
+      return <Navigate to="/dashboard" />;
+    } else {
+      return children;
+    }
+  } else {
+    return <Navigate to="/signup" />;
   }
 };
+
+
 
 const AuthRoute=({children})=>{
   const logedUser=useSelector((state)=>state?.user?.data)
@@ -67,16 +73,14 @@ function App() {
   const courses=useSelector(state=>state?.course);
   const dispatch=useDispatch();
   useEffect(()=>{
+    setLoading(true);
      if(!logedUser?.data){
-      setLoading(true);
       dispatch(getUser()); 
      }
      if(!applications?.data){
-      setLoading(true);
        dispatch(getApplication());
      }
      if(!courses?.data){
-      setLoading(true);
        dispatch(getCourse());
      }
      setLoading(false);
@@ -96,6 +100,7 @@ else{
           <Route path="/signin" element={<AuthRoute><Signin/></AuthRoute>}/>
           <Route path="/profile" element={<PrivateRoute><Profile/></PrivateRoute>}/>
           <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
+          <Route path="/course/details/:id" element={<PrivateRoute><CourseDetails/></PrivateRoute>}/>
           <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
           <Route path="/dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminRoute><CreateNewCourse/></AdminRoute>}/>

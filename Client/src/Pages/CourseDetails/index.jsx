@@ -1,0 +1,147 @@
+import React, { useContext,useEffect } from 'react';
+import Navbar from '@/Components/Navbar';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { UseContextApi } from '@/Components/ContextApi';
+import CommonSkeleton from '@/Components/CommonSkeleton';
+import { BiCheckSquare } from "react-icons/bi";
+import { IoPlayCircleOutline } from "react-icons/io5";
+import { CiLock } from "react-icons/ci";
+import CommonButton from '@/Components/CommonButton';
+import moment from 'moment';
+import VideoPlayerReact from '@/Components/VideoPlayerReact';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FaGlobeAsia } from "react-icons/fa";
+import { useLocation } from 'react-router-dom';
+export default function CourseDetails() {
+    const allCourses=useSelector(state=>state?.course?.data);
+    const {specificCourseDetails,setSpecificCourseDetails,
+        specificCourseDetailsId,setSpecificCourseDetailsId,
+        loadingStateCourse,setLoadingStateCourse
+
+    }=useContext(UseContextApi);
+
+    useEffect(() => {
+        if (!location.pathname.includes("course/details")){  
+            setSpecificCourseDetails(null)
+            setSpecificCourseDetailsId(null)
+        }
+           
+      }, [location.pathname]);
+
+    const {id}=useParams();
+    
+  
+    useEffect(()=>{
+        if(id)setSpecificCourseDetailsId(id);
+    },[]);
+
+    useEffect(()=>{
+        if(specificCourseDetailsId){
+            const courseDetails=allCourses?.find((item)=>item._id===specificCourseDetailsId);
+            setLoadingStateCourse(false);
+          setSpecificCourseDetails(courseDetails);
+        }
+    },[specificCourseDetailsId]);
+    console.log(specificCourseDetails)
+
+ if(loadingStateCourse) return <CommonSkeleton/>
+  return (
+    <div>
+    <Navbar/>
+     <div className='mx-auto p-4'>
+          <div className="bg-indigo-600 text-white p-8 rounded-t-lg" >
+            <h1 className='text-3xl font-bold font-mono mb-4'>
+                {specificCourseDetails?.title}
+            </h1>
+            <p className='text-xl mb-4 '>Subtitle: {specificCourseDetails?.subtitle}</p>
+             <div className='flex items-center space-x-4 mt-2 text-sm'>
+                <span>Published By : {specificCourseDetails?.creator?.userName}</span>
+                <span>Published On : {moment(specificCourseDetails?.createdAt).format("MMMM DD, YYYY")}</span>
+                <span className='flex items-center'>
+                <FaGlobeAsia className='mr-1 h-4 w-4'/>
+                  {specificCourseDetails?.primaryLanguage}
+                </span>
+                <span>
+                  Enrolled {specificCourseDetails?.students?.length<=1? "Student":"Students"} :  {specificCourseDetails?.students?.length}
+                </span>
+                
+             </div>
+             <p className='text-sm mt-4 '>{specificCourseDetails?.description}</p>
+          </div>
+     </div>
+     <div className='flex flex-col md:flex-row gap-8 mt-8'>
+        <main className='flex-grow'>
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>
+                    Key Learning Outcomes
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+                        {
+                            specificCourseDetails?.objectives.split(',').map((item,index)=>{
+                                return(
+                                    <li key={index} className='flex items-center'>
+                                        <BiCheckSquare className='mr-2 h-5 w-5 text-green-500 flex-shrink-0'/>
+                                         <span>
+                                            {item}
+                                         </span>
+                                    </li>
+                                )
+                            })
+                        }
+
+                    </ul>
+                </CardContent>
+
+            </Card>
+            <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>Course Content</CardTitle>
+
+                </CardHeader>
+                <CardContent>
+                    {
+                        specificCourseDetails?.curriculum?.map((item,index)=>{
+                            return(
+                                <li key={index} className={`${item?.freePreview? 'cursor-pointer':'cursor-not-allowed'} flex items-center mb-4`}>
+                                  {
+                                    item?.freePreview? <IoPlayCircleOutline className='mr-2 h-4 w-4'/>:<CiLock className='mr-2 h-4 w-4'/>
+                                  }
+                                  <span>{item?.title}</span>
+                                </li>
+                            )
+                        })
+                    }
+                </CardContent>
+
+                </Card>
+
+        </main>
+        <aside className='w-full md:w-[500px]'>
+           <Card className="sticky top-4">
+            <CardContent className="p-6">
+                    <div className='aspect-video mb-4 rounded-lg flex items-center justify-center'>
+                      <VideoPlayerReact url={specificCourseDetails?.curriculum[specificCourseDetails?.curriculum?.findIndex(item=>item.freePreview)].videoUrl}
+                      width='450px'
+                      height='200px'
+                      />
+                    </div>
+                    <div className='mb-4'>
+                        <span className='text-2xl font-bold'>
+                           Rs. {specificCourseDetails?.pricing}
+                        </span>
+                   
+                    </div>
+                    <CommonButton text="Buy Now"/>
+            </CardContent>
+
+           </Card>
+        </aside>
+
+     </div>
+    </div>
+  )
+}

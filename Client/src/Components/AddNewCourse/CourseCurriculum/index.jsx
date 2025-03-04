@@ -10,7 +10,7 @@ import { axiosService } from '@/Services';
 import { Upload_Course_File,Delete_Course_File,Upload_Bulk_File } from '@/Routes';
 import { toast } from 'react-toastify';
 import ProgressBar from '@/Components/ProgressBar';
-import VideoPlayer from '@/Components/VideoPlayer';
+import VideoPlayerReact from '@/Components/VideoPlayerReact';
 import { MdDriveFolderUpload } from "react-icons/md";
 
 export default function CourseCurriculum() {
@@ -282,7 +282,7 @@ export default function CourseCurriculum() {
                               courseCurriculumFormData[index]?.videoUrl ?
                               (
                                 <div className='flex gap-3'>
-                                  <VideoPlayer url={courseCurriculumFormData[index]?.videoUrl}
+                                  <VideoPlayerReact url={courseCurriculumFormData[index]?.videoUrl}
                                    width='450px'
                                    height='200px'
                                   />

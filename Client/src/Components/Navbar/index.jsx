@@ -115,7 +115,7 @@ const handleLogout=async ()=>{
     <nav className='flex flex-row flex-wrap justify-between items-center z-50 px-20 -mt-5'>
       <div className='flex flex-row justify-center items-center gap-5'>
         <div>
-         <img src="images/logo.png" alt="logo if efficient pathsalsa"  className='md:w-[160px] md:h-[160px]'/>
+         <img src="/images/logo.png" alt="logo if efficient pathsalsa"  className='md:w-[160px] md:h-[160px]'/>
         </div>
         <h1 className='font-bold text-3xl'>E-Pathsala</h1>
       </div>

@@ -15,27 +15,41 @@ import { Label } from '@/Components/ui/label';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { UseContextApi } from '@/Components/ContextApi';
-import { useSelector,useDispatch } from 'react-redux';
-import { getCourse } from '@/Store/Slices/Course_Slice';
+import { Get_All_Course } from '@/Routes';
+import { Skeleton } from '@/Components/ui/skeleton';
+import { axiosService } from '@/Services';
+
 
 export default function Course() {
-    const navigate=useNavigate();
-    const dispatch=useDispatch();
-    const courses=useSelector(state=>state?.course?.data);
-    const [sort,setSort]=useState("price-lowtohigh");
+  const navigate=useNavigate();
+    const [sort,setSort]=useState("create-rtoo");
     const [searchParams,setSearchParams]=useSearchParams();
     const [filters, setFilters] = useState({});
-    const {allCourses,setAllCourses}=useContext(UseContextApi);
+    const {allCourses,setAllCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
 
-    useEffect(()=>{
-           setAllCourses(courses);
-    },[courses]);
+  const getFilterCourses=async ({filters,sort})=>{
+    try{
+     const query = new URLSearchParams({
+             ...filters,
+             sortBy:sort
+         })
+          const response=await axiosService.get(`${Get_All_Course}?${query}`,{withCredentials:true});
+          if(response.status===200){
+            setAllCourses(response?.data?.course);
+            setLoadingStateCourse(false);
+          }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
 
      useEffect(()=>{
       if(filters !== null || sort !== null){
-          dispatch(getCourse({filters,sort}));
+          getFilterCourses({filters,sort});
       }
      },[filters,sort]);
+
     const handleFilterOnChange=(getSectionId, getCurrentOption)=>{
       let copyFilters = { ...filters };
       const indexOfCurrentSection =
@@ -83,7 +97,7 @@ export default function Course() {
 
 
     useEffect(() => {
-      setSort("price-lowtohigh");
+      setSort("create-rtoo");
       setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
     }, []);
      
@@ -100,15 +114,15 @@ export default function Course() {
         <h1 className='text-3xl font-bold mb-4'>All Courses</h1>
          <div className='flex flex-col md:flex-row gap-4'>
           <aside className='w-full md:w-64 space-y-4'>
-            <div className='p-4 space-y-4 '>
+            <div className='p-4'>
              {
               Object.keys(filterOptions).map((item,index)=>{
                 return(
-                  <div key={index} className='p-4 space-y-4'>
+                  <div key={index} className='p-4 border-2 rounded-2xl mt-1'>
                     <h3 className='fond-bold mb-3'>{item.toUpperCase()}</h3>
                     <div className='grid gap-2 mt-2'>
                     {filterOptions[item].map((option) => (
-                    <Label className="flex font-medium items-center gap-3">
+                    <Label key={option.id} className="flex font-medium items-center gap-3">
                       <Checkbox
                         checked={
                           filters &&
@@ -160,12 +174,12 @@ export default function Course() {
               {allCourses?.length} Results
               </span>
             </div>
-            <div className='space-y-4'>
+            <div className='space-y-4 text-center'>
               {
                 allCourses && allCourses.length > 0?
                 allCourses.map((item,index)=>{
                   return (
-                    <Card className="cursor-pointer" key={index}>
+                    <Card onClick={()=>navigate(`/course/details/${item._id}`)} className="cursor-pointer" key={index}>
                       <CardContent className="flex p-4 gap-4 ">
                         <div className="w-48 h-32 flex-shrink-0">
                           <img src={item?.image}
@@ -178,7 +192,7 @@ export default function Course() {
                             {item?.title}
                           </CardTitle>
                            <p className='text-sm text-gray-500 mb-1'>
-                           Prblished By: <span className='font-bold'>
+                           Published By: <span className='font-bold'>
                             {item?.creator?.userName}
                             </span> 
                             </p>
@@ -193,9 +207,9 @@ export default function Course() {
                       </CardContent>
                     </Card>
                   )
-                }):(<h1>No Courses Found</h1>)
+                }):(loadingStateCourse? 
+                <Skeleton className=" bg-black flex justify-center items-center"/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>)
               }
-
             </div>
 
           </main>

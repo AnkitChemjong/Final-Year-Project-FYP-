@@ -7,6 +7,7 @@ export const UseContextApi=createContext();
 
 export default function ContextApi({children}) {
     const [loading,setLoading]=useState(false);
+    const [loadingStateCourse,setLoadingStateCourse]=useState(true);
     const [courseLandingFormData, setCourseLandingFormData] = useState(
         courseLandingInitialFormData
       );
@@ -18,6 +19,8 @@ export default function ContextApi({children}) {
   const [mediaUploadProgressPercentage, setMediaUploadProgressPercentage] =
     useState(0);
   const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null);
+  const [specificCourseDetails,setSpecificCourseDetails]=useState(null);
+  const [specificCourseDetailsId,setSpecificCourseDetailsId]=useState(null);
 
   const [allCourses,setAllCourses]=useState([]);
   return (
@@ -26,7 +29,10 @@ export default function ContextApi({children}) {
     setCourseCurriculumFormData,
     mediaUploadProgress, setMediaUploadProgress,
     mediaUploadProgressPercentage, setMediaUploadProgressPercentage,
-    currentEditedCourseId, setCurrentEditedCourseId,allCourses,setAllCourses}}>
+    currentEditedCourseId, setCurrentEditedCourseId,allCourses,setAllCourses,
+    loadingStateCourse,setLoadingStateCourse,
+    specificCourseDetails,setSpecificCourseDetails,
+    specificCourseDetailsId,setSpecificCourseDetailsId}}>
      {children}
    </UseContextApi.Provider>
   )

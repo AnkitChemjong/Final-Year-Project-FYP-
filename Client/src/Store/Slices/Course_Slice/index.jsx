@@ -5,14 +5,10 @@ import { axiosService } from "@/Services";
 
 
 
- export const getCourse=createAsyncThunk("getCourse",async ({filters={},sort=""})=>{
+ export const getCourse=createAsyncThunk("getCourse",async ()=>{
 
   try{
-    const query = new URLSearchParams({
-        ...filters,
-        sortBy:sort
-    })
-     const allCourses=await axiosService.get(`${Get_All_Course}?${query}`,{withCredentials:true});
+     const allCourses=await axiosService.get(Get_All_Course,{withCredentials:true});
      return allCourses?.data?.course;
   }
   catch(error){
