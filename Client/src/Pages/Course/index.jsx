@@ -18,6 +18,8 @@ import { UseContextApi } from '@/Components/ContextApi';
 import { Get_All_Course } from '@/Routes';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { axiosService } from '@/Services';
+import Search from '@/Components/Search';
+import { SEARCH_COURSE_ROUTES } from '@/Routes';
 
 
 export default function Course() {
@@ -107,9 +109,29 @@ export default function Course() {
       };
     }, []);
 
+    const searchCourses=async (searchTerm)=>{
+            try{
+                     if(searchTerm.length>0){   
+                      const response=await axiosService.post(SEARCH_COURSE_ROUTES,{searchTerm});          
+                      if(response.status===200 && response?.data?.data){
+                        setAllCourses(response.data.data);
+                      }
+                     }
+            }
+            catch(e){
+              console.log(e);
+            }
+            }
+  const onChangeFunc=()=>{
+    if(filters !== null || sort !== null){
+      getFilterCourses({filters,sort});
+  }
+  }
+
   return (
     <div>
       <Navbar/>
+      <Search searchFunc={searchCourses} onChangeFunc={onChangeFunc}/>
       <div className='container mx-auto p-4'>
         <h1 className='text-3xl font-bold mb-4'>All Courses</h1>
          <div className='flex flex-col md:flex-row gap-4'>

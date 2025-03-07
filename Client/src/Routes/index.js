@@ -34,3 +34,4 @@ export const Delete_Single_Course=`${Get_All_Course}/deleteSingle`
 export const Delete_All_Course=`${Get_All_Course}/deleteAll`
 export const Delete_Selected_Course=`${Get_All_Course}/deleteSelected`
 export const Upload_Bulk_File=`${Get_All_Course}/bulkUpload`
+export const SEARCH_COURSE_ROUTES=`${Get_All_Course}/searchedCourse`

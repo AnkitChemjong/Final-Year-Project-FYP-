@@ -63,13 +63,7 @@ export default function CreateNewCourse() {
         curriculum:courseCurriculumFormData,
         isPublished:true
       }
-        const response=currentEditedCourseId === null? await axiosService.post(Add_New_Course,courseFinalData,{
-          withCredentails:true
-          , headers: { "Content-Type": "application/json" },
-        }):await axiosService.put(`${Update_Course}/${currentEditedCourseId}`,courseFinalData,{
-          withCredentails:true
-          , headers: { "Content-Type": "application/json" },
-        })
+        const response=currentEditedCourseId === null? await axiosService.post(Add_New_Course,courseFinalData):await axiosService.put(`${Update_Course}/${currentEditedCourseId}`,courseFinalData);
           if(response.status===200){
            setCourseLandingFormData(courseLandingInitialFormData);
            setCourseCurriculumFormData(courseCurriculumInitialFormData);

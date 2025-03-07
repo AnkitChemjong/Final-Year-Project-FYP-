@@ -1,8 +1,11 @@
 import axios from 'axios';
 
 export const axiosService=axios.create({
-    baseURL:import.meta.env.VITE_BACKEND_URL
-})
+    baseURL:import.meta.env.VITE_BACKEND_URL,
+      withCredentials:true,
+      headers: { "Content-Type": "application/json"},
+
+});
 
 export const handleDwn=async (type,url)=>{
      const response = await axiosService.get(`${import.meta.env.VITE_BACKEND_URL}/${url}`, { responseType: "blob",

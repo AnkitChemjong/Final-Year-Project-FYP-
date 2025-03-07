@@ -88,9 +88,7 @@ const handleFileInputClick = () => {
 
   const handleProfileImageDelete = async () => {
     try {
-      const response = await axiosService.delete(User_Delete_Profile_Image, {
-        withCredentials: true,
-      });
+      const response = await axiosService.delete(User_Delete_Profile_Image);
       if (response?.status === 200) {
         dispatch(getUser());
         toast.success(response?.data?.message);

@@ -182,12 +182,13 @@ export default function CourseCurriculum() {
        setMediaUploadProgress(true);
        const response=await axiosService.post(Upload_Bulk_File,formData,{
         withCredentials:true,
+        headers:{"Content-Type":"multipart/form-data"},
         onUploadProgress:(progressEvent)=>{
            const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
           setMediaUploadProgressPercentage(percentage);
         }
        });
-       console.log(response);
+      //  console.log(response);
        if(response.status===200){
         let copyCourseCurricullumFormData=checkCourseCurriculumFormEmpty(courseCurriculumFormData)? []:[...courseCurriculumFormData];
          copyCourseCurricullumFormData=[

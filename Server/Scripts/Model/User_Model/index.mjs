@@ -12,13 +12,13 @@ const userSchema=new Schema({
     email:{
         type:String,
         required:false,
-        isUnique:true,
+        unique:true,
         validate:[validator.isEmail,'This should be an valid email']
     },
     userName:{
         type:String,
         required:false,
-        isUnique:false
+        unique:false
     },
     password:{
         type:String,
@@ -68,6 +68,12 @@ const userSchema=new Schema({
         type:String,
         required:false
     },
+    enrolledCourses:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"CourseModel"
+        }
+    ]
 
 },{timestamps:true})
 

@@ -138,9 +138,7 @@ export default function Profile() {
   };
   const handleProfileImageDelete = async () => {
     try {
-      const response = await axiosService.delete(User_Delete_Profile_Image, {
-        withCredentials: true,
-      });
+      const response = await axiosService.delete(User_Delete_Profile_Image);
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication());
@@ -156,12 +154,7 @@ export default function Profile() {
 
   const handleEvent1 = async (data) => {
     try {
-      const response = await axiosService.patch(User_Info_Update, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axiosService.patch(User_Info_Update, data);
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication());
@@ -176,12 +169,7 @@ export default function Profile() {
   //for password change
   const handleEvent2 = async (data) => {
     try {
-      const response = await axiosService.patch(User_Update_Pass_Route, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axiosService.patch(User_Update_Pass_Route, data);
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication())
@@ -198,12 +186,7 @@ export default function Profile() {
     try {
       const formData=new FormData();
       formData.append("cv",data.cv);
-      const response = await axiosService.post(User_Become_Teacher, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      const response = await axiosService.post(User_Become_Teacher, formData);
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication())
@@ -320,7 +303,7 @@ export default function Profile() {
             <div className="flex flex-row justify-center items-center md:gap-28">
               {user?.userRole?.includes("teacher") ? (
                 <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
-                  Upload Course
+                  Dashboard
                 </Button>
               ) : (
                 <Button onClick={toggleDialog3} disabled={!user?.DOB|| userApplication?.find(data=>data?.user?._id===user?._id)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">

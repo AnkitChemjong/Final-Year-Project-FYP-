@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from 'react';
+import React, { useContext,useEffect,useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -10,7 +10,15 @@ import { CiLock } from "react-icons/ci";
 import CommonButton from '@/Components/CommonButton';
 import moment from 'moment';
 import VideoPlayerReact from '@/Components/VideoPlayerReact';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, 
+    CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,} from "@/components/ui/dialog";
 import { FaGlobeAsia } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 export default function CourseDetails() {
@@ -20,6 +28,8 @@ export default function CourseDetails() {
         loadingStateCourse,setLoadingStateCourse
 
     }=useContext(UseContextApi);
+    const [displayVideoFreePreview, setDisplayVideoFreePreview] =useState(null);
+  const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
 
     useEffect(() => {
         if (!location.pathname.includes("course/details")){  
@@ -43,7 +53,13 @@ export default function CourseDetails() {
           setSpecificCourseDetails(courseDetails);
         }
     },[specificCourseDetailsId]);
-    console.log(specificCourseDetails)
+
+    const handleFreePreview=(videoInfo)=>{
+     if(videoInfo){
+        setDisplayVideoFreePreview(videoInfo?.videoUrl);
+        setShowFreePreviewDialog(true);
+     }
+    }
 
  if(loadingStateCourse) return <CommonSkeleton/>
   return (
@@ -67,11 +83,23 @@ export default function CourseDetails() {
                 </span>
                 
              </div>
-             <p className='text-sm mt-4 '>{specificCourseDetails?.description}</p>
           </div>
      </div>
      <div className='flex flex-col md:flex-row gap-8 mt-8'>
-        <main className='flex-grow'>
+        <main className='flex-grow ml-3'>
+        <Card className="mb-8">
+                <CardHeader>
+                    <CardTitle>
+                    Course Description
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                   {
+                    specificCourseDetails?.description
+                   }
+                </CardContent>
+
+            </Card>
             <Card className="mb-8">
                 <CardHeader>
                     <CardTitle>
@@ -106,7 +134,9 @@ export default function CourseDetails() {
                     {
                         specificCourseDetails?.curriculum?.map((item,index)=>{
                             return(
-                                <li key={index} className={`${item?.freePreview? 'cursor-pointer':'cursor-not-allowed'} flex items-center mb-4`}>
+                                <li key={index} className={`${item?.freePreview? 'cursor-pointer':'cursor-not-allowed'} flex items-center mb-4`}
+                                 onClick={item?.freePreview?()=>handleFreePreview(item):null}
+                                >
                                   {
                                     item?.freePreview? <IoPlayCircleOutline className='mr-2 h-4 w-4'/>:<CiLock className='mr-2 h-4 w-4'/>
                                   }
@@ -115,6 +145,47 @@ export default function CourseDetails() {
                             )
                         })
                     }
+                    <Dialog open={showFreePreviewDialog} onOpenChange={()=>{
+                        setShowFreePreviewDialog(false);
+                        setDisplayVideoFreePreview(null);
+                        }}>
+
+                        <DialogContent className="w-[600px]">
+                            <DialogHeader>
+                               <DialogTitle>Preview Free Video</DialogTitle>
+                            </DialogHeader>
+                    <div className='aspect-video rounded-lg flex items-center justify-center'>
+                      <VideoPlayerReact url={displayVideoFreePreview? displayVideoFreePreview:null}
+                      width='450px'
+                      height='200px'
+                      />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        {
+                            specificCourseDetails?.curriculum?.filter(item=>item.freePreview).
+                            map(filteredItem=>{
+                                return(
+                                    <div onClick={()=>handleFreePreview(filteredItem)} className='flex flex-row items-center gap-1'>
+                                        <IoPlayCircleOutline className='mr-2 h-4 w-4'/>
+                                    <p
+                                         className='cursor-pointer text-base font-normal'>
+                                            {filteredItem?.title}
+                                    </p>
+                                    </div>
+                                )
+                                })
+                        }
+                    </div>
+                        
+                               <DialogFooter className="sm:justify-start">
+                                <DialogClose asChild>
+                                  <CommonButton func={()=>{
+                                    setShowFreePreviewDialog(false);
+                        setDisplayVideoFreePreview(null);}} text="close"/>
+                                </DialogClose>
+                               </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </CardContent>
 
                 </Card>

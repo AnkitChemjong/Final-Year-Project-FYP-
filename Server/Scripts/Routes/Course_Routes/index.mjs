@@ -7,6 +7,7 @@ import updateCourse from "../../Controllers/Course_Controller/UpdateCourse/index
 import getCourseDetails from "../../Controllers/Course_Controller/GetCourseDetails/index.mjs";
 import DeleteCourse from "../../Controllers/Course_Controller/DeleteCourse/index.mjs";
 import bulkUpload from "../../Controllers/Course_Controller/BulkUploadLecture/index.mjs";
+import getSearchedCourse from "../../Controllers/Course_Controller/GetSearchedCourse/index.mjs";
 
 const courseRouter=Router();
 
@@ -20,6 +21,7 @@ courseRouter.delete('/deleteSingle',DeleteCourse.deleteSingleCourse);
 courseRouter.delete('/deleteAll',DeleteCourse.deleteAllCourses);
 courseRouter.delete('/deleteSelected',DeleteCourse.deleteSelectedCourses);
 courseRouter.post('/bulkUpload',uploadCourse.array('files',10),bulkUpload);
+courseRouter.post("/searchedCourse",getSearchedCourse);
 
 
 export default courseRouter;

@@ -13,10 +13,7 @@ export default function Signin() {
   const navigate=useNavigate();
   const handlePost=async (data)=>{
     try{
-       const returnData=await axiosService.post(User_Login_Route,data,{
-        withCredentials:true,
-        headers: { "Content-Type": "application/json" },
-      });
+       const returnData=await axiosService.post(User_Login_Route,data);
       if(returnData?.status===200){
         dispatch(getUser());
          toast.success(returnData?.data?.message);

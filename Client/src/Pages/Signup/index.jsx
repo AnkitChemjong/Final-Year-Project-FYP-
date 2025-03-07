@@ -11,9 +11,7 @@ export default function Signup() {
   const navigate=useNavigate();
   const handlePost=async (data)=>{
     try{
-       const returnData=await axiosService.post(User_Route,data,{
-        headers: { "Content-Type": "application/json" },
-      });
+       const returnData=await axiosService.post(User_Route,data);
       if(returnData?.status===200){
         toast.success(returnData?.data?.message);
         navigate('/signin')
