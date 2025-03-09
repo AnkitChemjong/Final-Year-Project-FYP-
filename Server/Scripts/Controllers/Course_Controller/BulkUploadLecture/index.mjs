@@ -1,9 +1,22 @@
 import { uploadToCloudinary } from "../../../Services/CourseService/index.mjs";
+import fs from "fs";
 
 
 const bulkUpload=async(req,res)=>{
     try{
-       const uploadPromise=req.files.map(fileItem=>uploadToCloudinary(fileItem.path));
+        const user=req.user;
+       const uploadPromise=req.files.map(async (fileItem)=>{
+        const filePath=`Scripts/Upload/${user.userId}/CourseFile/${fileItem.filename}`;
+         const response= await uploadToCloudinary(fileItem.path);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                } else {
+                    console.log('File deleted successfully!');
+                }
+            });
+            return response;
+    });
        const response=await Promise.all(uploadPromise);
        res.status(200).json({
         message:"Bulk uploaded Successfully",

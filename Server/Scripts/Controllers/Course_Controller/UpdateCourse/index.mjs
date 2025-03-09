@@ -9,7 +9,7 @@ const updateCourse=async (req,res)=>{
         return res.status(400).json({message:"Course not found.",
             data:null,
             error:"couse not found"
-           })
+           });
        }
        return res.status(200).json({message:"Course updated Successfully.",
             data:courseDetails,

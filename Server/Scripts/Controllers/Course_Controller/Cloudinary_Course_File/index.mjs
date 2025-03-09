@@ -5,6 +5,10 @@ class CloudinaryControl{
  static uploadFileToCloudinary=async (req,res)=>{
         try{
             const user=req.user;
+            const {public_id}=req.body;
+            if(public_id){
+                await deleteFromCloudinary(public_id);
+            }
             const filePath=`Scripts/Upload/${user.userId}/CourseFile/${req.file.filename}`
             const response=await uploadToCloudinary(req.file.path);
             fs.unlink(filePath,(err)=>{

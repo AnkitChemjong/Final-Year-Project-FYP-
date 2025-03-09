@@ -20,6 +20,7 @@ import CommonSkeleton from "./Components/CommonSkeleton";
 import CreateNewCourse from "./Pages/CreateNewCourse";
 import { getCourse } from "./Store/Slices/Course_Slice";
 import CourseDetails from "./Pages/CourseDetails";
+import StudentCourses from "./Pages/StudentCourses";
 
 
 const PrivateRoute = ({ children }) => {
@@ -107,6 +108,7 @@ else{
           <Route path="/edit_course/:courseId" element={<AdminRoute><CreateNewCourse/></AdminRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
+          <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Router>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        td {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"]:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+
+        .form {
+            display: block;
+        }
+
+        input[type="submit"] {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #004085;
+        }
+
+        input[type="submit"]:focus {
+            outline: none;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form action="<%= esewaUrl %>" method="POST" target="_blank">
+        <h1>Payment Details</h1>
+        <table>
+            <tbody>
+                <tr>
+                    <td><strong>Parameter</strong></td>
+                    <td><strong>Value</strong></td>
+                </tr>
+                <tr>
+                    <td>Amount:</td>
+                    <td>
+                        <input type="text" id="amount" name="amount" value="<%= total_amount %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Tax Amount:</td>
+                    <td>
+                        <input type="text" id="tax_amount" name="tax_amount" value="0" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Total Amount:</td>
+                    <td>
+                        <input type="text" id="total_amount" name="total_amount" value="<%= total_amount %>" class="form" />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Transaction UUID (Item Purchase ID):</td>
+                    <td>
+                        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="<%= transaction_uuid %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Product Code:</td>
+                    <td>
+                        <input type="hidden" id="product_code" name="product_code" value="<%= product_code %>" class="form" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Product Service Charge:</td>
+                    <td>
+                        <input type="text" id="product_service_charge" name="product_service_charge" value="0" class="form" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Product Delivery Charge:</td>
+                    <td>
+                        <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" class="form" />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Success URL:</td>
+                    <td>
+                        <input type="hidden" id="success_url" name="success_url" value="<%= success_url %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Failure URL:</td>
+                    <td>
+                        <input type="hidden" id="failure_url" name="failure_url" value="<%= failure_url %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Signed Field Names:</td>
+                    <td>
+                        <input type="hidden" id="signed_field_names" name="signed_field_names" value="<%= signed_field_names %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr  style="display: none;">
+                    <td>Signature:</td>
+                    <td>
+                        <input type="hidden" id="signature" name="signature" value="<%= signature %>" class="form" required />
+                    </td>
+                </tr>
+
+                <tr style="display: none;">
+                    <td >Secret Key:</td>
+                    <td>
+                        <input type="hidden" id="secret" name="secret" value="<%= secret %>" class="form" required />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Pay with eSewa" />
+    </form>
+</body>
+</html>

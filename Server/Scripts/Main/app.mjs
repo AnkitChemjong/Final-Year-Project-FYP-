@@ -13,6 +13,7 @@ import authRoute from '../Routes/User_Routes/ThirdReturnAuth/index.mjs';
 import path from 'path';
 import courseRouter from '../Routes/Course_Routes/index.mjs';
 import appRouter from '../Routes/Application_Routes/index.mjs';
+import paymentRouter from '../Routes/Course_Routes/Payment_Routes/index.mjs';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -50,13 +51,16 @@ const main=()=>{
     },
     name:"hook",
     }))
-    app.use(express.static(path.resolve("./Scripts/Upload/")));
+    app.set('view engine', 'ejs');
+    app.set('views', path.join('./Scripts/Views/esewa')); 
+    app.use(express.static(path.resolve("./Scripts/Upload")));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use('/user',userRoute);
     app.use('/',authRoute);
     app.use('/application',appRouter);
     app.use('/course',courseRouter);
+    app.use('/payment',paymentRouter);
     app.listen(PORT,()=>console.log("listining at port "+ PORT));
 }
 main();

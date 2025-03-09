@@ -67,14 +67,7 @@ const userSchema=new Schema({
     provider:{
         type:String,
         required:false
-    },
-    enrolledCourses:[
-        {
-            type:Schema.Types.ObjectId,
-            ref:"CourseModel"
-        }
-    ]
-
+    }
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){

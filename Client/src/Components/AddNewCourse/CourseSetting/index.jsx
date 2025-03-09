@@ -22,8 +22,10 @@ export default function CourseSetting() {
             const file=e.target.files[0];
             const formData=new FormData();
             formData.append("file",file);
+            courseLandingFormData?.image && formData.append('public_id',courseLandingFormData?.image_public_id)
             const response=await axiosService.post(Upload_Course_File,formData,{
                     withCredentials:true,
+                    headers:{"Content-Type":"multipart/form-data"},
                     onUploadProgress:(progressEvent)=>{
                         const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
                        setMediaUploadProgressPercentage(percentage);

@@ -12,6 +12,7 @@ import moment from 'moment';
 import VideoPlayerReact from '@/Components/VideoPlayerReact';
 import { Card, CardContent, 
     CardHeader, CardTitle } from "@/components/ui/card";
+import PaymentDialog from '@/Components/PaymentDialog';
 import {
     Dialog,
     DialogClose,
@@ -20,7 +21,6 @@ import {
     DialogHeader,
     DialogTitle,} from "@/components/ui/dialog";
 import { FaGlobeAsia } from "react-icons/fa";
-import { useLocation } from 'react-router-dom';
 export default function CourseDetails() {
     const allCourses=useSelector(state=>state?.course?.data);
     const {specificCourseDetails,setSpecificCourseDetails,
@@ -30,6 +30,11 @@ export default function CourseDetails() {
     }=useContext(UseContextApi);
     const [displayVideoFreePreview, setDisplayVideoFreePreview] =useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
+  const [openDialog,setOpenDialog]=useState(false);
+
+  const toggleDialog=()=>{
+    setOpenDialog(true);
+  }
 
     useEffect(() => {
         if (!location.pathname.includes("course/details")){  
@@ -165,7 +170,7 @@ export default function CourseDetails() {
                             specificCourseDetails?.curriculum?.filter(item=>item.freePreview).
                             map(filteredItem=>{
                                 return(
-                                    <div onClick={()=>handleFreePreview(filteredItem)} className='flex flex-row items-center gap-1'>
+                                    <div key={filteredItem?.title} onClick={()=>handleFreePreview(filteredItem)} className='flex flex-row items-center gap-1'>
                                         <IoPlayCircleOutline className='mr-2 h-4 w-4'/>
                                     <p
                                          className='cursor-pointer text-base font-normal'>
@@ -206,7 +211,8 @@ export default function CourseDetails() {
                         </span>
                    
                     </div>
-                    <CommonButton text="Buy Now"/>
+                    <PaymentDialog openDialog={openDialog} setOpenDialog={setOpenDialog} courseDetail={specificCourseDetails}/>
+                    <CommonButton func={toggleDialog} text="Buy Now"/>
             </CardContent>
 
            </Card>

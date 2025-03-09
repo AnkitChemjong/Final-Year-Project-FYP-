@@ -35,3 +35,11 @@ export const Delete_All_Course=`${Get_All_Course}/deleteAll`
 export const Delete_Selected_Course=`${Get_All_Course}/deleteSelected`
 export const Upload_Bulk_File=`${Get_All_Course}/bulkUpload`
 export const SEARCH_COURSE_ROUTES=`${Get_All_Course}/searchedCourse`
+
+//Payment Routes
+export const Payment='/payment';
+export const Initialize_Esewa_Payment=`http://localhost:8000/payment/initialize-esewa`;
+export const Complete_Esewa_Payment=`${Payment}/complete-esewa-payment`;
+
+export const Initialize_Khalti_Payment=`${Payment}/initialize-khalti`;
+export const Complete_Khalti_Payment=`${Payment}/complete-khalti-payment`;

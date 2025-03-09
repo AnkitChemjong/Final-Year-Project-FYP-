@@ -60,6 +60,8 @@ export default function CourseCurriculum() {
        setMediaUploadProgress(true);
        const response=await axiosService.post(Upload_Course_File,formData,{
         withCredentials:true,
+        headers:{"Content-Type":"multipart/form-data"}
+        ,
         onUploadProgress:(progressEvent)=>{
            const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
           setMediaUploadProgressPercentage(percentage);
@@ -90,7 +92,7 @@ export default function CourseCurriculum() {
   const courseCurriculumFormDataValidation=()=>{
     return courseCurriculumFormData.every(item=>{
       return item && typeof item === 'object' &&
-      item.title.trim() !== '' && item.videoUrl.trim() !== ''
+      item?.title?.trim() !== '' && item?.videoUrl?.trim() !== ''
     })
   }
 
@@ -103,7 +105,8 @@ export default function CourseCurriculum() {
         onUploadProgress:(progressEvent)=>{
           const percentage=Math.round((100*progressEvent.loaded)/progressEvent.total);
          setMediaUploadProgressPercentage(percentage);
-       }
+       },
+       headers:{"Content-Type":"multipart/form-data"}
       });
       if(response.status===200){
         let copyCourseCurricullumFormData=[...courseCurriculumFormData];
@@ -188,8 +191,9 @@ export default function CourseCurriculum() {
           setMediaUploadProgressPercentage(percentage);
         }
        });
-      //  console.log(response);
+      //console.log(response);
        if(response.status===200){
+
         let copyCourseCurricullumFormData=checkCourseCurriculumFormEmpty(courseCurriculumFormData)? []:[...courseCurriculumFormData];
          copyCourseCurricullumFormData=[
           ...copyCourseCurricullumFormData,
