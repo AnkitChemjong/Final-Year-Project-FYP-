@@ -13,7 +13,7 @@ export default function StudentCourses() {
   }, [location.search]);
   return (
     <div>
-      
+      helo
     </div>
   )
 }

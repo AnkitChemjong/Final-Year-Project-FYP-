@@ -1,6 +1,40 @@
 import axios from 'axios';
 
 
+async function initializeKhaltiPayment({
+    return_url,
+    website_url,
+    amount,
+    purchase_order_id,
+    purchase_order_name,
+  }) {
+    try {
+      let headersList = {
+        Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      };
+  
+      let bodyContent = JSON.stringify({
+        return_url,
+        website_url,
+        amount,
+        purchase_order_id,
+        purchase_order_name,
+      });
+      
+      let reqOptions = {
+        url:process.env.KHALTI_INITIATE_URL,
+        method: "POST",
+        headers: headersList,
+        data: bodyContent,
+      };
+  
+      let response = await axios.request(reqOptions);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
 async function verifyKhaltiPayment(pidx) {
     try {
       let headersList = {
@@ -27,39 +61,5 @@ async function verifyKhaltiPayment(pidx) {
     }
   }
   
-  async function initializeKhaltiPayment({
-    return_url,
-    website_url,
-    amount,
-    purchase_order_id,
-    purchase_order_name,
-  }) {
-    try {
-      let headersList = {
-        Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
-        "Content-Type": "application/json",
-      };
-  
-      let bodyContent = JSON.stringify({
-        return_url,
-        website_url,
-        amount,
-        purchase_order_id,
-        purchase_order_name,
-      });
-      
-      let reqOptions = {
-        url: `${process.env.KHALTI_GATEWAY_URL}/api/v2/epayment/initiate/`,
-        method: "POST",
-        headers: headersList,
-        data: bodyContent,
-      };
-  
-      let response = await axios.request(reqOptions);
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  }
 
   export {verifyKhaltiPayment,initializeKhaltiPayment}

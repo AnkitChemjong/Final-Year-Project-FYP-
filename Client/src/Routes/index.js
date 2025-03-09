@@ -39,7 +39,6 @@ export const SEARCH_COURSE_ROUTES=`${Get_All_Course}/searchedCourse`
 //Payment Routes
 export const Payment='/payment';
 export const Initialize_Esewa_Payment=`http://localhost:8000/payment/initialize-esewa`;
-export const Complete_Esewa_Payment=`${Payment}/complete-esewa-payment`;
 
-export const Initialize_Khalti_Payment=`${Payment}/initialize-khalti`;
-export const Complete_Khalti_Payment=`${Payment}/complete-khalti-payment`;
+
+export const Initialize_Khalti_Payment=`http://localhost:8000/payment/initialize-khalti`;

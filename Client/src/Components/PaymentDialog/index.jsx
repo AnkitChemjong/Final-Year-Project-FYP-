@@ -12,7 +12,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { axiosService } from "@/Services";
 import { toast } from "react-toastify";
-import { Initialize_Esewa_Payment } from "@/Routes";
+import { Initialize_Esewa_Payment,Initialize_Khalti_Payment } from "@/Routes";
 
 const PaymentOption = ({ src, alt,func }) => (
   <Card onClick={func} className="md:w-48 md:h-32 w-32 h-20 cursor-pointer transition-transform hover:scale-110">
@@ -38,34 +38,6 @@ export default function PaymentDialog({ openDialog, setOpenDialog, courseDetail 
         const handleEsewaPayment=async()=>{
            try{
                 window.location.href=`${Initialize_Esewa_Payment}?${data}`;
-        //         if(response.status===200 && response?.data?.esewaUrl){
-        //             console.log(response);
-        //             const dataList=
-        //             {
-        //                 total_amount: Number(response?.data?.purchaseData?.amountPaid),
-        //                 transaction_uuid:response?.data?.purchaseData?._id,
-        //                 product_code: response?.data?.product_code,
-        //                 success_url:response?.data?.success_url,
-        //                 failure_url:response?.data?.failure_url,
-        //                 signed_field_names: response?.data?.paymentInitate?.signed_field_names,
-        //                 signature: response?.data?.paymentInitate?.signature,
-        //                 secret:response?.data?.secret_key
-
-        //             }
-        //             const formData = qs.stringify(dataList);
-        //          const response2=await axiosService.post(
-        //                 "https://rc-epay.esewa.com.np/api/epay/main/v2/initiate",
-        //                 formData,
-        //                 {
-        //                   headers: {
-        //                     "Content-Type": "application/x-www-form-urlencoded",
-        //                   },
-        //                 }
-        //               );
-        //               if (response2.status === 200 && response2.data.payment_url) {
-        //                 window.location.href = response2.data.payment_url;
-        //               }
-        //         }
             }
            catch(error)
            {
@@ -74,8 +46,20 @@ export default function PaymentDialog({ openDialog, setOpenDialog, courseDetail 
             toast.error(error?.response?.data?.message);
            }
         }
+        const handleKhaltiPayment=async()=>{
+            try{
+                console.log(data);
+                window.location.href=`${Initialize_Khalti_Payment}?${data}`;
+             }
+            catch(error)
+            {
+             setOpenDialog(false);
+             console.log(error);
+             toast.error(error?.response?.data?.message);
+            }
+         }
 
-         paymentGateway === "khalti"? await axiosService.post():await handleEsewaPayment();
+         paymentGateway === "khalti"? handleKhaltiPayment():await handleEsewaPayment();
   }
 
   return (

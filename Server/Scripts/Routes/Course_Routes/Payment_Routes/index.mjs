@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { initializeEsewaPayment } from "../../../Controllers/Course_Controller/Payment/esewa/index.mjs";
-
+import EsewaPayment from "../../../Controllers/Course_Controller/Payment/esewa/index.mjs";
+import KhaltiPayment from "../../../Controllers/Course_Controller/Payment/khalti/index.mjs";
 
 
 const paymentRouter=Router();
 
-paymentRouter.get('/initialize-esewa',initializeEsewaPayment);
-paymentRouter.get('/complete-esewa-payment',);
+paymentRouter.get('/initialize-esewa',EsewaPayment.initializeEsewaPayment);
+paymentRouter.get('/complete-esewa-payment',EsewaPayment.completeEsewaPayment);
 
-paymentRouter.post('/initialize-khalti',);
-paymentRouter.get('/complete-khalti-payment',);
+paymentRouter.get('/initialize-khalti',KhaltiPayment.initializeTheKhaltiPayment);
+paymentRouter.get('/complete-khalti-payment',KhaltiPayment.completeKhaltiPayment);
 
 
 export default paymentRouter;
