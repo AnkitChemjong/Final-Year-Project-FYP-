@@ -132,7 +132,7 @@ export const becomeTeacherInitialState={
 
 
 export const formatForAllApplication=["",'S.N',"Applicant Name","Date","Status","action"];
-export const formatForAllCourses=["",'S.N',"Course","Students","Date","Revenue","action"];
+export const formatForAllCourses=["",'S.N',"Course","Price","Students","Date","Revenue","action"];
 
 
 

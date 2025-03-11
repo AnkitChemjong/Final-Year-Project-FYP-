@@ -117,10 +117,10 @@ export default function CommonTableForCourse({data,header,type}){
                  </TableCell>
                  <TableCell>{data?.indexOf(item)+1}</TableCell>
                  <TableCell>{item?.title}</TableCell>
+                 <TableCell>Rs. {item?.pricing}</TableCell>
                  <TableCell className="text-center">{item?.students.length}</TableCell>
                  <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
                  <TableCell className="text-center">Rs.{item?.students.length*item?.pricing}</TableCell>
-     
                  <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
                    <FaRegEdit className='cursor-pointer' onClick={()=>handleCourseEditId(item?._id)} size={20}/>
                  <RiDeleteBin6Line onClick={()=>deleteCourse({data:item,type:"single"})} className='cursor-pointer' size={20}/>

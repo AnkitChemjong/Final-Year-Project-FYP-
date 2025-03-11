@@ -23,6 +23,11 @@ export default function ContextApi({children}) {
   const [specificCourseDetailsId,setSpecificCourseDetailsId]=useState(null);
 
   const [allCourses,setAllCourses]=useState([]);
+
+  const [studentEnrolledCourses,setStudentEnrolledCourses]=useState([]);
+
+
+  const [courseProgress,setCourseProgress]=useState({});
   return (
    <UseContextApi.Provider  value={{loading,setLoading,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
@@ -32,7 +37,9 @@ export default function ContextApi({children}) {
     currentEditedCourseId, setCurrentEditedCourseId,allCourses,setAllCourses,
     loadingStateCourse,setLoadingStateCourse,
     specificCourseDetails,setSpecificCourseDetails,
-    specificCourseDetailsId,setSpecificCourseDetailsId}}>
+    specificCourseDetailsId,setSpecificCourseDetailsId,
+    studentEnrolledCourses,setStudentEnrolledCourses,
+    courseProgress,setCourseProgress}}>
      {children}
    </UseContextApi.Provider>
   )

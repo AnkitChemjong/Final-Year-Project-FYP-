@@ -1,6 +1,8 @@
 import React,{useContext, useEffect, useState} from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
+import CommonSkeleton from '@/Components/CommonSkeleton';
+import { toast } from 'react-toastify';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,19 +17,33 @@ import { Label } from '@/Components/ui/label';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { UseContextApi } from '@/Components/ContextApi';
-import { Get_All_Course } from '@/Routes';
+import { Get_All_Course, Get_Purchase_Detail } from '@/Routes';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { axiosService } from '@/Services';
 import Search from '@/Components/Search';
 import { SEARCH_COURSE_ROUTES } from '@/Routes';
+import { useSelector } from 'react-redux';
 
 
 export default function Course() {
+  const userStates = useSelector(state => state.user);
+    const { data: user, loading } = userStates;
   const navigate=useNavigate();
+  const location=useLocation();
+  const params = new URLSearchParams(location.search);
+  const status=params.get('payment');
+  const message=params.get('message');
     const [sort,setSort]=useState("create-rtoo");
     const [searchParams,setSearchParams]=useSearchParams();
     const [filters, setFilters] = useState({});
     const {allCourses,setAllCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
+
+    useEffect(() => {
+      if (status && status === 'failed' ) {
+        toast.success(message);
+        navigate(location.pathname,{ replace: true })
+      }
+    }, [status]);
 
   const getFilterCourses=async ({filters,sort})=>{
     try{
@@ -76,7 +92,7 @@ export default function Course() {
       }
   
       setFilters(copyFilters);
-      sessionStorage.setItem("filters", JSON.stringify(copyFilters));
+      localStorage.setItem("filters", JSON.stringify(copyFilters));
     }
     
     
@@ -94,18 +110,18 @@ export default function Course() {
 
     useEffect(()=>{
      const queryStringForFilter=createSearchParamsMaker(filters);
-     setSearchParams(new URLSearchParams(queryStringForFilter))
+     setSearchParams(new URLSearchParams(queryStringForFilter));
     },[filters])
 
 
     useEffect(() => {
       setSort("create-rtoo");
-      setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+      setFilters(JSON.parse(localStorage.getItem("filters")) || {});
     }, []);
      
     useEffect(() => {
       return () => {
-        sessionStorage.removeItem("filters");
+        localStorage.removeItem("filters");
       };
     }, []);
 
@@ -128,6 +144,25 @@ export default function Course() {
   }
   }
 
+  const handleNavigate=async(id)=>{
+    try{
+      if(!loading){
+        const response=await axiosService.get(`${Get_Purchase_Detail}/${id}/${user?._id}`);
+        // console.log(response);
+        if(response?.data?.data){
+          navigate(`/courseProgress/${id}`);
+
+        }
+        else{
+          navigate(`/course/details/${id}`);
+        }
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+
+  }
   return (
     <div>
       <Navbar/>
@@ -201,7 +236,7 @@ export default function Course() {
                 allCourses && allCourses.length > 0?
                 allCourses.map((item,index)=>{
                   return (
-                    <Card onClick={()=>navigate(`/course/details/${item._id}`)} className="cursor-pointer" key={index}>
+                    <Card onClick={()=>handleNavigate(item?._id)} className="cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md" key={index}>
                       <CardContent className="flex p-4 gap-4 ">
                         <div className="w-48 h-32 flex-shrink-0">
                           <img src={item?.image}

@@ -35,6 +35,11 @@ export const Delete_All_Course=`${Get_All_Course}/deleteAll`
 export const Delete_Selected_Course=`${Get_All_Course}/deleteSelected`
 export const Upload_Bulk_File=`${Get_All_Course}/bulkUpload`
 export const SEARCH_COURSE_ROUTES=`${Get_All_Course}/searchedCourse`
+export const Get_Enrolled_Course=`${Get_All_Course}/getEnrolledCourse`;
+export const Get_Course_Detail=`${Get_All_Course}/get/details`;
+export const Get_Purchase_Detail=`${Get_All_Course}/checkPurchase`;
+export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`
+
 
 //Payment Routes
 export const Payment='/payment';

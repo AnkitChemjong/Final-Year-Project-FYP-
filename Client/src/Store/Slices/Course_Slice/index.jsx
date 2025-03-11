@@ -13,6 +13,7 @@ import { axiosService } from "@/Services";
   }
   catch(error){
     toast.error("Something Wrong on getting courses");
+    return rejectWithValue(error.message);
   }
 })
 

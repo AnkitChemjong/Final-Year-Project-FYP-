@@ -1,5 +1,6 @@
 import CourseModel from "../../../Model/Course_Model/index.mjs";
 
+
 const getAllCourses=async (req,res)=>{
     try{
         const {category=[],level=[],primaryLanguage=[],sortBy="create-rtoo"}=req.query;
@@ -40,16 +41,20 @@ const getAllCourses=async (req,res)=>{
         }
         
        const allCourses=await CourseModel.find(filters).sort(sortParam).populate('creator').populate('students.studentId');
-       if(allCourses){
-           return res.status(200).json({message:"Fetched all Successfully",
-            course:allCourses,
+       if(!allCourses){
+        return res.status(400).json({message:"Fetched course problem.",
+            course:null,
             error:null
            });
        }
+        return res.status(200).json({message:"Fetched all Successfully",
+            course:allCourses,
+            error:null
+           });
     }
     catch(error){
         console.log(error)
-            return res.json({message:"Error on getting courses.",data:null,error:error?.message}); 
+        return res.json({message:"Error on getting courses.",data:null,error:error?.message}); 
     }
 }
 

@@ -12,6 +12,7 @@ import { axiosService } from "@/Services";
   }
   catch(error){
     toast.error("Something Wrong on getting applications");
+    return rejectWithValue(error.message);
   }
 })
 

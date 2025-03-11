@@ -21,44 +21,58 @@ import CreateNewCourse from "./Pages/CreateNewCourse";
 import { getCourse } from "./Store/Slices/Course_Slice";
 import CourseDetails from "./Pages/CourseDetails";
 import StudentCourses from "./Pages/StudentCourses";
+import CourseProgress from "./Pages/CourseProgress";
 
 
 const PrivateRoute = ({ children }) => {
-  const logedUser = useSelector((state) => state?.user?.data);
-  const { loading } = useContext(UseContextApi); 
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
 
   if (loading) {
     return <CommonSkeleton />; 
   }
-
-  if (logedUser) {
-    if (logedUser?.userRole?.includes('admin')) {
+  if (user) {
+    if (user?.userRole?.includes('admin')) {
       return <Navigate to="/dashboard" />;
     } else {
       return children;
     }
-  } else {
+  } 
+  if(!loading && !user){
     return <Navigate to="/signup" />;
   }
+  
 };
 
 
 
 const AuthRoute=({children})=>{
-  const logedUser=useSelector((state)=>state?.user?.data)
-  const user=!!logedUser;
-  return user? <Navigate to="/"/>:children;
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
+  const logedUser=!!user;
+  if (loading) {
+    return <CommonSkeleton />; 
+  }
+  return !loading && logedUser? <Navigate to="/"/>:children;
 }
 function AdminRoute({ children }) {
-  const logedUser = useSelector((state) => state?.user?.data);
-  if (!logedUser || !logedUser?.userRole?.includes("admin")) {
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
+  if (loading) {
+    return <CommonSkeleton />; 
+  }
+  if (!loading && (!user || !user?.userRole?.includes("admin"))) {
     return <Navigate to="/" />;
   }
   return children;
 }
 function HomeRestrictForAdmin({children}){
-  const logedUser = useSelector((state) => state?.user?.data);
-  if(logedUser?.userRole?.includes("admin")){
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
+  if (loading) {
+    return <CommonSkeleton />; 
+  }
+  if(!loading && user?.userRole?.includes("admin")){
     return <Navigate to="/dashboard" />
   }
   else{
@@ -73,19 +87,26 @@ function App() {
   const applications=useSelector(state=>state?.application);
   const courses=useSelector(state=>state?.course);
   const dispatch=useDispatch();
-  useEffect(()=>{
-    setLoading(true);
-     if(!logedUser?.data){
-      dispatch(getUser()); 
-     }
-     if(!applications?.data){
-       dispatch(getApplication());
-     }
-     if(!courses?.data){
-       dispatch(getCourse());
-     }
-     setLoading(false);
-  },[]);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      
+      if (!logedUser?.data) {
+        await dispatch(getUser());
+      }
+      if (!applications?.data) {
+        await dispatch(getApplication());
+      }
+      if (!courses?.data) {
+        await dispatch(getCourse());
+      }
+  
+      setLoading(false);
+    };
+  
+    fetchData();
+  }, []);
+  
 if(loading){
   return(
      <CommonSkeleton/>
@@ -109,6 +130,7 @@ else{
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
+          <Route path="/courseProgress/:id" element={<PrivateRoute><CourseProgress/></PrivateRoute>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Router>

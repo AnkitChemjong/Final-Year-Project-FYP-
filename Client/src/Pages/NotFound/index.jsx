@@ -8,8 +8,8 @@ const goHome=()=>{
 navigate("/")
 }
   return (
-    <div class="relative h-100vh">
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-gray-200">
+    <div className="relative h-100vh">
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-gray-200">
     <Button onClick={goHome}>Go Home</Button>
   </div>
 </div>

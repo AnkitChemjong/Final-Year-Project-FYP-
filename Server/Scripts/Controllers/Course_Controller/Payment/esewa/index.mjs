@@ -28,7 +28,7 @@ class EsewaPayment{
             transaction_uuid:purchaseData._id,
             product_code:process.env.ESEWA_PRODUCT_CODE,
             success_url:process.env.ESUCCESS_URL,
-            failure_url:`${process.env.EFAULURE_URL}?payment=failed`,
+            failure_url:`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`,
             signed_field_names:paymentInitate.signed_field_names,
             signature:paymentInitate.signature,
             secret:process.env.ESEWA_SECRET_KEY
@@ -49,24 +49,25 @@ class EsewaPayment{
       
         try {
           const paymentInfo = await verifyEsewaPayment(data);
+          //console.log(paymentInfo);
           const purchasedData = await PurchaseModel.findOne({
-            _id:paymentInfo.response.transaction_uuid,amountPaid:paymentInfo?.decodedData?.total_amount}
-          ).pupulate('courseId');
+            _id:paymentInfo.response.transaction_uuid,amountPaid:Math.floor(paymentInfo?.decodedData?.total_amount)}
+          ).populate('courseId');
           if (!purchasedData) {
-            return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase not found.`);
+            return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase not found.`);
           }
           purchasedData.orderStatus="done";
           purchasedData.paymentStatus="paid";
           purchasedData.transactionId=paymentInfo?.decodedData?.transaction_code;
           purchasedData.save();
     
-          const creator=await User.findOne({_id:purchasedData?.couseId?.creator})
+          const creator=await User.findOne({_id:purchasedData?.courseId?.creator})
     
           const userCourses=await PurchasedCoursesModel.findOne({userId:user._id});
           if (userCourses) {
             userCourses.courses.push({
               courseId: purchasedData?.courseId?._id,
-              title: purchasedData?.courseId?.courseTitle,
+              title: purchasedData?.courseId?.title,
               instructorId: purchasedData?.courseId?.creator,
               instructorName: creator?.userName,
               dateOfPurchase: purchasedData?.orderDate,
@@ -80,7 +81,7 @@ class EsewaPayment{
               courses: [
                 {
                     courseId: purchasedData?.courseId?._id,
-                    title: purchasedData?.courseId?.courseTitle,
+                    title: purchasedData?.courseId?.title,
                     instructorId: purchasedData?.courseId?.creator,
                     instructorName: creator?.userName,
                     dateOfPurchase: purchasedData?.orderDate,
@@ -91,7 +92,7 @@ class EsewaPayment{
       
             await newUserCourses.save();
           }
-          res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=Success`);
+          res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull`);
         } catch (error) {
           console.log(error);
         }

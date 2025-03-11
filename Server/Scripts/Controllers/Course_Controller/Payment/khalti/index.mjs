@@ -16,7 +16,7 @@ class KhaltiPayment{
         //console.log(course);
         
         if (course.length === 0) {
-              return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase record not found`);
+              return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase record not found`);
             }
         const purchaseData=await PurchaseModel.create(data);
         //console.log(purchaseData);
@@ -56,17 +56,18 @@ class KhaltiPayment{
           paymentInfo.transaction_id !== transaction_id ||
           Number(paymentInfo.total_amount) !== Number(amount)
         ) {
-          return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase record error`);
+          return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase record error`);
         }
     
         // Check if payment done in valid item
         const purchasedData = await PurchaseModel.findOne({
           _id: purchase_order_id,
-          amountPaid: amount,
-        }).populate('courseId');;
+          amountPaid: (amount/100),
+        }).populate('courseId');
+        
     
         if (!purchasedData) {
-          return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase record not found`);
+          return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase record not found`);
         }
         purchasedData.orderStatus="done";
         purchasedData.paymentStatus="paid";
@@ -79,7 +80,7 @@ class KhaltiPayment{
         if (userCourses) {
           userCourses.courses.push({
             courseId: purchasedData?.courseId?._id,
-            title: purchasedData?.courseId?.courseTitle,
+            title: purchasedData?.courseId?.title,
             instructorId: purchasedData?.courseId?.creator,
             instructorName: creator?.userName,
             dateOfPurchase: purchasedData?.orderDate,
@@ -93,7 +94,7 @@ class KhaltiPayment{
             courses: [
               {
                   courseId: purchasedData?.courseId?._id,
-                  title: purchasedData?.courseId?.courseTitle,
+                  title: purchasedData?.courseId?.title,
                   instructorId: purchasedData?.courseId?.creator,
                   instructorName: creator?.userName,
                   dateOfPurchase: purchasedData?.orderDate,
@@ -105,9 +106,10 @@ class KhaltiPayment{
           await newUserCourses.save();
         }
 
-        res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=Success&message=null`);
+        res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull`);
       } catch (error) {
         console.error(error);
+        return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
         
       }
     };

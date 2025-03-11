@@ -1,9 +1,8 @@
 import React, { useContext,useEffect,useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { UseContextApi } from '@/Components/ContextApi';
-import CommonSkeleton from '@/Components/CommonSkeleton';
 import { BiCheckSquare } from "react-icons/bi";
 import { IoPlayCircleOutline } from "react-icons/io5";
 import { CiLock } from "react-icons/ci";
@@ -13,6 +12,7 @@ import VideoPlayerReact from '@/Components/VideoPlayerReact';
 import { Card, CardContent, 
     CardHeader, CardTitle } from "@/components/ui/card";
 import PaymentDialog from '@/Components/PaymentDialog';
+import { Get_Course_Detail } from '@/Routes';
 import {
     Dialog,
     DialogClose,
@@ -21,8 +21,12 @@ import {
     DialogHeader,
     DialogTitle,} from "@/components/ui/dialog";
 import { FaGlobeAsia } from "react-icons/fa";
+import { axiosService } from '@/Services';
+import CommonSkeleton from '@/Components/CommonSkeleton';
 export default function CourseDetails() {
-    const allCourses=useSelector(state=>state?.course?.data);
+    const navigate=useNavigate();
+    const userStates = useSelector(state => state.user);
+        const { data: user, loading } = userStates; 
     const {specificCourseDetails,setSpecificCourseDetails,
         specificCourseDetailsId,setSpecificCourseDetailsId,
         loadingStateCourse,setLoadingStateCourse
@@ -52,12 +56,27 @@ export default function CourseDetails() {
     },[]);
 
     useEffect(()=>{
+        const getCourseDetail=async ()=>{
+            if(!loading){
+                const response=await axiosService.get(`${Get_Course_Detail}/${specificCourseDetailsId}/${user._id}`);
+                //console.log(response);
+                if(response.status===200 && !response?.data?.coursePurchased){
+                    setSpecificCourseDetails(response?.data?.data);
+                    setLoadingStateCourse(false);
+                
+            }
+            else{
+                setSpecificCourseDetails(null);
+                setLoadingStateCourse(false);
+                navigate(`/courseProgress/${specificCourseDetailsId}`);
+            }
+        }
+        }
         if(specificCourseDetailsId){
-            const courseDetails=allCourses?.find((item)=>item._id===specificCourseDetailsId);
-            setLoadingStateCourse(false);
-          setSpecificCourseDetails(courseDetails);
+            getCourseDetail();
         }
     },[specificCourseDetailsId]);
+
 
     const handleFreePreview=(videoInfo)=>{
      if(videoInfo){
@@ -66,8 +85,8 @@ export default function CourseDetails() {
      }
     }
 
- if(loadingStateCourse) return <CommonSkeleton/>
-  return (
+if(!setSpecificCourseDetails) return <CommonSkeleton />
+return (
     <div>
     <Navbar/>
      <div className='mx-auto p-4'>

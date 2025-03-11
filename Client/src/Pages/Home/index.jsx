@@ -1,27 +1,16 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import { Button } from '@/Components/ui/button';
 import { useSelector } from 'react-redux';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
-import { toast } from 'react-toastify';
 
 
 export default function Home() {
-  const location = useLocation();
-    const params = new URLSearchParams(location.search);
-    console.log(params);
-    const status=params.get('payment');
-    useEffect(() => {
-      if (status && status === 'success') {
-        toast.success("Payment Successful");
-      }
-    }, [location.search]);
-
-
-  const user=useSelector(state=>state?.user?.data)
+  const userStates = useSelector(state => state.user);
+  const { data: user, loading } = userStates;
   const navigate=useNavigate();
   const handleButtonClick=()=>{
-    if(user){
+  if(!loading && user){
       navigate("/course");
     }
     else{

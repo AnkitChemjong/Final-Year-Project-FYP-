@@ -302,11 +302,11 @@ export default function Profile() {
 
             <div className="flex flex-row justify-center items-center md:gap-28">
               {user?.userRole?.includes("teacher") ? (
-                <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
+                <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
                   Dashboard
                 </Button>
               ) : (
-                <Button onClick={toggleDialog3} disabled={!user?.DOB|| userApplication?.find(data=>data?.user?._id===user?._id)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
+                <Button onClick={toggleDialog3} disabled={!user?.DOB|| userApplication?.find(data=>data?.user?._id===user?._id)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
                   {userApplication?.find(data=>data?.user?._id===user?._id)? "Processing":"Become Teacher"}
                 </Button>
               )}
@@ -357,7 +357,7 @@ export default function Profile() {
             <div className="w-full flex flex-row justify-center items-center md:gap-80">
               <Button
                 onClick={toggleDialog1}
-                className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700"
+                className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md"
               >
                 Update Info
               </Button>
@@ -373,7 +373,7 @@ export default function Profile() {
               />
               {user?.userRole?.includes("teacher") && (
                 <>
-                <Button onClick={toggleDialog4} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700">
+                <Button onClick={toggleDialog4} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
                   My CV
                 </Button>
                 <DialogForCV dialog4={dialog4} setDialog4={setDialog4} title={"Your CV"} description={"View and update your CV to keep your profile up-to-date."} user={user}/>

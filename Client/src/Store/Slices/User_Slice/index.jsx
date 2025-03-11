@@ -5,11 +5,19 @@ import { User_Route } from "@/Routes";
 
 export const getUser=createAsyncThunk("getUser",async ()=>{
   try{
-     const logedInUser=await axiosService.get(User_Route,{withCredentials:true});
-     return logedInUser?.data?.user;
+    const userFromLocal=JSON.parse(localStorage.getItem("user"));
+    if(userFromLocal){
+      return userFromLocal;
+    }
+      const loggedInUser=await axiosService.get(User_Route,{withCredentials:true});
+      if (loggedInUser?.data?.user) {
+        localStorage.setItem("user", JSON.stringify(loggedInUser.data.user));
+        return loggedInUser.data.user;
+      } 
   }
   catch(error){
     toast.error("Something Wrong on getting logged in User");
+    return rejectWithValue(error.message);;
   }
 });
 
