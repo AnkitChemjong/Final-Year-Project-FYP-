@@ -16,7 +16,7 @@ const getCourseDetails=async (req,res)=>{
         userId:studentId
        });
        //console.log(studentCourses);
-        const boughtCourse=studentCourses.courses.findIndex(item=>item.courseId === id) > -1;
+        const boughtCourse=studentCourses?.courses.findIndex(item=>item.courseId === id) > -1;
 
        return res.status(200).json({message:"Course details fetched Successfully.",
             data:courseDetails,
@@ -39,7 +39,7 @@ const checkPurchase=async (req,res)=>{
         userId:studentId
        });
        //console.log(studentCourses);
-        const boughtCourse=studentCourses.courses.findIndex(item=>item.courseId === id) > -1;
+        const boughtCourse=studentCourses?.courses.findIndex(item=>item.courseId === id) > -1;
 
        return res.status(200).json({message:"Course purchase status.",
             data:boughtCourse,

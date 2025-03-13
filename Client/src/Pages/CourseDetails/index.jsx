@@ -75,7 +75,7 @@ export default function CourseDetails() {
         if(specificCourseDetailsId){
             getCourseDetail();
         }
-    },[specificCourseDetailsId]);
+    },[specificCourseDetailsId,loading]);
 
 
     const handleFreePreview=(videoInfo)=>{
@@ -84,6 +84,7 @@ export default function CourseDetails() {
         setShowFreePreviewDialog(true);
      }
     }
+    console.log(specificCourseDetails);
 
 if(!setSpecificCourseDetails) return <CommonSkeleton />
 return (
@@ -158,13 +159,13 @@ return (
                     {
                         specificCourseDetails?.curriculum?.map((item,index)=>{
                             return(
-                                <li key={index} className={`${item?.freePreview? 'cursor-pointer':'cursor-not-allowed'} flex items-center mb-4`}
+                                <li key={index} className={`${item?.freePreview? 'cursor-pointer':'cursor-not-allowed'} flex items-center mb-4 `}
                                  onClick={item?.freePreview?()=>handleFreePreview(item):null}
                                 >
                                   {
                                     item?.freePreview? <IoPlayCircleOutline className='mr-2 h-4 w-4'/>:<CiLock className='mr-2 h-4 w-4'/>
                                   }
-                                  <span>{item?.title}</span>
+                                  <span className={`${item?.freePreview && "hover:scale-110"}`}>{item?.title}</span>
                                 </li>
                             )
                         })
@@ -190,9 +191,9 @@ return (
                             map(filteredItem=>{
                                 return(
                                     <div key={filteredItem?.title} onClick={()=>handleFreePreview(filteredItem)} className='flex flex-row items-center gap-1'>
-                                        <IoPlayCircleOutline className='mr-2 h-4 w-4'/>
+                                        <IoPlayCircleOutline className='mr-2 h-4 w-4 cursor-pointer'/>
                                     <p
-                                         className='cursor-pointer text-base font-normal'>
+                                         className='cursor-pointer text-base font-normal hover:scale-110'>
                                             {filteredItem?.title}
                                     </p>
                                     </div>

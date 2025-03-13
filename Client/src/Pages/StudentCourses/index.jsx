@@ -30,7 +30,7 @@ export default function StudentCourses() {
         try{
             if(!loading){
                 const response=await axiosService.get(`${Get_Enrolled_Course}/${user?._id}`);
-                console.log(response.data.data);
+                //console.log(response.data.data);
                 if(response.status === 200){
                     setStudentEnrolledCourses(response?.data?.data);
                     setLoadingStateCourse(false);
@@ -44,7 +44,8 @@ export default function StudentCourses() {
       if(studentEnrolledCourses.length<=0){
           getStudentEnrolledCourses();
     }
-  },[]); 
+  },[loading]); 
+
   useEffect(() => {
     if (status && status === 'success' ) {
       toast.success(message);

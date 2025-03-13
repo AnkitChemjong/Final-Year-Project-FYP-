@@ -7,6 +7,7 @@ const paymentRouter=Router();
 
 paymentRouter.get('/initialize-esewa',EsewaPayment.initializeEsewaPayment);
 paymentRouter.get('/complete-esewa-payment',EsewaPayment.completeEsewaPayment);
+paymentRouter.get('/esewa_cancel',EsewaPayment.esewaCancelUrl);
 
 paymentRouter.get('/initialize-khalti',KhaltiPayment.initializeTheKhaltiPayment);
 paymentRouter.get('/complete-khalti-payment',KhaltiPayment.completeKhaltiPayment);

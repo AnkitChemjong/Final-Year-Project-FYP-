@@ -30,5 +30,7 @@ courseRouter.get("/getEnrolledCourse/:studentId",getEnrolledCourses);
 
 //course progress routes
 courseRouter.get("/getCourseProgress/:userId/:courseId",CourseProgress.getCourseProgress);
+courseRouter.post("/updateContentAsViewed",CourseProgress.updateContentAsViewed);
+courseRouter.post("/resetCourseProgress",CourseProgress.resetCourseProgress);
 
 export default courseRouter;

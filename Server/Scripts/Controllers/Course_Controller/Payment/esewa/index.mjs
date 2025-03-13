@@ -10,8 +10,8 @@ class EsewaPayment{
     static initializeEsewaPayment=async (req, res) => {
         try {
           const data = req.query;
-          const course=await CourseModel.find({_id:data?.courseId,pricing:data?.amountPaid});
-          if (course.length === 0) {
+          const course=await CourseModel.findOne({_id:data?.courseId,pricing:data?.amountPaid});
+          if (!course) {
             return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase course not found`);
               }
           const purchaseData=await PurchaseModel.create(data);
@@ -28,7 +28,7 @@ class EsewaPayment{
             transaction_uuid:purchaseData._id,
             product_code:process.env.ESEWA_PRODUCT_CODE,
             success_url:process.env.ESUCCESS_URL,
-            failure_url:`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`,
+            failure_url:`${process.env.ESEWA_CANCEL_URL}?purchasedDataId=${purchaseData._id}`,
             signed_field_names:paymentInitate.signed_field_names,
             signature:paymentInitate.signature,
             secret:process.env.ESEWA_SECRET_KEY
@@ -46,9 +46,8 @@ class EsewaPayment{
       static completeEsewaPayment=async (req, res) => {
         const { data } = req.query;
         const user=req.user;
-      
+        const paymentInfo = await verifyEsewaPayment(data);
         try {
-          const paymentInfo = await verifyEsewaPayment(data);
           //console.log(paymentInfo);
           const purchasedData = await PurchaseModel.findOne({
             _id:paymentInfo.response.transaction_uuid,amountPaid:Math.floor(paymentInfo?.decodedData?.total_amount)}
@@ -59,9 +58,9 @@ class EsewaPayment{
           purchasedData.orderStatus="done";
           purchasedData.paymentStatus="paid";
           purchasedData.transactionId=paymentInfo?.decodedData?.transaction_code;
-          purchasedData.save();
+          await purchasedData.save();
     
-          const creator=await User.findOne({_id:purchasedData?.courseId?.creator})
+          const creator=await User.findOne({_id:purchasedData?.courseId?.creator});
     
           const userCourses=await PurchasedCoursesModel.findOne({userId:user._id});
           if (userCourses) {
@@ -89,13 +88,31 @@ class EsewaPayment{
                 },
               ],
             });
-      
             await newUserCourses.save();
-          }
+        }
+          await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true });
           res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull`);
         } catch (error) {
           console.log(error);
+          const purchasedData = await PurchaseModel.findOne({
+            _id:paymentInfo.response.transaction_uuid,amountPaid:Math.floor(paymentInfo?.decodedData?.total_amount)}
+          );
+          await PurchaseModel.findByIdAndDelete(purchasedData?._id);
+        return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
         }
       };
+
+
+      static esewaCancelUrl=async(req,res)=>{
+        try{
+            const {purchasedDataId}=req.query;
+            await PurchaseModel.findByIdAndDelete(purchasedDataId);
+            return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
+        }
+        catch (error) {
+            console.log(error);
+          return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
+          }
+      }
 }
 export default EsewaPayment;

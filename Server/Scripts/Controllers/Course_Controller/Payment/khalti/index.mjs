@@ -105,10 +105,16 @@ class KhaltiPayment{
     
           await newUserCourses.save();
         }
+        await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true });
 
         res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull`);
       } catch (error) {
-        console.error(error);
+        console.log(error);
+        const purchasedData=await PurchaseModel.findOne({
+            _id: purchase_order_id,
+            amountPaid: (amount/100),
+          });
+        await PurchaseModel.findByIdAndDelete(purchasedData?._id);
         return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
         
       }

@@ -38,7 +38,9 @@ export const SEARCH_COURSE_ROUTES=`${Get_All_Course}/searchedCourse`
 export const Get_Enrolled_Course=`${Get_All_Course}/getEnrolledCourse`;
 export const Get_Course_Detail=`${Get_All_Course}/get/details`;
 export const Get_Purchase_Detail=`${Get_All_Course}/checkPurchase`;
-export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`
+export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`;
+export const Update_Content_As_Viewed=`${Get_All_Course}/updateContentAsViewed`;
+export const Reset_Course_Progress=`${Get_All_Course}/resetCourseProgress`;
 
 
 //Payment Routes

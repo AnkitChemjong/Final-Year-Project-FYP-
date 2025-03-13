@@ -6,10 +6,13 @@ import {ToastContainer} from 'react-toastify';
 import { Provider } from 'react-redux';
 import store from './Store';
 import ContextApi from './Components/ContextApi';
+import { Suspense } from 'react';
+import CommonSkeleton from './Components/CommonSkeleton';
 
 
-
+//Suspense for the loading on the refresh but i have performed it by another way in the app component
 createRoot(document.getElementById('root')).render(
+  <Suspense fallback={<CommonSkeleton/>}>
   <Provider store={store}>
     <ContextApi>
     <App />
@@ -24,4 +27,5 @@ createRoot(document.getElementById('root')).render(
         theme="light"
       />
   </Provider>
+  </Suspense>
 )

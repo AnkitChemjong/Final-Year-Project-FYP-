@@ -140,9 +140,8 @@ const handleLogout=async ()=>{
         className="rounded-full"
         src={logedUser?.userImage.startsWith("http") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
         alt="navimage"  />:(
-            <div className=' bg-slate-400 flex justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
+            <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
         ))}
-        <AvatarFallback>{logedUser?.userName?.name?.charAt(0) || "?"}</AvatarFallback>
       </Avatar>
         </div>
           )

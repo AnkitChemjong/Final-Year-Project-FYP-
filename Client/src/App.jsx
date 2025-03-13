@@ -29,7 +29,7 @@ const PrivateRoute = ({ children }) => {
   const { data: user, loading } = userStates;
 
   if (loading) {
-    return <CommonSkeleton />; 
+    return <CommonSkeleton />
   }
   if (user) {
     if (user?.userRole?.includes('admin')) {
@@ -82,15 +82,12 @@ function HomeRestrictForAdmin({children}){
 
 
 function App() {
-  const {loading,setLoading}=useContext(UseContextApi);
   const logedUser=useSelector((state)=>state?.user)
   const applications=useSelector(state=>state?.application);
   const courses=useSelector(state=>state?.course);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      
       if (!logedUser?.data) {
         await dispatch(getUser());
       }
@@ -100,19 +97,11 @@ function App() {
       if (!courses?.data) {
         await dispatch(getCourse());
       }
-  
-      setLoading(false);
     };
   
     fetchData();
   }, []);
-  
-if(loading){
-  return(
-     <CommonSkeleton/>
-  )
-}
-else{
+
 
   return (
       <Router>
@@ -135,7 +124,6 @@ else{
         </Routes>
       </Router>
     )
-}
 }
 
 export default App
