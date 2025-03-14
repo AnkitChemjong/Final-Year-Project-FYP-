@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import ResetForm from '@/Components/ResetForm';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
@@ -41,6 +41,11 @@ export default function ChangePass() {
            }
     
         }
+        useEffect(()=>{
+                  if(!email){
+                      navigate(-1);
+                  }
+            },[email]);
   return (
     <div>
       <Navbar/>

@@ -5,11 +5,8 @@ import { Dialog,DialogContent,DialogHeader,DialogTitle
  import { useNavigate } from 'react-router-dom';
  import { Label } from '../ui/label';
  import { Button } from '../ui/button';
-export default function CourseCompletedDialog({courseCompletedDialog,setCourseCompletedDialog}) {
+export default function CourseCompletedDialog({courseCompletedDialog,setCourseCompletedDialog,resetCourse=()=>{}}) {
     const navigate=useNavigate();
-    const resetCourse=async()=>{
-       
-    }
   return (
     <Dialog open={courseCompletedDialog}>
              <DialogContent className="sm:w-[450px]">

@@ -237,7 +237,7 @@ export const languageOptions = [
       label: "Welcome Message",
       componentType: "textarea",
       placeholder: "Welcome message for students",
-    },
+    }
   ];
   
   export const courseLandingInitialFormData = {

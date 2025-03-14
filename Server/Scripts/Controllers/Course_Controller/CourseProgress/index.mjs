@@ -61,7 +61,7 @@ class CourseProgress{
     static resetCourseProgress=async(req,res)=>{
         try{
             const {userId,courseId} =req.body;
-            const progress = await CourseProgress.findOne({userId,courseId});
+            const progress = await ProgressModel.findOne({userId,courseId});
             if(!progress){
                 return res.status(404).json({
                     message:"Progress not found.",

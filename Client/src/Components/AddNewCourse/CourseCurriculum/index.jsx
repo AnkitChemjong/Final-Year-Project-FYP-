@@ -282,7 +282,10 @@ export default function CourseCurriculum() {
                                       </Label>
                                  </div>
                             </div>
-                          <div className='mt-6 flex flex-col'>
+                          <div className='mt-6 flex flex-col gap-2'>
+                          <Label htmlFor={`freePreview-${index+1}`}>
+                                        Video Content :
+                            </Label>
                             {
                               courseCurriculumFormData[index]?.videoUrl ?
                               (

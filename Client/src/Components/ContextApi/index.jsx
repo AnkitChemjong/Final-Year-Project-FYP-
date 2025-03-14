@@ -25,8 +25,7 @@ export default function ContextApi({children}) {
   const [allCourses,setAllCourses]=useState([]);
 
   const [studentEnrolledCourses,setStudentEnrolledCourses]=useState([]);
-
-
+  
   const [courseProgress,setCourseProgress]=useState({});
   return (
    <UseContextApi.Provider  value={{loading,setLoading,downloading,setDownloading,courseLandingFormData,

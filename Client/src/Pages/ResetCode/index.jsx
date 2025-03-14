@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ResetForm from '@/Components/ResetForm';
 import { axiosService } from '@/Services';
 import { User_Check_Code_Route } from '@/Routes';
@@ -43,6 +43,11 @@ export default function ResetCode() {
        }
 
     }
+    useEffect(()=>{
+          if(!email){
+              navigate(-1);
+          }
+    },[email]);
   return (
     <div>
       <Navbar/>

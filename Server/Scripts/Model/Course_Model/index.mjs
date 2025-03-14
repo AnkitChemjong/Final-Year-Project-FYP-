@@ -64,6 +64,10 @@ const courseSchema=new Schema({
     curriculum: [lectureSchema],
     isPublished:{
         type:Boolean,
+    },
+    extraResources:{
+        type:String,
+        required:false
     }
 },{timestamps:true});
 const CourseModel=model("CourseModel",courseSchema);

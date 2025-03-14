@@ -1,11 +1,10 @@
 import React, { useContext, useEffect,useState } from 'react';
-import Navbar from '@/Components/Navbar';
 import { Button } from '@/Components/ui/button';
 import { FaChevronLeft ,FaChevronRight} from "react-icons/fa";
 import { useNavigate, useParams } from 'react-router-dom';
 import { UseContextApi } from '@/Components/ContextApi';
 import { axiosService } from '@/Services';
-import { Get_Course_Progress, Update_Content_As_Viewed } from '@/Routes';
+import { Get_Course_Progress, Update_Content_As_Viewed,Reset_Course_Progress } from '@/Routes';
 import { useSelector } from 'react-redux';
 import Confetti from 'react-confetti';
 import VideoPlayerReact from '@/Components/VideoPlayerReact';
@@ -98,17 +97,43 @@ export default function CourseProgress() {
      
             }
         }
-     },[currentContent,loading])
+     },[currentContent,loading]);
+
+     const resetCourse=async()=>{
+        try{
+          if(id){
+            const response=await axiosService.post(Reset_Course_Progress,{userId:user?._id,courseId:id});
+            if(response.status === 200){
+              setCurrentContent(null);
+              setShowConfetti(false);
+              setCourseCompletedDialog(false);
+              getCourseProgress();
+            }
+          }
+        }
+        catch(error){
+          console.log(error);
+        }
+     }
+     const playThisVideo=(item)=>{
+      setCurrentContent(item);
+     }
 
   return (
-    <div>
-      <Navbar/>
       <div className='flex flex-col h-screen '>
         {
             showConfetti && <Confetti/>
         }
         <div className='flex items-center justify-between p-4 border-b border-black'>
-             <div className='flex items-center'>
+             <div className='flex items-center space-x-4'>
+             <Button
+            onClick={() => navigate("/studentCourse")}
+            className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md"
+            size="sm"
+          >
+            <FaChevronLeft className="h-4 w-4 mr-2" />
+             Course Page
+          </Button>
                     <h1 className='text-lg font-bold hidden md:block'>
                         {
                             courseProgress?.courseDetails?.title
@@ -135,8 +160,8 @@ export default function CourseProgress() {
               <h2 className='text-2xl font-bold mb-2'> {currentContent?.title}</h2>
             </div>
           </div>
-      <div className={`fixed top-[69px] right-0 bottom-0 w-[400px] border-1 border-black transition-all duration-300 ${sideBarOpen? 'translate-x-0':'translate-x-full'}`}>
-         <Tabs defaultValue='content' className='h-full flex flex-col bg-cyan-600 rounded-md'>
+      <div className={`fixed top-[73px] right-0 bottom-0 w-[400px] border-2 border-black transition-all duration-300 ${sideBarOpen? 'translate-x-0':'translate-x-full'} rounded-md`}>
+         <Tabs defaultValue='content' className='h-full flex flex-col bg-gray-200 rounded-md '>
            <TabsList className="grid w-full grid-cols-2 p-0 h-14">
                  <TabsTrigger value="content" className=" text-black rounded-tl-md rounded-bl-md  h-full" >
                     Course Content
@@ -146,12 +171,12 @@ export default function CourseProgress() {
                  </TabsTrigger>
            </TabsList>
            <TabsContent value="content">
-             <ScrollArea className="h-full">
+             <ScrollArea className="max-h-[500px] overflow-y-auto">
                <div className='p-4 space-y-4'>
                 {
                     courseProgress?.courseDetails?.curriculum.map((item,index)=>{
                         return(
-                            <div key={index} className='flex items-center space-x-2 text-sm font-bold cursor-pointer'>
+                            <div key={index} onClick={()=>playThisVideo(item)} className='flex items-center space-x-2 text-sm font-bold cursor-pointer border-2 border-b-black py-1'>
                                 {
                                     courseProgress?.progress?.find(courseItem=>courseItem.contentId === item._id)?.viewed?
                                     <BiCheckSquare className='h-4 w-4 text-green-600'/>:<IoPlayCircleOutline className='w-4 h-4'/>
@@ -161,15 +186,16 @@ export default function CourseProgress() {
                         )
                     })
                 }
-
+              
                </div>
+              
              </ScrollArea>
            </TabsContent>
            <TabsContent value="overview" className="flex-1 overflow-hidden">
              <ScrollArea className="h-full">
                 <div className='p-4'>
                     <h2 className='text-xl font-bold mb-4'>About this course.</h2>
-                    <p className='text-white'>
+                    <p className='text-black'>
                         {courseProgress?.courseDetails?.description}
                     </p>
 
@@ -178,15 +204,10 @@ export default function CourseProgress() {
              </ScrollArea>
            </TabsContent>
          </Tabs>
-
-
-
-
         </div>
         </div>
       <CourseNotBoughtDialog lockView={lockView} setLockView={setLockView} />
-      <CourseCompletedDialog courseCompletedDialog={courseCompletedDialog} setCourseCompletedDialog={setCourseCompletedDialog}/>
+      <CourseCompletedDialog courseCompletedDialog={courseCompletedDialog} setCourseCompletedDialog={setCourseCompletedDialog} resetCourse={resetCourse}/>
       </div>
-    </div>
   )
 }
