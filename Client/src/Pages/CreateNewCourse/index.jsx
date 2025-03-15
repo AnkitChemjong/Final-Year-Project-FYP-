@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import { courseCurriculumInitialFormData, courseLandingInitialFormData } from '@/Utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '@/Store/Slices/Course_Slice';
+import { Button } from '@/Components/ui/button';
+import { FaChevronLeft } from "react-icons/fa";
 
 
 
@@ -21,7 +23,8 @@ export default function CreateNewCourse() {
     ,currentEditedCourseId,setCurrentEditedCourseId
   }=useContext(UseContextApi);
   const user=useSelector(state=>state?.user?.data);
-  const allCourse=useSelector(state=>state?.course?.data);
+  const useStates=useSelector(state=>state?.course);
+  const {data:allCourse,loading}=useStates;
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const params=useParams();
@@ -97,12 +100,16 @@ export default function CreateNewCourse() {
     }
   }
   useEffect(() => {
-    if (currentEditedCourseId !== null) getCourseDetailsById();
-  }, [currentEditedCourseId]);
+    if (currentEditedCourseId !== null && !loading) getCourseDetailsById();
+  }, [currentEditedCourseId,loading]);
   
   return (
     <div className='container mx-auto p-4'>
       <div className='flex justify-between'>
+           <Button onClick={()=>navigate(-1)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
+             <FaChevronLeft className='w-4 h-4 mr-2'/>
+             Return
+           </Button>
           <h1 className='text-3xl font-bold mb-5'>Create New Course</h1>
            <CommonButton func={handleAddNewCourse} disable={!validateFormData()} text="Submit"/>
       </div>
@@ -114,6 +121,10 @@ export default function CreateNewCourse() {
                         <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
                         <TabsTrigger value="course-landing-page">Course Landing Page</TabsTrigger>
                         <TabsTrigger value="setting">Setting</TabsTrigger>
+                        {
+                          params?.courseId &&
+                          <TabsTrigger value="quiz">Add Quiz</TabsTrigger>
+                        }
                     </TabsList>
                     <TabsContent value="curriculum">
                          <CourseCurriculum/>
@@ -122,6 +133,9 @@ export default function CreateNewCourse() {
                        <CourseLanding />
                     </TabsContent>
                     <TabsContent value="setting">
+                      <CourseSetting id={params?.courseId}/>
+                    </TabsContent>
+                    <TabsContent value="quiz">
                       <CourseSetting />
                     </TabsContent>
                    </Tabs>

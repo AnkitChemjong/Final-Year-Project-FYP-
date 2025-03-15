@@ -1,8 +1,9 @@
 import React,{useContext, useEffect, useState} from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
-import CommonSkeleton from '@/Components/CommonSkeleton';
+import SkeletonCard from '@/Components/SkeletonCard';
 import { toast } from 'react-toastify';
+import Footer from '@/Components/Footer';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +19,6 @@ import { Checkbox } from '@/Components/ui/checkbox';
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { UseContextApi } from '@/Components/ContextApi';
 import { Get_All_Course, Get_Purchase_Detail } from '@/Routes';
-import { Skeleton } from '@/Components/ui/skeleton';
 import { axiosService } from '@/Services';
 import Search from '@/Components/Search';
 import { SEARCH_COURSE_ROUTES } from '@/Routes';
@@ -59,6 +59,9 @@ export default function Course() {
     }
     catch(error){
       console.log(error);
+    }
+    finally{
+      setLoadingStateCourse(false);
     }
   }
 
@@ -265,7 +268,7 @@ export default function Course() {
                     </Card>
                   )
                 }):(loadingStateCourse? 
-                <Skeleton className=" bg-black flex justify-center items-center"/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>)
+                <SkeletonCard/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>)
               }
             </div>
 
@@ -273,6 +276,7 @@ export default function Course() {
 
          </div>
       </div>
+      <Footer/>
     </div>
   )
 }

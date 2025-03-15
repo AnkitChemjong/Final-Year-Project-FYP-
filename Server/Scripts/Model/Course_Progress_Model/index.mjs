@@ -12,6 +12,9 @@ const progressSchema = new Schema({
         ref:"CourseModel",
         required:true
       },
+      testCompletion:{
+         type:Boolean
+      },
       completed:{
         type:Boolean
       },

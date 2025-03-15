@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox } from '../ui/checkbox';
+import supabaseClient from '../SupabaseClient';
 import { Table,
   TableBody,
   TableCell,
@@ -30,6 +31,13 @@ export default function CommonTableForCourse({data,header,type}){
           const response=await axiosService.delete(Delete_All_Course,{data:{status,data}},{withCredentials:true, headers: {
             "Content-Type": "application/json"
     }});
+    for (const item of data) {
+      if (item?.extraResources) {
+        await supabaseClient.storage
+          .from('extra-resources')
+          .remove([item?.extraResources]);
+      }
+    }
     if(response.status===200){
       dispatch(getCourse());
       toast.success(response?.data?.message);
@@ -42,6 +50,14 @@ export default function CommonTableForCourse({data,header,type}){
                   "Content-Type": "application/json"
           }
               });
+              for (const item of selectedCourse) {
+                if (item?.extraResources) {
+                  await supabaseClient.storage
+                    .from('extra-resources')
+                    .remove([item?.extraResources]);
+                }
+              }
+              
               if(response.status===200){
                 setSelectedCourse([]);
                 dispatch(getCourse());
@@ -54,6 +70,9 @@ export default function CommonTableForCourse({data,header,type}){
         const response=await axiosService.delete(Delete_Single_Course,{data:{data}},{withCredentials:true, headers: {
                 "Content-Type": "application/json"
         }});
+        await supabaseClient.storage
+                    .from('extra-resources')
+                    .remove([data?.extraResources]);
         if(response.status===200){
           dispatch(getCourse());
           toast.success(response?.data?.message);

@@ -2,7 +2,6 @@ import React,{useEffect,useContext} from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import CommonSkeleton from '@/Components/CommonSkeleton';
 import Navbar from '@/Components/Navbar';
 import { UseContextApi } from '@/Components/ContextApi';
 import { axiosService } from '@/Services';
@@ -10,7 +9,8 @@ import { Get_Enrolled_Course } from '@/Routes';
 import { Card,CardContent,CardFooter } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
 import { IoStopwatchOutline } from "react-icons/io5";
-import { Skeleton } from '@/Components/ui/skeleton';
+import Footer from '@/Components/Footer';
+import SkeletonCard from '@/Components/SkeletonCard';
 
 
 export default function StudentCourses() {
@@ -39,6 +39,9 @@ export default function StudentCourses() {
         } 
         catch(error){
             console.log(error);
+        }
+        finally{
+          setLoadingStateCourse(false);
         }
       }
       if(studentEnrolledCourses.length<=0){
@@ -81,12 +84,13 @@ export default function StudentCourses() {
                         )
                     })
                 ):(loadingStateCourse? 
-                    <Skeleton className=" bg-black flex justify-center items-center"/>:<h1 className='text-3xl font-bold'>No Enrolled Courses.</h1>)
+                    <SkeletonCard/>:<h1 className='text-3xl font-bold'>No Enrolled Courses.</h1>)
             }
 
         </div>
 
       </div>
+      <Footer/>
     </div>
   )
 }

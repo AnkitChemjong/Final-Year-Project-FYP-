@@ -10,6 +10,7 @@ import bulkUpload from "../../Controllers/Course_Controller/BulkUploadLecture/in
 import getSearchedCourse from "../../Controllers/Course_Controller/GetSearchedCourse/index.mjs";
 import getEnrolledCourses from "../../Controllers/Course_Controller/GetEnrolledCourse/index.mjs";
 import CourseProgress from "../../Controllers/Course_Controller/CourseProgress/index.mjs";
+import getTopSixCourses from "../../Controllers/Course_Controller/GeTTopSixCourses/index.mjs";
 
 const courseRouter=Router();
 
@@ -26,6 +27,7 @@ courseRouter.delete('/deleteSelected',DeleteCourse.deleteSelectedCourses);
 courseRouter.post('/bulkUpload',uploadCourse.array('files',10),bulkUpload);
 courseRouter.post("/searchedCourse",getSearchedCourse);
 courseRouter.get("/getEnrolledCourse/:studentId",getEnrolledCourses);
+courseRouter.get("/getTopSixCourses",getTopSixCourses);
 
 
 //course progress routes

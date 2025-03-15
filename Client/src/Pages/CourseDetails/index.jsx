@@ -2,8 +2,10 @@ import React, { useContext,useEffect,useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import { useSelector } from 'react-redux';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import SkeletonCard from '@/Components/SkeletonCard';
 import { UseContextApi } from '@/Components/ContextApi';
 import { BiCheckSquare } from "react-icons/bi";
+import Footer from '@/Components/Footer';
 import { IoPlayCircleOutline } from "react-icons/io5";
 import { CiLock } from "react-icons/ci";
 import CommonButton from '@/Components/CommonButton';
@@ -84,9 +86,9 @@ export default function CourseDetails() {
         setShowFreePreviewDialog(true);
      }
     }
-    console.log(specificCourseDetails);
+    //console.log(specificCourseDetails);
 
-if(!setSpecificCourseDetails) return <CommonSkeleton />
+if(!setSpecificCourseDetails) return <SkeletonCard />
 return (
     <div>
     <Navbar/>
@@ -239,6 +241,7 @@ return (
         </aside>
 
      </div>
+     <Footer/>
     </div>
   )
 }

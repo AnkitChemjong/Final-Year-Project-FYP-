@@ -10,7 +10,7 @@ import ProgressBar from '@/Components/ProgressBar';
 import { Switch } from '@/Components/ui/switch';
 import supabaseClient from '@/Components/SupabaseClient';
 
-export default function CourseSetting() {
+export default function CourseSetting({id=null}) {
      const {courseLandingFormData, setCourseLandingFormData
         ,mediaUploadProgress, setMediaUploadProgress
       ,mediaUploadProgressPercentage, 
@@ -95,12 +95,26 @@ export default function CourseSetting() {
             e.target.value = "";
         }
     };
+
+    const setCoursePublished=(value)=>{
+        setCourseLandingFormData({
+            ...courseLandingFormData,
+            isPublished: value,
+        });
+    }
     
 
   return (
    <Card>
-    <CardHeader>
+    <CardHeader className="flex flex-row justify-between items-center">
     <CardTitle>Course Setting</CardTitle>
+    {
+        id &&
+        <CardTitle className="flex flex-row items-center gap-2">
+             <Label>{courseLandingFormData?.isPublished? "Unpublish Course":"Publish Course"} :</Label>
+            <Switch onCheckedChange={(value)=>setCoursePublished(value)} checked={courseLandingFormData?.isPublished}/>
+        </CardTitle>
+    }
     </CardHeader>
     <div className='p-5'>
 

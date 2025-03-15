@@ -12,6 +12,7 @@ import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import DialogForCV from "@/Components/DialogForCV";
+import Footer from "@/Components/Footer";
 import {
   User_Upload_Profile_Image,
   User_Delete_Profile_Image,
@@ -29,7 +30,8 @@ import { DialogForm } from "@/Components/DialogForm";
 import moment from "moment";
 
 export default function Profile() {
-  const user = useSelector((state) => state?.user?.data);
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
   const userApplication=useSelector(state=>state?.application?.data);
   const [hover, setHover] = useState(false);
   const upProfileImage = useRef();
@@ -185,8 +187,8 @@ export default function Profile() {
   const handleEvent3 = async (data) => {
     try {
       const formData=new FormData();
-      formData.append("cv",data.cv);
-      const response = await axiosService.post(User_Become_Teacher, formData);
+      formData.append("cv",data?.cv);
+      const response = await axiosService.post(User_Become_Teacher, formData,{ headers: { 'Content-Type': 'multipart/form-data' }});
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication())
@@ -382,25 +384,8 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="w-full flex flex-row justify-between items-center">
-          <div className="w-1/2 h-64 flex flex-col justify-center items-center">
-            <h1 className="text-3xl font-bold">Enrolled Courses</h1>
-            <div className="flex flex-col justify-center items-center mt-10">
-              <p>Empty</p>
-            </div>
-          </div>
-          <div className="w-1/2 h-64 border-l-2 border-black flex flex-col justify-center items-center">
-            <h1 className="text-3xl font-bold">My Courses</h1>
-            <div className="flex flex-col justify-center items-center mt-10">
-              {user?.userRole?.includes("teacher") ? (
-                <p>Empty</p>
-              ) : (
-                <p>Become Teacher to Upload Course.</p>
-              )}
-            </div>
-          </div>
-        </div>
       </div>
+      <Footer/>
     </div>
   );
 }

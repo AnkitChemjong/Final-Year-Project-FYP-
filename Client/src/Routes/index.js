@@ -41,7 +41,7 @@ export const Get_Purchase_Detail=`${Get_All_Course}/checkPurchase`;
 export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`;
 export const Update_Content_As_Viewed=`${Get_All_Course}/updateContentAsViewed`;
 export const Reset_Course_Progress=`${Get_All_Course}/resetCourseProgress`;
-
+export const Get_Top_Six_Courses=`${Get_All_Course}/getTopSixCourses`;
 
 //Payment Routes
 export const Payment='/payment';

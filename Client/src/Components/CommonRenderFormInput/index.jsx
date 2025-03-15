@@ -150,7 +150,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
                 [event.target.name]:event.target.value,
               })
             }}
-              className="col-span-3"
+              className="col-span-3 cursor-pointer"
             />
             <p>Male</p>
                </div>
@@ -166,7 +166,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
                 [event.target.name]:event.target.value,
               })
             }}
-              className="col-span-3"
+              className="col-span-3 cursor-pointer"
             />
             <p>Female</p>
             </div>
@@ -193,7 +193,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
                   [event.target.name]:event.target.value,
                 })
               }}
-                className="col-span-3"
+                className="col-span-3 cursor-pointer"
               />
             </div>
               {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
