@@ -21,6 +21,8 @@ import CourseDetails from "./Pages/CourseDetails";
 import StudentCourses from "./Pages/StudentCourses";
 import CourseProgress from "./Pages/CourseProgress";
 import PrivicyPolicy from "./Pages/Privicy_Policy";
+import { getAllUser } from "./Store/Slices/Get_All_User";
+import TeacherDetails from "./Pages/TeacherDetails";
 
 
 const PrivateRoute = ({ children }) => {
@@ -104,6 +106,7 @@ function App() {
   const logedUser=useSelector((state)=>state?.user)
   const applications=useSelector(state=>state?.application);
   const courses=useSelector(state=>state?.course);
+  const allUsers=useSelector(state=>state?.allUsers);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -115,6 +118,9 @@ function App() {
       }
       if (!courses?.data) {
         await dispatch(getCourse());
+      }
+      if (!allUsers?.data) {
+        await dispatch(getAllUser());
       }
     };
   
@@ -140,6 +146,7 @@ function App() {
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
           <Route path="/courseProgress/:id" element={<PrivateRoute><CourseProgress/></PrivateRoute>}/>
           <Route path="/privicyPolicy" element={<PrivateRoute><PrivicyPolicy/></PrivateRoute>}/>
+          <Route path="/teacher/details/:id" element={<PrivateRoute><TeacherDetails/></PrivateRoute>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Router>

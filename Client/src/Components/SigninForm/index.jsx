@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { TfiGithub } from "react-icons/tfi";
@@ -18,8 +18,11 @@ import { User_Token_Gen_Route } from '@/Routes';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { emailDialogInitialState,emailInputs } from '@/Utils';
+import { UseContextApi } from '../ContextApi';
+import Loader from '../LoaderSpinner';
 
 export default function SigninForm({func}) {
+  const {loadingSpin}=useContext(UseContextApi);
   const navigate=useNavigate();
   const [dialog,setDialog]=useState(false);
   const toggleDialog=()=>{
@@ -85,7 +88,7 @@ export default function SigninForm({func}) {
             </div>
             <Link onClick={toggleDialog} className='text-green-600 relative bottom-10 hover:text-blue-700'>Forget Password?</Link>
             <DialogForm title="Update Password" description="Enter your registered email here." dialog={dialog} setDialog={setDialog} func={handleEvent} type="email" componentInputs={emailInputs} initialState={emailDialogInitialState}/>
-             <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">Login</Button>
+             <Button className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10"> Login</Button>
               </form>
              <div className='flex flex-row items-center justify-center gap-5 relative bottom-10'>
               <div className='h-1 w-24 bg-black'></div>

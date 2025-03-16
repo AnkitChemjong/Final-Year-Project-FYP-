@@ -53,7 +53,7 @@ class CourseProgress{
            }
            catch(error){
             console.log(error);
-            return res.json({message:"Error on getting Course progress",error:error?.message})
+            return res.status(500).json({message:"Error on getting Course progress",error:error?.message})
         }
     }
 
@@ -82,7 +82,7 @@ class CourseProgress{
         }
         catch(error){
          console.log(error);
-         return res.json({message:"Error on reseting Course progress.",error:error?.message})
+         return res.status(500).json({message:"Error on reseting Course progress.",error:error?.message})
      }
     }
 
@@ -144,7 +144,7 @@ class CourseProgress{
         }
         catch(error){
          console.log(error);
-         return res.json({message:"Error on updating Course view.",error:error?.message})
+         return res.status(500).json({message:"Error on updating Course view.",error:error?.message})
      }
     }
 }

@@ -6,7 +6,7 @@ import { courseLandingInitialFormData,courseCurriculumInitialFormData } from '@/
 export const UseContextApi=createContext();
 
 export default function ContextApi({children}) {
-    const [loading,setLoading]=useState(false);
+    const [loadingSpin,setLoadingSpin]=useState(false);
     const [loadingStateCourse,setLoadingStateCourse]=useState(true);
     const [courseLandingFormData, setCourseLandingFormData] = useState(
         courseLandingInitialFormData
@@ -22,13 +22,18 @@ export default function ContextApi({children}) {
   const [specificCourseDetails,setSpecificCourseDetails]=useState(null);
   const [specificCourseDetailsId,setSpecificCourseDetailsId]=useState(null);
 
+  const [specificTeacherDetails,setSpecificTeacherDetails]=useState(null);
+  const [specificTeacherDetailsId,setSpecificTeacherDetailsId]=useState(null);
+
   const [allCourses,setAllCourses]=useState([]);
+  const [allTeachers,setAllTeachers]=useState([]);
+  
 
   const [studentEnrolledCourses,setStudentEnrolledCourses]=useState([]);
   
   const [courseProgress,setCourseProgress]=useState({});
   return (
-   <UseContextApi.Provider  value={{loading,setLoading,downloading,setDownloading,courseLandingFormData,
+   <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
     setCourseCurriculumFormData,
     mediaUploadProgress, setMediaUploadProgress,
@@ -38,7 +43,8 @@ export default function ContextApi({children}) {
     specificCourseDetails,setSpecificCourseDetails,
     specificCourseDetailsId,setSpecificCourseDetailsId,
     studentEnrolledCourses,setStudentEnrolledCourses,
-    courseProgress,setCourseProgress}}>
+    courseProgress,setCourseProgress,specificTeacherDetails,setSpecificTeacherDetails
+    ,specificTeacherDetailsId,setSpecificTeacherDetailsId,allTeachers,setAllTeachers}}>
      {children}
    </UseContextApi.Provider>
   )

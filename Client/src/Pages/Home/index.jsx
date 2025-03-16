@@ -9,6 +9,7 @@ import { axiosService } from '@/Services';
 import { Get_Top_Six_Courses,Get_Purchase_Detail } from '@/Routes';
 import { UseContextApi } from '@/Components/ContextApi';
 import SkeletonCard from '@/Components/SkeletonCard';
+import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 
 
 export default function Home() {
@@ -48,7 +49,7 @@ export default function Home() {
   },[]);
 
   function handleNavigateToCoursesPage(getCurrentId) {
-    console.log(getCurrentId);
+    //console.log(getCurrentId);
     localStorage.removeItem("filters");
     const currentFilter = {
       category: [getCurrentId],
@@ -130,11 +131,22 @@ export default function Home() {
                   height={150}
                   className="w-full h-40 object-cover"
                 />
-                <div className="p-4">
+                <div className="p-4 flex flex-col gap-2">
                   <h3 className="font-bold mb-2">{courseItem?.title}</h3>
+                  <div className='flex flex-row items-center gap-5'>
+                  <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
+                          {courseItem?.creatorDetails?.userImage? 
+                          <AvatarImage 
+                          className="rounded-full"
+                          src={courseItem?.creatorDetails?.userImage.startsWith("http") ? courseItem?.creatorDetails?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${courseItem?.creatorDetails?.userImage}`} 
+                          alt="creatorImage"  />:(
+                              <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{courseItem?.creatorDetails?.userName.split("")[0].toUpperCase()}</div>
+                          )}
+                        </Avatar>
                   <p className="text-sm text-gray-700 mb-2">
                     {courseItem?.creatorDetails?.userName}
                   </p>
+                  </div>
                   <p className="font-bold text-[16px]">
                     ${courseItem?.pricing}
                   </p>
@@ -142,7 +154,7 @@ export default function Home() {
               </div>
             ))
           ) : (
-           loadingStateCourse?  <SkeletonCard/>:<h1>No Courses Found</h1>
+           loadingStateCourse?  <SkeletonCard/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>
           )}
         </div>
       </section>

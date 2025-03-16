@@ -26,7 +26,7 @@ const getCourseDetails=async (req,res)=>{
     }
     catch(error){
         console.log(error)
-            return res.json({message:"Error on getting course details.",data:null,error:error?.message}); 
+            return res.status(500).json({message:"Error on getting course details.",data:null,error:error?.message}); 
     }
 }
 
@@ -48,7 +48,7 @@ const checkPurchase=async (req,res)=>{
     }
     catch(error){
         console.log(error)
-            return res.json({message:"Error on getting course purchase details.",data:null,error:error?.message}); 
+            return res.status(500).json({message:"Error on getting course purchase details.",data:null,error:error?.message}); 
     }
 }
 

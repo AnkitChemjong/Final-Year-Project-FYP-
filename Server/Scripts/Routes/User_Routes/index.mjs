@@ -12,13 +12,16 @@ import UserInfoUpdate from "../../Controllers/User_Controller/UserInfoUpdate/ind
 import uploadCV from "../../Services/UserService/Multer/becomeTeacher/index.mjs";
 import BecomeTeacher from "../../Controllers/User_Controller/BecomeTeacherApplication/index.mjs";
 import HandleCV from "../../Controllers/User_Controller/HandleCV/index.mjs";
+import getAllUsers from "../../Controllers/User_Controller/GetAllUsers/index.mjs";
+import getSearchedTeacher from "../../Controllers/User_Controller/GetSearchedTeacher/index.mjs";
+import getTeacherDetails from "../../Controllers/User_Controller/GetTeacherDetails/index.mjs";
 
 
 const userRoute=Router();
 
 userRoute.route('/').post(createUser).get(getLogedUser).delete(logoutUser);
 
-
+userRoute.get('/getAllUsers',getAllUsers);
 userRoute.post('/code',GenCode);
 userRoute.post('/check',CheckCode);
 userRoute.patch('/changePass',ChangePassword);
@@ -50,6 +53,8 @@ userRoute.delete('/userImageDelete',ProfileImage.deleteProfileImage);
 userRoute.patch('/userInfoUpdation',UserInfoUpdate.updateUserInfo);
 userRoute.post('/becomeTeacher',uploadCV.single("cv"),BecomeTeacher.uploadCV);
 userRoute.patch('/updateCV',uploadCV.single("cv"),HandleCV.updateCV);
+userRoute.post('/searchedTeacher',getSearchedTeacher);
+userRoute.get('/get/details/:id',getTeacherDetails);
 
   
 

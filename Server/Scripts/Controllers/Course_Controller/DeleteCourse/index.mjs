@@ -15,7 +15,7 @@ static deleteSingleCourse=async (req,res)=>{
     }
     catch(error){
         console.log(error);
-        return res.json({message:"Error on deleting Course",error:error?.message})
+        return res.status(500).json({message:"Error on deleting Course",error:error?.message})
     }
 
 }
@@ -49,7 +49,7 @@ static deleteAllCourses=async (req,res)=>{
     }
     catch(error){
         console.log(error)
-        return res.json({message:"Error on deleting many application",error:error?.message});
+        return res.status(500).json({message:"Error on deleting many application",error:error?.message});
     }
 
 }

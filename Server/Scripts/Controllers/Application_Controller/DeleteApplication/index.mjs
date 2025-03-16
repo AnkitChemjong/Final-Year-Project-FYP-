@@ -22,7 +22,7 @@ static deleteSingleApplication=async (req,res)=>{
         
     }
     catch(error){
-        return res.json({message:"Error on deleting application",error:error?.message})
+        return res.status(500).json({message:"Error on deleting application",error:error?.message})
     }
 
 }
@@ -69,7 +69,7 @@ static deleteAllApplication=async (req,res)=>{
     }
     catch(error){
         console.log(error)
-        return res.json({message:"Error on deleting many application",error:error?.message});
+        return res.status(500).json({message:"Error on deleting many application",error:error?.message});
     }
 
 }
@@ -95,7 +95,7 @@ static deleteSelectedApplication=async (req,res)=>{
         }
     catch(error){
         console.log(error)
-        return res.json({message:"Error on deleting selected application",error:error?.message});
+        return res.status(500).json({message:"Error on deleting selected application",error:error?.message});
     }
 
 }

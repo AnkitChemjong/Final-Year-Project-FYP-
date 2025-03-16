@@ -14,7 +14,9 @@ export const User_Delete_Profile_Image=`${User_Route}/userImageDelete`;
 export const User_Info_Update=`${User_Route}/userInfoUpdation`;
 export const User_Become_Teacher=`${User_Route}/becomeTeacher`;
 export const User_Update_CV=`${User_Route}/updateCV`;
-
+export const Get_All_User=`${User_Route}/getAllUsers`;
+export const SEARCH_TEACHERS_ROUTES=`${User_Route}/searchedTeacher`;
+export const Get_Teacher_Detail=`${User_Route}/get/details`;
 
 //Application routes
 export const Get_All_Applications='/application';

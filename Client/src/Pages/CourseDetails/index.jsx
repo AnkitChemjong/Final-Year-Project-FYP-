@@ -24,15 +24,13 @@ import {
     DialogTitle,} from "@/components/ui/dialog";
 import { FaGlobeAsia } from "react-icons/fa";
 import { axiosService } from '@/Services';
-import CommonSkeleton from '@/Components/CommonSkeleton';
+
 export default function CourseDetails() {
     const navigate=useNavigate();
     const userStates = useSelector(state => state.user);
         const { data: user, loading } = userStates; 
     const {specificCourseDetails,setSpecificCourseDetails,
         specificCourseDetailsId,setSpecificCourseDetailsId,
-        loadingStateCourse,setLoadingStateCourse
-
     }=useContext(UseContextApi);
     const [displayVideoFreePreview, setDisplayVideoFreePreview] =useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
@@ -64,12 +62,10 @@ export default function CourseDetails() {
                 //console.log(response);
                 if(response.status===200 && !response?.data?.coursePurchased){
                     setSpecificCourseDetails(response?.data?.data);
-                    setLoadingStateCourse(false);
                 
             }
             else{
                 setSpecificCourseDetails(null);
-                setLoadingStateCourse(false);
                 navigate(`/courseProgress/${specificCourseDetailsId}`);
             }
         }

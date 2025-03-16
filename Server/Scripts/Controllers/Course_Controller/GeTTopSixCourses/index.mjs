@@ -43,7 +43,7 @@ const getTopSixCourses=async(req,res)=>{
     }
     catch(error){
         console.log(error)
-        return res.json({message:"Error on getting top six courses.",data:null,error:error?.message}); 
+        return res.status(500).json({message:"Error on getting top six courses.",data:null,error:error?.message}); 
     }
 }
 export default getTopSixCourses;

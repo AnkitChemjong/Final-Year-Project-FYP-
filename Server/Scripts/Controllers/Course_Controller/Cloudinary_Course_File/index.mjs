@@ -22,7 +22,7 @@ class CloudinaryControl{
         }
         catch(error){
             console.log(error)
-            return res.json({message:"Error on uploading file.",data:null,error:error?.message}); 
+            return res.status(500).json({message:"Error on uploading file.",data:null,error:error?.message}); 
         }
     }
 
@@ -37,7 +37,7 @@ class CloudinaryControl{
         }
         catch(error){
             console.log(error)
-            return res.json({message:"Error on deleting file.",error:error?.message}); 
+            return res.status(500).json({message:"Error on deleting file.",error:error?.message}); 
         }
     }
 }
