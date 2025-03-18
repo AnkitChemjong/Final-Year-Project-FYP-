@@ -5,7 +5,7 @@ import Logout from '@/Components/LogoutFunc';
 import { toast } from 'react-toastify';
 import { getUser } from '@/Store/Slices/User_Slice';
 import { useNavigate } from 'react-router-dom';
-import { Avatar,AvatarImage,AvatarFallback } from '../ui/avatar';
+import { Avatar,AvatarImage } from '../ui/avatar';
 
 
 
@@ -134,19 +134,18 @@ const handleLogout=async ()=>{
         {
           logedUser && (
 <div ref={proTog} onClick={tog} className='cursor-pointer'>
-          <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
+          <Avatar className='w-10 h-10 rounded-full flex justify-center items-center border-2 border-black'>
         {logedUser && (logedUser?.userImage ? 
         <AvatarImage 
         className="rounded-full"
         src={logedUser?.userImage.startsWith("http") ? logedUser?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${logedUser?.userImage}`} 
         alt="navimage"  />:(
-            <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
+            <div className=' bg-white justify-center items-center px-5 py-3 rounded-full '>{logedUser?.userName?.split("")[0].toUpperCase()}</div>
         ))}
       </Avatar>
         </div>
           )
         }
-        
         {toggl && 
         <div className="absolute right-3 z-10 mt-32 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none" >
             <div onClick={profile}  className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 cursor-pointer" role="menuitem" >Your Profile</div>

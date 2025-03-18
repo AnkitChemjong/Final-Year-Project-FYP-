@@ -277,3 +277,63 @@ export const languageOptions = [
     level: courseLevelOptions,
     primaryLanguage: languageOptions,
   };
+
+  export const updateTeacherInfoComponents=[
+        {
+          label: "Certificates ",
+          mendatory:true,
+          name: "certificate",
+          type: "file",
+          componentType: "file",
+        },
+        {
+          label: "Degree",
+          name: "degree",
+          type: "textarea",
+          mendatory:false,
+          componentType: "textarea",
+          placeholder: "Enter your Degrees. seperate each with ,",
+        },
+        {
+          label: "Avilability",
+          mendatory:true,
+          name: "avilability",
+          type: "textarea",
+          componentType: "textarea",
+          placeholder: "Enter in days. seperate each with , ",
+        },
+        {
+          label: "Description",
+          mendatory:true,
+          name: "description",
+          type: "textarea",
+          componentType: "textarea",
+          placeholder: "Describe yourself.",
+        },
+        {
+          label: "College",
+          name: "college",
+          mendatory:false,
+          type: "text",
+          componentType: "input",
+          placeholder: "Your college name.",
+        },
+        {
+          label: "University",
+          name: "university",
+          mendatory:false,
+          type: "text",
+          componentType: "input",
+          placeholder: "Your University Name.",
+        },
+  ]
+
+export const updateTeacherInfoInitialState=
+{
+  certificate:"",
+  degree:"",
+  avilability:"",
+  description:"",
+  college:"",
+  university:""
+}

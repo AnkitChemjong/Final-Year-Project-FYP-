@@ -17,7 +17,7 @@ static deleteSingleApplication=async (req,res)=>{
                                   }
                             })
         }
-        await BecomeTeacherApp.findByIdAndDelete(data._id);
+        await BecomeTeacherApp.findByIdAndDelete(data?._id);
         return res.status(200).json({message:"application successfully deleted.",error:null});
         
     }

@@ -20,19 +20,21 @@ export default function Teacher() {
 
     const getTeacher=()=>{
         const roleTeacher=allUsers?.filter((item)=>item?.userRole.includes('teacher'));
-        setLoadingStateCourse(false);
         setAllTeachers(roleTeacher);
     }
-    useEffect(()=>{
-      try{
-        if(!loading2){
-         getTeacher();
+    useEffect(() => {
+      // console.log("hello")
+      try {
+        setLoadingStateCourse(true);
+        if (!loading2 && allUsers) {
+          getTeacher();
+          setLoadingStateCourse(false); 
         }
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
+        setLoadingStateCourse(false); 
       }
-    },[allUsers,loading2]);
+    }, [allUsers, loading2,setLoadingStateCourse]);
 
     const handleNavigate=(id)=>{
       if(id){
@@ -42,11 +44,9 @@ export default function Teacher() {
 
     const searchTeachers=async (searchTerm)=>{
       try{
-               setLoadingStateCourse(true);
                if(searchTerm.length>0){   
                 const response=await axiosService.post(SEARCH_TEACHERS_ROUTES,{searchTerm});          
                 if(response.status===200 && response?.data?.data){
-                  setLoadingStateCourse(false);
                   setAllTeachers(response.data.data);
                 }
                }
@@ -54,11 +54,17 @@ export default function Teacher() {
       catch(e){
         console.log(e);
       }
-      finally{
-        setLoadingStateCourse(false);
       }
-      }
-
+  
+  if (loadingStateCourse || loading2) {
+    return (
+      <div>
+        <Navbar />
+        <SkeletonCard />
+        <Footer />
+      </div>
+    );
+  }
   return (
     <div>
       <Navbar/>
@@ -66,7 +72,7 @@ export default function Teacher() {
         <section className="py-12 px-4 lg:px-8 mt-5 mb-5">
                <h2 className="text-2xl font-bold mb-6">Our Instructors</h2>
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                 {allTeachers && allTeachers.length > 0 ? (
+                 {allTeachers?.length > 0 ? (
                    allTeachers.map((item,index) => (
                      <div
                        onClick={() => handleNavigate(item?._id)}
@@ -92,9 +98,8 @@ export default function Teacher() {
                        </div>
                      </div>
                    ))
-                 ) : (
-                  loadingStateCourse?  <SkeletonCard/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Teacher Found.</h1>
-                 )}
+                 ) : <h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Teacher Found.</h1>
+                 }
                </div>
              </section>
       <Footer/>

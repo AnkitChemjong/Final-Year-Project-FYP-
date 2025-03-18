@@ -107,7 +107,7 @@ class KhaltiPayment{
         }
         await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true });
 
-        res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull`);
+        res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull&amount=${amount/100}`);
       } catch (error) {
         console.log(error);
         const purchasedData=await PurchaseModel.findOne({

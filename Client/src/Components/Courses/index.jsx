@@ -6,10 +6,12 @@ import { useSelector } from 'react-redux';
 import { Tabs,TabsContent,TabsList,TabsTrigger } from '../ui/tabs';
 import CommonTableForCourse from '../CommonTableForCourse';
 import { UseContextApi } from '../ContextApi';
+import SkeletonCard from '../SkeletonCard';
 
 
 export default function Courses() {
-    const courses=useSelector(state=>state?.course?.data);
+    const coursesState=useSelector(state=>state?.course);
+    const {data:courses,loading}=coursesState;
     const {setCurrentEditedCourseId,setCourseLandingFormData,setCourseCurriculumFormData}=useContext(UseContextApi);
     const navigate=useNavigate();
     const handleNavigation=()=>{
@@ -19,17 +21,12 @@ export default function Courses() {
         navigate("/createnewcourse");
     }
   return (
-    <div className='flex flex-col h-screen w-screen'>
-      <div className='relative md:left-10 md:top-5'>
+    <div className='flex flex-col h-screen gap-2'>
+      <div className='w-full flex flex-row justify-evenly items-center relative  md:top-10'>
         <p className='text-2xl font-bold'>All Courses</p>
-      </div>
-      <div className='w-full flex flex-row justify-evenly items-center relative md:right-44 md:mt-10'>
-        <p className='text-2xl font-bold'>Data Provided</p>
         <CommonButton func={handleNavigation} text="Upload Course" />
       </div>
-
-      
-        <Tabs defaultValue='all' className='flex flex-col mt-10 relative md:right-44   items-center '>
+        <Tabs defaultValue='all' className='flex flex-col mt-10 relative   items-center '>
                <div className='py-3 border-b-2 border-stone-950'>
                <TabsList className="gap-10">
                <TabsTrigger value="all" >
@@ -43,7 +40,10 @@ export default function Courses() {
                </TabsTrigger>
                </TabsList>
                </div>
-               <TabsContent value="all">
+               {
+                loading? <SkeletonCard />:(
+                  <>
+                  <TabsContent value="all">
                 <CommonTableForCourse data={courses} type="all" header={formatForAllCourses}/>
                </TabsContent>
                <TabsContent value="admin">
@@ -52,6 +52,10 @@ export default function Courses() {
                <TabsContent value="teacher">
                <CommonTableForCourse data={courses.filter(item=>item?.creator?.userRole?.includes("teacher"))} type="teacher created" header={formatForAllCourses}/>
                </TabsContent>
+                  </>
+                )
+               }
+               
                </Tabs>
       </div>
   );

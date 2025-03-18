@@ -22,7 +22,7 @@ export default function Signin() {
         setLoadingSpin(false);
          toast.success(returnData?.data?.message);
          if(returnData?.data?.user?.userRole?.includes("admin")){
-          navigate('/dashboard');
+          navigate('/admin/dashboard');
          }
          else{
            navigate('/')

@@ -1,4 +1,4 @@
-import React,{useEffect,useContext} from 'react'
+import React,{useEffect,useContext,useState} from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,6 +11,8 @@ import { Button } from '@/Components/ui/button';
 import { IoStopwatchOutline } from "react-icons/io5";
 import Footer from '@/Components/Footer';
 import SkeletonCard from '@/Components/SkeletonCard';
+import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
+import { FaRegCheckCircle } from "react-icons/fa";
 
 
 export default function StudentCourses() {
@@ -21,6 +23,10 @@ export default function StudentCourses() {
   const params = new URLSearchParams(location.search);
   const status=params.get('payment');
   const message=params.get('message');
+  const amount=params.get('amount');
+  const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
+  const [paymentMessage,setPaymentMessage]=useState("");
+  const [paymentAmount,setPaymentAmount]=useState("");
 
   const {studentEnrolledCourses,setStudentEnrolledCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
   
@@ -51,8 +57,10 @@ export default function StudentCourses() {
 
   useEffect(() => {
     if (status && status === 'success' ) {
+      setPaymentMessage(message);
+      setPaymentAmount(amount);
+      setPaymentMessageDialog(true);
       toast.success(message);
-      navigate(location.pathname,{ replace: true })
     }
   }, [status]);
   return (
@@ -90,6 +98,14 @@ export default function StudentCourses() {
         </div>
 
       </div>
+      <PaymentMessageDialog
+      paymentMessageDialog={paymentMessageDialog}
+      setPaymentMessageDialog={setPaymentMessageDialog}
+      message={paymentMessage}
+      icon={<FaRegCheckCircle size={80} color='green'/>}
+      amount={paymentAmount}
+      />
+      <Footer/>
       <Footer/>
     </div>
   )

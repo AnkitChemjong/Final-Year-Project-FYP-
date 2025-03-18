@@ -15,6 +15,8 @@ import HandleCV from "../../Controllers/User_Controller/HandleCV/index.mjs";
 import getAllUsers from "../../Controllers/User_Controller/GetAllUsers/index.mjs";
 import getSearchedTeacher from "../../Controllers/User_Controller/GetSearchedTeacher/index.mjs";
 import getTeacherDetails from "../../Controllers/User_Controller/GetTeacherDetails/index.mjs";
+import { updateTeacherInfo } from "../../Controllers/User_Controller/UpdateTeacherInfo/index.mjs";
+import uploadCertificate from "../../Services/UserService/Multer/certificates/TeacherCertificate/index.mjs";
 
 
 const userRoute=Router();
@@ -55,7 +57,7 @@ userRoute.post('/becomeTeacher',uploadCV.single("cv"),BecomeTeacher.uploadCV);
 userRoute.patch('/updateCV',uploadCV.single("cv"),HandleCV.updateCV);
 userRoute.post('/searchedTeacher',getSearchedTeacher);
 userRoute.get('/get/details/:id',getTeacherDetails);
-
+userRoute.post('/update/teacherinfo/:id',uploadCertificate.single("certificate"),updateTeacherInfo);
   
 
 export default userRoute;

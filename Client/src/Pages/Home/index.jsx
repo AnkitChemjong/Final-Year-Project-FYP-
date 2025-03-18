@@ -63,6 +63,9 @@ export default function Home() {
   async function handleCourseNavigate(id) {
     try{
           if(!loading){
+            if(!user){
+              return navigate("/signup")
+            }
             const response=await axiosService.get(`${Get_Purchase_Detail}/${id}/${user?._id}`);
             // console.log(response);
             if(response?.data?.data){
@@ -154,7 +157,7 @@ export default function Home() {
               </div>
             ))
           ) : (
-           loadingStateCourse?  <SkeletonCard/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>
+           loadingStateCourse?  <SkeletonCard/>:<h1 className="text-">No Courses Found</h1>
           )}
         </div>
       </section>

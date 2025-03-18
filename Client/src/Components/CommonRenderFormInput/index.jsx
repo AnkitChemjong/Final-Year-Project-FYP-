@@ -14,26 +14,26 @@ import { Textarea } from "../ui/textarea";
 export default function CommonRenderFormInput({getCurrentControl,data,setData,error={},accept=""}) {
  let content = null;
  const currentControlItemValue =data[getCurrentControl.name] || "";
-    switch (getCurrentControl.componentType) {
+    switch (getCurrentControl?.componentType) {
       case "input":
         content = (
-          <div key={getCurrentControl.name} className="grid py-4 gap-2 text-center">
+          <div key={getCurrentControl?.name} className="grid py-4 gap-2 text-center">
           <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor={getCurrentControl?.name} className="text-right">
               {getCurrentControl?.label}:
             </Label>
             <Input
               type={getCurrentControl?.type}
-              placeholder={getCurrentControl.placeholder}
-              id={getCurrentControl.name}
-              value={data[getCurrentControl.name]}
-              name={getCurrentControl.name}
+              placeholder={getCurrentControl?.placeholder}
+              id={getCurrentControl?.name}
+              value={data[getCurrentControl?.name]}
+              name={getCurrentControl?.name}
               onChange={(event) =>{setData({
                 ...data,
                 [event.target.name]:event.target.value,
               })
             }}
-              className="col-span-3"
+              className={`col-span-3 `}
             />
           </div>
             {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
@@ -62,7 +62,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
                 [name]:files[0],
               })
             }}
-              className="col-span-3"
+              className={`col-span-3  ${getCurrentControl?.mendatory && "border-2 border-red-600"}`}
             />
           </div>
             {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
@@ -106,27 +106,29 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
         break;
       case "textarea":
         content = (
-          <div key={getCurrentControl.name} className="grid py-4 gap-2 ">
-          <div className="grid grid-cols-4 items-center gap-4 ">
-          <Label htmlFor={getCurrentControl?.name} className="text-right">
-              {getCurrentControl?.label}:
-            </Label>
-            <Textarea
-              id={getCurrentControl.name}
-              name={getCurrentControl.name}
-              placeholder={getCurrentControl.placeholder}
-              value={currentControlItemValue}
-              onChange={(event) =>
-                setData({
-                  ...data,
-                  [getCurrentControl.name]: event.target.value,
-                })
-              }
-              
-            />
-            </div>
-            {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
-          </div>
+          <div key={getCurrentControl.name} className="grid py-4 gap-2">
+  <div className="grid grid-cols-4 items-center gap-4">
+    <Label htmlFor={getCurrentControl?.name} className="text-right">
+      {getCurrentControl?.label}:
+    </Label>
+    <Textarea
+      id={getCurrentControl.name}
+      name={getCurrentControl.name}
+      placeholder={getCurrentControl.placeholder}
+      value={currentControlItemValue}
+      onChange={(event) =>
+        setData({
+          ...data,
+          [getCurrentControl.name]: event.target.value,
+        })
+      }
+      className={`col-span-3  ${getCurrentControl?.mendatory && "border-2 border-red-600"}`} 
+    />
+  </div>
+  {error[getCurrentControl?.name] ? (
+    <span className="text-xs text-red-700 text-center">{error[getCurrentControl?.name]}</span>
+  ) : null}
+</div>
         );
         break;
         

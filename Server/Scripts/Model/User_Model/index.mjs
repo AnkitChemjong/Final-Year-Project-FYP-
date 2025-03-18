@@ -1,6 +1,7 @@
 import {Schema,model} from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import teacherInfoSchema from './TeacherInfoSchema/index.mjs';
 
 
 const userSchema=new Schema({
@@ -67,7 +68,9 @@ const userSchema=new Schema({
     provider:{
         type:String,
         required:false
-    }
+    },
+    teacherInfo:teacherInfoSchema
+    
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){

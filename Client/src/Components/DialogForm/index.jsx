@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CommonButton from "../CommonButton";
 import CommonRenderFormInput from "../CommonRenderFormInput";
+import { ScrollArea } from "../ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -9,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { changePasswordValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation } from "@/FormValidation";
+import { changePasswordValidation,updateTeacherValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation } from "@/FormValidation";
 
 
 
-export function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
+export default function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
     const [error, setError] = useState({});
   const [data,setData]=useState(initialState);
   const handleSubmit=(e)=>{
@@ -56,6 +57,15 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
         func(data);
       }
     }
+    if(type==="updateTeacherInfo"){
+      setError(updateTeacherValidation(data));
+      if(error.avilability === "" &&
+        error.description === ""
+      ){
+        console.log("hello")
+        func(data);
+      }
+    }
   }
   return (
     <Dialog open={dialog} onOpenChange={(e)=>{
@@ -63,8 +73,9 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
         setError({});
         setData(initialState)
         }}>
-       
-      <DialogContent className="sm:max-w-[425px]">
+
+      <DialogContent className="sm:max-w-[425px] md:max-w-[500px]"  showOverlay={false} >
+       <ScrollArea className="h-[400px] md:max-h-[600px]  overflow-y-auto px-5">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
@@ -84,6 +95,7 @@ export function DialogForm({title,description,dialog,setDialog,func,type,initial
         <DialogFooter>
           <CommonButton func={handleSubmit} text="Send"/>
         </DialogFooter>
+       </ScrollArea>
       </DialogContent>
       
     </Dialog>

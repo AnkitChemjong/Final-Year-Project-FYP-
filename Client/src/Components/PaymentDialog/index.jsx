@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import { axiosService } from "@/Services";
 import { toast } from "react-toastify";
 import { Initialize_Esewa_Payment,Initialize_Khalti_Payment } from "@/Routes";
 

@@ -9,7 +9,7 @@ import Profile from "./Pages/Profile";
 import Teacher from "./Pages/Teacher";
 import Course from "./Pages/Course";
 import NotFound from "./Pages/NotFound";
-import Dashboard from "./Pages/Dashboard";
+import AdminDashboard from "./Pages/AdminDashboard";
 import ResetCode from "./Pages/ResetCode";
 import ChangePass from "./Pages/ChangePass";
 import { Navigate } from "react-router-dom";
@@ -23,7 +23,11 @@ import CourseProgress from "./Pages/CourseProgress";
 import PrivicyPolicy from "./Pages/Privicy_Policy";
 import { getAllUser } from "./Store/Slices/Get_All_User";
 import TeacherDetails from "./Pages/TeacherDetails";
+import AdminCourse from "./Pages/AdminCourse";
+import { toast } from "react-toastify";
+import AdminApplication from "./Pages/AdminApplication";
 
+let toastShown = false;
 
 const PrivateRoute = ({ children }) => {
   const userStates = useSelector(state => state?.user);
@@ -34,12 +38,20 @@ const PrivateRoute = ({ children }) => {
   }
   if (user) {
     if (user?.userRole?.includes('admin')) {
-      return <Navigate to="/dashboard" />;
+      if (!toastShown) {
+        toast.error("Can't view this page.");
+        toastShown = true;
+      }
+      return <Navigate to="/admin/dashboard" />;
     } else {
       return children;
     }
   } 
   if(!loading && !user){
+    if (!toastShown) {
+      toast.error("Can't view this page.");
+      toastShown = true;
+    }
     return <Navigate to="/signup" />;
   }
   
@@ -68,10 +80,18 @@ const AdminTeacherRoute=({children})=>{
     if (user?.userRole?.includes('admin') || user?.userRole?.includes('teacher')) {
       return children;
     } else {
+      if (!toastShown) {
+        toast.error("Can't view this page.");
+        toastShown = true;
+      }
       return <Navigate to="/" />;
     }
   } 
   if(!loading && !user){
+    if (!toastShown) {
+      toast.error("Can't view this page.");
+      toastShown = true;
+    }
     return <Navigate to="/signup" />;
   }
 }
@@ -83,6 +103,10 @@ function AdminRoute({ children }) {
     return <CommonSkeleton />; 
   }
   if (!loading && (!user || !user?.userRole?.includes("admin"))) {
+    if (!toastShown) {
+      toast.error("Can't view this page.");
+      toastShown = true;
+    }
     return <Navigate to="/" />;
   }
   return children;
@@ -94,7 +118,11 @@ function HomeRestrictForAdmin({children}){
     return <CommonSkeleton />; 
   }
   if(!loading && user?.userRole?.includes("admin")){
-    return <Navigate to="/dashboard" />
+    if (!toastShown) {
+      toast.error("Can't view this page.");
+      toastShown = true;
+    }
+    return <Navigate to="/admin/dashboard" />
   }
   else{
     return children;
@@ -138,7 +166,9 @@ function App() {
           <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
           <Route path="/course/details/:id" element={<PrivateRoute><CourseDetails/></PrivateRoute>}/>
           <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
-          <Route path="/dashboard" element={<AdminRoute><Dashboard/></AdminRoute>}/>
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard/></AdminRoute>}/>
+          <Route path="/admin/course" element={<AdminRoute><AdminCourse/></AdminRoute>}/>
+          <Route path="/admin/application" element={<AdminRoute><AdminApplication/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/edit_course/:courseId" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>

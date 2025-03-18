@@ -3,11 +3,13 @@ import { Tabs,TabsContent,TabsList,TabsTrigger } from '../ui/tabs';
 import { useSelector } from 'react-redux';
 import { formatForAllApplication } from '@/Utils';
 import CommonTable from '../CommonTableForApplication';
+import SkeletonCard from '../SkeletonCard';
 
 
 export default function Applications() {
   const [tabValue,setTabValue]=useState("all");
-    const applications=useSelector(state=>state?.application?.data);
+    const applicationState=useSelector(state=>state?.application);
+    const {data:applications,loading}=applicationState;
     const uniqueStatus=[
         ...new Set(
           applications?.map((applicantItem) => applicantItem.status).flat(1)
@@ -40,7 +42,11 @@ export default function Applications() {
          }
         </TabsList>
         </div>
-        <TabsContent value="all">
+        {
+          loading? <SkeletonCard/>:
+          (
+             <>
+             <TabsContent value="all">
         {
             applications?.length > 0 ? <CommonTable data={applications} header={formatForAllApplication} handleTabValue={handleTabValue} type="all"/>
             :<p>No Applications Avilable.</p>
@@ -54,7 +60,10 @@ export default function Applications() {
                      </TabsContent>
                 )
             })
-         }
+         }s
+             </>
+          )
+        }
       </Tabs>
     </div>
   )

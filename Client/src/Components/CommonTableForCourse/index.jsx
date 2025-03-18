@@ -17,6 +17,7 @@ import { getCourse } from '@/Store/Slices/Course_Slice';
 import { Delete_All_Course,Delete_Selected_Course,Delete_Single_Course } from '@/Routes';
 import { FaRegEdit } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { ScrollArea } from '../ui/scroll-area';
 
 
 export default function CommonTableForCourse({data,header,type}){
@@ -114,9 +115,10 @@ export default function CommonTableForCourse({data,header,type}){
           <RiDeleteBin6Line onClick={()=>deleteCourse({type:"all",status:type,data})} className='cursor-pointer text-black' size={20}/>
           </div>
         </div>
+         <ScrollArea  className="max-h-[350px] overflow-auto rounded-lg">
             <Table >
            <TableHeader className="bg-gray-200 rounded-t-lg">
-       <TableRow>
+           <TableRow>
          {header && header.map((item, index) => (
            <TableHead 
              key={index} 
@@ -127,7 +129,6 @@ export default function CommonTableForCourse({data,header,type}){
          ))}
        </TableRow>
      </TableHeader>
-           
            <TableBody>
              {data.map((item,index) => (
                <TableRow key={index}>
@@ -149,6 +150,7 @@ export default function CommonTableForCourse({data,header,type}){
              ))}
            </TableBody>
          </Table>
+      </ScrollArea>
             </>
          )
          :

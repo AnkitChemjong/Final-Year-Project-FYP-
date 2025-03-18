@@ -5,6 +5,8 @@ import SkeletonCard from '@/Components/SkeletonCard';
 import { toast } from 'react-toastify';
 import Footer from '@/Components/Footer';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
+import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
+import { FaBan } from "react-icons/fa";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,11 +40,15 @@ export default function Course() {
     const [searchParams,setSearchParams]=useSearchParams();
     const [filters, setFilters] = useState({});
     const {allCourses,setAllCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
+    const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
+    const [paymentMessage,setPaymentMessage]=useState("");
+    
 
     useEffect(() => {
       if (status && status === 'failed' ) {
+        setPaymentMessage(message);
+        setPaymentMessageDialog(true);
         toast.success(message);
-        navigate(location.pathname,{ replace: true })
       }
     }, [status]);
 
@@ -294,6 +300,12 @@ export default function Course() {
 
          </div>
       </div>
+      <PaymentMessageDialog
+      paymentMessageDialog={paymentMessageDialog}
+      setPaymentMessageDialog={setPaymentMessageDialog}
+      message={paymentMessage}
+      icon={<FaBan size={80} color='red'/>}
+      />
       <Footer/>
     </div>
   )

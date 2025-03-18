@@ -9,6 +9,7 @@ import { Upload_Course_File } from '@/Routes';
 import ProgressBar from '@/Components/ProgressBar';
 import { Switch } from '@/Components/ui/switch';
 import supabaseClient from '@/Components/SupabaseClient';
+import { GoFileZip } from "react-icons/go";
 
 export default function CourseSetting({id=null}) {
      const {courseLandingFormData, setCourseLandingFormData
@@ -143,7 +144,10 @@ export default function CourseSetting({id=null}) {
         {
             extraResource && 
             <div className='flex flex-col gap-2'>
+                <div className='flex items-center'>
+                  <GoFileZip className='w-5 h-5 mr-1'/>
                 <p className='text-sm text-bold text-gray-700'>Only Zip file is valid.</p>
+                </div>
                 <Input onChange={handleExtraResourceUpload} type="file" accept=".zip"/>
             </div>
         }

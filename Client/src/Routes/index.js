@@ -17,6 +17,7 @@ export const User_Update_CV=`${User_Route}/updateCV`;
 export const Get_All_User=`${User_Route}/getAllUsers`;
 export const SEARCH_TEACHERS_ROUTES=`${User_Route}/searchedTeacher`;
 export const Get_Teacher_Detail=`${User_Route}/get/details`;
+export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
 
 //Application routes
 export const Get_All_Applications='/application';

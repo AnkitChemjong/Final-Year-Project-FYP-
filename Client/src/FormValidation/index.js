@@ -327,3 +327,31 @@ export function courseCurriculumValidation(value) {
     }
     return error;
 }
+
+export const updateTeacherValidation=(value)=>{
+    let error={};
+    if (value?.certificate===""){
+        error.certificate="field should not be empty";
+
+    }
+    else{
+        error.certificate="";
+    }
+    
+    if (value?.avilability===""){
+        error.avilability="field should not be empty";
+
+    }
+    else{
+        error.avilability="";
+    }
+    if (value?.description===""){
+        error.description="field should not be empty";
+
+    }
+    else{
+        error.description="";
+    }
+    return error;
+
+}

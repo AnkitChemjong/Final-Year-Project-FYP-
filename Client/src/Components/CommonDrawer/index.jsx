@@ -71,7 +71,7 @@ export default function CommonDrawer({handleDrawer,setHandleDrawer,data}) {
             <Avatar className="h-14 w-14 md:w-14 md:h-14 rounded-full cursor-pointer flex justify-center items-center ">
                                   <AvatarImage
                                     src={
-                                      data?.user?.userImage.startsWith("http")
+                                      data?.user?.userImage?.startsWith("http")
                                         ? data?.user?.userImage
                                         : `${import.meta.env.VITE_BACKEND_URL}/${
                                             data?.user?.userImage

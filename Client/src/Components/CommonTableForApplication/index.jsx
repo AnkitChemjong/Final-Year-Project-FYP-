@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox } from '../ui/checkbox';
+import { ScrollArea } from '../ui/scroll-area';
 import { Table,
   TableBody,
   TableCell,
@@ -89,6 +90,8 @@ export default function CommonTable({data,header,type}){
           <RiDeleteBin6Line onClick={()=>deleteApplication({type:"all",status:type})} className='cursor-pointer text-black' size={20}/>
           </div>
         </div>
+        <ScrollArea  className="max-h-[350px] overflow-auto rounded-lg">
+
        <Table >
       <TableHeader className="bg-gray-200 rounded-t-lg">
   <TableRow>
@@ -135,6 +138,7 @@ export default function CommonTable({data,header,type}){
         ))}
       </TableBody>
     </Table>
+        </ScrollArea>
 
     </div>
   )

@@ -5,13 +5,8 @@ import { User_Route } from "@/Routes";
 
 export const getUser=createAsyncThunk("getUser",async ()=>{
   try{
-    const userFromLocal=JSON.parse(localStorage.getItem("user"));
-    if(userFromLocal){
-      return userFromLocal;
-    }
       const loggedInUser=await axiosService.get(User_Route,{withCredentials:true});
       if (loggedInUser?.data?.user) {
-        localStorage.setItem("user", JSON.stringify(loggedInUser.data.user));
         return loggedInUser.data.user;
       } 
   }

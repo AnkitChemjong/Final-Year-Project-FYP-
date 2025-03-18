@@ -9,7 +9,7 @@ class CloudinaryControl{
             if(public_id){
                 await deleteFromCloudinary(public_id);
             }
-            const filePath=`Scripts/Upload/${user.userId}/CourseFile/${req.file.filename}`
+            const filePath=`./Scripts/Upload/${user.userId}/CourseFile/${req.file.filename}`
             const response=await uploadToCloudinary(req.file.path);
             fs.unlink(filePath,(err)=>{
                     if (err) {

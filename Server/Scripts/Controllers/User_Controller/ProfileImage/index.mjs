@@ -24,7 +24,7 @@ class ProfileImage{
         try{
             const user=req.user;
             if(user){
-                const fileName=`Scripts/Upload/${user?.userImage}`;
+                const fileName=`./Scripts/Upload/${user?.userImage}`;
                 fs.unlink(fileName,(err)=>{
                     if (err) {
                         console.error('Error deleting file:', err);

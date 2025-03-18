@@ -12,7 +12,7 @@ import { initialLogData } from '@/Utils';
 import { handleGoogle } from '../ThirdAuth';
 import { handleGithub } from '../ThirdAuth';
 import { handleFacebook } from '../ThirdAuth';
-import { DialogForm } from '../DialogForm';
+import  DialogForm  from '../DialogForm';
 import { axiosService } from "@/Services";
 import { User_Token_Gen_Route } from '@/Routes';
 import { toast } from 'react-toastify';
