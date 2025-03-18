@@ -9,7 +9,8 @@ export const updateTeacherInfo=async(req,res)=>{
         if(!req.file){
             return res.status(400).json({message:"File is Required"});
            }
-           const certificate=`${id}/TeacherCertificate/${req.file.filename}`;
+           const user=await User.findById(id);
+           const certificate=`${user?.userId}/TeacherCertificate/${req.file.filename}`;
         
             const updatedUser=await User.findByIdAndUpdate(id,{teacherInfo:{certificate,degree,avilability,description
                 ,college,university

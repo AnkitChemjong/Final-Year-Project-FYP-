@@ -1,6 +1,7 @@
 import React from 'react';
 import { Skeleton } from '../ui/skeleton';
-import Load from "@/assets/load.svg"
+import Load from "@/assets/load.svg";
+
 
 
 export default function CommonSkeleton() {

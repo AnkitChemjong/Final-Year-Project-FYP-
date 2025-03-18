@@ -23,7 +23,7 @@ class CourseProgress{
                }
                const courseProgress=await ProgressModel.findOne({userId,courseId});
                if(!courseProgress || courseProgress?.contentProgress.length === 0){
-                  const courseDetails=await CourseModel.findById(courseId);
+                  const courseDetails=await CourseModel.findById(courseId).populate("creator");
                   if(!courseDetails){
                     return res.status(404).json({
                         message:"course not found",
@@ -40,7 +40,7 @@ class CourseProgress{
                     completed:false
                   })
                }
-               const courseDetails=await CourseModel.findById(courseId);
+               const courseDetails=await CourseModel.findById(courseId).populate('creator');
                return res.status(200).json({
                 courseDetails,
                 progress:courseProgress?.contentProgress,

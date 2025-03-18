@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "@/Components/Navbar";
 import { useSelector, useDispatch } from "react-redux";
-import { FcGoogle } from "react-icons/fc";
-import { FiPhoneCall } from "react-icons/fi";
-import { LuMapPin } from "react-icons/lu";
 import { GrCircleInformation } from "react-icons/gr";
 import { TbLockPassword } from "react-icons/tb";
-import { CiCalendarDate } from "react-icons/ci";
-import { BsGenderAmbiguous } from "react-icons/bs";
 import { Button } from "@/Components/ui/button";
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import { FaPlus, FaTrash } from "react-icons/fa";
@@ -15,7 +10,6 @@ import DialogForCV from "@/Components/DialogForCV";
 import Footer from "@/Components/Footer";
 import { getCourse } from "@/Store/Slices/Course_Slice";
 import { getAllUser } from "@/Store/Slices/Get_All_User";
-import { SiGooglescholar } from "react-icons/si";
 import { Tabs,TabsContent,TabsList,TabsTrigger } from "@/Components/ui/tabs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import DeleteDialog from "@/Components/DeleteDialog";
@@ -112,17 +106,17 @@ export default function Profile() {
 
   const details = [
     {
-      icon: FcGoogle,
+      icon: "📧",
       text: user?.email || "null",
       size: 20,
     },
     {
-      icon: FiPhoneCall,
+      icon: "📞",
       text: user?.phone || "null",
       size: 20,
     },
     {
-      icon: LuMapPin,
+      icon: "🏠",
       text: user?.address || "null",
       size: 20,
     },
@@ -130,12 +124,12 @@ export default function Profile() {
 
   const moreDetails = [
     {
-      icon: BsGenderAmbiguous,
+      icon: "👤",
       text: user?.gender || "null",
       size: 20,
     },
     {
-      icon: CiCalendarDate,
+      icon: "🎂",
       text: moment(user?.DOB).format("MMMM DD, YYYY") || "null",
       size: 20,
     }
@@ -433,7 +427,7 @@ export default function Profile() {
             <div className="flex flex-col justify-center items-start gap-3 bg-white">
               {details?.map((item, index) => (
                 <div key={index} className="flex flex-row items-center gap-3">
-                  <item.icon className="text-blue-600" size={item?.size} />
+                 <span className="text-xl">{item.icon}</span>
                   <p className="text-sm text-gray-700">{item?.text}</p>
                 </div>
               ))}
@@ -448,10 +442,10 @@ export default function Profile() {
       <GrCircleInformation size={30} className="text-green-600" />
       <h1 className="text-3xl font-bold text-gray-900">More Info</h1>
     </div>
-    <div className="flex flex-col justify-center items-center gap-2">
+    <div className="flex flex-col gap-2">
       {moreDetails?.map((item, index) => (
         <div key={index} className="flex flex-row items-center gap-3">
-          <item.icon className="text-blue-600" size={item?.size} />
+          <span className="text-xl">{item.icon}</span>
           <p className="text-sm text-gray-700">{item?.text}</p>
         </div>
       ))}
@@ -469,7 +463,7 @@ export default function Profile() {
         {user?.teacherInfo?.degree && (
           <div className="flex flex-col items-start gap-2 w-full">
             <div className="flex flex-row items-center gap-3">
-              <SiGooglescholar className="text-blue-600" size={20} />
+            <span className="text-xl">🎓</span>
               <p className="text-sm text-gray-700 font-semibold">Degree:</p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -485,7 +479,7 @@ export default function Profile() {
         {user?.teacherInfo?.avilability && (
           <div className="flex flex-col items-start gap-2 w-full">
             <div className="flex flex-row items-center gap-3">
-              <CiCalendarDate className="text-blue-600" size={20} />
+            <span className="text-xl">📅</span>
               <p className="text-sm text-gray-700 font-semibold">Availability:</p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -516,7 +510,7 @@ export default function Profile() {
 
         {user?.teacherInfo?.college && (
           <div className="flex flex-row items-center gap-3">
-            <LuMapPin className="text-blue-600" size={20} />
+            <span className="text-xl">🏫</span>
             <p className="text-sm text-gray-700">
               <strong>College:</strong> {user?.teacherInfo?.college}
             </p>
@@ -526,7 +520,7 @@ export default function Profile() {
     
         {user?.teacherInfo?.university && (
           <div className="flex flex-row items-center gap-3">
-            <LuMapPin className="text-blue-600" size={20} />
+            <span className="text-xl">🏛️</span>
             <p className="text-sm text-gray-700">
               <strong>University:</strong> {user?.teacherInfo?.university}
             </p>

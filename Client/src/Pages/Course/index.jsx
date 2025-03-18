@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 import Footer from '@/Components/Footer';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
-import { FaBan } from "react-icons/fa";
+import LottieAnimation from '@/Components/LottieAnimation';
+import cancelpayment from '@/assets/cancelpayment.json';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +27,7 @@ import { axiosService } from '@/Services';
 import Search from '@/Components/Search';
 import { SEARCH_COURSE_ROUTES } from '@/Routes';
 import { useSelector } from 'react-redux';
+import graduationcourse from '@/assets/graduationcourse.json';
 
 
 export default function Course() {
@@ -183,7 +185,10 @@ export default function Course() {
       <Navbar/>
       <Search searchFunc={searchCourses} onChangeFunc={onChangeFunc}/>
       <div className='container mx-auto p-4'>
+        <div className='flex gap-2 items-center'>
         <h1 className='text-3xl font-bold mb-4'>All Courses</h1>
+          <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
+        </div>
          <div className='flex flex-col md:flex-row gap-4'>
           <aside className='w-full md:w-64 space-y-4'>
             <div className='p-4'>
@@ -304,7 +309,7 @@ export default function Course() {
       paymentMessageDialog={paymentMessageDialog}
       setPaymentMessageDialog={setPaymentMessageDialog}
       message={paymentMessage}
-      icon={<FaBan size={80} color='red'/>}
+      icon={ <LottieAnimation animationData={cancelpayment} width={200} height={200} speed={1} />}
       />
       <Footer/>
     </div>

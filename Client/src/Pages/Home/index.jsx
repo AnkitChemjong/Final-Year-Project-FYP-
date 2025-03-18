@@ -10,6 +10,8 @@ import { Get_Top_Six_Courses,Get_Purchase_Detail } from '@/Routes';
 import { UseContextApi } from '@/Components/ContextApi';
 import SkeletonCard from '@/Components/SkeletonCard';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
+import LottieAnimation from '@/Components/LottieAnimation';
+import homeanimation from '@/assets/homeanimation.json';
 
 
 export default function Home() {
@@ -99,8 +101,8 @@ export default function Home() {
             <Button onClick={handleButtonClick} className="bg-green-600 text-white md:absolute bottom-5 px-10 py-5 animate-bounce hover:bg-blue-700 transition-all duration-3000 ease-in-out">Start</Button>
             </div>
             <div>
-            <img src="images/homebg.png" alt="home background" className='md:w-[700px] md:h-[550px] mt-10'/>
-            </div>
+             
+            </div> <LottieAnimation animationData={homeanimation} width={"md:w-[700px] w-[200px]"} height={"md:h-[550px] h-[200px]"} speed={1} />
           </div>
         </div>
         <section className="py-8 px-4 lg:px-8 bg-gray-100">

@@ -84,7 +84,16 @@ export default function CourseDetails() {
     }
     //console.log(specificCourseDetails);
 
-if(!setSpecificCourseDetails) return <SkeletonCard />
+if(!setSpecificCourseDetails){
+    return (
+      <div>
+         <Navbar />
+        <SkeletonCard/>
+        <Footer />
+      </div>
+
+  )
+  }
 return (
     <div>
     <Navbar/>

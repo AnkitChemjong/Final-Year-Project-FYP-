@@ -12,8 +12,8 @@ import { IoStopwatchOutline } from "react-icons/io5";
 import Footer from '@/Components/Footer';
 import SkeletonCard from '@/Components/SkeletonCard';
 import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
-import { FaRegCheckCircle } from "react-icons/fa";
-
+import LottieAnimation from '@/Components/LottieAnimation';
+import successpayment from '@/assets/successpayment.json';
 
 export default function StudentCourses() {
     const userStates = useSelector(state => state?.user);
@@ -102,10 +102,9 @@ export default function StudentCourses() {
       paymentMessageDialog={paymentMessageDialog}
       setPaymentMessageDialog={setPaymentMessageDialog}
       message={paymentMessage}
-      icon={<FaRegCheckCircle size={80} color='green'/>}
+      icon={<LottieAnimation animationData={successpayment} width={150} height={150} speed={1} />}
       amount={paymentAmount}
       />
-      <Footer/>
       <Footer/>
     </div>
   )

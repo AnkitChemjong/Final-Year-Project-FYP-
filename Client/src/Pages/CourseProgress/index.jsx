@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UseContextApi } from "@/Components/ContextApi";
 import { axiosService } from "@/Services";
 import ProgressBar from "@/Components/ProgressBar";
+import { Avatar,AvatarImage } from "@radix-ui/react-avatar";
 import {
   Get_Course_Progress,
   Update_Content_As_Viewed,
@@ -276,12 +277,41 @@ export default function CourseProgress() {
                   )}
                 <div className="p-4 flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-xl font-bold mb-4">
+                    <h1 className="text-xl font-bold mb-4">
                       About this course.
+                    </h1>
+                    <div className={`flex gap-2  items-center`}>
+                      <p>Published By:</p>
+                       <div onClick={()=>{
+                        if(!courseProgress?.courseDetails?.creator?.userRole?.includes("admin")){
+                          navigate(`/teacher/details/${courseProgress?.courseDetails?.creator?._id}`)
+                        }
+                        else{
+                          toast.error("Cannot view Admin Details.")
+                        }
+                      }
+                      }
+                        className={`${courseProgress?.courseDetails?.creator?.userRole?.includes("admin")? "cursor-not-allowed":"cursor-pointer"} hover:scale-105 flex items-center  gap-2`}>
+                          <Avatar className='w-10 h-10 rounded-full flex justify-center items-center border-2 border-black'>
+                                  {courseProgress && (courseProgress?.courseDetails?.creator?.userImage ? 
+                                  <AvatarImage 
+                                  className="rounded-full"
+                                  src={courseProgress?.courseDetails?.creator?.userImage.startsWith("http") ? courseProgress?.courseDetails?.creator?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${courseProgress?.courseDetails?.creator?.userImage}`} 
+                                  alt="navimage"  />:(
+                                      <div className=' bg-white justify-center items-center px-5 py-3 rounded-full '>{courseProgress?.courseDetails?.creator?.userName?.split("")[0].toUpperCase()}</div>
+                                  ))}
+                                </Avatar>
+                                <p>{courseProgress?.courseDetails?.creator?.userName}</p>
+                       </div>
+                    </div>
+                    <div>
+                    <h2 className="text-xl font-bold mb-4">
+                      Description
                     </h2>
                     <p className="text-black">
                       {courseProgress?.courseDetails?.description}
                     </p>
+                    </div>
                   </div>
                   {courseProgress?.courseDetails?.extraResources && (
                     <div className="bg-gray-100 p-4 rounded-lg shadow-md">
