@@ -1,8 +1,8 @@
-import React,{useContext,useEffect} from 'react'
+import React,{useContext,useEffect, useState} from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { UseContextApi } from '@/Components/ContextApi';
 import SkeletonCard from '@/Components/SkeletonCard';
-import { Get_Teacher_Detail,Get_Purchase_Detail } from '@/Routes';
+import { Get_Teacher_Detail,Get_Purchase_Detail, Hire_Teacher } from '@/Routes';
 import { axiosService } from '@/Services';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
@@ -12,19 +12,21 @@ import graduationcourse from "@/assets/graduationcourse.json";
 import moment from 'moment';
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 import { useSelector } from 'react-redux';
 import { handleDwn } from '@/Services';
 import { toast } from 'react-toastify';
-
+import DialogForm from '@/Components/DialogForm';
+import { hireTeacherComponents } from '@/Utils';
 
 export default function TeacherDetails() {
     const {specificTeacherDetailsId,setSpecificTeacherDetailsId,
-        specificTeacherDetails,setSpecificTeacherDetails}=useContext(UseContextApi);
+        specificTeacherDetails,setSpecificTeacherDetails,hireTeacherInitialStateData,setHireTeacherInitialStateData,
+        }=useContext(UseContextApi);
     const userStates=useSelector(state=>state?.user);
     const {data:user,loading}=userStates;
     const {id}=useParams();
     const navigate=useNavigate();
+    const [ hireDialog,setHireDialog]=useState(false);
     
         useEffect(()=>{
             const getTeacherDetail=async ()=>{
@@ -51,6 +53,28 @@ export default function TeacherDetails() {
       }
     },[id]);
 
+
+    const handleEvent=async(data)=>{
+    try{
+      if(user && id){
+        const finalData={studentId:user?._id,teacherId:id,...data};
+        const response=await axiosService.post(Hire_Teacher,finalData);
+        if(response.status === 200){
+          toast.success(response?.data?.message);
+          navigate('/profile');
+        }
+      }
+    }
+    catch(error)
+    {
+        console.log(error);
+        toast.error(error?.response?.data?.message);
+    }
+    finally{
+      setHireDialog(false);
+    }
+    }
+
     const handleNavigate=async(id)=>{
         try{
           if(!loading){
@@ -71,7 +95,12 @@ export default function TeacherDetails() {
       }
       const downloadFile = async (type,url) => {
               try {
+                if(specificTeacherDetails?.teacherDetails?.teacherInfo){
                   await handleDwn(type,url);
+                }
+                else{
+                  toast.info("No Certificate Provided.")
+                }
               } catch (error) {
                   toast.error("view failed");
                   console.log(error);
@@ -98,11 +127,15 @@ export default function TeacherDetails() {
       <div className="flex flex-col md:flex-row gap-12 items-center">
      
         <div className="w-full md:w-1/3 flex flex-col items-center">
-          <img
+          {specificTeacherDetails?.teacherDetails?.userImage? <img
             src={specificTeacherDetails?.teacherDetails?.userImage.startsWith("http") ? specificTeacherDetails?.teacherDetails?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${specificTeacherDetails?.teacherDetails?.userImage}`}
             alt="Teacher"
             className="w-64 h-64 rounded-full object-cover border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform duration-300"
-          />
+          />:(
+            <div className=' w-64 h-64 rounded-full flex items-center justify-center   border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform duration-300 text-8xl'>{specificTeacherDetails?.teacherDetails.userName.split("")[0].toUpperCase()}</div>
+          )
+            
+          }
           <div className="mt-8 w-48">
             <Lottie animationData={teacheranimation} loop={true} />
           </div>
@@ -132,13 +165,13 @@ export default function TeacherDetails() {
       <span>🎓</span> 
       <span>Degree:</span>
       <div className="flex flex-wrap gap-2">
-        {specificTeacherDetails?.teacherDetails?.teacherInfo?.degree
+        {specificTeacherDetails?.teacherDetails?.teacherInfo?.degree? specificTeacherDetails?.teacherDetails?.teacherInfo?.degree
           ?.split(",")
           .map((degree, index) => (
             <Badge key={index} className="bg-green-600 text-white px-1 py-1">
               {degree.trim()}
             </Badge>
-          ))}
+          )): "N/A"}
       </div>
     </div>
   </li>
@@ -152,6 +185,13 @@ export default function TeacherDetails() {
     </div>
   </li>
 
+  <li>
+    <div className="flex flex-row items-center gap-2">
+      <span>₹</span> 
+      <span>Fee:</span>
+      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.feePerHour && `Rs.${specificTeacherDetails?.teacherDetails?.teacherInfo?.feePerHour} /hr` || "N/A"}</span>
+    </div>
+  </li>
 
   <li>
     <div className="flex flex-row items-center gap-2">
@@ -166,14 +206,28 @@ export default function TeacherDetails() {
       <span>📅</span> 
       <span>Availability:</span>
       <div className="flex flex-wrap gap-2">
-        {specificTeacherDetails?.teacherDetails?.teacherInfo?.avilability
+        {specificTeacherDetails?.teacherDetails?.teacherInfo?.avilability? specificTeacherDetails?.teacherDetails?.teacherInfo?.avilability
           ?.split(",")
           .map((avilability, index) => (
             <Badge key={index} className="bg-green-600 text-white px-3 py-1">
               {avilability.trim()}
             </Badge>
-          ))}
+          )):"N/A"}
       </div>
+    </div>
+  </li>
+<li>
+    <div className="flex flex-row items-center gap-2">
+      <span>📂</span> 
+      <span>Category:</span>
+      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.category || "N/A"}</span>
+    </div>
+  </li>
+  <li>
+    <div className="flex flex-row items-center gap-2">
+      <span>🗣️</span> 
+      <span>Primary Language:</span>
+      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.primaryLanguage || "N/A"}</span>
     </div>
   </li>
 </ul>
@@ -182,9 +236,7 @@ export default function TeacherDetails() {
           <div className="flex gap-4 mt-8">
     <Button
       className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
-      onClick={() => {
-        console.log("Button 1 clicked");
-      }}
+      onClick={() =>setHireDialog(true)}
     >
       Hire Teacher
     </Button>
@@ -232,8 +284,18 @@ export default function TeacherDetails() {
 
       </div>
     </div>
+
+    <DialogForm
+            title="Hire Teacher."
+            description="Fill all the Information as Instructed."
+            dialog={hireDialog}
+            setDialog={setHireDialog}
+            func={handleEvent}
+            type="hireteacher"
+            componentInputs={hireTeacherComponents}
+            initialState={hireTeacherInitialStateData}
+          />
     <Footer />
   </div>
-
   )
 }

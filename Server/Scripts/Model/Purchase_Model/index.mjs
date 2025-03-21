@@ -39,6 +39,14 @@ const purchaseSchema=new Schema({
     type:Schema.Types.ObjectId,
         ref:"CourseModel",
         required:true
+  },
+  siteAmount:{
+    type:String,
+    required:true
+  },
+  teacherAmount:{
+    type:String,
+    required:true
   }
 },{timestamps:true});
 const PurchaseModel=model("PurchaseModel",purchaseSchema);

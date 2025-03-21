@@ -20,12 +20,23 @@ export const Get_Teacher_Detail=`${User_Route}/get/details`;
 export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
 
 //Application routes
+//becometeacher
 export const Get_All_Applications='/application';
 export const Update_Application=`${Get_All_Applications}/updateApplication`;
 export const Delete_Single_Application=`${Get_All_Applications}/deleteSingle`;
 export const Delete_All_Application=`${Get_All_Applications}/deleteAll`;
 export const Delete_Selected_Application=`${Get_All_Applications}/deleteSelected`;
 
+//hireteacher
+export const Hire_Teacher=`${Get_All_Applications}/hireteacher`;
+export const Get_All_Hire_Application=`${Get_All_Applications}/getallhire`;
+export const Get_Student_Hire_Application=`${Get_All_Applications}/getstudenthire`;
+export const Get_Teacher_Hire_Application=`${Get_All_Applications}/getteacherhire`;
+export const Delete_Hire_Single_Application=`${Get_All_Applications}/deletehiresingle`;
+export const Delete_Hire_All_Application=`${Get_All_Applications}/deletehireall`;
+export const Delete_Hire_Selected_Application=`${Get_All_Applications}/deletehireselected`;
+export const Get_Hire_Application_Details=`${Get_All_Applications}/gethireapplicationdetails`;
+export const Update_Hire_Application_Details=`${Get_All_Applications}/updatehireapplicationdetails`;
 
 //Course Routes
 export const Get_All_Course='/course';

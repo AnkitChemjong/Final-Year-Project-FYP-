@@ -33,7 +33,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
                 [event.target.name]:event.target.value,
               })
             }}
-              className={`col-span-3 `}
+              className={`col-span-3 ${getCurrentControl?.mendatory && "border-2 border-red-600"}`}
             />
           </div>
             {error[getCurrentControl?.name]? <span className="text-xs text-red-700">{error[getCurrentControl?.name]}</span>:null}
@@ -73,7 +73,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
         case "select":
         content = (
           <div key={getCurrentControl.name} className="grid py-4 gap-2 text-center">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-2 items-center gap-4">
           <Label htmlFor={getCurrentControl?.name} className="text-right">
               {getCurrentControl?.label}:
             </Label>
@@ -85,8 +85,9 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
               })
             }
             value={currentControlItemValue}
+            
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className={`  ${getCurrentControl?.mendatory && "border-2 border-red-600"} w-full`}>
               <SelectValue placeholder={getCurrentControl.label} />
             </SelectTrigger>
             <SelectContent>

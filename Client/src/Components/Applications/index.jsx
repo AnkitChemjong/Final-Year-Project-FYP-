@@ -20,7 +20,7 @@ export default function Applications() {
           setTabValue(value);
       }
   return (
-    <div className='flex flex-col h-screen w-screen'>
+    <div className='flex flex-col h-screen gap-2 w-screen overflow-hidden'>
       <div className='relative md:left-10 md:top-5'>
         <p className='text-2xl font-bold'>Applications</p>
       </div>
@@ -60,7 +60,7 @@ export default function Applications() {
                      </TabsContent>
                 )
             })
-         }s
+         }
              </>
           )
         }

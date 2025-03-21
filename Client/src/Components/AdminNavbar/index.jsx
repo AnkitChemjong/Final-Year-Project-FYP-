@@ -136,13 +136,12 @@ export default function AdminNavbar() {
     <h1 className='font-bold text-2xl text-blue-900'>E-Pathsala</h1>
   </div>
 
-  {/* Navigation Links */}
   <div className='flex flex-col gap-3'>
     {
                 adminNavItem.map((item,index)=>{
                     return (
                          <Link key={index} to={item?.path} className={`text-[18px] relative p-2 rounded-lg hover:scale-105 hover:bg-blue-500 shadow-md transition-all 
-                          duration-100 flex items-center md:gap-16 gap-1
+                          duration-100 flex items-center md:gap-16 gap-1 cursor-pointer
                             ${pagePath === item?.pageName
                               ? 'bg-blue-500'
                               : 'bg-green-500'

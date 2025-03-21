@@ -8,17 +8,24 @@ const teacherInfoSchema={
     },
     avilability:{
         type:String,
-        required:true
     },
     description:{
         type:String,
-        required:true
     },
     college:{
         type:String,
     },
     university:{
         type:String,
+    },
+    feePerHour:{
+        type:String,
+    },
+    category:{
+        type:String
+    },
+    primaryLanguage:{
+        type:String
     }
 }
 export default teacherInfoSchema;

@@ -3,6 +3,9 @@ import {
     Dialog,
     DialogContent,
     DialogFooter,
+    DialogHeader,
+    DialogDescription,
+    DialogTitle
   } from "@/components/ui/dialog";
   import CommonButton from '../CommonButton';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +22,11 @@ export default function PaymentMessageDialog({paymentMessageDialog,setPaymentMes
   showOverlay={false}
   className="bg-white rounded-lg shadow-2xl p-6 max-w-sm mx-auto border border-slate-200"
 >
+  <DialogHeader>
+    <DialogTitle>Payment</DialogTitle>
+    <DialogDescription>Showing Payment Status.</DialogDescription>
+  </DialogHeader>
+
   <div className="flex flex-col items-center justify-center gap-4 text-center max-w-full"> 
     <div>
       {icon} 

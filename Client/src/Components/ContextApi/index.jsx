@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { createContext } from 'react';
-import { courseLandingInitialFormData,courseCurriculumInitialFormData } from '@/Utils';
+import { courseLandingInitialFormData,courseCurriculumInitialFormData,hireTeacherInitialState } from '@/Utils';
 
 
 export const UseContextApi=createContext();
 
 export default function ContextApi({children}) {
+  const [hireTeacherInitialStateData,setHireTeacherInitialStateData]=useState(hireTeacherInitialState);
+  const [hireTeacherApplicationEditId,setHireTeacherApplicationEditId]=useState(null);
+
+  const [studentHireApplicationList,setStudentHireApplicationList]=useState([]);
+  const [teacherHireApplicationList,setTeacherHireApplicationList]=useState([]);
+
+
+
     const [loadingSpin,setLoadingSpin]=useState(false);
     const [loadingStateCourse,setLoadingStateCourse]=useState(true);
     const [courseLandingFormData, setCourseLandingFormData] = useState(
@@ -44,7 +52,10 @@ export default function ContextApi({children}) {
     specificCourseDetailsId,setSpecificCourseDetailsId,
     studentEnrolledCourses,setStudentEnrolledCourses,
     courseProgress,setCourseProgress,specificTeacherDetails,setSpecificTeacherDetails
-    ,specificTeacherDetailsId,setSpecificTeacherDetailsId,allTeachers,setAllTeachers}}>
+    ,specificTeacherDetailsId,setSpecificTeacherDetailsId,allTeachers,setAllTeachers,
+    studentHireApplicationList,setStudentHireApplicationList,hireTeacherInitialStateData,setHireTeacherInitialStateData,hireTeacherApplicationEditId,setHireTeacherApplicationEditId,
+    teacherHireApplicationList,setTeacherHireApplicationList
+   }}>
      {children}
    </UseContextApi.Provider>
   )

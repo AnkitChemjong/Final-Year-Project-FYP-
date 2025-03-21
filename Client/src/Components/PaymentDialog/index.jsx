@@ -25,13 +25,16 @@ export default function PaymentDialog({ openDialog, setOpenDialog, courseDetail 
   const user = useSelector((state) => state?.user?.data);
 
   const handlePayment=async(paymentGateway)=>{
+      const teacherAmountOnly=Number(courseDetail?.pricing)*(10/100); 
         const queryString={
             userId:user?._id,
             orderStatus:"processing",
             paymentMethod:paymentGateway,
             paymentStatus:"processing",
             amountPaid:courseDetail?.pricing,
-            courseId:courseDetail?._id
+            courseId:courseDetail?._id,
+            siteAmount:Number(courseDetail?.pricing)-teacherAmountOnly,
+            teacherAmount:teacherAmountOnly
         }
         const data = new URLSearchParams(queryString).toString();
         const handleEsewaPayment=async()=>{

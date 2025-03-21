@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Navbar from "@/Components/Navbar";
 import { useSelector, useDispatch } from "react-redux";
 import { GrCircleInformation } from "react-icons/gr";
@@ -10,9 +10,9 @@ import DialogForCV from "@/Components/DialogForCV";
 import Footer from "@/Components/Footer";
 import { getCourse } from "@/Store/Slices/Course_Slice";
 import { getAllUser } from "@/Store/Slices/Get_All_User";
-import { Tabs,TabsContent,TabsList,TabsTrigger } from "@/Components/ui/tabs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import DeleteDialog from "@/Components/DeleteDialog";
+
 import {
   User_Upload_Profile_Image,
   User_Delete_Profile_Image,
@@ -23,6 +23,7 @@ import {
   Delete_Single_Application
  
 } from "@/Routes";
+import HireApplication from "@/Components/Hire_Application";
 import SkeletonCard from "@/Components/SkeletonCard";
 import { IoMdStats } from "react-icons/io";
 import { Badge } from "@/Components/ui/badge";
@@ -30,6 +31,7 @@ import { getUser } from "@/Store/Slices/User_Slice";
 import { getApplication } from "@/Store/Slices/ApplicationSlice";
 import { toast } from "react-toastify";
 import { axiosService } from "@/Services";
+import { Get_Student_Hire_Application } from "@/Routes";
 import {
   updateProfileInitialState,
   changePasswordForm,
@@ -42,6 +44,19 @@ import {
 import  DialogForm from "@/Components/DialogForm";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { UseContextApi } from "@/Components/ContextApi";
+
+export const getStudentHireApplication=async(id)=>{
+  try{
+     const response=await axiosService.get(`${Get_Student_Hire_Application}/${id}`);
+     if(response.status === 200){
+      return response?.data?.application;
+     }
+  }
+  catch(error){
+    console.log(error)
+  }
+}
 
 export default function Profile() {
   const userStates = useSelector((state) => state?.user);
@@ -59,6 +74,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const navigate=useNavigate();
   const [dialog6, setDialog6] = useState(false);
+  const {studentHireApplicationList,setStudentHireApplicationList}=useContext(UseContextApi);
 
   useEffect(()=>{
      if(user && userApplication){
@@ -66,8 +82,18 @@ export default function Profile() {
       setUserApplicationData(application);
      }
   },[userApplication,user]);
-  
 
+useEffect(() => {
+  if (user) {
+    const getUsersRequestApplication=async()=>{
+
+      const result=await getStudentHireApplication(user?._id);
+      setStudentHireApplicationList(result);
+    }
+    getUsersRequestApplication();
+    };
+
+},[loading]);
   const updateProfileInputs = [
     {
       label: "User Name",
@@ -130,7 +156,7 @@ export default function Profile() {
     },
     {
       icon: "🎂",
-      text: moment(user?.DOB).format("MMMM DD, YYYY") || "null",
+      text: user?.DOB? moment(user?.DOB).format("MMMM DD, YYYY"): "null",
       size: 20,
     }
   ];
@@ -245,11 +271,14 @@ export default function Profile() {
     try {
       const formData = new FormData();
       formData.append("certificate", data?.certificate);
+      formData.append("feePerHour",data?.feePerHour);
       formData.append("degree", data?.degree);
       formData.append("avilability", data?.avilability);
       formData.append("description", data?.description);
       formData.append("college", data?.college);
       formData.append("university", data?.university);
+      formData.append("category",data?.category);
+      formData.append("primaryLanguage",data?.primaryLanguage);
       if(user){
         const response = await axiosService.post(`${Update_Teacher_Info}/${user?._id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -327,7 +356,7 @@ export default function Profile() {
     <div>
       <Navbar />
         {!user?.DOB && (
-            <div className="flex w-full p-2 justify-center items-center bg-white">
+            <div className="flex w-full p-2 justify-center items-center bg-blue-200 rounded-lg mb-1">
           <span className="text-sm text-red-800">
             Complete your profile info to become a Teacher.
           </span>
@@ -335,8 +364,8 @@ export default function Profile() {
         )}
       {
         (user?.userRole?.includes("teacher") && !user?.teacherInfo) && 
-      <div className="flex w-full p-2 justify-center items-center bg-white">
-            <span className="text-sm text-red-800">
+      <div className="flex w-full p-2 justify-center items-center bg-blue-200 rounded-lg mb-1">
+            <span className="text-sm  text-red-800">
             Please Complete your Teacher info.
           </span>
       </div>   
@@ -453,7 +482,7 @@ export default function Profile() {
   </div>
 
 
-  {user?.userRole?.includes("teacher") && (
+  {user?.userRole?.includes("teacher") && user?.teacherInfo && (
     <div className="w-full flex flex-col justify-center items-start gap-3 bg-white">
       <div className="flex flex-row items-center gap-4">
         <GrCircleInformation size={30} className="text-green-600" />
@@ -506,8 +535,6 @@ export default function Profile() {
             </div>
           </div>
         )}
-
-
         {user?.teacherInfo?.college && (
           <div className="flex flex-row items-center gap-3">
             <span className="text-xl">🏫</span>
@@ -516,13 +543,35 @@ export default function Profile() {
             </p>
           </div>
         )}
-
-    
         {user?.teacherInfo?.university && (
           <div className="flex flex-row items-center gap-3">
             <span className="text-xl">🏛️</span>
             <p className="text-sm text-gray-700">
               <strong>University:</strong> {user?.teacherInfo?.university}
+            </p>
+          </div>
+        )}
+        {user?.teacherInfo?.feePerHour && (
+          <div className="flex flex-row items-center gap-3">
+            <span className="text-xl">₹</span>
+            <p className="text-sm text-gray-700">
+              <strong>Fee: Rs.</strong> {`${user?.teacherInfo?.feePerHour} /hr`}
+            </p>
+          </div>
+        )}
+        {user?.teacherInfo?.category && (
+          <div className="flex flex-row items-center gap-3">
+            <span className="text-xl">📂</span>
+            <p className="text-sm text-gray-700">
+              <strong>Category:</strong> {user?.teacherInfo?.category}
+            </p>
+          </div>
+        )}
+        {user?.teacherInfo?.primaryLanguage && (
+          <div className="flex flex-row items-center gap-3">
+            <span className="text-xl">🗣️</span>
+            <p className="text-sm text-gray-700">
+              <strong>Primary Language:</strong> {user?.teacherInfo?.primaryLanguage}
             </p>
           </div>
         )}
@@ -578,7 +627,7 @@ export default function Profile() {
            
             <div className="w-full flex flex-row justify-center items-center gap-4 bg-transparent">
               {user?.userRole?.includes("teacher") ? (
-                <Button className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md">
+                <Button onClick={()=>navigate('/teacher/dashboard')} className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md">
                   Dashboard
                 </Button>
               ) : (
@@ -643,25 +692,14 @@ export default function Profile() {
       </div>
     </div>
   )
-}
-              
-            
+}       
           </div>
           <div>
 
           </div>
         </div>
       </div>
-      <div className="w-full bg-slate-400 h-80">
-           <Tabs defaultValue="toteacher" >
-            <TabsList className="gap-10">
-                           <TabsTrigger value="all" >
-                            All
-                           </TabsTrigger>
-                           </TabsList>
-           </Tabs>
-      </div>
-    
+       <HireApplication applicationList={studentHireApplicationList}/>
       <DialogForm
         title="Update Profile Info"
         description="Enter New Profile Data."

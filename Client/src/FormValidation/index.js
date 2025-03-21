@@ -352,6 +352,54 @@ export const updateTeacherValidation=(value)=>{
     else{
         error.description="";
     }
+    if(value?.feePerHour === ""){
+        error.feePerHour="field should not be empty";
+    }
+    else{
+        error.feePerHour="";
+    }
+    if (value?.category===""){
+        error.category="field should not be empty";
+
+    }
+    else{
+        error.category="";
+    }
+    if (value?.primaryLanguage===""){
+        error.primaryLanguage="field should not be empty";
+
+    }
+    else{
+        error.primaryLanguage="";
+    }
+    return error;
+
+}
+
+export const hireTeacherValidation=(value)=>{
+    let error={};
+    if (value?.hiringDate===""){
+        error.hiringDate="field should not be empty";
+
+    }
+    else{
+        error.hiringDate="";
+    }
+    
+    if (value?.startTime===""){
+        error.startTime="field should not be empty";
+
+    }
+    else{
+        error.startTime="";
+    }
+    if (value?.endTime===""){
+        error.endTime="field should not be empty";
+
+    }
+    else{
+        error.endTime="";
+    }
     return error;
 
 }

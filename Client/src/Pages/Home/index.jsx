@@ -153,7 +153,7 @@ export default function Home() {
                   </p>
                   </div>
                   <p className="font-bold text-[16px]">
-                    ${courseItem?.pricing}
+                    Rs. {courseItem?.pricing}
                   </p>
                 </div>
               </div>

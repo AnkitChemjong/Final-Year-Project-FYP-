@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import CommonButton from "../CommonButton";
 import CommonRenderFormInput from "../CommonRenderFormInput";
 import { ScrollArea } from "../ui/scroll-area";
@@ -10,72 +10,104 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { changePasswordValidation,updateTeacherValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation } from "@/FormValidation";
+import { changePasswordValidation,updateTeacherValidation, emailValidation,updateProfileInfoValidation,becomeTeacherValidation, hireTeacherValidation } from "@/FormValidation";
+import { UseContextApi } from "../ContextApi";
+import { hireTeacherInitialState } from "@/Utils";
+
 
 
 
 export default function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
+  const {hireTeacherApplicationEditId,setHireTeacherApplicationEditId,hireTeacherInitialStateData,setHireTeacherInitialStateData}=useContext(UseContextApi);
     const [error, setError] = useState({});
   const [data,setData]=useState(initialState);
+  useEffect(() => {
+    if (dialog && hireTeacherInitialStateData) {
+      setData(hireTeacherInitialStateData);
+    }
+  }, [hireTeacherInitialStateData, dialog]);
+
+  // Reset state when dialog closes
+  useEffect(() => {
+    if (!dialog) {
+      setData(initialState);
+      setError({});
+      setHireTeacherInitialStateData(hireTeacherInitialState);
+      setHireTeacherApplicationEditId(null);
+    }
+  }, [dialog]);
   const handleSubmit=(e)=>{
+    if(type === "hireteacher"){
+     const errors=hireTeacherValidation(data);
+      setError(errors);
+      if(errors.hiringDate === ""
+        && errors.startTime === ""
+        && errors.endTime === ""
+      ){
+        func(data)
+      }
+    }
     if(type==="email"){
-      setError(emailValidation(data));
-      if(!error.email){
+      const errors=emailValidation(data);
+      setError(errors);
+      if(!errors.email){
         func(data);
       }
     }
     if(type==="updateProfile"){
-     setError(updateProfileInfoValidation(data));
-     if(error.userName===""&&
-      error.address===""&&
-      error.phone===""&&
-      error.gender===""&&
-      error.DOB===""
+      const errors=updateProfileInfoValidation(data)
+     setError(errors);
+     if(errors.userName===""&&
+      errors.address===""&&
+      errors.phone===""&&
+      errors.gender===""&&
+      errors.DOB===""
      ){
       func(data);
      }
     }
     if(type==="updatePassword"){
-      setError(changePasswordValidation(data));
-      if(error.currentPassword==="" && 
-        error.newPassword==="" &&
-        error.confirmPassword===""
+      const errors=changePasswordValidation(data);
+      setError(errors);
+      if(errors.currentPassword==="" && 
+        errors.newPassword==="" &&
+        errors.confirmPassword===""
       ){
 
         func(data);
       }
     }
     if(type==="becomeTeacher"){
-      setError(becomeTeacherValidation(data));
-      if(error.cv===""){
+      const errors=becomeTeacherValidation(data)
+      setError(errors);
+      if(errors.cv===""){
         func(data);
       }
     }
     if(type==="updateCV"){
-      setError(becomeTeacherValidation(data));
-      if(error.cv===""){
+      const errors=becomeTeacherValidation(data)
+      setError(errors);
+      if(errors.cv===""){
         func(data);
       }
     }
     if(type==="updateTeacherInfo"){
-      setError(updateTeacherValidation(data));
-      if(error.avilability === "" &&
-        error.description === ""
+      const errors=updateTeacherValidation(data)
+      setError(errors);
+      if(errors.avilability === "" &&
+        errors.description === "" &&
+        errors.feePerHour === ""
       ){
-        console.log("hello")
         func(data);
       }
     }
   }
+  
   return (
-    <Dialog open={dialog} onOpenChange={(e)=>{
-        setDialog(e);
-        setError({});
-        setData(initialState)
-        }}>
+    <Dialog open={dialog} onOpenChange={(e)=>setDialog(e)}>
 
-      <DialogContent className="sm:max-w-[425px] md:max-w-[500px]"  showOverlay={false} >
-       <ScrollArea className="h-[400px] md:max-h-[600px]  overflow-y-auto px-5">
+      <DialogContent className="w-full max-w-[500px] mx-auto"  showOverlay={false} >
+       <ScrollArea className="max-h-[80vh]  overflow-y-auto px-5">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>

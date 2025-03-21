@@ -21,7 +21,7 @@ export default function Courses() {
         navigate("/createnewcourse");
     }
   return (
-    <div className='flex flex-col h-screen gap-2'>
+    <div className='flex flex-col h-screen gap-2 overflow-hidden'>
       <div className='w-full flex flex-row justify-evenly items-center relative  md:top-10'>
         <p className='text-2xl font-bold'>All Courses</p>
         <CommonButton func={handleNavigation} text="Upload Course" />

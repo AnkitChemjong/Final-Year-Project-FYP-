@@ -3,6 +3,7 @@ import User from "../../../Model/User_Model/index.mjs";
 const getSearchedTeacher = async (req, res) => {
     try {
         const { searchTerm } = req.body;
+        const user=req.user;
         if (!searchTerm) {
             return res.status(400).json({ message: "searchTerm is required." });
         }
@@ -13,12 +14,16 @@ const getSearchedTeacher = async (req, res) => {
         
         const allTeachers = await User.find({
             $and: [
-                { userRole: { $in: ["teacher"] } }, 
+                { userRole: { $in: ["teacher"] } },
+                {_id:{$ne:user?._id}}, 
                 {
                     $or: [
                         { userName: regex }, 
                         { email: regex },
                         {address: regex},
+                        { "teacherInfo.category": regex }, 
+                        { "teacherInfo.primaryLanguage": regex }
+
                     ]
                 }
             ]

@@ -9,7 +9,6 @@ import { Table,
   TableRow, } from '../ui/table';  
 import moment from 'moment';
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { } from '@/Routes';
 import { axiosService } from '@/Services';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -112,7 +111,7 @@ export default function CommonTableForCourse({data,header,type}){
           <p className=" text-black">{data?.length}</p>
           </div>
           <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
-          <RiDeleteBin6Line onClick={()=>deleteCourse({type:"all",status:type,data})} className='cursor-pointer text-black' size={20}/>
+          <RiDeleteBin6Line onClick={()=>deleteCourse({type:"all",status:type,data})} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
           </div>
         </div>
          <ScrollArea  className="max-h-[350px] overflow-auto rounded-lg">
@@ -143,7 +142,7 @@ export default function CommonTableForCourse({data,header,type}){
                  <TableCell className="text-center">Rs.{item?.students.length*item?.pricing}</TableCell>
                  <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
                    <FaRegEdit className='cursor-pointer' onClick={()=>handleCourseEditId(item?._id)} size={20}/>
-                 <RiDeleteBin6Line onClick={()=>deleteCourse({data:item,type:"single"})} className='cursor-pointer' size={20}/>
+                 <RiDeleteBin6Line onClick={()=>deleteCourse({data:item,type:"single"})} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
                  </TableCell>
                  
                </TableRow>

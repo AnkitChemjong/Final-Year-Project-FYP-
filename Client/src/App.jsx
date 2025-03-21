@@ -26,6 +26,9 @@ import TeacherDetails from "./Pages/TeacherDetails";
 import AdminCourse from "./Pages/AdminCourse";
 import { toast } from "react-toastify";
 import AdminApplication from "./Pages/AdminApplication";
+import { getHireApplication } from "./Store/Slices/Hire_Application";
+import TeacherDashboard from "./Pages/TeacherDashboard";
+import TeacherHireRequest from "./Pages/TeacherHireRequest";
 
 let toastShown = false;
 
@@ -111,6 +114,24 @@ function AdminRoute({ children }) {
   }
   return children;
 }
+
+function TeacherRoute({ children }) {
+  const userStates = useSelector(state => state?.user);
+  const { data: user, loading } = userStates;
+  if (loading) {
+    return <CommonSkeleton />; 
+  }
+  if (!loading && !user?.userRole?.includes("teacher")) {
+    if (!toastShown) {
+      toast.error("Can't view this page.");
+      toastShown = true;
+    }
+    return <Navigate to="/" />;
+  }
+  return children;
+}
+
+
 function HomeRestrictForAdmin({children}){
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
@@ -135,6 +156,7 @@ function App() {
   const applications=useSelector(state=>state?.application);
   const courses=useSelector(state=>state?.course);
   const allUsers=useSelector(state=>state?.allUsers);
+  const hireApplications=useSelector(state=>state?.hireApplication);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -150,11 +172,13 @@ function App() {
       if (!allUsers?.data) {
         await dispatch(getAllUser());
       }
+      if(!hireApplications?.data){
+        await dispatch(getHireApplication());
+      }
     };
   
     fetchData();
   }, []);
-
 
   return (
       <Router>
@@ -171,6 +195,8 @@ function App() {
           <Route path="/admin/application" element={<AdminRoute><AdminApplication/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/edit_course/:courseId" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
+          <Route path="/teacher/dashboard" element={<TeacherRoute><TeacherDashboard/></TeacherRoute>}/>
+          <Route path="/teacher/hireapplication" element={<TeacherRoute><TeacherHireRequest/></TeacherRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>

@@ -10,7 +10,7 @@ class UserClass{
     else{
         const userId=uuid();
         const user=new User({userId,email,userName,password});
-        user.save();
+        await user.save();
         return true;
     }
     }

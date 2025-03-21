@@ -8,7 +8,7 @@ static deleteSingleApplication=async (req,res)=>{
 
         const {data}=req.body;
         if(data?.status !== "recruted" ){
-                            const fileName=`Scripts/Upload/${data?.userCV}`;
+                            const fileName=`./Scripts/Upload/${data?.userCV}`;
                             fs.unlink(fileName,(err)=>{
                                 if (err) {
                                     console.error('Error deleting file:', err);
@@ -34,7 +34,7 @@ static deleteAllApplication=async (req,res)=>{
             const applications=await BecomeTeacherApp.find({});
             if(applications?.status !== "recruted" ){
                 applications.forEach((item)=>{
-                                        const fileName=`Scripts/Upload/${item?.userCV}`;
+                                        const fileName=`./Scripts/Upload/${item?.userCV}`;
                                         fs.unlink(fileName,(err)=>{
                                             if (err) {
                                                 console.error('Error deleting file:', err);
@@ -51,7 +51,7 @@ static deleteAllApplication=async (req,res)=>{
             const applications=await BecomeTeacherApp.find({status:status});
             if(status !== "recruted" ){
             applications.forEach((item)=>{
-                                    const fileName=`Scripts/Upload/${item?.userCV}`;
+                                    const fileName=`./Scripts/Upload/${item?.userCV}`;
                                     fs.unlink(fileName,(err)=>{
                                         if (err) {
                                             console.error('Error deleting file:', err);
@@ -79,7 +79,7 @@ static deleteSelectedApplication=async (req,res)=>{
         const {data}=req.body;
             data.forEach(async (item)=>{
                 if(item?.status !== "recruted" ){
-                                            const fileName=`Scripts/Upload/${item?.userCV}`;
+                                            const fileName=`./Scripts/Upload/${item?.userCV}`;
                                             fs.unlink(fileName,(err)=>{
                                                 if (err) {
                                                     console.error('Error deleting file:', err);

@@ -319,12 +319,38 @@ export const languageOptions = [
           placeholder: "Your college name.",
         },
         {
+          name: "category",
+          label: "Category",
+          componentType: "select",
+          type: "text",
+          mendatory:true,
+          placeholder: "",
+          options: courseCategories,
+        },
+        {
+          name: "primaryLanguage",
+          label: "Primary Language",
+          componentType: "select",
+          mendatory:true,
+          type: "text",
+          placeholder: "",
+          options: languageOptions,
+        },
+        {
           label: "University",
           name: "university",
           mendatory:false,
           type: "text",
           componentType: "input",
           placeholder: "Your University Name.",
+        },
+        {
+          label: "Fee",
+          name: "feePerHour",
+          mendatory:true,
+          type: "number",
+          componentType: "input",
+          placeholder: "Fee per Hour",
         },
   ]
 
@@ -334,6 +360,43 @@ export const updateTeacherInfoInitialState=
   degree:"",
   avilability:"",
   description:"",
+  primaryLanguage:"",
+  category:"",
+  feePerHour:"",
   college:"",
   university:""
 }
+
+
+export const hireTeacherComponents=[
+  {
+    label: "Hiring Date",
+    name: "hiringDate",
+    type: "date",
+    componentType: "date",
+  },
+  {
+    label: "Start Time",
+    name: "startTime",
+    type: "text",
+    componentType: "input",
+    placeholder: "Enter your starting time PM/AM",
+  },
+  {
+    label: "End Time",
+    name: "endTime",
+    type: "text",
+    componentType: "input",
+    placeholder: "Enter your ending time PM/AM",
+  },
+]
+
+export const hireTeacherInitialState=
+{
+  hiringDate:"",
+  startTime:"",
+  endTime:""
+}
+
+
+export const formatForHireApplication=["",'S.N',"Student Name","Teacher Name","Requested On","Hiring Date","Time","Status","action"];

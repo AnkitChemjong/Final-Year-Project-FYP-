@@ -2,7 +2,6 @@ import React from 'react'
 import { Dialog,DialogContent,DialogHeader,DialogTitle
     ,DialogDescription
  } from '../ui/dialog';
- import { Label } from '../ui/label';
  import { Button } from '../ui/button';
 export default function CourseCompletedDialog({courseCompletedDialog,setCourseCompletedDialog}) {
   return (
@@ -13,11 +12,11 @@ export default function CourseCompletedDialog({courseCompletedDialog,setCourseCo
                        Congratulation on Completing this Course.
                     </DialogTitle>
                     <DialogDescription className="flex flex-col gap-3">
-                        <Label>You can download your certificate now.</Label>
-                        
-                            <Button onClick={()=>setCourseCompletedDialog(false)}>ok</Button>
-                      
+                     You can download your certificate now. 
                     </DialogDescription>
+                    <div className="mt-4 flex justify-end">
+      <Button onClick={() => setCourseCompletedDialog(false)}>OK</Button>
+    </div>
                 </DialogHeader>
              </DialogContent>
           </Dialog>

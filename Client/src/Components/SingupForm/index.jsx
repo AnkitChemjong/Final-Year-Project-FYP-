@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import { registerForm } from '@/Utils';
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -12,21 +12,27 @@ import { initialSignData } from '@/Utils';
 import { handleGoogle } from '../ThirdAuth';
 import { handleGithub } from '../ThirdAuth';
 import { handleFacebook } from '../ThirdAuth';
+import { UseContextApi } from '../ContextApi';
+import { FiLoader } from "react-icons/fi";
 
 export default function SignupForm({func}) {
+const {loadingSpin}=useContext(UseContextApi);
 const [error, setError] = useState({});
 const [data,setData]=useState(initialSignData);
 const handleChange=(e)=>{
     const {name,value}=e.target;
     setData((prev)=>({...prev,[name]:value}))
 }
+
 const onFormSubmit=(e)=>{
+  
   e.preventDefault();
-  setError(signupValidation(data));
-  if(error.email === '' &&
-    error.userName === '' &&
-    error.password === '' &&
-    error.confirmPassword === ''){
+  const errors=signupValidation(data);
+  setError(errors);
+  if(errors.email === '' &&
+    errors.userName === '' &&
+    errors.password === '' &&
+    errors.confirmPassword === ''){
     func(data);
   }
 }
@@ -56,7 +62,7 @@ const onFormSubmit=(e)=>{
             })
         }
         </div>
-         <Button type="submit" className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">Register</Button>
+         <Button type="submit" className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">{loadingSpin && <FiLoader className='w-6 h-6 animate-spin'/>}Register</Button>
         </form>
          <div className='flex flex-row items-center justify-center gap-5 relative bottom-10'>
           <div className='h-1 w-24 bg-black'></div>

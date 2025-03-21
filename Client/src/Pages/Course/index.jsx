@@ -268,23 +268,29 @@ export default function Course() {
                           <CardTitle className="text-xl mb-2">
                             {item?.title}
                           </CardTitle>
-                           <p className='text-sm text-gray-500 mb-1 flex items-center gap-1'>
-                           Published By: 
-                           <div className='flex flex-row gap-5 items-center'>
-                           <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
-                          {item?.creator?.userImage? 
-                          <AvatarImage 
-                          className="rounded-full"
-                          src={item?.creator?.userImage.startsWith("http") ? item?.creator?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${item?.creator?.userImage}`} 
-                          alt="creatorImage"  />:(
-                            <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{item?.creator?.userName.split("")[0].toUpperCase()}</div>
-                          )};
-                        </Avatar>
-                           <span className='font-bold'>
-                            {item?.creator?.userName}
-                            </span> 
-                            </div> 
-                          </p>
+                          <div className='text-sm text-gray-500 mb-1 flex items-center gap-1'>
+  Published By:
+  <div className='flex flex-row gap-5 items-center'>
+    <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
+      {item?.creator?.userImage ? (
+        <AvatarImage
+          className="rounded-full"
+          src={
+            item?.creator?.userImage.startsWith("http")
+              ? item?.creator?.userImage
+              : `${import.meta.env.VITE_BACKEND_URL}/${item?.creator?.userImage}`
+          }
+          alt="creatorImage"
+        />
+      ) : (
+        <div className='bg-slate-400 justify-center items-center px-5 py-3 rounded-full'>
+          {item?.creator?.userName.split("")[0].toUpperCase()}
+        </div>
+      )}
+    </Avatar>
+    <span className='font-bold'>{item?.creator?.userName}</span>
+  </div>
+</div>
                             <p className='text-[16px] text-gray-800 mb-2 mt-3'>
                                {
                                 `${item?.curriculum?.length} ${item?.curriculum?.length<=1? "Content":"Contents"} 
