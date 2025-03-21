@@ -7,6 +7,7 @@ import getAllHireApplication from "../../Controllers/Hiring_Controller/Get_All_A
 import GetSpecificApplication from "../../Controllers/Hiring_Controller/Get_Specific_Application/index.mjs";
 import DeleteHireApplication from "../../Controllers/Hiring_Controller/Delete_Hire_Application/index.mjs";
 import ManipulateApplication from "../../Controllers/Hiring_Controller/Manipulate_Application_Hire/index.mjs";
+import UpdateHireApplication from "../../Controllers/Hiring_Controller/Update_Application_Status/index.mjs";
 
 const appRouter=Router();
 
@@ -27,6 +28,9 @@ appRouter.delete('/deletehireall',DeleteHireApplication.deleteAllApplication);
 appRouter.delete('/deletehireselected',DeleteHireApplication.deleteSelectedApplication);
 appRouter.get('/gethireapplicationdetails/:id',ManipulateApplication.getApplicationDetails);
 appRouter.patch('/updatehireapplicationdetails/:id',ManipulateApplication.updateApplicationDetails);
+appRouter.patch('/updatesinglehireapplicationstatus',UpdateHireApplication.updateSingleApplication);
+appRouter.patch('/updateallhireapplicationstatus',UpdateHireApplication.updateAllApplication);
+appRouter.patch('/updateselectedhireapplicationstatus',UpdateHireApplication.updateSelectedApplication);
 
 
 export default appRouter;

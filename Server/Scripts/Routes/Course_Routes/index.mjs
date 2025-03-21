@@ -11,6 +11,8 @@ import getSearchedCourse from "../../Controllers/Course_Controller/GetSearchedCo
 import getEnrolledCourses from "../../Controllers/Course_Controller/GetEnrolledCourse/index.mjs";
 import CourseProgress from "../../Controllers/Course_Controller/CourseProgress/index.mjs";
 import getTopSixCourses from "../../Controllers/Course_Controller/GeTTopSixCourses/index.mjs";
+import TeacherCourses from "../../Controllers/Course_Controller/GetTeacherCourses/index.mjs";
+import UpdateCouseIsPublished from "../../Controllers/Course_Controller/UpdateTeacherCourse/index.mjs";
 
 const courseRouter=Router();
 
@@ -28,6 +30,13 @@ courseRouter.post('/bulkUpload',uploadCourse.array('files',10),bulkUpload);
 courseRouter.post("/searchedCourse",getSearchedCourse);
 courseRouter.get("/getEnrolledCourse/:studentId",getEnrolledCourses);
 courseRouter.get("/getTopSixCourses",getTopSixCourses);
+
+//teacherdashboard
+courseRouter.get("/getTeacherCourses/:id",TeacherCourses.getTeachersCourses);
+courseRouter.patch("/updateTeacherAllCourses",UpdateCouseIsPublished.updateAllCourses);
+courseRouter.patch("/updateTeacherSingleCourse",UpdateCouseIsPublished.updateSingleCourse);
+courseRouter.patch("/updateTeacherSelectedCourses",UpdateCouseIsPublished.updateSelectedCourses);
+
 
 
 //course progress routes

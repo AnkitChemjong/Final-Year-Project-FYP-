@@ -64,7 +64,7 @@ const courseSchema=new Schema({
     curriculum: [lectureSchema],
     isPublished:{
         type:Boolean,
-        default:false
+        default:true
     },
     extraResources:{
         type:String,

@@ -121,13 +121,13 @@ export default function Home() {
         </div>
       </section>
       <section className="py-12 px-4 lg:px-8">
-        <h2 className="text-2xl font-bold mb-6">Top Sellers</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h2 className="text-2xl font-bold mb-6">Top Courses</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {topSellerCourses && topSellerCourses.length > 0 ? (
             topSellerCourses.map((courseItem,index) => (
               <div
                 onClick={() => handleCourseNavigate(courseItem?._id)}
-                className="border rounded-lg overflow-hidden shadow cursor-pointer"
+                className="border-2 border-x-fuchsia-800 rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out hover:bg-slate-100"
                 key={index}
               >
                 <img
@@ -149,11 +149,16 @@ export default function Home() {
                           )}
                         </Avatar>
                   <p className="text-sm text-gray-700 mb-2">
-                    {courseItem?.creatorDetails?.userName}
+                    {courseItem?.creatorDetails?.userName?.toUpperCase()}
                   </p>
                   </div>
-                  <p className="font-bold text-[16px]">
-                    Rs. {courseItem?.pricing}
+                  
+                  <p className="font-bold text-sm text-slate-600">
+                  {courseItem?.category?.toUpperCase()}
+                  </p>
+          
+                  <p className="font-bold text-sm text-slate-600">
+                    Price: Rs. {courseItem?.pricing}
                   </p>
                 </div>
               </div>

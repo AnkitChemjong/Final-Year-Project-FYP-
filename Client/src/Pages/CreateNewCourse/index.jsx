@@ -133,7 +133,7 @@ export default function CreateNewCourse() {
                        <CourseLanding />
                     </TabsContent>
                     <TabsContent value="setting">
-                      <CourseSetting id={params?.courseId}/>
+                      <CourseSetting />
                     </TabsContent>
                     <TabsContent value="quiz">
                       <CourseSetting />

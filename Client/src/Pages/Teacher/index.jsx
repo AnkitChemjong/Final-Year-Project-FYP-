@@ -82,7 +82,7 @@ export default function Teacher() {
                    allTeachers.map((item,index) => (
                      <div
                        onClick={() => handleNavigate(item?._id)}
-                       className="border rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out"
+                       className="border rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out hover:bg-slate-100"
                        key={index}
                      >
                        <div className="p-4 flex flex-col gap-2">
@@ -98,9 +98,12 @@ export default function Teacher() {
                                  )}
                                </Avatar>
                          <p className="text-sm text-gray-700 mb-2">
-                           {item?.userName}
+                           {item?.userName?.toUpperCase()}
                          </p>
                          </div>
+                         <p className="text-sm text-gray-700 mb-2">
+                          Category: {`${item?.teacherInfo?.category? item?.teacherInfo?.category?.toUpperCase():"N/A"}`}
+                         </p>
                        </div>
                      </div>
                    ))

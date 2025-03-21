@@ -3,60 +3,128 @@ import CommonButton from '../CommonButton';
 import { courseCurriculumInitialFormData, courseLandingInitialFormData, formatForAllCourses } from '@/Utils';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Tabs,TabsContent,TabsList,TabsTrigger } from '../ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import CommonTableForCourse from '../CommonTableForCourse';
 import { UseContextApi } from '../ContextApi';
 import SkeletonCard from '../SkeletonCard';
-
+import { ScrollArea } from '../ui/scroll-area';
+import LottieAnimation from '@/Components/LottieAnimation';
+import graduationcourse from '@/assets/graduationcourse.json';
 
 export default function Courses() {
-    const coursesState=useSelector(state=>state?.course);
-    const {data:courses,loading}=coursesState;
-    const {setCurrentEditedCourseId,setCourseLandingFormData,setCourseCurriculumFormData}=useContext(UseContextApi);
-    const navigate=useNavigate();
-    const handleNavigation=()=>{
-        setCurrentEditedCourseId(null);
-        setCourseLandingFormData(courseLandingInitialFormData);
-        setCourseCurriculumFormData(courseCurriculumInitialFormData);
-        navigate("/createnewcourse");
-    }
+  const coursesState = useSelector(state => state?.course);
+  const { data: courses, loading } = coursesState;
+  const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData } = useContext(UseContextApi);
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    setCurrentEditedCourseId(null);
+    setCourseLandingFormData(courseLandingInitialFormData);
+    setCourseCurriculumFormData(courseCurriculumInitialFormData);
+    navigate("/createnewcourse");
+  };
+
+
+  const totalCourses = courses?.length || 0;
+  const adminCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("admin")).length || 0;
+  const teacherCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("teacher")).length || 0;
+
   return (
-    <div className='flex flex-col h-screen gap-2 overflow-hidden'>
-      <div className='w-full flex flex-row justify-evenly items-center relative  md:top-10'>
-        <p className='text-2xl font-bold'>All Courses</p>
-        <CommonButton func={handleNavigation} text="Upload Course" />
+    <ScrollArea className="max-h-screen overflow-auto">
+    <div className="flex flex-col w-full p-6  min-h-screen">
+
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div className='flex gap-1 items-center'>
+
+        <h1 className="text-3xl font-bold text-gray-800">All Courses</h1>
+        <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
+        </div>
+        <CommonButton
+          func={handleNavigation}
+          text="Upload New Course"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200"
+        />
       </div>
-        <Tabs defaultValue='all' className='flex flex-col mt-10 relative   items-center '>
-               <div className='py-3 border-b-2 border-stone-950'>
-               <TabsList className="gap-10">
-               <TabsTrigger value="all" >
-                All
-               </TabsTrigger>
-               <TabsTrigger value="admin" >
-                Admin
-               </TabsTrigger>
-               <TabsTrigger value="teacher" >
-                Teacher
-               </TabsTrigger>
-               </TabsList>
-               </div>
-               {
-                loading? <SkeletonCard />:(
-                  <>
-                  <TabsContent value="all">
-                <CommonTableForCourse data={courses} type="all" header={formatForAllCourses}/>
-               </TabsContent>
-               <TabsContent value="admin">
-               <CommonTableForCourse data={courses.filter(item=>item?.creator?.userRole?.includes("admin"))} type="admin created" header={formatForAllCourses}/>
-               </TabsContent>
-               <TabsContent value="teacher">
-               <CommonTableForCourse data={courses.filter(item=>item?.creator?.userRole?.includes("teacher"))} type="teacher created" header={formatForAllCourses}/>
-               </TabsContent>
-                  </>
-                )
-               }
-               
-               </Tabs>
+
+     
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <h3 className="text-gray-600 text-sm font-medium">Total Courses</h3>
+          <p className="text-3xl font-bold text-gray-800 mt-2">{totalCourses}</p>
+        </div>
+
+   
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <h3 className="text-gray-600 text-sm font-medium">Admin-Created Courses</h3>
+          <p className="text-3xl font-bold text-gray-800 mt-2">{adminCreatedCourses}</p>
+        </div>
+
+     
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <h3 className="text-gray-600 text-sm font-medium">Teacher-Created Courses</h3>
+          <p className="text-3xl font-bold text-gray-800 mt-2">{teacherCreatedCourses}</p>
+        </div>
       </div>
+
+      <Tabs defaultValue="all" className="w-full max-w-6xl mx-auto">
+   
+        <div className="flex justify-center py-4 border-b border-gray-200">
+          <TabsList className="flex gap-4 bg-white rounded-lg shadow-sm p-2">
+            <TabsTrigger
+              value="all"
+              className="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+            >
+              ALL
+            </TabsTrigger>
+            <TabsTrigger
+              value="admin"
+              className="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+            >
+              ADMIN
+            </TabsTrigger>
+            <TabsTrigger
+              value="teacher"
+              className="px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+            >
+              TEACHER
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+  
+        {loading ? (
+          <SkeletonCard />
+        ) : (
+          <>
+            <TabsContent value="all" className="mt-1">
+              <CommonTableForCourse
+                data={courses}
+                type="all"
+                header={formatForAllCourses}
+                page="admin-page"
+              />
+            </TabsContent>
+            <TabsContent value="admin" className="mt-1">
+              <CommonTableForCourse
+                data={courses?.filter(item => item?.creator?.userRole?.includes("admin"))}
+                type="admin created"
+                header={formatForAllCourses}
+                page="admin-page"
+              />
+            </TabsContent>
+            <TabsContent value="teacher" className="mt-1">
+              <CommonTableForCourse
+                data={courses?.filter(item => item?.creator?.userRole?.includes("teacher"))}
+                type="teacher created"
+                header={formatForAllCourses}
+                page="admin-page"
+              />
+            </TabsContent>
+          </>
+        )}
+      </Tabs>
+    </div>
+    </ScrollArea>
   );
 }

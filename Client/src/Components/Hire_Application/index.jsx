@@ -48,7 +48,7 @@ export default function HireApplication({ applicationList }) {
             </TabsContent>
             {uniqueStatus?.map((status, index) => (
               <TabsContent key={index} value={status}>
-                <CommonTableForHireApplication data={applicationList} type={status} header={formatForHireApplication} page={"profile"}/>
+                <CommonTableForHireApplication data={applicationList?.filter(item=>item?.status === status)} type={status} header={formatForHireApplication} page={"profile"}/>
               </TabsContent>
             ))}
           </>

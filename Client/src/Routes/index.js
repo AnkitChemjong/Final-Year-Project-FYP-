@@ -37,6 +37,9 @@ export const Delete_Hire_All_Application=`${Get_All_Applications}/deletehireall`
 export const Delete_Hire_Selected_Application=`${Get_All_Applications}/deletehireselected`;
 export const Get_Hire_Application_Details=`${Get_All_Applications}/gethireapplicationdetails`;
 export const Update_Hire_Application_Details=`${Get_All_Applications}/updatehireapplicationdetails`;
+export const Update_Hire_Application_Single_Status=`${Get_All_Applications}/updatesinglehireapplicationstatus`;
+export const Update_Hire_Application_Selected_Status=`${Get_All_Applications}/updateselectedhireapplicationstatus`;
+export const Update_Hire_Application_All_Status=`${Get_All_Applications}/updateallhireapplicationstatus`;
 
 //Course Routes
 export const Get_All_Course='/course';
@@ -56,6 +59,10 @@ export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`;
 export const Update_Content_As_Viewed=`${Get_All_Course}/updateContentAsViewed`;
 export const Reset_Course_Progress=`${Get_All_Course}/resetCourseProgress`;
 export const Get_Top_Six_Courses=`${Get_All_Course}/getTopSixCourses`;
+export const Get_Teacher_Courses=`${Get_All_Course}/getTeacherCourses`;
+export const Update_Teacher_Single_Course=`${Get_All_Course}/updateTeacherSingleCourse`;
+export const Update_Teacher_Selected_Course=`${Get_All_Course}/updateTeacherSelectedCourses`;
+export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourses`;
 
 //Payment Routes
 export const Payment='/payment';

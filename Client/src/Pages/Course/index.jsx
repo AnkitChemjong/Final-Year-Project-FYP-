@@ -256,7 +256,7 @@ export default function Course() {
                 allCourses && allCourses.length > 0?
                 allCourses.map((item,index)=>{
                   return (
-                    <Card onClick={()=>handleNavigate(item?._id)} className="cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md" key={index}>
+                    <Card onClick={()=>handleNavigate(item?._id)} className="cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md hover:bg-slate-100" key={index}>
                       <CardContent className="flex p-4 gap-4 ">
                         <div className="w-48 h-32 flex-shrink-0">
                           <img src={item?.image}
@@ -288,7 +288,7 @@ export default function Course() {
         </div>
       )}
     </Avatar>
-    <span className='font-bold'>{item?.creator?.userName}</span>
+    <span className='font-bold'>{item?.creator?.userName?.toUpperCase()}</span>
   </div>
 </div>
                             <p className='text-[16px] text-gray-800 mb-2 mt-3'>
@@ -297,7 +297,8 @@ export default function Course() {
                                 - ${item?.level?.toUpperCase()}`
                                }
                             </p>
-                            <p className='font-bold text-lg'>Rs. {item?.pricing}</p>
+                            <p className='font-bold text-sm text-slate-600'>{item?.category?.toUpperCase()}</p>
+                            <p className='font-bold text-sm text-slate-600'>Price: Rs. {item?.pricing}</p>
                         </div>
                       </CardContent>
                     </Card>

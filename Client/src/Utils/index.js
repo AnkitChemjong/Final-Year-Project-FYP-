@@ -400,3 +400,5 @@ export const hireTeacherInitialState=
 
 
 export const formatForHireApplication=["",'S.N',"Student Name","Teacher Name","Requested On","Hiring Date","Time","Status","action"];
+
+export const formatForTeacherCourses=["",'S.N',"Course","Price","Students","Date","Revenue","isPublished","action"];

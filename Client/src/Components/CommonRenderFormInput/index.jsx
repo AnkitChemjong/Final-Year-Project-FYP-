@@ -73,7 +73,7 @@ export default function CommonRenderFormInput({getCurrentControl,data,setData,er
         case "select":
         content = (
           <div key={getCurrentControl.name} className="grid py-4 gap-2 text-center">
-          <div className="grid grid-cols-2 items-center gap-4">
+          <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor={getCurrentControl?.name} className="text-right">
               {getCurrentControl?.label}:
             </Label>

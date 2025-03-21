@@ -7,6 +7,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { ScrollArea } from '../ui/scroll-area';
 import { Checkbox } from '../ui/checkbox';
 import { getStudentHireApplication } from '@/Pages/Profile';
+import { getTeacherHireApplication } from '@/Pages/TeacherHireRequest';
 import { Button } from '../ui/button';
 import {
   Table,
@@ -17,7 +18,9 @@ import {
   TableRow,
 } from '../ui/table';
 import DialogForm from '../DialogForm';
-import { Delete_Hire_All_Application, Delete_Hire_Selected_Application, Delete_Hire_Single_Application,Get_Hire_Application_Details, Update_Hire_Application_Details } from '@/Routes';
+import { Delete_Hire_All_Application, Delete_Hire_Selected_Application, Delete_Hire_Single_Application,Get_Hire_Application_Details, Update_Hire_Application_Details,
+  Update_Hire_Application_All_Status,Update_Hire_Application_Selected_Status,Update_Hire_Application_Single_Status
+ } from '@/Routes';
 import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
 import { hireTeacherComponents } from '@/Utils';
@@ -27,7 +30,8 @@ export default function CommonTableForHireApplication({ data, type, header,page 
   const [selectedApplication, setSelectedApplication] = useState([]);
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
-  const { studentHireApplicationList, setStudentHireApplicationList,loadingSpin,setLoadingSpin,
+  const { studentHireApplicationList, setStudentHireApplicationList,
+    teacherHireApplicationList, setTeacherHireApplicationList,loadingSpin,setLoadingSpin,
     hireTeacherApplicationEditId,setHireTeacherApplicationEditId,hireTeacherInitialStateData,setHireTeacherInitialStateData } = useContext(UseContextApi);
     const [hireDialogEdit,setHireDialogEdit]=useState(false);
 
@@ -68,6 +72,52 @@ export default function CommonTableForHireApplication({ data, type, header,page 
       toast.error(error?.response?.data?.message);
     }
   };
+
+  const updateHireApplication = async ({ data = null, type, status }) => {
+    try {
+      if (type === "all") {
+        if (selectedApplication.length < 1) {
+          const response = await axiosService.patch(Update_Hire_Application_All_Status, { data:teacherHireApplicationList,status} , { withCredentials: true, headers: {
+            "Content-Type": "application/json"
+          }});
+          if (response.status === 200) {
+            const result = await getStudentHireApplication(user?._id);
+            setStudentHireApplicationList(result);
+            const teacherResult = await getTeacherHireApplication(user?._id);
+            setTeacherHireApplicationList(teacherResult);
+            toast.success(response?.data?.message);
+          }
+        } else {
+          const response = await axiosService.patch(Update_Hire_Application_Selected_Status, { data:selectedApplication,status } , { withCredentials: true, headers: {
+            "Content-Type": "application/json"
+          }});
+          if (response.status === 200) {
+            const result = await getStudentHireApplication(user?._id);
+            setStudentHireApplicationList(result);
+            const teacherResult = await getTeacherHireApplication(user?._id);
+            setTeacherHireApplicationList(teacherResult);
+            setSelectedApplication([]);
+            toast.success(response?.data?.message);
+          }
+        }
+      } else {
+        const response = await axiosService.patch(Update_Hire_Application_Single_Status, { data,status}, { withCredentials: true, headers: {
+          "Content-Type": "application/json"
+        }});
+        console.log(response);
+        if (response.status === 200) {
+          const result = await getStudentHireApplication(user?._id);
+          setStudentHireApplicationList(result);
+          const teacherResult = await getTeacherHireApplication(user?._id);
+            setTeacherHireApplicationList(teacherResult);
+          toast.success(response?.data?.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
   const handleAddApplication = (data, checked) => {
     if (checked) {
       setSelectedApplication((prev) => [...prev, data]);
@@ -119,15 +169,18 @@ export default function CommonTableForHireApplication({ data, type, header,page 
    }
   }
   return (
-    <div className='w-full overflow-x-auto'>
+    <div className='w-full overflow-x-auto py-7 px-7'>
       <p className="text-slate-500 text-sm mb-4">A list of {type} Requests.</p>
       {data && data.length >= 1 ? (
         <>
           <div className="flex flex-row justify-between items-center mb-4">
+            {
+              page === 'profile' &&
             <div className='flex flex-row gap-2'>
               <p className="text-black">Total Requests =</p>
               <p className="text-black">{data?.length}</p>
             </div>
+            }
             {
              page === "profile" &&
             <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
@@ -138,17 +191,17 @@ export default function CommonTableForHireApplication({ data, type, header,page 
     <div className="flex gap-2">
 
       <Button
-        onClick={() => handleAccept(item?._id)}
+        onClick={() => updateHireApplication({type:"all",status:"approved"})}
         className="bg-green-500 text-white hover:scale-105  ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
       >
-        Accept All
+       { selectedApplication?.length>0? "Accept Selected":"Accept All"}
       </Button>
 
       <Button
-        onClick={() => handleReject(item?._id)}
+        onClick={() => updateHireApplication({type:"all",status:"rejected"})}
         className="bg-red-500 hover:scale-105  ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
       >
-        Reject All
+        {selectedApplication?.length>0? "Reject Selected":"Reject All"}
       </Button>
     </div>
   )}
@@ -198,14 +251,14 @@ export default function CommonTableForHireApplication({ data, type, header,page 
     type === "pending" ? (
       <div className="flex gap-2">
         <Button
-          onClick={() => handleAccept(item?._id)}
+          onClick={() => updateHireApplication({type:"single",data:item,status:"approved"})}
           className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
         >
           Accept
         </Button>
 
         <Button
-          onClick={() => handleReject(item?._id)}
+          onClick={() => updateHireApplication({type:"single",data:item,status:"rejected"})}
           className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
         >
           Reject

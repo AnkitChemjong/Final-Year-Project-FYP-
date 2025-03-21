@@ -11,6 +11,7 @@ export default function ContextApi({children}) {
 
   const [studentHireApplicationList,setStudentHireApplicationList]=useState([]);
   const [teacherHireApplicationList,setTeacherHireApplicationList]=useState([]);
+  const [teacherCourseList,setTeacherCourseList]=useState([]);
 
 
 
@@ -54,7 +55,8 @@ export default function ContextApi({children}) {
     courseProgress,setCourseProgress,specificTeacherDetails,setSpecificTeacherDetails
     ,specificTeacherDetailsId,setSpecificTeacherDetailsId,allTeachers,setAllTeachers,
     studentHireApplicationList,setStudentHireApplicationList,hireTeacherInitialStateData,setHireTeacherInitialStateData,hireTeacherApplicationEditId,setHireTeacherApplicationEditId,
-    teacherHireApplicationList,setTeacherHireApplicationList
+    teacherHireApplicationList,setTeacherHireApplicationList,
+    teacherCourseList,setTeacherCourseList
    }}>
      {children}
    </UseContextApi.Provider>

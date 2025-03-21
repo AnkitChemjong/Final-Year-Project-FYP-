@@ -583,14 +583,14 @@ useEffect(() => {
   <div className="flex gap-2">
     <Button
       onClick={toggleDialog1}
-      className="bg-green-600 text-white px-6 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md"
+      className="bg-green-600 text-white px-6 py-3 hover:scale-105  hover:bg-blue-700 transition-colors duration-300 shadow-md"
     >
       Update Info
     </Button>
     {user?.userRole?.includes("teacher") && (
       <Button
         onClick={toggleDialog5}
-        className="bg-green-600 text-white px-6 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md"
+        className="bg-green-600 text-white px-6 py-3 hover:scale-105  hover:bg-blue-700 transition-colors duration-300 shadow-md"
       >
         Update TeacherInfo
       </Button>
@@ -627,7 +627,7 @@ useEffect(() => {
            
             <div className="w-full flex flex-row justify-center items-center gap-4 bg-transparent">
               {user?.userRole?.includes("teacher") ? (
-                <Button onClick={()=>navigate('/teacher/dashboard')} className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md">
+                <Button onClick={()=>navigate('/teacher/dashboard')} className="bg-green-600 hover:scale-105  text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md">
                   Dashboard
                 </Button>
               ) : (
@@ -637,7 +637,7 @@ useEffect(() => {
                     !user?.DOB ||
                     userApplicationData
                   }
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md"
+                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md"
                 >
                   {userApplicationData
                     ? "Processing"
@@ -647,14 +647,14 @@ useEffect(() => {
               {user?.userRole?.includes("teacher") && (
                 <Button
                   onClick={toggleDialog4}
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md"
+                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105  transition-colors duration-300 shadow-md"
                 >
                   My CV
                 </Button>
               )}
               <Button
                   onClick={()=>navigate("/studentCourse")}
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md"
+                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105  transition-colors duration-300 shadow-md"
                 >
                   Enrolled Courses
                 </Button>

@@ -83,10 +83,6 @@ export default function CommonTable({data,header,type}){
     <div className='flex flex-col justify-center items-center gap-2 '>
       <p className=" text-slate-500 text-sm">A list of {type} Applications.</p>
         <div className="flex flex-row justify-evenly items-center w-full">
-          <div className='flex flex-row gap-2'>
-          <p className="text-black">Total Applications =</p>
-          <p className=" text-black">{data?.length}</p>
-          </div>
           <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
           <RiDeleteBin6Line onClick={()=>deleteApplication({type:"all",status:type})} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
           </div>

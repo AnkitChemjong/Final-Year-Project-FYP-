@@ -43,8 +43,8 @@ export default function TeacherNavbar() {
     },
     {
       name: "Courses",
-      path: "/teacher/courses",
-      pageName: "courses",
+      path: "/teacher/course",
+      pageName: "course",
       icon: MdOutlineLaptopChromebook
     },
     {
