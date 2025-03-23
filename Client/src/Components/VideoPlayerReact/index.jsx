@@ -2,7 +2,7 @@ import React, { useRef, useState,useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 
-export default function VideoPlayerReact({width="100%",height="100%",url,onProgressUpdate,progressData}) {
+export default function VideoPlayerReact({width="100%",height="100%",url,onProgressUpdate=()=>{},progressData}) {
     const [playing,setPlaying]=useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [currentProgress, setCurrentProgress] = useState(0);

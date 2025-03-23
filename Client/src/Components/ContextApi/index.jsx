@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createContext } from 'react';
-import { courseLandingInitialFormData,courseCurriculumInitialFormData,hireTeacherInitialState } from '@/Utils';
+import { courseLandingInitialFormData,courseCurriculumInitialFormData,hireTeacherInitialState,courseQuizInitialFormData } from '@/Utils';
 
 
 export const UseContextApi=createContext();
@@ -13,6 +13,8 @@ export default function ContextApi({children}) {
   const [teacherHireApplicationList,setTeacherHireApplicationList]=useState([]);
   const [teacherCourseList,setTeacherCourseList]=useState([]);
 
+  const [courseQuizData,setCourseQuizData]=useState([]);
+
 
 
     const [loadingSpin,setLoadingSpin]=useState(false);
@@ -22,6 +24,9 @@ export default function ContextApi({children}) {
       );
       const [courseCurriculumFormData, setCourseCurriculumFormData] = useState(
         courseCurriculumInitialFormData
+      );
+      const [courseQuizFormData, setCourseQuizFormData] = useState(
+        courseQuizInitialFormData
       );
     const [downloading,setDownloading]=useState("");
     const [mediaUploadProgress, setMediaUploadProgress] = useState(false);
@@ -41,6 +46,10 @@ export default function ContextApi({children}) {
   const [studentEnrolledCourses,setStudentEnrolledCourses]=useState([]);
   
   const [courseProgress,setCourseProgress]=useState({});
+
+
+  const [showConfetti,setShowConfetti]=useState(false);
+  const [courseCompletedDialog, setCourseCompletedDialog]=useState(false);
   return (
    <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
@@ -56,7 +65,9 @@ export default function ContextApi({children}) {
     ,specificTeacherDetailsId,setSpecificTeacherDetailsId,allTeachers,setAllTeachers,
     studentHireApplicationList,setStudentHireApplicationList,hireTeacherInitialStateData,setHireTeacherInitialStateData,hireTeacherApplicationEditId,setHireTeacherApplicationEditId,
     teacherHireApplicationList,setTeacherHireApplicationList,
-    teacherCourseList,setTeacherCourseList
+    teacherCourseList,setTeacherCourseList,courseQuizFormData, setCourseQuizFormData,
+    courseQuizData,setCourseQuizData,showConfetti,setShowConfetti,
+    courseCompletedDialog, setCourseCompletedDialog
    }}>
      {children}
    </UseContextApi.Provider>

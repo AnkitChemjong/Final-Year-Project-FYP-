@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import CommonButton from '../CommonButton';
 import { useNavigate } from 'react-router-dom';
 import CommonTableForCourse from '../CommonTableForCourse';
-import { formatForTeacherCourses } from '@/Utils';
+import { formatForTeacherCourses,courseCurriculumInitialFormData, courseLandingInitialFormData,courseQuizInitialFormData, } from '@/Utils';
 import { ScrollArea } from '../ui/scroll-area';
 import LottieAnimation from '@/Components/LottieAnimation';
 import graduationcourse from '@/assets/graduationcourse.json';
+import { UseContextApi } from '../ContextApi';
+
 
 export default function TeacherCoursesData({ courseList }) {
   const navigate = useNavigate();
+  const {setCurrentEditedCourseId,setCourseLandingFormData,setCourseCurriculumFormData,courseQuizFormData, setCourseQuizFormData}=useContext(UseContextApi);
 
   const handleNavigation = () => {
-    navigate('/createNewCourse');
-  };
+      setCurrentEditedCourseId(null);
+      setCourseQuizFormData(courseQuizInitialFormData);
+      setCourseLandingFormData(courseLandingInitialFormData);
+      setCourseCurriculumFormData(courseCurriculumInitialFormData);
+      navigate("/createnewcourse");
+    };
+   
 
   return (
     <ScrollArea className="max-h-screen overflow-auto">

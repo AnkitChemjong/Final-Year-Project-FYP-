@@ -15,12 +15,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCourse } from '@/Store/Slices/Course_Slice';
 import { Button } from '@/Components/ui/button';
 import { FaChevronLeft } from "react-icons/fa";
+import AddQuiz from '@/Components/AddNewCourse/AddQuiz';
 
 
 
 export default function CreateNewCourse() {
   const {courseLandingFormData,courseCurriculumFormData,setCourseLandingFormData,setCourseCurriculumFormData
-    ,currentEditedCourseId,setCurrentEditedCourseId
+    ,currentEditedCourseId,setCurrentEditedCourseId,courseQuizFormData, setCourseQuizFormData
   }=useContext(UseContextApi);
   const user=useSelector(state=>state?.user?.data);
   const useStates=useSelector(state=>state?.course);
@@ -52,7 +53,23 @@ export default function CreateNewCourse() {
         hasFreePreview = true;
       }
     }
-  
+
+  if (courseQuizFormData.length === 0) {
+    return false;
+  }
+
+  for (const item of courseQuizFormData) {
+    if (
+      isEmpty(item.question) ||
+      isEmpty(item.optionA) ||
+      isEmpty(item.optionB) ||
+      isEmpty(item.optionC) ||
+      isEmpty(item.optionD) ||
+      isEmpty(item.answer)
+    ) {
+      return false;
+    }
+  }
     return hasFreePreview;
   };
 
@@ -64,8 +81,12 @@ export default function CreateNewCourse() {
         ...courseLandingFormData,
         students:[],
         curriculum:courseCurriculumFormData,
-        isPublished:true
+        quizData:{
+          passMark:courseQuizFormData.length * 10 * 0.7,
+          question:courseQuizFormData
+        }
       }
+      console.log(courseFinalData);
         const response=currentEditedCourseId === null? await axiosService.post(Add_New_Course,courseFinalData):await axiosService.put(`${Update_Course}/${currentEditedCourseId}`,courseFinalData);
           if(response.status===200){
            setCourseLandingFormData(courseLandingInitialFormData);
@@ -121,10 +142,7 @@ export default function CreateNewCourse() {
                         <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
                         <TabsTrigger value="course-landing-page">Course Landing Page</TabsTrigger>
                         <TabsTrigger value="setting">Setting</TabsTrigger>
-                        {
-                          params?.courseId &&
-                          <TabsTrigger value="quiz">Add Quiz</TabsTrigger>
-                        }
+                        <TabsTrigger value="quiz">Add Quiz</TabsTrigger>
                     </TabsList>
                     <TabsContent value="curriculum">
                          <CourseCurriculum/>
@@ -136,7 +154,7 @@ export default function CreateNewCourse() {
                       <CourseSetting />
                     </TabsContent>
                     <TabsContent value="quiz">
-                      <CourseSetting />
+                      <AddQuiz />
                     </TabsContent>
                    </Tabs>
             </div>

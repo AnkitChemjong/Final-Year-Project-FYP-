@@ -64,6 +64,11 @@ export const Update_Teacher_Single_Course=`${Get_All_Course}/updateTeacherSingle
 export const Update_Teacher_Selected_Course=`${Get_All_Course}/updateTeacherSelectedCourses`;
 export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourses`;
 
+//quiz
+export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;
+export const Update_Quiz_Data=`${Get_All_Course}/updateQuizData`;
+export const Retake_Quiz=`${Get_All_Course}/retakeQuiz`;
+
 //Payment Routes
 export const Payment='/payment';
 export const Initialize_Esewa_Payment=`http://localhost:8000/payment/initialize-esewa`;

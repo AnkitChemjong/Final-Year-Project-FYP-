@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import CommonButton from '../CommonButton';
-import { courseCurriculumInitialFormData, courseLandingInitialFormData, formatForAllCourses } from '@/Utils';
+import { courseCurriculumInitialFormData, courseLandingInitialFormData, formatForAllCourses,courseQuizInitialFormData } from '@/Utils';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
@@ -14,11 +14,12 @@ import graduationcourse from '@/assets/graduationcourse.json';
 export default function Courses() {
   const coursesState = useSelector(state => state?.course);
   const { data: courses, loading } = coursesState;
-  const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData } = useContext(UseContextApi);
+  const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData ,courseQuizFormData, setCourseQuizFormData} = useContext(UseContextApi);
   const navigate = useNavigate();
 
   const handleNavigation = () => {
     setCurrentEditedCourseId(null);
+    setCourseQuizFormData(courseQuizInitialFormData );
     setCourseLandingFormData(courseLandingInitialFormData);
     setCourseCurriculumFormData(courseCurriculumInitialFormData);
     navigate("/createnewcourse");

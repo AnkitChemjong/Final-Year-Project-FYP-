@@ -30,6 +30,7 @@ import { getHireApplication } from "./Store/Slices/Hire_Application";
 import TeacherDashboard from "./Pages/TeacherDashboard";
 import TeacherHireRequest from "./Pages/TeacherHireRequest";
 import TeacherCourse from "./Pages/TeacherCourse";
+import Quiz from "./Pages/Quiz_Page";
 
 let toastShown = false;
 
@@ -192,6 +193,7 @@ function App() {
           <Route path="/course/details/:id" element={<PrivateRoute><CourseDetails/></PrivateRoute>}/>
           <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard/></AdminRoute>}/>
+          <Route path="/course/courseProgress/quiz/:id" element={<PrivateRoute><Quiz/></PrivateRoute>}/>
           <Route path="/admin/course" element={<AdminRoute><AdminCourse/></AdminRoute>}/>
           <Route path="/admin/application" element={<AdminRoute><AdminApplication/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>

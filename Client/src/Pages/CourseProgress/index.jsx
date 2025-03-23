@@ -35,13 +35,12 @@ export default function CourseProgress() {
     setMediaUploadProgress,
     mediaUploadProgressPercentage,
     setMediaUploadProgressPercentage,
+    showConfetti,setShowConfetti,courseCompletedDialog, setCourseCompletedDialog
   } = useContext(UseContextApi);
   const { id } = useParams();
   const [lockView, setLockView] = useState(false);
 
   const [currentContent, setCurrentContent] = useState(null);
-  const [courseCompletedDialog, setCourseCompletedDialog] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [sideBarOpen, setSideBarOpen] = useState(true);
 
   useEffect(() => {
@@ -63,11 +62,11 @@ export default function CourseProgress() {
         setCourseProgress({
           courseDetails: response?.data?.courseDetails,
           progress: response?.data?.progress,
+          progressData:response?.data?.progressData,
+          contentCompleted:response?.data?.contentCompleted
         });
         if (response?.data?.completed) {
           setCurrentContent(response?.data?.courseDetails?.curriculum[0]);
-          setCourseCompletedDialog(true);
-          setShowConfetti(true);
         }
         if (response?.data?.progress.length === 0) {
           setCurrentContent(response?.data?.courseDetails?.curriculum[0]);
@@ -171,6 +170,7 @@ export default function CourseProgress() {
     }
   };
 
+
   return (
     <div className="flex flex-col h-screen ">
       {showConfetti && <Confetti />}
@@ -263,6 +263,17 @@ export default function CourseProgress() {
                     }
                   )}
                 </div>
+                <div className="flex justify-center mt-4">
+  {courseProgress?.contentCompleted && (
+    <Button
+    onClick={()=>navigate(`/course/courseProgress/quiz/${id}`)}
+      className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105  transition-all duration-300 ease-in-out"
+    >
+      {courseProgress?.progressData?.quizSubmitted? "View Exam Result":"Give Certification Exam"}
+    </Button>
+  )}
+</div>
+
               </ScrollArea>
             </TabsContent>
             <TabsContent value="overview">

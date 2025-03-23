@@ -263,6 +263,25 @@ export const languageOptions = [
     },
   ];
 
+
+  export const quizOption=
+  [{id:"optionA",label:"OptionA"},
+    {id:"optionB",label:"OptionB"},
+    {id:"optionC",label:"OptionC"},
+    {id:"optionD",label:"OptionD"}
+]
+
+  export const courseQuizInitialFormData = [
+    {
+      question: "",
+      optionA:"",
+      optionB:"",
+      optionC:"",
+      optionD:"",
+      answer: "",
+    },
+  ];
+
   export const sortOptions = [
     { id: "price-lowtohigh", label: "Price: Low to High" },
     { id: "price-hightolow", label: "Price: High to Low" },
