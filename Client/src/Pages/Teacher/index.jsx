@@ -13,6 +13,7 @@ import LottieAnimation from '@/Components/LottieAnimation';
 import teacher from '@/assets/teacher.json';
 
 
+
 export default function Teacher() {
   const {loadingStateCourse,setLoadingStateCourse,allTeachers,setAllTeachers}=useContext(UseContextApi);
     const navigate=useNavigate();
@@ -111,6 +112,7 @@ export default function Teacher() {
                  }
                </div>
              </section>
+             
       <Footer/>
     </div>
   )

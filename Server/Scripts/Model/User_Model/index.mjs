@@ -69,7 +69,14 @@ const userSchema=new Schema({
         type:String,
         required:false
     },
-    teacherInfo:teacherInfoSchema
+    teacherInfo:teacherInfoSchema,
+    courseCertificates:[
+        {
+          certificate:{
+            type:String
+          }  
+        }
+    ]
     
 },{timestamps:true})
 

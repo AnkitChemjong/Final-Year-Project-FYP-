@@ -125,7 +125,7 @@ const handleLogout=async ()=>{
                 return item.show? (
                      <Link key={index} to={item?.path} className={`text-[18px] relative after:absolute after:-bottom-1 after:left-0 after:h-[4px] after:bg-black hover:text-blue-600 ${
                         pagePath === item?.path || homePath === item?.path
-                          ? ' after:w-full'
+                          ? ' after:w-full text-blue-700'
                           : 'after:w-0 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:text-blue-600'
                       }`}>{item?.name}</Link>
                 ) :null

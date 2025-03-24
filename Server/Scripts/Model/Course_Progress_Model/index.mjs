@@ -12,8 +12,11 @@ const progressSchema = new Schema({
         ref:"CourseModel",
         required:true
       },
-      testCompletion:{
+      quizCompletion:{
          type:Boolean
+      },
+      quizSubmitted:{
+        type:Boolean
       },
       completed:{
         type:Boolean
@@ -21,7 +24,16 @@ const progressSchema = new Schema({
       completionDate:{
         type:Date
       },
-      contentProgress:[contentProgressSchema]
+      contentProgress:[contentProgressSchema],
+      contentCompleted:{
+        type:Boolean
+      },
+      marksObtained:{
+        type:String,
+      },
+      certificate:{
+        type:String
+      }
   });
   
   const ProgressModel = model("ProgressModel", progressSchema);

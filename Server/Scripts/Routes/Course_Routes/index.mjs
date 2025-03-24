@@ -13,6 +13,9 @@ import CourseProgress from "../../Controllers/Course_Controller/CourseProgress/i
 import getTopSixCourses from "../../Controllers/Course_Controller/GeTTopSixCourses/index.mjs";
 import TeacherCourses from "../../Controllers/Course_Controller/GetTeacherCourses/index.mjs";
 import UpdateCouseIsPublished from "../../Controllers/Course_Controller/UpdateTeacherCourse/index.mjs";
+import getCourseQuizData from "../../Controllers/Course_Controller/GetCourseQuizData/index.mjs";
+import storeCourseCertificate from "../../Controllers/Course_Controller/StoreCourseCertificate/index.mjs";
+import uploadCourseCertificate from "../../Services/UserService/Multer/certificates/CourseCertificate/index.mjs";
 
 const courseRouter=Router();
 
@@ -37,11 +40,13 @@ courseRouter.patch("/updateTeacherAllCourses",UpdateCouseIsPublished.updateAllCo
 courseRouter.patch("/updateTeacherSingleCourse",UpdateCouseIsPublished.updateSingleCourse);
 courseRouter.patch("/updateTeacherSelectedCourses",UpdateCouseIsPublished.updateSelectedCourses);
 
-
-
 //course progress routes
 courseRouter.get("/getCourseProgress/:userId/:courseId",CourseProgress.getCourseProgress);
 courseRouter.post("/updateContentAsViewed",CourseProgress.updateContentAsViewed);
 courseRouter.post("/resetCourseProgress",CourseProgress.resetCourseProgress);
+courseRouter.post("/storeCourseCertificate/:userId/:courseId",uploadCourseCertificate.single('coursecertificate'),storeCourseCertificate);
 
+//for quiz
+courseRouter.get("/getCourseQuizData/:id",getCourseQuizData);
+courseRouter.post("/updateQuizData",CourseProgress.updateQuizData);
 export default courseRouter;

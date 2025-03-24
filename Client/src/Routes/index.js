@@ -67,7 +67,7 @@ export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourse
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;
 export const Update_Quiz_Data=`${Get_All_Course}/updateQuizData`;
-export const Retake_Quiz=`${Get_All_Course}/retakeQuiz`;
+export const Store_Course_Certificate=`${Get_All_Course}/storeCourseCertificate`;
 
 //Payment Routes
 export const Payment='/payment';

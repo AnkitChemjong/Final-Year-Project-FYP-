@@ -8,6 +8,8 @@ import store from './Store';
 import ContextApi from './Components/ContextApi';
 import { Suspense } from 'react';
 import CommonSkeleton from './Components/CommonSkeleton';
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
 
 
 //Suspense for the loading on the refresh but i have performed it by another way in the app component

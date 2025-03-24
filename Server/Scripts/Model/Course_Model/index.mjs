@@ -1,5 +1,6 @@
 import {Schema,model} from 'mongoose';
 import lectureSchema from './Lecture_Schema/index.mjs';
+import quizSchema from './Quiz_Schema/index.mjs';
 
 
 const courseSchema=new Schema({
@@ -69,6 +70,13 @@ const courseSchema=new Schema({
     extraResources:{
         type:String,
         required:false
+    },
+    quizData:{
+        passMark:{
+            type:String,
+            required:true
+        },
+       question:[quizSchema]
     }
 },{timestamps:true});
 const CourseModel=model("CourseModel",courseSchema);
