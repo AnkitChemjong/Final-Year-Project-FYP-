@@ -71,7 +71,12 @@ export const Store_Course_Certificate=`${Get_All_Course}/storeCourseCertificate`
 
 //Payment Routes
 export const Payment='/payment';
-export const Initialize_Esewa_Payment=`http://localhost:8000/payment/initialize-esewa`;
+export const Initialize_Esewa_Payment=`${import.meta.env.VITE_BACKEND_URL}${Payment}/initialize-esewa`;
 
+export const Initialize_Khalti_Payment=`${import.meta.env.VITE_BACKEND_URL}${Payment}/initialize-khalti`;
 
-export const Initialize_Khalti_Payment=`http://localhost:8000/payment/initialize-khalti`;
+//subscription
+export const Subscription='/subscription';
+export const Initialize_Esewa_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-esewa`;
+
+export const Initialize_Khalti_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-khalti`;

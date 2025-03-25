@@ -2,6 +2,7 @@ import {Schema,model} from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import teacherInfoSchema from './TeacherInfoSchema/index.mjs';
+import subscriptionSchema from './SubscriptionSchema/index.mjs';
 
 
 const userSchema=new Schema({
@@ -70,13 +71,10 @@ const userSchema=new Schema({
         required:false
     },
     teacherInfo:teacherInfoSchema,
-    courseCertificates:[
-        {
-          certificate:{
-            type:String
-          }  
-        }
-    ]
+    subscription:subscriptionSchema,
+    courseCertificates:{
+        type:[String],
+    }
     
 },{timestamps:true})
 

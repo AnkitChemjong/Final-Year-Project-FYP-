@@ -204,12 +204,12 @@ export default function CourseProgress() {
         <div className="flex items-center justify-between p-4 border-b border-black">
           <div className="flex items-center space-x-4">
             <Button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(`/studentCourse`)}
               className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md"
               size="sm"
             >
               <FaChevronLeft className="h-4 w-4 mr-2" />
-              Return
+              Enrollded Courses
             </Button>
             <h1 className="text-lg font-bold hidden md:block">
               {courseProgress?.courseDetails?.title}
@@ -348,7 +348,7 @@ export default function CourseProgress() {
     </div>
   </div>
 )}
-                  </ScrollArea>
+  </ScrollArea>
                 </TabsContent>
                 <TabsContent value="overview">
                   <ScrollArea className="max-h-[500px] overflow-y-auto">

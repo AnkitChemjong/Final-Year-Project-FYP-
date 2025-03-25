@@ -74,16 +74,17 @@ export default function Teacher() {
       <Navbar/>
       <Search searchFunc={searchTeachers} onChangeFunc={getTeacher} />
         <section className="py-12 px-4 lg:px-8 mt-5 mb-5">
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 justify-center'>
                <h2 className="text-2xl font-bold mb-6">Our Instructors</h2>
                <LottieAnimation animationData={teacher} width={100} height={100} speed={1} />
           </div>
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                  {allTeachers?.length > 0 ? (
                    allTeachers.map((item,index) => (
                      <div
                        onClick={() => handleNavigate(item?._id)}
-                       className="border rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out hover:bg-slate-100"
+                       className="border rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transform 
+                       transition-transform duration-300 ease-in-out hover:bg-slate-100"
                        key={index}
                      >
                        <div className="p-4 flex flex-col gap-2">

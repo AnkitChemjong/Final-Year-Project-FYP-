@@ -25,7 +25,6 @@ export default function Quiz() {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
-  const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [isGeneratingCertificate, setIsGeneratingCertificate] = useState(false); 
   const [certificateBlob, setCertificateBlob] = useState(null); 
   const [courseProgress, setCourseProgress] = useState(null);
@@ -46,8 +45,7 @@ export default function Quiz() {
       if (response.status === 200) {
         const quizData = response?.data?.data?.quizData?.question;
         const shuffledQuestions = shuffleArray(quizData);
-        setShuffledQuestions(shuffledQuestions);
-        setCourseQuizData(quizData);
+        setCourseQuizData(shuffledQuestions);
       }
     } catch (error) {
       console.log(error);
@@ -92,7 +90,7 @@ export default function Quiz() {
     try {
       let correctAnswers = 0;
 
-      shuffledQuestions.forEach((question) => {
+      courseQuizData.forEach((question) => {
         if (selectedAnswers[question._id] === question.answer) {
           correctAnswers++;
         }
@@ -114,12 +112,19 @@ export default function Quiz() {
         } else {
           setQuizSubmitted(response?.data?.data?.quizSubmitted);
           setSelectedAnswers({});
-          toast.info(`You scored ${response?.data?.data?.marksObtained} out of ${shuffledQuestions.length * 10}! Retake exam.`);
+          toast.info(`You scored ${response?.data?.data?.marksObtained} out of ${courseQuizData.length * 10}! Retake exam.`);
         }
       }
 
       // Handle 201 status
       if (response?.status === 201) {
+        getCourseProgress();
+        setSelectedAnswers({});
+        toast.info(`${response?.data?.message}`);
+      }
+      // Handle 202 status
+      if (response?.status === 202) {
+        setIsGeneratingCertificate(true);
         getCourseProgress();
         setSelectedAnswers({});
         toast.info(`${response?.data?.message}`);
@@ -178,6 +183,7 @@ export default function Quiz() {
       console.error('Error storing certificate:', error?.response?.data?.message);
     }
   };
+ 
 
   return (
     <div>
@@ -194,12 +200,12 @@ export default function Quiz() {
         </div>
 
         <div className="w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
-          <div className="flex items-center gap-2 md:ml-96">
+          <div className="flex items-center gap-2 justify-center">
             <h1 className="text-3xl font-bold mb-8 text-gray-800">Course Quiz</h1>
             <LottieAnimation animationData={quiz} width={200} height={200} speed={1} />
           </div>
 
-          {shuffledQuestions?.map((question, index) => (
+          {courseQuizData?.map((question, index) => (
             <div key={question._id} className="mb-8">
               <h2 className="text-xl font-semibold mb-4 text-gray-700">
                 {index + 1}. {question.question}
@@ -236,14 +242,14 @@ export default function Quiz() {
               <Button
                 onClick={handleSubmitQuiz}
                 className="bg-green-600 hover:bg-blue-700 hover:scale-105 transition-all duration-100 ease-in-out text-white px-6 py-2 rounded-lg shadow-md"
-                disabled={Object.keys(selectedAnswers).length !== shuffledQuestions?.length}
+                disabled={Object.keys(selectedAnswers).length !== courseQuizData?.length}
               >
                 Submit Quiz
               </Button>
             ) : (
               <div className="text-center">
                 <p className="text-xl font-bold mb-4 text-gray-800">
-                  Mark Obtained: {score} / {shuffledQuestions?.length * 10}
+                  Mark Obtained: {score} / {courseQuizData?.length * 10}
                 </p>
                 <Button
                   onClick={handleRetakeQuiz}
@@ -269,6 +275,8 @@ export default function Quiz() {
               userImage={user?.userImage}
               websiteLogo={logo}
               adminSignPhoto={signadmin}
+              marksObtained={score}
+              total={(courseQuizData?.length*10).toString()}
             />
           }
         >
@@ -289,7 +297,7 @@ export default function Quiz() {
                 setQuizSubmitted(true);
                 setSelectedAnswers({});
                 navigate(`/courseProgress/${id}`);
-                toast.success(`You scored ${score} out of ${shuffledQuestions.length * 10}`);
+                toast.success(`You scored ${score} out of ${courseQuizData.length * 10}`);
               });
             }
             return null; // Render nothing

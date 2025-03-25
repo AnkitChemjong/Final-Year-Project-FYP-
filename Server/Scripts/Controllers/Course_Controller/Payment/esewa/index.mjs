@@ -10,9 +10,12 @@ class EsewaPayment{
     static initializeEsewaPayment=async (req, res) => {
         try {
           const data = req.query;
+          if (!data) {
+            return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=data not found`);
+              }
           const course=await CourseModel.findOne({_id:data?.courseId,pricing:data?.amountPaid});
           if (!course) {
-            return res.redirect(`${process.env.EFAULURE_URL}?payment=Failed&message=purchase course not found`);
+            return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase course not found`);
               }
           const purchaseData=await PurchaseModel.create(data);
           //console.log(purchaseData);
@@ -31,9 +34,7 @@ class EsewaPayment{
             failure_url:`${process.env.ESEWA_CANCEL_URL}?purchasedDataId=${purchaseData._id}`,
             signed_field_names:paymentInitate.signed_field_names,
             signature:paymentInitate.signature,
-            secret:process.env.ESEWA_SECRET_KEY
-    
-    
+            secret:process.env.ESEWA_SECRET_KEY,
           }
           res.render('payment',formData);
           //const esewaUrl = `https://rc-epay.esewa.com.np/api/epay/main/v2/form/?total_amount=${Number(data?.amountPaid)}&transaction_uuid=${purchaseData._id}&product_code=${process.env.ESEWA_PRODUCT_CODE}&success_url=${process.env.SUCCESS_URL}&failure_url=${process.env.FAILURE_URL}&signed_field_names=${paymentInitate.signed_field_names}&signature=${paymentInitate.signature}&secret=${process.env.ESEWA_SECRET_KEY}`;
@@ -91,7 +92,7 @@ class EsewaPayment{
             await newUserCourses.save();
         }
           await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true });
-          res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull&amount=${Math.floor(paymentInfo?.decodedData?.total_amount)}`);
+          res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${Math.floor(paymentInfo?.decodedData?.total_amount)}`);
         } catch (error) {
           console.log(error);
           const purchasedData = await PurchaseModel.findOne({

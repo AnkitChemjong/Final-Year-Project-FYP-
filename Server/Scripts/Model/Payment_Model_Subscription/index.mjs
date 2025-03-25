@@ -1,7 +1,7 @@
 import {Schema,model} from 'mongoose';
 
 
-const purchaseSchema=new Schema({
+const paymentSchema=new Schema({
     userId: {
         type:Schema.Types.ObjectId,
         ref:"User",
@@ -35,23 +35,12 @@ const purchaseSchema=new Schema({
     type:String,
     required:true
   },
-  courseId:{
-    type:Schema.Types.ObjectId,
-        ref:"CourseModel",
-        required:true
-  },
-  siteAmount:{
+  paymentFor:{type:String,required:true},
+  subscriptionType:{
     type:String,
-    required:true
-  },
-  teacherAmount:{
-    type:String,
-    required:true
-  },
-  paymentFor:{
-    type:String,
-    required:true
+    required:true,
+    enum:['Basic','Premium','Elite']
   }
 },{timestamps:true});
-const PurchaseModel=model("PurchaseModel",purchaseSchema);
-export default PurchaseModel;
+const PaymentSubscription=model("PaymentSubscription",paymentSchema);
+export default PaymentSubscription;

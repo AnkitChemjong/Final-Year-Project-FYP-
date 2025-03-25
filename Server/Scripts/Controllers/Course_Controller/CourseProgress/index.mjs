@@ -87,7 +87,7 @@ class CourseProgress{
                                             }
                             });
             const user=await User.findById(userId);
-            user.courseCertificates=user.courseCertificates.filter((cert) => cert.certificate !== progress?.certificate);
+            user.courseCertificates=user.courseCertificates.filter((cert) => cert !== progress?.certificate);
             await user.save(); 
             await ProgressModel.deleteOne({userId,courseId});                              
             res.status(200).json({
@@ -195,10 +195,13 @@ class CourseProgress{
              // Find or create progress document
              let progress = await ProgressModel.findOne({ userId, courseId }).populate('userId').populate('courseId');
              if(progress){
-                if(progress?.marksObtained && progress?.marksObtained<=mark){
+                if(progress?.marksObtained && progress?.marksObtained<mark){
                     progress.marksObtained=mark;
+                    progress.quizCompletion=true;
+                    progress.completed = true;
+                    progress.completionDate = new Date();
                     await progress.save();
-                    return res.status(201).json({message:"Your marks updated successfully.",progress})
+                    return res.status(202).json({message:"Your marks updated successfully.",progress})
                     
                 }
                 if(progress?.marksObtained && progress?.marksObtained>mark){

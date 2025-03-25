@@ -11,6 +11,9 @@ class KhaltiPayment{
       try {
         const data = req.query;
         //console.log(data);
+        if (!data) {
+          return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=data not found`);
+            }
     
         const course=await CourseModel.find({_id:data?.courseId,pricing:data?.amountPaid});
         //console.log(course);
@@ -107,7 +110,7 @@ class KhaltiPayment{
         }
         await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true });
 
-        res.redirect(`${process.env.AFTER_PATMENT_SUCCESS}?payment=success&message=payment successfull&amount=${amount/100}`);
+        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${amount/100}`);
       } catch (error) {
         console.log(error);
         const purchasedData=await PurchaseModel.findOne({

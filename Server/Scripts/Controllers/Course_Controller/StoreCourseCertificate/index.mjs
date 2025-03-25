@@ -1,5 +1,6 @@
 import ProgressModel from "../../../Model/Course_Progress_Model/index.mjs";
 import User from "../../../Model/User_Model/index.mjs";
+import fs from 'fs';
 
 const storeCourseCertificate=async (req,res)=>{
     try{
@@ -16,9 +17,23 @@ const storeCourseCertificate=async (req,res)=>{
        if(!userData || !progressData){
         return res.status(400).json({message:"both userData and progressData are not found.",data:null});
        }
-       const user=await User.findById(userId);
-       const certificatePath=`${user?.userId}/CourseCertificate/${req.file.filename}`;
-       await User.findByIdAndUpdate(userId,{$addToSet:{courseCertificates:{certificate:certificatePath}}},{runValidators:true});
+
+       if(progressData?.certificate){
+        const filePath=`./Scripts/Upload/${progressData?.certificate}`;
+        fs.unlink(filePath,(err)=>{
+                                    if (err) {
+                                         console.error('Error deleting file:', err);
+                                             } else {
+                                        console.log('File deleted successfully!');
+                                        }
+                        });
+        userData.courseCertificates=userData.courseCertificates.filter((cert) => cert !== progressData?.certificate);
+        await userData.save();
+        progressData.certificate=null;
+        await progressData.save();
+       }
+       const certificatePath=`${userData?.userId}/CourseCertificate/${req.file.filename}`;
+       await User.findByIdAndUpdate(userId,{$addToSet:{courseCertificates:certificatePath}},{runValidators:true});
        progressData.certificate=certificatePath;
        await progressData.save();
        return res.status(200).json({message:"certificate created and stored Successfully.",error:null});

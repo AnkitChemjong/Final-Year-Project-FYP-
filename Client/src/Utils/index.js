@@ -421,3 +421,41 @@ export const hireTeacherInitialState=
 export const formatForHireApplication=["",'S.N',"Student Name","Teacher Name","Requested On","Hiring Date","Time","Status","action"];
 
 export const formatForTeacherCourses=["",'S.N',"Course","Price","Students","Date","Revenue","isPublished","action"];
+
+
+export const subscriptionPlans = [
+  {
+    name: 'Basic',
+    duration: '1 Month',
+    price: '1',
+    features: [
+      'Upload up to 10 courses',
+      'Basic analytics dashboard',
+      'Teacher profile listing'
+    ],
+    recommended: false
+  },
+  {
+    name: 'Premium',
+    duration: '6 Months',
+    price: '2',
+    features: [
+      'Unlimited course uploads',
+      'Advanced analytics',
+      'Priority support',
+      'Featured profile placement',
+    ],
+    recommended: true
+  },
+  {
+    name: 'Elite',
+    duration: '1 Year',
+    price: '3',
+    features: [
+      'All Premium features',
+      'Verified teacher badge',
+      'Early access to new features',
+    ],
+    recommended: false
+  }
+];

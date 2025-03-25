@@ -31,6 +31,8 @@ import TeacherDashboard from "./Pages/TeacherDashboard";
 import TeacherHireRequest from "./Pages/TeacherHireRequest";
 import TeacherCourse from "./Pages/TeacherCourse";
 import Quiz from "./Pages/Quiz_Page";
+import Subscription from "./Pages/Subscription";
+
 
 let toastShown = false;
 
@@ -200,6 +202,7 @@ function App() {
           <Route path="/edit_course/:courseId" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/teacher/dashboard" element={<TeacherRoute><TeacherDashboard/></TeacherRoute>}/>
           <Route path="/teacher/hireapplication" element={<TeacherRoute><TeacherHireRequest/></TeacherRoute>}/>
+          <Route path="/teacher/subscription" element={<TeacherRoute><Subscription/></TeacherRoute>}/>
           <Route path="/teacher/course" element={<TeacherRoute><TeacherCourse/></TeacherRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>

@@ -89,6 +89,8 @@ const CourseCertificate = ({
   userImage,
   websiteLogo,
   adminSignPhoto,
+  marksObtained,
+  total
 }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -116,6 +118,7 @@ const CourseCertificate = ({
           from {startDate} to {completionDate}
         </Text>
         <Text style={styles.body}>Issued Date: {moment().format('MMMM Do YYYY')}</Text>
+        <Text style={styles.body}>Marks Obtained: {marksObtained}/{total}</Text>
 
         <View style={styles.signatureContainer}>
           {adminSignPhoto && <Image src={adminSignPhoto} style={styles.signature} />}

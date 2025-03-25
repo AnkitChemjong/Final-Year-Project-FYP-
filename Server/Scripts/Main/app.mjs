@@ -14,6 +14,7 @@ import path from 'path';
 import courseRouter from '../Routes/Course_Routes/index.mjs';
 import appRouter from '../Routes/Application_Routes/index.mjs';
 import paymentRouter from '../Routes/Course_Routes/Payment_Routes/index.mjs';
+import paymentSubRouter from '../Routes/Subscription_Routes/index.mjs';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -61,6 +62,7 @@ const main=()=>{
     app.use('/application',appRouter);
     app.use('/course',courseRouter);
     app.use('/payment',paymentRouter);
+    app.use('/subscription',paymentSubRouter);
     app.listen(PORT,()=>console.log("listining at port "+ PORT));
 }
 main();

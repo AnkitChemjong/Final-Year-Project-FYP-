@@ -81,9 +81,33 @@
             margin-bottom: 20px;
         }
     </style>
+    <script>
+        function submitAndClose(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Open eSewa in a new window
+            const paymentWindow = window.open('', 'esewaPaymentWindow', 
+                'width=800,height=600,scrollbars=yes,resizable=yes');
+            
+            // Submit the form to the new window
+            document.getElementById('esewaForm').submit();
+            
+            // Check if window closed every 500ms
+            const checkWindow = setInterval(() => {
+                try {
+                    if (paymentWindow.closed) {
+                        clearInterval(checkWindow);
+                        window.close(); // Close this window when payment window closes
+                    }
+                } catch (e) {
+                    clearInterval(checkWindow);
+                }
+            }, 500);
+        }
+    </script>
 </head>
 <body>
-    <form action="<%= esewaUrl %>" method="POST" target="_blank">
+    <form id="esewaForm" action="<%= esewaUrl %>" method="POST" target="_blank" onsubmit="return submitAndClose()">
         <h1>Payment Details</h1>
         <table>
             <tbody>
@@ -179,4 +203,18 @@
         <input type="submit" value="Pay with eSewa" />
     </form>
 </body>
+<script>
+    function submitAndClose() {
+        // Submit the form
+        document.getElementById('esewaForm').submit();
+        
+        // Close the current window after a small delay
+        setTimeout(() => {
+            window.close();
+        }, 300); // 300ms delay to ensure form submits
+        
+        // Prevent default form submission
+        return false;
+    }
+</script>
 </html>
