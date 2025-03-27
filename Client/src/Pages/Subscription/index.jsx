@@ -36,6 +36,7 @@ export default function Subscription() {
   };
 
   const handleSubscribe = (plan,cost) => {
+    console.log(plan)
     setSubscriptionData({subscriptionType:plan,subscriptionAmount:cost});
     setOpenDialog(true);
   };
@@ -83,7 +84,7 @@ export default function Subscription() {
               <div className="p-8">
                 <div className="flex flex-col items-center">
                   {planIcons[plan.name]}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name.toLocaleUpperCase()}</h3>
                   <p className="text-gray-600 mb-6">{plan.duration}</p>
                 </div>
                 

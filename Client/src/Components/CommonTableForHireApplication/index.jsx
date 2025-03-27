@@ -24,10 +24,12 @@ import { Delete_Hire_All_Application, Delete_Hire_Selected_Application, Delete_H
 import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
 import { hireTeacherComponents } from '@/Utils';
+import DrawerForHireTeacherDataView from '../DrawerForHireTeacherDataView';
 
 
 export default function CommonTableForHireApplication({ data, type, header,page }) {
   const [selectedApplication, setSelectedApplication] = useState([]);
+  const [handleDrawer,setHandleDrawer]=useState(false);
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
   const { studentHireApplicationList, setStudentHireApplicationList,
@@ -140,6 +142,7 @@ export default function CommonTableForHireApplication({ data, type, header,page 
         hiringDate: response?.data?.application?.hiringDate,
         startTime: response?.data?.application?.startTime,
         endTime: response?.data?.application?.endTime,
+        hireDescription: response?.data?.application?.hireDescription
       }));
      }
     }catch(error){
@@ -231,7 +234,7 @@ export default function CommonTableForHireApplication({ data, type, header,page 
                     <TableCell className="text-center">{item?.startTime} To {item?.endTime}</TableCell>
                     <TableCell>{item?.status}</TableCell>
                     <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
-                    {page === "profile" && (
+{page === "profile" && (
   <>
     {type === "pending" && (
       <FaRegEdit
@@ -249,6 +252,8 @@ export default function CommonTableForHireApplication({ data, type, header,page 
 )}
    {page === "teacherdashboard" && (
     type === "pending" ? (
+      <div className='flex flex-col gap-2'>
+
       <div className="flex gap-2">
         <Button
           onClick={() => updateHireApplication({type:"single",data:item,status:"approved"})}
@@ -263,6 +268,9 @@ export default function CommonTableForHireApplication({ data, type, header,page 
         >
           Reject
         </Button>
+      </div>
+       <Button className="bg-slate-700 hover:scale-105 ease-in-out transition-all" onClick={()=>setHandleDrawer(true)}>View</Button>
+       <DrawerForHireTeacherDataView footer={"Contact User by the"} handleDrawer={handleDrawer} setHandleDrawer={setHandleDrawer} data={item} title={"Data of user."} description={"All the details of user is present here."}/>
       </div>
     ) : (
       <Button disabled={true} className="bg-slate-400 cursor-not-allowed">
@@ -290,6 +298,7 @@ export default function CommonTableForHireApplication({ data, type, header,page 
                   componentInputs={hireTeacherComponents}
                   initialState={hireTeacherInitialStateData}
                 />
+    
     </div>
   );
 }

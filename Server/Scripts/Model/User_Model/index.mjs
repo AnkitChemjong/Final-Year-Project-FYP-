@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import teacherInfoSchema from './TeacherInfoSchema/index.mjs';
 import subscriptionSchema from './SubscriptionSchema/index.mjs';
 
-
 const userSchema=new Schema({
     userId:{
         type:String,

@@ -89,7 +89,7 @@ class CourseProgress{
             const user=await User.findById(userId);
             user.courseCertificates=user.courseCertificates.filter((cert) => cert !== progress?.certificate);
             await user.save(); 
-            await ProgressModel.deleteOne({userId,courseId});                              
+            await ProgressModel.deleteOne({userId,courseId});                            
             res.status(200).json({
                 message:"course progress reseted.",
                 data:progress

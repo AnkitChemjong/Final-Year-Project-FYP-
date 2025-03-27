@@ -400,6 +400,13 @@ export const hireTeacherValidation=(value)=>{
     else{
         error.endTime="";
     }
+    if (value?.hireDescription===""){
+        error.hireDescription="field should not be empty";
+
+    }
+    else{
+        error.hireDescription="";
+    }
     return error;
 
 }

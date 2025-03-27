@@ -9,7 +9,7 @@ import graduationcourse from '@/assets/graduationcourse.json';
 import { UseContextApi } from '../ContextApi';
 
 
-export default function TeacherCoursesData({ courseList }) {
+export default function TeacherCoursesData({ courseList,teacherData}) {
   const navigate = useNavigate();
   const {setCurrentEditedCourseId,setCourseLandingFormData,setCourseCurriculumFormData,courseQuizFormData, setCourseQuizFormData}=useContext(UseContextApi);
 
@@ -20,8 +20,6 @@ export default function TeacherCoursesData({ courseList }) {
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
       navigate("/createnewcourse");
     };
-   
-
   return (
     <ScrollArea className="max-h-screen overflow-auto">
 
@@ -32,6 +30,7 @@ export default function TeacherCoursesData({ courseList }) {
         <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
         </div>
         <CommonButton
+          disable={!teacherData?.subscription && courseList?.length>=3}
           func={handleNavigation}
           text="Upload New Course"
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200"

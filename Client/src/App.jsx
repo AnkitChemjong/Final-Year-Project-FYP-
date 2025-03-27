@@ -208,7 +208,7 @@ function App() {
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
           <Route path="/courseProgress/:id" element={<PrivateRoute><CourseProgress/></PrivateRoute>}/>
-          <Route path="/privicyPolicy" element={<PrivateRoute><PrivicyPolicy/></PrivateRoute>}/>
+          <Route path="/privacyPolicy" element={<PrivateRoute><PrivicyPolicy/></PrivateRoute>}/>
           <Route path="/teacher/details/:id" element={<PrivateRoute><TeacherDetails/></PrivateRoute>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>

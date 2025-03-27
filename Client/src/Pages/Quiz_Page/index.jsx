@@ -183,7 +183,7 @@ export default function Quiz() {
       console.error('Error storing certificate:', error?.response?.data?.message);
     }
   };
- 
+
 
   return (
     <div>
@@ -270,7 +270,7 @@ export default function Quiz() {
             <CourseCertificate
               studentName={user?.userName} 
               courseTitle={courseProgress?.courseId?.title } 
-              startDate={courseProgress?.createdAt}
+              startDate={new Date(courseProgress?.createdAt).toLocaleDateString()}
               completionDate={new Date().toLocaleDateString()}
               userImage={user?.userImage}
               websiteLogo={logo}

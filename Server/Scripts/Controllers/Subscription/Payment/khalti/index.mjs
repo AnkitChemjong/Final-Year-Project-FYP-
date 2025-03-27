@@ -65,8 +65,6 @@ class KhaltiPaymentSubscription{
           _id: purchase_order_id,
           amountPaid: (amount/100),
         });
-        
-    
         if (!purchasedData) {
           return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=purchase record not found`);
         }
@@ -84,23 +82,23 @@ class KhaltiPaymentSubscription{
 const currentDate = new Date();
 
 // Initialize subscription if it doesn't exist
-if (!userData.subscription) {
+if (!userData?.subscription) {
   userData.subscription = {
     subscriptionStatus: 'pending',
-    subscriptionType: paymentInfo?.response?.subscriptionType,
+    subscriptionType: purchasedData?.subscriptionType,
     subscriptionStartDate: currentDate,
     subscriptionEndDate: currentDate,
   };
 }
 
 // If subscription is expired or new, set fresh dates
-if (userData.subscription.subscriptionStatus === "expired" || !userData.subscription.subscriptionEndDate|| userData.subscription.subscriptionStatus === "pending") {
-  userData.subscription.subscriptionType = paymentInfo?.response?.subscriptionType;
+if (userData?.subscription?.subscriptionStatus === "expired" || userData?.subscription?.subscriptionStatus === "pending") {
+  userData.subscription.subscriptionType = purchasedData?.subscriptionType;
   userData.subscription.subscriptionStartDate = currentDate;
   userData.subscription.subscriptionStatus = 'active'; 
   let endDate = new Date(currentDate);
   
-  switch(paymentInfo?.response?.subscriptionType) {
+  switch(purchasedData?.subscriptionType) {
     case "basic":
       endDate.setMonth(endDate.getMonth() + 1);
       break;
@@ -116,11 +114,11 @@ if (userData.subscription.subscriptionStatus === "expired" || !userData.subscrip
 } 
 else {
   // Extend existing subscription (BUG FIXED HERE)
-  userData.subscription.subscriptionType = paymentInfo?.response?.subscriptionType;
+  userData.subscription.subscriptionType = purchasedData?.subscriptionType;
   
   let extensionDays = 0;
   
-  switch(paymentInfo?.response?.subscriptionType) {
+  switch(purchasedData?.subscriptionType) {
     case "basic":
       extensionDays = 30; // ~1 month
       break;

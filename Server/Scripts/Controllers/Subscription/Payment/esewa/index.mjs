@@ -82,13 +82,13 @@ if (!userData.subscription) {
 }
 
 // If subscription is expired or new, set fresh dates
-if (userData.subscription.subscriptionStatus === "expired" || !userData.subscription.subscriptionEndDate || userData.subscription.subscriptionStatus === "pending") {
+if (userData.subscription.subscriptionStatus === "expired" || userData.subscription.subscriptionStatus === "pending") {
   userData.subscription.subscriptionType = purchasedData?.subscriptionType;
   userData.subscription.subscriptionStartDate = currentDate;
   userData.subscription.subscriptionStatus = 'active'; 
   let endDate = new Date(currentDate);
   
-  switch(purchasedData?.subscriptionType?.toLocaleLowerCase()) {
+  switch(purchasedData?.subscriptionType) {
     case "basic":
       endDate.setMonth(endDate.getMonth() + 1);
       break;
@@ -108,7 +108,7 @@ else {
   
   let extensionDays = 0;
   
-  switch(purchasedData?.subscriptionType?.toLocaleLowerCase()) {
+  switch(purchasedData?.subscriptionType) {
     case "basic":
       extensionDays = 30; // ~1 month
       break;

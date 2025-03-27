@@ -1,8 +1,8 @@
-
-const subscriptionSchema={
+import { Schema } from "mongoose";
+const subscriptionSchema=new Schema({
     subscriptionType:{
         type:String,
-        enum: ['Basic', 'Premium', 'Elite'],
+        enum: ['basic', 'premium', 'elite'],
     },
     subscriptionStartDate:{
         type:Date
@@ -15,5 +15,6 @@ const subscriptionSchema={
         enum:['pending','active','expired'],
         default:'pending'
     }
-}
+    
+},{ _id: false });
 export default subscriptionSchema;

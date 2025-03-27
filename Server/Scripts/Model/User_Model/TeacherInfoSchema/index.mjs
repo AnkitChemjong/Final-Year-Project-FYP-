@@ -1,5 +1,5 @@
-
-const teacherInfoSchema={
+import { Schema } from "mongoose";
+const teacherInfoSchema=new Schema({
     certificate:{
         type:String,
     },
@@ -27,5 +27,5 @@ const teacherInfoSchema={
     primaryLanguage:{
         type:String
     }
-}
+},{ _id: false });
 export default teacherInfoSchema;

@@ -39,7 +39,7 @@ const paymentSchema=new Schema({
   subscriptionType:{
     type:String,
     required:true,
-    enum:['Basic','Premium','Elite']
+    enum:['basic','premium','elite']
   }
 },{timestamps:true});
 const PaymentSubscription=model("PaymentSubscription",paymentSchema);

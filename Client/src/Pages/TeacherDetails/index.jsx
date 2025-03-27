@@ -9,6 +9,7 @@ import Footer from '@/Components/Footer';
 import Lottie from 'lottie-react';
 import teacheranimation from '@/assets/teacheranimation.json';
 import graduationcourse from "@/assets/graduationcourse.json";
+import LottieAnimation from '@/Components/LottieAnimation';
 import moment from 'moment';
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
@@ -17,6 +18,7 @@ import { handleDwn } from '@/Services';
 import { toast } from 'react-toastify';
 import DialogForm from '@/Components/DialogForm';
 import { hireTeacherComponents } from '@/Utils';
+import verified from '@/assets/verified.json';
 
 export default function TeacherDetails() {
     const {specificTeacherDetailsId,setSpecificTeacherDetailsId,
@@ -137,13 +139,19 @@ export default function TeacherDetails() {
             
           }
           <div className="mt-8 w-48">
-            <Lottie animationData={teacheranimation} loop={true} />
+            <LottieAnimation animationData={teacheranimation} width={200} height={200} speed={1} />
           </div>
         </div>
 
     
         <div className="w-full md:w-2/3 space-y-8 bg-white p-8 rounded-xl shadow-lg">
+        <div className='flex gap-2 items-center'>
           <h1 className="text-5xl font-bold text-black">{specificTeacherDetails?.teacherDetails?.userName}</h1>
+          {
+            specificTeacherDetails?.teacherDetails && specificTeacherDetails?.teacherDetails?.subscription?.subscriptonType === 'elite' &&
+          <LottieAnimation animationData={verified} width={100} height={100} speed={1}/>
+          }
+        </div>
           <p className="text-gray-700 text-lg">{specificTeacherDetails?.teacherDetails?.teacherInfo?.description}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -256,7 +264,7 @@ export default function TeacherDetails() {
         <div className="flex items-center gap-4 mb-8">
           <h2 className="text-4xl font-bold text-black">Courses Created</h2>
           <div className="w-24">
-            <Lottie animationData={graduationcourse} loop={true} />
+            <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1} />
           </div>
         </div>
 

@@ -26,7 +26,7 @@ class KhaltiPayment{
     
         const paymentInitate = await initializeKhaltiPayment({
             return_url: process.env.KSUCCESS_URL,
-            website_url:process.env.AFTER_PATMENT_SUCCESS,
+            website_url:process.env.AFTER_PAYMENT_SUCCESS,
           amount: data?.amountPaid * 100, // amount should be in paisa (Rs * 100)
           purchase_order_id: purchaseData._id,
           purchase_order_name: purchaseData.courseId,

@@ -393,6 +393,11 @@ export const hireTeacherComponents=[
     name: "hiringDate",
     type: "date",
     componentType: "date",
+  },{
+    label: "Hire Description",
+    name: "hireDescription",
+    type: "textarea",
+    componentType: "textarea"
   },
   {
     label: "Start Time",
@@ -414,7 +419,8 @@ export const hireTeacherInitialState=
 {
   hiringDate:"",
   startTime:"",
-  endTime:""
+  endTime:"",
+  hireDescription:""
 }
 
 
@@ -425,7 +431,7 @@ export const formatForTeacherCourses=["",'S.N',"Course","Price","Students","Date
 
 export const subscriptionPlans = [
   {
-    name: 'Basic',
+    name: 'basic',
     duration: '1 Month',
     price: '1',
     features: [
@@ -436,7 +442,7 @@ export const subscriptionPlans = [
     recommended: false
   },
   {
-    name: 'Premium',
+    name: 'premium',
     duration: '6 Months',
     price: '2',
     features: [
@@ -448,7 +454,7 @@ export const subscriptionPlans = [
     recommended: true
   },
   {
-    name: 'Elite',
+    name: 'elite',
     duration: '1 Year',
     price: '3',
     features: [

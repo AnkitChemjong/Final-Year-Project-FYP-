@@ -109,7 +109,7 @@ export default function Teacher() {
                        </div>
                      </div>
                    ))
-                 ) : <h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Teacher Found.</h1>
+                 ) : <h1 className='absolute top-96 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Teacher Found.</h1>
                  }
                </div>
              </section>

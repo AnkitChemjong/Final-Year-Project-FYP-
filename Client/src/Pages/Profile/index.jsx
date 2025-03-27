@@ -12,6 +12,8 @@ import { getCourse } from "@/Store/Slices/Course_Slice";
 import { getAllUser } from "@/Store/Slices/Get_All_User";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import DeleteDialog from "@/Components/DeleteDialog";
+import verified from '@/assets/verified.json';
+import LottieAnimation from "@/Components/LottieAnimation";
 
 import {
   User_Upload_Profile_Image,
@@ -364,7 +366,8 @@ useEffect(() => {
         )}
       {
         (user?.userRole?.includes("teacher") && !user?.teacherInfo) && 
-      <div className="flex w-full p-2 justify-center items-center bg-blue-200 rounded-lg mb-1">
+      <div className="flex w-full p-3 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
+        <GrCircleInformation className="w-5 h-5 text-red-800"/>
             <span className="text-sm  text-red-800">
             Please Complete your Teacher info.
           </span>
@@ -373,7 +376,6 @@ useEffect(() => {
       <div className="w-full flex flex-col justify-center items-center pb-4 bg-white">
     
         <div className="w-full max-w-6xl flex flex-row justify-between items-start p-8 bg-white rounded-lg shadow-lg">
-     
           <div className="w-1/3 flex flex-col gap-6 justify-center items-start bg-white">
             <div
               className="relative flex items-center justify-center"
@@ -424,7 +426,10 @@ useEffect(() => {
                 accept=".png, .jpg, .jpeg, .svg, .webp"
               />
             </div>
-
+            {
+              !loading && user?.subscription?.subscriptionType === 'elite' &&
+              <LottieAnimation animationData={verified} width={100} height={100} speed={1} />
+            }
             <div className="flex flex-col justify-center items-start gap-3 bg-white">
               <div className="flex flex-row justify-center items-center gap-4">
                 <h1 className="text-3xl font-bold text-gray-900">

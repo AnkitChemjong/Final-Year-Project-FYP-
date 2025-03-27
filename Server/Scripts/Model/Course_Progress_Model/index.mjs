@@ -34,7 +34,7 @@ const progressSchema = new Schema({
       certificate:{
         type:String
       }
-  });
+  },{timestamps:true});
   
   const ProgressModel = model("ProgressModel", progressSchema);
   export default ProgressModel;

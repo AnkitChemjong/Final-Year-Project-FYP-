@@ -16,6 +16,10 @@ const hireTeacherSchema=new Schema({
          type:String,
          required:true,
     },
+    hireDescription:{
+        type:String,
+        required:true
+    },
     startTime:{
         type:String,
         required:true

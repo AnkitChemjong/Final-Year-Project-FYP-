@@ -3,6 +3,7 @@ import lectureSchema from './Lecture_Schema/index.mjs';
 import quizSchema from './Quiz_Schema/index.mjs';
 
 
+
 const courseSchema=new Schema({
     creator:{
          type:Schema.Types.ObjectId,

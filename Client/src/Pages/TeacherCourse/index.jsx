@@ -40,7 +40,7 @@ export default function TeacherCourse() {
      <div className='flex flex-row gap-2 overflow-hidden'>
               <TeacherNavbar />
               <div className='flex-1'>
-               <TeacherCoursesData courseList={teacherCourseList}/>
+               <TeacherCoursesData courseList={teacherCourseList} teacherData={user}/>
               </div>
             </div>
   )
