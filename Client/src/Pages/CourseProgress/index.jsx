@@ -10,6 +10,7 @@ import {
   Get_Course_Progress,
   Update_Content_As_Viewed,
   Reset_Course_Progress,
+  Get_Student_Rating_Data
 } from "@/Routes";
 import { useSelector } from "react-redux";
 import Confetti from "react-confetti";
@@ -26,6 +27,19 @@ import supabaseClient from "@/Components/SupabaseClient";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 import { handleDwn } from "@/Services";
+import { RateCourseDialog } from "@/Components/RateCourseDialog";
+
+export const getSingleRateData=async(userId,courseId)=>{
+  try{
+     const response=await axiosService.get(`${Get_Student_Rating_Data}/${userId}/${courseId}`);
+     if(response?.status === 200){
+      return response?.data?.data;
+     }
+  }
+catch(error){
+  console.log(error);
+}
+ }
 
 export default function CourseProgress() {
   const navigate = useNavigate();
@@ -42,12 +56,16 @@ export default function CourseProgress() {
     setShowConfetti,
     courseCompletedDialog,
     setCourseCompletedDialog,
+    showRateCourseDialog,setShowRateCourseDialog,
+    userRatingData,setUserRatingData
   } = useContext(UseContextApi);
   const { id } = useParams();
   const [lockView, setLockView] = useState(false);
 
   const [currentContent, setCurrentContent] = useState(null);
   const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [hasShownRating, setHasShownRating] = useState(false);
+ 
 
   useEffect(() => {
     if (showConfetti) {
@@ -56,6 +74,19 @@ export default function CourseProgress() {
       }, 10000);
     }
   }, [showConfetti]);
+
+
+  
+
+  useEffect(()=>{
+     const getData=async()=>{
+       const data=await getSingleRateData(user?._id,id);
+       setUserRatingData(data);
+     }
+    if(courseProgress?.progressData?.completed){
+      getData();
+    }
+  },[courseProgress]);
 
   const getCourseProgress = async () => {
     const response = await axiosService.get(
@@ -193,6 +224,14 @@ export default function CourseProgress() {
       toast.error("error on downloading certificate.");
     } finally {
       setTimeout(() => setMediaUploadProgress(false), 500);
+    }
+  };
+
+  const handleCourseDialogClose = () => {
+    //check for showing only once if the case of reopening the course complete is again and again
+    if (!hasShownRating) {
+      setShowRateCourseDialog(true);
+      setHasShownRating(true);
     }
   };
 
@@ -346,6 +385,15 @@ export default function CourseProgress() {
       </Button>
     </div>
     </div>
+   {(courseProgress?.progressData?.completed && userRatingData===null) &&
+    <div className="flex items-center justify-center p-5">
+      <Button
+      onClick={()=>setShowRateCourseDialog(true)} 
+      className="p-2 rounded-md bg-green-600 hover:bg-blue-600 text-white transition-transform transform hover:scale-105">
+        Give Rating
+      </Button>
+
+    </div>}
   </div>
 )}
   </ScrollArea>
@@ -461,11 +509,15 @@ export default function CourseProgress() {
             </div>
           )}
         </div>
-        <CourseNotBoughtDialog lockView={lockView} setLockView={setLockView} />
-        <CourseCompletedDialog
+        {lockView && <CourseNotBoughtDialog lockView={lockView} setLockView={setLockView} />}
+        {courseCompletedDialog && <CourseCompletedDialog
           courseCompletedDialog={courseCompletedDialog}
           setCourseCompletedDialog={setCourseCompletedDialog}
-        />
+          onClose={handleCourseDialogClose}
+        />}
+
+        {showRateCourseDialog && <RateCourseDialog open={showRateCourseDialog} onOpenChange={setShowRateCourseDialog} userId={user?._id} courseId={id} 
+        onSubmitRating={()=>{}}  />}
       </div>
       <Footer />
     </div>

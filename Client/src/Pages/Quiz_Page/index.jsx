@@ -29,7 +29,7 @@ export default function Quiz() {
   const [certificateBlob, setCertificateBlob] = useState(null); 
   const [courseProgress, setCourseProgress] = useState(null);
 
-  // Function to shuffle an array
+
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -108,7 +108,7 @@ export default function Quiz() {
           Number(response?.data?.data?.marksObtained) >= Number(response?.data?.course?.quizData?.passMark) &&
           response?.data?.data?.completed
         ) {
-          setIsGeneratingCertificate(true); // Start generating the certificate
+          setIsGeneratingCertificate(true); 
         } else {
           setQuizSubmitted(response?.data?.data?.quizSubmitted);
           setSelectedAnswers({});
@@ -165,10 +165,10 @@ export default function Quiz() {
     }
   }, [id, user]);
 
-  // Function to send the certificate Blob to the backend
+
   const sendCertificateToBackend = async (blob) => {
     const formData = new FormData();
-    formData.append('coursecertificate', blob, 'certificate.pdf'); // Ensure the field name matches the backend's expectations
+    formData.append('coursecertificate', blob, 'certificate.pdf');
 
     try {
       const response = await axiosService.post(`${Store_Course_Certificate}/${user?._id}/${id}`, formData, {
@@ -263,7 +263,7 @@ export default function Quiz() {
         </div>
       </div>
 
-      {/* Render BlobProvider when generating certificate */}
+
       {isGeneratingCertificate && (
         <BlobProvider
           document={

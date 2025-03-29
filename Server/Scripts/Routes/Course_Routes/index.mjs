@@ -16,6 +16,8 @@ import UpdateCouseIsPublished from "../../Controllers/Course_Controller/UpdateTe
 import getCourseQuizData from "../../Controllers/Course_Controller/GetCourseQuizData/index.mjs";
 import storeCourseCertificate from "../../Controllers/Course_Controller/StoreCourseCertificate/index.mjs";
 import uploadCourseCertificate from "../../Services/UserService/Multer/certificates/CourseCertificate/index.mjs";
+import rateCourse from "../../Controllers/Course_Controller/Rate_Course/index.mjs";
+import getStudentRating from "../../Controllers/Course_Controller/Get_Student_Rating/index.mjs";
 
 const courseRouter=Router();
 
@@ -45,6 +47,8 @@ courseRouter.get("/getCourseProgress/:userId/:courseId",CourseProgress.getCourse
 courseRouter.post("/updateContentAsViewed",CourseProgress.updateContentAsViewed);
 courseRouter.post("/resetCourseProgress",CourseProgress.resetCourseProgress);
 courseRouter.post("/storeCourseCertificate/:userId/:courseId",uploadCourseCertificate.single('coursecertificate'),storeCourseCertificate);
+courseRouter.post('/rateCourse/:userId/:courseId',rateCourse);
+courseRouter.get('/getRatingData/:userId/:courseId',getStudentRating);
 
 //for quiz
 courseRouter.get("/getCourseQuizData/:id",getCourseQuizData);

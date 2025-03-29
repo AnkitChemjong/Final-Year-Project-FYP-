@@ -2,6 +2,7 @@ import ProgressModel from "../../../Model/Course_Progress_Model/index.mjs";
 import CourseModel from "../../../Model/Course_Model/index.mjs";
 import PurchasedCoursesModel from "../../../Model/Purchased_Courses_Model/index.mjs";
 import User from "../../../Model/User_Model/index.mjs";
+import RateCourse from "../../../Model/Course_Rate_Model/index.mjs";
 import fs from 'fs';
 
 
@@ -77,7 +78,7 @@ class CourseProgress{
                     message:"Progress not found.",
                     error:null
                 })
-            }
+            };
             const filePath=`./Scripts/Upload/${progress?.certificate}`;
             fs.unlink(filePath,(err)=>{
                                         if (err) {
@@ -89,7 +90,11 @@ class CourseProgress{
             const user=await User.findById(userId);
             user.courseCertificates=user.courseCertificates.filter((cert) => cert !== progress?.certificate);
             await user.save(); 
-            await ProgressModel.deleteOne({userId,courseId});                            
+            await ProgressModel.deleteOne({userId,courseId});  
+            const ratingData=await RateCourse.findOne({userId:userId,courseId:courseId});
+            if(ratingData){
+                await RateCourse.findByIdAndDelete(ratingData?._id);
+            }                         
             res.status(200).json({
                 message:"course progress reseted.",
                 data:progress

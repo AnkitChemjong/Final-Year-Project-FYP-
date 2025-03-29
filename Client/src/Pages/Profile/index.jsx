@@ -705,7 +705,7 @@ useEffect(() => {
         </div>
       </div>
        <HireApplication applicationList={studentHireApplicationList}/>
-      <DialogForm
+      {dialog1 && <DialogForm
         title="Update Profile Info"
         description="Enter New Profile Data."
         dialog={dialog1}
@@ -714,8 +714,8 @@ useEffect(() => {
         type="updateProfile"
         componentInputs={updateProfileInputs}
         initialState={updateProfileInitialState}
-      />
-      <DialogForm
+      />}
+      {dialog5 && <DialogForm
         title="Update Teacher Info"
         description="Enter New Data. Files should be in single pdf format."
         dialog={dialog5}
@@ -725,8 +725,8 @@ useEffect(() => {
         componentInputs={updateTeacherInfoComponents}
         initialState={updateTeacherInfoInitialState}
         accept="application/pdf"
-      />
-      <DialogForm
+      />}
+      {dialog2 && <DialogForm
         title="Update Your Password"
         description="Make new Password."
         dialog={dialog2}
@@ -735,8 +735,8 @@ useEffect(() => {
         type="updatePassword"
         componentInputs={changePasswordForm}
         initialState={changePasswordInitialState}
-      />
-      <DialogForm
+      />}
+      {dialog3 && <DialogForm
         title="Become Teacher"
         description="Provide your valid CV in pdf format."
         dialog={dialog3}
@@ -746,21 +746,21 @@ useEffect(() => {
         accept="application/pdf"
         componentInputs={becomeTeacherForm}
         initialState={becomeTeacherInitialState}
-      />
-      <DialogForCV
+      />}
+      {dialog4 && <DialogForCV
         dialog4={dialog4}
         setDialog4={setDialog4}
         title="Your CV"
         description="View and update your CV to keep your profile up-to-date."
         user={user}
-      />
-      <DeleteDialog
+      />}
+      {dialog6 && <DeleteDialog
         deleteDialog={dialog6}
         setDeleteDialog={setDialog6}
         title={"Delete Become Teacher Application."}
         description={"The process cannot be undone after deletion."}
         func={handleDeleteApplication}
-      />
+      />}
 
       <Footer />
     </div>

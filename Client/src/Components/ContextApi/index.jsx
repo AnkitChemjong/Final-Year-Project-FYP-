@@ -15,6 +15,10 @@ export default function ContextApi({children}) {
 
   const [courseQuizData,setCourseQuizData]=useState([]);
 
+  const [showRateCourseDialog,setShowRateCourseDialog]=useState(false);
+
+   const [userRatingData,setUserRatingData]=useState(null);
+
 
 
     const [loadingSpin,setLoadingSpin]=useState(false);
@@ -67,7 +71,9 @@ export default function ContextApi({children}) {
     teacherHireApplicationList,setTeacherHireApplicationList,
     teacherCourseList,setTeacherCourseList,courseQuizFormData, setCourseQuizFormData,
     courseQuizData,setCourseQuizData,showConfetti,setShowConfetti,
-    courseCompletedDialog, setCourseCompletedDialog
+    courseCompletedDialog, setCourseCompletedDialog,
+    showRateCourseDialog,setShowRateCourseDialog,
+    userRatingData,setUserRatingData
    }}>
      {children}
    </UseContextApi.Provider>

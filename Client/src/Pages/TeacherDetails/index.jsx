@@ -6,7 +6,6 @@ import { Get_Teacher_Detail,Get_Purchase_Detail, Hire_Teacher } from '@/Routes';
 import { axiosService } from '@/Services';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
-import Lottie from 'lottie-react';
 import teacheranimation from '@/assets/teacheranimation.json';
 import graduationcourse from "@/assets/graduationcourse.json";
 import LottieAnimation from '@/Components/LottieAnimation';

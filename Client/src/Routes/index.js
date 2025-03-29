@@ -63,6 +63,8 @@ export const Get_Teacher_Courses=`${Get_All_Course}/getTeacherCourses`;
 export const Update_Teacher_Single_Course=`${Get_All_Course}/updateTeacherSingleCourse`;
 export const Update_Teacher_Selected_Course=`${Get_All_Course}/updateTeacherSelectedCourses`;
 export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourses`;
+export const Rate_Course=`${Get_All_Course}/rateCourse`;
+export const Get_Student_Rating_Data=`${Get_All_Course}/getRatingData`;
 
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;
