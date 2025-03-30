@@ -358,7 +358,8 @@ useEffect(() => {
     <div>
       <Navbar />
         {!user?.DOB && (
-            <div className="flex w-full p-2 justify-center items-center bg-blue-200 rounded-lg mb-1">
+            <div className="flex w-full p-2 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
+              <GrCircleInformation className="w-5 h-5 text-red-800"/>
           <span className="text-sm text-red-800">
             Complete your profile info to become a Teacher.
           </span>

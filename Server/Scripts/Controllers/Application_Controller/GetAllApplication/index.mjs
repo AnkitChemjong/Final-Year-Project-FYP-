@@ -4,7 +4,7 @@ const getAllApplication=async (req,res)=>{
 try{
   const applications=await BecomeTeacherApp.find({}).populate('user').sort({ createdAt: -1 });
 
-  if(applications){
+  if(applications.length>0){
     return res.json({message:"application successfully retrived",application:applications});
   }
   else{

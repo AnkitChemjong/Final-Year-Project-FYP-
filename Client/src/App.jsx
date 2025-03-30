@@ -32,6 +32,7 @@ import TeacherHireRequest from "./Pages/TeacherHireRequest";
 import TeacherCourse from "./Pages/TeacherCourse";
 import Quiz from "./Pages/Quiz_Page";
 import Subscription from "./Pages/Subscription";
+import { getAllRating } from "./Store/Slices/Get_All_Rating";
 
 
 let toastShown = false;
@@ -161,6 +162,7 @@ function App() {
   const courses=useSelector(state=>state?.course);
   const allUsers=useSelector(state=>state?.allUsers);
   const hireApplications=useSelector(state=>state?.hireApplication);
+  const allRatings=useSelector(state=>state?.rating);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -178,6 +180,9 @@ function App() {
       }
       if(!hireApplications?.data){
         await dispatch(getHireApplication());
+      }
+      if(!allRatings?.data){
+        await dispatch(getAllRating());
       }
     };
   

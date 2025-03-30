@@ -1,4 +1,6 @@
 
+//Server Url
+export const Host=import.meta.env.VITE_BACKEND_URL;
 //user routes
 export const User_Route=`/user`;
 export const User_Login_Route=`${User_Route}/log`;
@@ -58,13 +60,14 @@ export const Get_Purchase_Detail=`${Get_All_Course}/checkPurchase`;
 export const Get_Course_Progress=`${Get_All_Course}/getCourseProgress`;
 export const Update_Content_As_Viewed=`${Get_All_Course}/updateContentAsViewed`;
 export const Reset_Course_Progress=`${Get_All_Course}/resetCourseProgress`;
-export const Get_Top_Six_Courses=`${Get_All_Course}/getTopSixCourses`;
+export const Get_Top_Four_Courses=`${Get_All_Course}/getTopFourCourses`;
 export const Get_Teacher_Courses=`${Get_All_Course}/getTeacherCourses`;
 export const Update_Teacher_Single_Course=`${Get_All_Course}/updateTeacherSingleCourse`;
 export const Update_Teacher_Selected_Course=`${Get_All_Course}/updateTeacherSelectedCourses`;
 export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourses`;
 export const Rate_Course=`${Get_All_Course}/rateCourse`;
 export const Get_Student_Rating_Data=`${Get_All_Course}/getRatingData`;
+export const Get_All_Rating_Data=`${Get_All_Course}/getAllRating`;
 
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;
@@ -82,3 +85,10 @@ export const Subscription='/subscription';
 export const Initialize_Esewa_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-esewa`;
 
 export const Initialize_Khalti_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-khalti`;
+
+
+//Notification
+export const Notification='/notification';
+export const Get_User_Notification=`${Notification}/getUserNotification`;
+export const Delete_Notification=`${Notification}/deleteNotification`;
+export const Update_Notification=`${Notification}/updateUserNotification`;

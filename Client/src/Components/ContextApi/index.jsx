@@ -38,6 +38,7 @@ export default function ContextApi({children}) {
     useState(0);
   const [currentEditedCourseId, setCurrentEditedCourseId] = useState(null);
   const [specificCourseDetails,setSpecificCourseDetails]=useState(null);
+  const [specificCourseRating,setSpecificCourseRating]=useState([]);
   const [specificCourseDetailsId,setSpecificCourseDetailsId]=useState(null);
 
   const [specificTeacherDetails,setSpecificTeacherDetails]=useState(null);
@@ -54,6 +55,9 @@ export default function ContextApi({children}) {
 
   const [showConfetti,setShowConfetti]=useState(false);
   const [courseCompletedDialog, setCourseCompletedDialog]=useState(false);
+
+
+  const [specificUserNotification,setSpecificUserNotification]=useState([]);
   return (
    <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
@@ -73,7 +77,9 @@ export default function ContextApi({children}) {
     courseQuizData,setCourseQuizData,showConfetti,setShowConfetti,
     courseCompletedDialog, setCourseCompletedDialog,
     showRateCourseDialog,setShowRateCourseDialog,
-    userRatingData,setUserRatingData
+    userRatingData,setUserRatingData,
+    specificCourseRating,setSpecificCourseRating,
+    specificUserNotification,setSpecificUserNotification
    }}>
      {children}
    </UseContextApi.Provider>

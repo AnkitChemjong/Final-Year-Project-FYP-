@@ -8,7 +8,7 @@ const getAllUsers=async(req,res)=>{
             return res.status(200).json({message:"all users are fetched successfully",data:allUsers});
 
          }
-         return res.status(400).json({message:"no users found",data:null})
+         return res.status(200).json({message:"no users found",data:null})
 
     }
     catch(error){

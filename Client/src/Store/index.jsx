@@ -4,6 +4,7 @@ import applicationSlice from "./Slices/ApplicationSlice";
 import courseSlice from './Slices/Course_Slice';
 import getAllUserSlice from './Slices/Get_All_User';
 import hireApplicationSlice from './Slices/Hire_Application';
+import getAllRatingSlice from './Slices/Get_All_Rating';
 
 const store=configureStore({
     reducer:{
@@ -11,7 +12,8 @@ const store=configureStore({
      application:applicationSlice,
      course:courseSlice,
      allUsers:getAllUserSlice,
-     hireApplication:hireApplicationSlice
+     hireApplication:hireApplicationSlice,
+     rating:getAllRatingSlice
     }
 });
 export default store;

@@ -1,8 +1,8 @@
 import CourseModel from "../../../Model/Course_Model/index.mjs";
 
-const getTopSixCourses=async(req,res)=>{
+const getFourSixCourses=async(req,res)=>{
     try{
-        const topSixCourses = await CourseModel.aggregate([
+        const topFourCourses = await CourseModel.aggregate([
             {
                 $addFields: {
                     studentCount: { $size: "$students" } 
@@ -12,7 +12,7 @@ const getTopSixCourses=async(req,res)=>{
                 $sort: { studentCount: -1 } 
             },
             {
-                $limit: 6 
+                $limit: 4
             },
             {
                 $lookup: {
@@ -27,10 +27,10 @@ const getTopSixCourses=async(req,res)=>{
             }
         ]);
 
-        if(topSixCourses.length > 0){
+        if(topFourCourses.length > 0){
             return res.status(200).json({
                 error:null,
-                data:topSixCourses
+                data:topFourCourses
             })
         }
         else{
@@ -46,4 +46,4 @@ const getTopSixCourses=async(req,res)=>{
         return res.status(500).json({message:"Error on getting top six courses.",data:null,error:error?.message}); 
     }
 }
-export default getTopSixCourses;
+export default getFourSixCourses;

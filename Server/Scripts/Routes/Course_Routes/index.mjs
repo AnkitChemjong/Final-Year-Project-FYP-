@@ -10,7 +10,7 @@ import bulkUpload from "../../Controllers/Course_Controller/BulkUploadLecture/in
 import getSearchedCourse from "../../Controllers/Course_Controller/GetSearchedCourse/index.mjs";
 import getEnrolledCourses from "../../Controllers/Course_Controller/GetEnrolledCourse/index.mjs";
 import CourseProgress from "../../Controllers/Course_Controller/CourseProgress/index.mjs";
-import getTopSixCourses from "../../Controllers/Course_Controller/GeTTopSixCourses/index.mjs";
+import getTopFourCourses from "../../Controllers/Course_Controller/GeTTopFourCourses/index.mjs";
 import TeacherCourses from "../../Controllers/Course_Controller/GetTeacherCourses/index.mjs";
 import UpdateCouseIsPublished from "../../Controllers/Course_Controller/UpdateTeacherCourse/index.mjs";
 import getCourseQuizData from "../../Controllers/Course_Controller/GetCourseQuizData/index.mjs";
@@ -18,6 +18,7 @@ import storeCourseCertificate from "../../Controllers/Course_Controller/StoreCou
 import uploadCourseCertificate from "../../Services/UserService/Multer/certificates/CourseCertificate/index.mjs";
 import rateCourse from "../../Controllers/Course_Controller/Rate_Course/index.mjs";
 import getStudentRating from "../../Controllers/Course_Controller/Get_Student_Rating/index.mjs";
+import getAllRatingData from "../../Controllers/Course_Controller/GetAllRating/index.mjs";
 
 const courseRouter=Router();
 
@@ -34,7 +35,7 @@ courseRouter.delete('/deleteSelected',DeleteCourse.deleteSelectedCourses);
 courseRouter.post('/bulkUpload',uploadCourse.array('files',10),bulkUpload);
 courseRouter.post("/searchedCourse",getSearchedCourse);
 courseRouter.get("/getEnrolledCourse/:studentId",getEnrolledCourses);
-courseRouter.get("/getTopSixCourses",getTopSixCourses);
+courseRouter.get("/getTopFourCourses",getTopFourCourses);
 
 //teacherdashboard
 courseRouter.get("/getTeacherCourses/:id",TeacherCourses.getTeachersCourses);
@@ -49,6 +50,7 @@ courseRouter.post("/resetCourseProgress",CourseProgress.resetCourseProgress);
 courseRouter.post("/storeCourseCertificate/:userId/:courseId",uploadCourseCertificate.single('coursecertificate'),storeCourseCertificate);
 courseRouter.post('/rateCourse/:userId/:courseId',rateCourse);
 courseRouter.get('/getRatingData/:userId/:courseId',getStudentRating);
+courseRouter.get('/getAllRating',getAllRatingData);
 
 //for quiz
 courseRouter.get("/getCourseQuizData/:id",getCourseQuizData);

@@ -28,11 +28,15 @@ import Search from '@/Components/Search';
 import { SEARCH_COURSE_ROUTES } from '@/Routes';
 import { useSelector } from 'react-redux';
 import graduationcourse from '@/assets/graduationcourse.json';
+import renderStars from '@/Components/RenderStars';
 
 
 export default function Course() {
-  const userStates = useSelector(state => state.user);
+  const userStates = useSelector(state => state?.user);
     const { data: user, loading } = userStates;
+  const ratingState=useSelector(state=>state?.rating);
+  const {data:rating,loading1}=ratingState;
+  console.log(rating);
   const navigate=useNavigate();
   const location=useLocation();
   const params = new URLSearchParams(location.search);
@@ -180,6 +184,13 @@ export default function Course() {
     }
 
   }
+  const getRatingText = (courseId) => {
+    const courseRatings = rating?.filter(r => r?.courseId?._id === courseId) || [];
+    if (courseRatings.length === 0) return '(No ratings yet)';
+    
+    const avg = courseRatings.reduce((sum, r) => sum + r.rating, 0) / courseRatings.length;
+    return `(${avg.toFixed(1)} from ${courseRatings.length} review${courseRatings.length !== 1 ? 's' : ''})`;
+  };
   return (
     <div>
       <Navbar/>
@@ -256,52 +267,82 @@ export default function Course() {
                 allCourses && allCourses.length > 0?
                 allCourses.map((item,index)=>{
                   return (
-                    <Card onClick={()=>handleNavigate(item?._id)} className="cursor-pointer hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md hover:bg-slate-100" key={index}>
-                      <CardContent className="flex p-4 gap-4 ">
-                        <div className="w-48 h-32 flex-shrink-0">
-                          <img src={item?.image}
-                          className='w-full h-full object-cover'
-                           alt="Course Thumbnail" />
+                    <Card 
+  onClick={() => handleNavigate(item?._id)} 
+  className="cursor-pointer hover:scale-[1.02] transform transition-transform duration-300 ease-in-out shadow-md hover:shadow-lg hover:bg-slate-50"
+  key={index}
+>
+  <CardContent className="flex flex-col sm:flex-row p-4 gap-4">
+   
+    <div className="w-full sm:w-48 h-40 sm:h-32 flex-shrink-0 rounded-lg overflow-hidden">
+      <img 
+        src={item?.image}
+        className='w-full h-full object-cover'
+        alt="Course Thumbnail" 
+      />
+    </div>
 
-                        </div>
-                        <div className='felx-1'>
-                          <CardTitle className="text-xl mb-2">
-                            {item?.title}
-                          </CardTitle>
-                          <div className='text-sm text-gray-500 mb-1 flex items-center gap-1'>
-  Published By:
-  <div className='flex flex-row gap-5 items-center'>
-    <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
-      {item?.creator?.userImage ? (
-        <AvatarImage
-          className="rounded-full"
-          src={
-            item?.creator?.userImage.startsWith("http")
-              ? item?.creator?.userImage
-              : `${import.meta.env.VITE_BACKEND_URL}/${item?.creator?.userImage}`
-          }
-          alt="creatorImage"
-        />
-      ) : (
-        <div className='bg-slate-400 justify-center items-center px-5 py-3 rounded-full'>
-          {item?.creator?.userName.split("")[0].toUpperCase()}
+ 
+    <div className='flex-1 space-y-2'>
+ 
+      <CardTitle className="text-lg sm:text-xl font-semibold line-clamp-2">
+        {item?.title}
+      </CardTitle>
+
+      
+      <div className='flex items-center gap-2 text-sm text-gray-600'>
+        <span>By:</span>
+        <div className='flex items-center gap-2'>
+          <Avatar className='w-8 h-8'>
+            {item?.creator?.userImage ? (
+              <AvatarImage
+                className="rounded-full"
+                src={
+                  item?.creator?.userImage.startsWith("http")
+                    ? item?.creator?.userImage
+                    : `${import.meta.env.VITE_BACKEND_URL}/${item?.creator?.userImage}`
+                }
+                alt="creatorImage"
+              />
+            ) : (
+              <div className='bg-slate-400 flex justify-center items-center w-full h-full rounded-full text-white font-medium'>
+                {item?.creator?.userName?.charAt(0)?.toUpperCase()}
+              </div>
+            )}
+          </Avatar>
+          <span className='font-medium'>{item?.creator?.userName}</span>
         </div>
-      )}
-    </Avatar>
-    <span className='font-bold'>{item?.creator?.userName?.toUpperCase()}</span>
-  </div>
-</div>
-                            <p className='text-[16px] text-gray-800 mb-2 mt-3'>
-                               {
-                                `${item?.curriculum?.length} ${item?.curriculum?.length<=1? "Content":"Contents"} 
-                                - ${item?.level?.toUpperCase()}`
-                               }
-                            </p>
-                            <p className='font-bold text-sm text-slate-600'>{item?.category?.toUpperCase()}</p>
-                            <p className='font-bold text-sm text-slate-600'>Price: Rs. {item?.pricing}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
+      </div>
+
+   
+      <div className="flex items-center gap-1">
+        {renderStars(
+          rating?.filter(r => r?.courseId?._id === item?._id)
+            .reduce((avg, curr, _, arr) => arr.length ? avg + curr.rating/arr.length : 0, 0)
+        )}
+        <span className="text-sm text-gray-600 ml-1">
+          {getRatingText(item?._id)}
+        </span>
+      </div>
+
+    
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-700">
+        <p>
+          {item?.curriculum?.length || 0} {item?.curriculum?.length === 1 ? "Lesson" : "Lessons"}
+        </p>
+        <p>•</p>
+        <p>{item?.level?.toUpperCase()}</p>
+        <p>•</p>
+        <p>{item?.category?.toUpperCase()}</p>
+      </div>
+
+      
+      <p className='font-bold text-lg text-green-600 mt-2'>
+        Rs. {item?.pricing || "Free"}
+      </p>
+    </div>
+  </CardContent>
+</Card>
                   )
                 }):(loadingStateCourse? 
                 <SkeletonCard/>:<h1 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-bold font-mono text-slate-700'>No Courses Found</h1>)

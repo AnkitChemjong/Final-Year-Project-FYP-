@@ -1,5 +1,6 @@
 import CourseModel from "../../../Model/Course_Model/index.mjs";
 import PurchasedCoursesModel from "../../../Model/Purchased_Courses_Model/index.mjs";
+import RateCourse from "../../../Model/Course_Rate_Model/index.mjs";
 
 const getCourseDetails=async (req,res)=>{
     try{
@@ -17,9 +18,10 @@ const getCourseDetails=async (req,res)=>{
        });
        //console.log(studentCourses);
         const boughtCourse=studentCourses?.courses.findIndex(item=>item.courseId === id) > -1;
-
+        const ratingData=await RateCourse.find({courseId:id}).populate('userId').sort({rating:-1}).limit(3);
        return res.status(200).json({message:"Course details fetched Successfully.",
             data:courseDetails,
+            ratingData,
             error:null,
             coursePurchased:boughtCourse
            });

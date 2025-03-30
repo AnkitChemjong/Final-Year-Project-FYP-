@@ -16,6 +16,10 @@ import appRouter from '../Routes/Application_Routes/index.mjs';
 import paymentRouter from '../Routes/Course_Routes/Payment_Routes/index.mjs';
 import paymentSubRouter from '../Routes/Subscription_Routes/index.mjs';
 import checkSubscription from '../Middlewares/CheckSubscription/index.mjs';
+import setUpSocket from '../Services/UserService/Socket/index.mjs';
+import http from 'http';
+import NotificationModel from '../Model/Notification_Model/index.mjs';
+import notificationRouter from '../Routes/Notification_Routes/index.mjs';
 import dotenv from 'dotenv';
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
@@ -58,6 +62,8 @@ const main=()=>{
     app.use(express.static(path.resolve("./Scripts/Upload")));
     app.use(passport.initialize());
     app.use(passport.session());
+
+    const server=http.createServer(app);
     app.use('/user',userRoute);
     app.use('/course',courseRouter);
     app.use('/subscription',paymentSubRouter);
@@ -65,7 +71,14 @@ const main=()=>{
     app.use('/',authRoute);
     app.use('/application',appRouter);
     app.use('/payment',paymentRouter);
-    
-    app.listen(PORT,()=>console.log("listining at port "+ PORT));
+    app.use('/notification',notificationRouter);
+    app.get('/noti',async (req,res)=>{
+        await NotificationModel.create({userId:"67e76af326bf886ac2c235fd",title:"hello man",message:"jsdjfsjdfkdskfksdfkdsfksdf"
+            ,type:"system"
+        });
+      return res.end("helo");
+    })
+    server.listen(PORT,()=>console.log("listining at port "+ PORT));
+    setUpSocket(server);
 }
 main();

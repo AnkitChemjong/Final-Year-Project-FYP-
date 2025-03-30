@@ -14,6 +14,7 @@ import SkeletonCard from '@/Components/SkeletonCard';
 import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
 import LottieAnimation from '@/Components/LottieAnimation';
 import successpayment from '@/assets/successpayment.json';
+import { useSocket } from '@/Services/Socket-Client-Provider';
 
 export default function StudentCourses() {
     const userStates = useSelector(state => state?.user);
@@ -24,11 +25,13 @@ export default function StudentCourses() {
   const status=params.get('payment');
   const message=params.get('message');
   const amount=params.get('amount');
+  const creatorId=params.get('creatorId');
   const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
   const [paymentMessage,setPaymentMessage]=useState("");
   const [paymentAmount,setPaymentAmount]=useState("");
 
   const {studentEnrolledCourses,setStudentEnrolledCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
+  const {socket}=useSocket();
   
 
   useEffect(()=>{
@@ -54,9 +57,19 @@ export default function StudentCourses() {
           getStudentEnrolledCourses();
     }
   },[loading]); 
+    const handleSendMessage=()=>{
+      if(socket?.connected){
 
+        console.log("clicked");
+        socket.emit("message","hello");
+      }
+      else{
+        console.log("clicked no");
+      }
+    }
   useEffect(() => {
     if (status && status === 'success' ) {
+      socket?.emit('course-bought',{userId:creatorId});
       setPaymentMessage(message);
       setPaymentAmount(amount);
       setPaymentMessageDialog(true);
@@ -66,6 +79,7 @@ export default function StudentCourses() {
   return (
     <div>
         <Navbar />
+        <Button onClick={handleSendMessage}>hi</Button>
       <div className='p-4'>
         <h1 className='text-center text-3xl font-bold mb-8'>My Enrolled Courses</h1>
         <div className='grid grid-cols-1 md:grid-cols-3 md:px-5 lg:grid-cols-4 lg:px-10 gap-5'>

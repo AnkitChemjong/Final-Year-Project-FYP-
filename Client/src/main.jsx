@@ -8,8 +8,10 @@ import store from './Store';
 import ContextApi from './Components/ContextApi';
 import { Suspense } from 'react';
 import CommonSkeleton from './Components/CommonSkeleton';
+import SocketContext from './Services/Socket-Client-Provider';
 import { Buffer } from 'buffer';
 window.Buffer = Buffer;
+
 
 
 //Suspense for the loading on the refresh but i have performed it by another way in the app component
@@ -17,7 +19,9 @@ createRoot(document.getElementById('root')).render(
   <Suspense fallback={<CommonSkeleton/>}>
   <Provider store={store}>
     <ContextApi>
+      <SocketContext>
     <App />
+      </SocketContext>
     </ContextApi>
     <ToastContainer
         position="top-right" 

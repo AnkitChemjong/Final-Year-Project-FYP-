@@ -6,20 +6,35 @@ import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import { courseCategories } from '@/Utils';
 import { axiosService } from '@/Services';
-import { Get_Top_Six_Courses,Get_Purchase_Detail } from '@/Routes';
+import { Get_Top_Four_Courses,Get_Purchase_Detail } from '@/Routes';
 import { UseContextApi } from '@/Components/ContextApi';
 import SkeletonCard from '@/Components/SkeletonCard';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import LottieAnimation from '@/Components/LottieAnimation';
 import homeanimation from '@/assets/homeanimation.json';
+import { Card,CardContent,CardTitle,CardHeader} from '@/Components/ui/card';
+import moment from 'moment';
+import { FaStar} from "react-icons/fa";
+
 
 
 export default function Home() {
-  const userStates = useSelector(state => state.user);
+  const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
+  const ratingState= useSelector(state=>state?.rating);
+  const {data:rating,loading1}=ratingState;
   const {loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
   const [topSellerCourses,setTopSellerCourses]=useState([]);
   const navigate=useNavigate();
+
+  const [topTestimonials, setTopTestimonials] = useState([]);
+  
+  useEffect(() => {
+    if (rating?.length > 0) {
+      const sorted = [...rating].sort((a, b) => b.rating - a.rating).slice(0, 3);
+      setTopTestimonials(sorted);
+    }
+  }, [rating,loading1]);
   const handleButtonClick=()=>{
   if(!loading && user){
       navigate("/course");
@@ -32,7 +47,7 @@ export default function Home() {
   useEffect(()=>{
     const getTopSellerCourses=async()=>{
       try{
-        const response=await axiosService.get(Get_Top_Six_Courses);
+        const response=await axiosService.get(Get_Top_Four_Courses);
         if(response.status === 200){
           setTopSellerCourses(response?.data?.data);
           setLoadingStateCourse(false);
@@ -122,12 +137,12 @@ export default function Home() {
       </section>
       <section className="py-12 px-4 lg:px-8">
         <h2 className="text-2xl font-bold mb-6">Top Courses</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {topSellerCourses && topSellerCourses.length > 0 ? (
             topSellerCourses.map((courseItem,index) => (
               <div
                 onClick={() => handleCourseNavigate(courseItem?._id)}
-                className="border-2 border-x-fuchsia-800 rounded-lg overflow-hidden shadow cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out hover:bg-slate-100"
+                className="border-2 border-x-fuchsia-800 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out "
                 key={index}
               >
                 <img
@@ -168,6 +183,81 @@ export default function Home() {
           )}
         </div>
       </section>
+      <section className="py-12 px-4 lg:px-8 ">
+  <h2 className="text-2xl font-bold mb-6">Student Testimonials</h2>
+  <Card className="mb-8">
+    <CardHeader>
+      <CardTitle className="text-xl">
+        What Our Students Say
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      {topTestimonials.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {topTestimonials.map((feedback, index) => (
+            <div 
+              key={index} 
+              className="border rounded-lg p-4 hover:shadow-md  cursor-pointer bg-white
+              hover:scale-105 transition-all ease-in-out"
+            >
+              <div className="flex flex-col h-full">
+                <div className="flex items-start gap-3 mb-3">
+                  <Avatar className="w-10 h-10 rounded-full cursor-pointer flex justify-center items-center border">
+                    {feedback.userId?.userImage ? (
+                      <AvatarImage
+                        className="rounded-full"
+                        src={
+                          feedback.userId?.userImage?.startsWith("http")
+                            ? feedback.userId?.userImage
+                            : `${import.meta.env.VITE_BACKEND_URL}/${feedback.userId?.userImage}`
+                        }
+                        alt="userImage"
+                      />
+                    ) : (
+                      <div className="bg-white justify-center items-center px-5 py-3 rounded-full">
+                            {feedback.userId?.userName?.split("")[0].toUpperCase()}
+                        </div>
+                    )}
+                  </Avatar>
+                  <div>
+                    <h4 className="font-medium line-clamp-1">
+                      {feedback.userId?.userName || 'Anonymous User'}
+                    </h4>
+                    <p className="text-gray-600 text-xs">
+                      {moment(feedback.createdAt).format("MMM D, YYYY")}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex mb-2 text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar 
+                      key={i}
+                      className={i < feedback.rating ? "text-yellow-400" : "text-gray-300"}
+                      size={14}
+                    />
+                  ))}
+                </div>
+                
+                <p className="text-gray-800 text-sm flex-grow line-clamp-4">
+                  {feedback.comment || "No comment provided"}
+                </p>
+                
+                <p className="text-xs text-gray-500 mt-2">
+                  Rated course: {feedback.courseId?.title || "Unknown Course"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 text-center py-4">
+          No testimonials yet. Be the first to share your experience!
+        </p>
+      )}
+    </CardContent>
+  </Card>
+</section>
         <Footer/>
     </main>
   )

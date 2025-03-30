@@ -8,8 +8,11 @@ import Navbar from '@/Components/Navbar';
 import { UseContextApi } from '@/Components/ContextApi';
 
 
+
+
 export default function Signup() {
   const navigate=useNavigate();
+
   const {loadingSpin,setLoadingSpin}=useContext(UseContextApi);
   const handlePost=async (data)=>{
     try{
