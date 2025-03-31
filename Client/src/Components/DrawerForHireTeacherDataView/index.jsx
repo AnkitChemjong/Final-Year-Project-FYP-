@@ -49,9 +49,10 @@ export default function DrawerForHireTeacherDataView({ handleDrawer, setHandleDr
                                         alt="profileimage"
                                         className='rounded-full object-cover w-full h-full'
                                     /> : (
-                                        <div className="bg-gray-100 w-full h-full flex justify-center items-center text-4xl font-bold text-gray-800">
-                                            {data?.studentId?.userName?.charAt(0)?.toUpperCase() || "?"}
-                                        </div>
+                                        
+                                        <div className="bg-gray-200 border-2 border-black font-extrabold justify-center items-center px-5 py-3 rounded-full">
+                                        {data?.studentId?.userName?.charAt(0)?.toUpperCase() || "?"}
+                                    </div>
                                     )}
                                 </Avatar>
                             </div>

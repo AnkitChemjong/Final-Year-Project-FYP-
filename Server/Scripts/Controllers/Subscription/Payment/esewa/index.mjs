@@ -137,7 +137,7 @@ await userData.save();
           process.env.AFTER_PAYMENT_SUCCESS_TEACHER
         }?payment=success&message=payment successfull&amount=${Math.floor(
           paymentInfo?.decodedData?.total_amount
-        )}`
+        )}&subscriptionType=${purchasedData?.subscriptionType}`
       );
     } catch (error) {
       console.log(error);

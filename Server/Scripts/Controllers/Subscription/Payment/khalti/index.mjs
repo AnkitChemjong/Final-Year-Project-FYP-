@@ -143,7 +143,7 @@ else {
 
 await userData.save();
 
-        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS_TEACHER}?payment=success&message=payment successfull&amount=${amount/100}`);
+        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS_TEACHER}?payment=success&message=payment successfull&amount=${amount/100}&subscriptionType=${purchasedData?.subscriptionType}`);
       } catch (error) {
         console.log(error);
         const purchasedData=await PaymentSubscription.findOne({

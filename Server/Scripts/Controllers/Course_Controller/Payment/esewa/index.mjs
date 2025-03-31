@@ -92,7 +92,7 @@ class EsewaPayment{
             await newUserCourses.save();
         }
           const courseData=await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true,new:true});
-          res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${Math.floor(paymentInfo?.decodedData?.total_amount)}&creatorId=${courseData?.creator}`);
+          res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${Math.floor(paymentInfo?.decodedData?.total_amount)}&creatorId=${courseData?.creator}&courseTitle=${courseData?.title}`);
         } catch (error) {
           console.log(error);
           const purchasedData = await PurchaseModel.findOne({

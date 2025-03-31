@@ -7,7 +7,7 @@ const getUserNotification=async(req,res)=>{
        if(!id){
         return res.status(400).json({message:"user id is required"});
        }
-       const userNotification=await NotificationModel.find({userId:id});
+       const userNotification=await NotificationModel.find({userId:id}).sort({createdAt:-1});
        return res.status(200).json({message:"Successfully retrived user Notification",data:userNotification});
     }
     catch(error){

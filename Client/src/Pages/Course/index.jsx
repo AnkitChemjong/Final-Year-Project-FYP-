@@ -36,7 +36,6 @@ export default function Course() {
     const { data: user, loading } = userStates;
   const ratingState=useSelector(state=>state?.rating);
   const {data:rating,loading1}=ratingState;
-  console.log(rating);
   const navigate=useNavigate();
   const location=useLocation();
   const params = new URLSearchParams(location.search);

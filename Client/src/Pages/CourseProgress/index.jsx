@@ -12,7 +12,7 @@ import {
   Reset_Course_Progress,
   Get_Student_Rating_Data
 } from "@/Routes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Confetti from "react-confetti";
 import VideoPlayerReact from "@/Components/VideoPlayerReact";
 import CourseNotBoughtDialog from "@/Components/CourseNotBoughtDialog";
@@ -28,6 +28,7 @@ import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 import { handleDwn } from "@/Services";
 import { RateCourseDialog } from "@/Components/RateCourseDialog";
+import { getAllRating } from "@/Store/Slices/Get_All_Rating";
 
 export const getSingleRateData=async(userId,courseId)=>{
   try{
@@ -43,6 +44,7 @@ catch(error){
 
 export default function CourseProgress() {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
   const userStates = useSelector((state) => state?.user);
   const { data: user, loading } = userStates;
   const {
@@ -163,6 +165,7 @@ export default function CourseProgress() {
           setShowConfetti(false);
           setCourseCompletedDialog(false);
           getCourseProgress();
+          dispatch(getAllRating());
           toast.success(response?.data?.message);
         }
       }

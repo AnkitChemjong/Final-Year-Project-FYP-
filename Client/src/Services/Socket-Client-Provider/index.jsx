@@ -1,23 +1,25 @@
-import React, { useRef, useEffect,createContext,useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import { Host } from '@/Routes';
+import { UseContextApi } from '@/Components/ContextApi';
 
-const socketContext=createContext();
+const SocketContext = createContext();
 
 export const useSocket = () => {
-    return useContext(socketContext);
-}
-    
+    return useContext(SocketContext);
+};
 
-export default function SocketContext({ children }) {
-    const socket = useRef(null);
+export default function SocketProvider({ children }) {
+    const [socket, setSocket] = useState(null);
     const userState = useSelector(state => state?.user);
-    const { data: userInfo,loading } = userState;
+    const { data: userInfo } = userState;
+    const {specificUserNotification,setSpecificUserNotification,unreadCount, setUnreadCount}=useContext(UseContextApi);
 
     useEffect(() => {
-        if (userInfo?._id && !socket.current?.connected) {
-            socket.current = io(Host, {
+        if (userInfo?._id && !socket) {
+            console.log("Initializing socket...");
+            const newSocket = io(Host, {
                 withCredentials: true,
                 query: { userId: userInfo._id },
                 autoConnect: true,
@@ -26,29 +28,45 @@ export default function SocketContext({ children }) {
                 reconnectionDelay: 1000,
             });
 
-            socket.current.on("connect", () => {
+            newSocket.on("connect", () => {
                 console.log("Socket connected");
             });
 
-            socket.current.on("disconnect", () => {
+            newSocket.on("disconnect", () => {
                 console.log("Socket disconnected");
             });
 
-            socket.current.on("error", (err) => {
+            newSocket.on("error", (err) => {
                 console.error("Socket error:", err);
             });
-        }
 
+
+            const handleAddCourseNotification=async(message)=>{
+                try{
+                    setSpecificUserNotification((prev) => [...prev, message])
+                    setUnreadCount(specificUserNotification?.filter(item => !item?.read).length);
+                }
+                catch(err){
+                    console.log(err);
+                }
+                
+            }
+            newSocket.on('notification',handleAddCourseNotification);
+            newSocket.on('notification',handleAddCourseNotification);
+            setSocket(newSocket);
+        }
         return () => {
-            if (socket.current?.connected) {
-                socket.current.disconnect();
+            if (socket) {
+                console.log("Disconnecting socket...");
+                socket.disconnect();
+                setSocket(null);
             }
         };
-    }, [userInfo?._id,!loading]);
+    }, [userInfo?._id]);
 
     return (
-        <socketContext.Provider value={{socket:socket.current}}>
+        <SocketContext.Provider value={{ socket }}>
             {children}
-        </socketContext.Provider>
+        </SocketContext.Provider>
     );
 }

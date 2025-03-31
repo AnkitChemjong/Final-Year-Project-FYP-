@@ -16,13 +16,19 @@ const notificationSchema = new Schema({
     },
     type: {
       type: String,
-      enum: ['system', 'course', 'message', 'payment', 'admin'],
+      enum: ['system', 'course', 'message', 'admin','subscription'],
       default: 'system'
     },
     read: {
       type: Boolean,
       default: false
     },
+    courseTitle:{
+        type:String
+    },
+    subscriptionType:{
+        type:String
+    }
   }, {
     timestamps: true,
   });

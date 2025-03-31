@@ -33,6 +33,7 @@ import TeacherCourse from "./Pages/TeacherCourse";
 import Quiz from "./Pages/Quiz_Page";
 import Subscription from "./Pages/Subscription";
 import { getAllRating } from "./Store/Slices/Get_All_Rating";
+import Contact from "./Pages/Contact";
 
 
 let toastShown = false;
@@ -137,6 +138,7 @@ function TeacherRoute({ children }) {
 }
 
 
+
 function HomeRestrictForAdmin({children}){
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
@@ -212,6 +214,7 @@ function App() {
           <Route path="/resetcode" element={<ResetCode/>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
+          <Route path="/contact" element={<PrivateRoute><Contact/></PrivateRoute>}/>
           <Route path="/courseProgress/:id" element={<PrivateRoute><CourseProgress/></PrivateRoute>}/>
           <Route path="/privacyPolicy" element={<PrivateRoute><PrivicyPolicy/></PrivateRoute>}/>
           <Route path="/teacher/details/:id" element={<PrivateRoute><TeacherDetails/></PrivateRoute>}/>

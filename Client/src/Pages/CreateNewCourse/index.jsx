@@ -19,6 +19,7 @@ import AddQuiz from '@/Components/AddNewCourse/AddQuiz';
 
 
 
+
 export default function CreateNewCourse() {
   const {courseLandingFormData,courseCurriculumFormData,setCourseLandingFormData,setCourseCurriculumFormData
     ,currentEditedCourseId,setCurrentEditedCourseId,courseQuizFormData, setCourseQuizFormData

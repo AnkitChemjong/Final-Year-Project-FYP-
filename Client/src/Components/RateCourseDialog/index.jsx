@@ -8,6 +8,8 @@ import { FiLoader } from "react-icons/fi";
 import { axiosService } from '@/Services';
 import { Rate_Course } from '@/Routes';
 import { getSingleRateData } from '@/Pages/CourseProgress';
+import { useDispatch } from 'react-redux';
+import { getAllRating } from '@/Store/Slices/Get_All_Rating';
 
 export function RateCourseDialog({ 
   courseId,
@@ -15,6 +17,7 @@ export function RateCourseDialog({
   open,
   onOpenChange
 }) {
+    const dispatch=useDispatch();
   const [hover, setHover] = useState(0);
   const [data, setData] = useState({
     rating: 0,  
@@ -31,6 +34,7 @@ export function RateCourseDialog({
           toast.success(response?.data?.message);
           const result=await getSingleRateData(userId,courseId);
           setUserRatingData(result);
+          dispatch(getAllRating());
           onOpenChange(false);
       }
     } catch (error) {
@@ -45,7 +49,7 @@ export function RateCourseDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px]">
+      <DialogContent className="sm:max-w-[450px]" showOverlay={false}>
         <DialogHeader>
           <DialogTitle className="text-center text-xl">
             How was your learning experience?

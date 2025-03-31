@@ -56,6 +56,8 @@ export default function ContextApi({children}) {
   const [showConfetti,setShowConfetti]=useState(false);
   const [courseCompletedDialog, setCourseCompletedDialog]=useState(false);
 
+  const [unreadCount, setUnreadCount] = useState(0);
+
 
   const [specificUserNotification,setSpecificUserNotification]=useState([]);
   return (
@@ -79,7 +81,8 @@ export default function ContextApi({children}) {
     showRateCourseDialog,setShowRateCourseDialog,
     userRatingData,setUserRatingData,
     specificCourseRating,setSpecificCourseRating,
-    specificUserNotification,setSpecificUserNotification
+    specificUserNotification,setSpecificUserNotification,
+    unreadCount, setUnreadCount
    }}>
      {children}
    </UseContextApi.Provider>

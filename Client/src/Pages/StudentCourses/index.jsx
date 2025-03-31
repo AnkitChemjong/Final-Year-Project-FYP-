@@ -26,9 +26,11 @@ export default function StudentCourses() {
   const message=params.get('message');
   const amount=params.get('amount');
   const creatorId=params.get('creatorId');
+  const courseTitle=params.get('courseTitle');
   const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
   const [paymentMessage,setPaymentMessage]=useState("");
   const [paymentAmount,setPaymentAmount]=useState("");
+  const [tostShown,setTostShown]=useState(false);
 
   const {studentEnrolledCourses,setStudentEnrolledCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
   const {socket}=useSocket();
@@ -57,29 +59,23 @@ export default function StudentCourses() {
           getStudentEnrolledCourses();
     }
   },[loading]); 
-    const handleSendMessage=()=>{
-      if(socket?.connected){
 
-        console.log("clicked");
-        socket.emit("message","hello");
-      }
-      else{
-        console.log("clicked no");
-      }
-    }
   useEffect(() => {
-    if (status && status === 'success' ) {
-      socket?.emit('course-bought',{userId:creatorId});
+    if (status && status === 'success') {
+      socket?.emit('course-bought-teacher',{userId:creatorId,title:"Course Purchase",message:`${user?.userName} bought your course.`,type:'course',courseTitle:courseTitle});
+      socket?.emit('course-bought-student',{userId:user?._id,title:"Course Purchase complete",message:`Your course purchase is completed.`,type:'course',courseTitle:courseTitle});
       setPaymentMessage(message);
       setPaymentAmount(amount);
       setPaymentMessageDialog(true);
-      toast.success(message);
+      if(!tostShown){
+        toast.success(message);
+        setTostShown(true);
+      }
     }
-  }, [status]);
+  }, [status,socket]);
   return (
     <div>
         <Navbar />
-        <Button onClick={handleSendMessage}>hi</Button>
       <div className='p-4'>
         <h1 className='text-center text-3xl font-bold mb-8'>My Enrolled Courses</h1>
         <div className='grid grid-cols-1 md:grid-cols-3 md:px-5 lg:grid-cols-4 lg:px-10 gap-5'>

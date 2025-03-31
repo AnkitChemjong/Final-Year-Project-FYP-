@@ -9,6 +9,7 @@ import successpayment from '@/assets/successpayment.json';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Badge } from '@/Components/ui/badge';
+import { useSocket } from '@/Services/Socket-Client-Provider';
 
 export default function TeacherApplication() {
   const navigate=useNavigate();
@@ -19,18 +20,25 @@ export default function TeacherApplication() {
   const status=params.get('payment');
   const message=params.get('message');
   const amount=params.get('amount');
+  const subscriptionType=params.get('subscriptionType');
   const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
   const [paymentMessage,setPaymentMessage]=useState("");
   const [paymentAmount,setPaymentAmount]=useState("");
+  const {socket}=useSocket();
+  const [tostShown,setTostShown]=useState(false);
 
   useEffect(() => {
-      if (status && status === 'success' ) {
+      if (status && status === 'success') {
+        socket?.emit('subscription-bought',{userId:user?._id,title:"Subscription Purchase",message:`Your subscription purchase is successfull.`,type:'subscription',subscriptionType:subscriptionType});
         setPaymentMessage(message);
         setPaymentAmount(amount);
         setPaymentMessageDialog(true);
-        toast.success(message);
+        if(!tostShown){
+          toast.success(message);
+          setTostShown(true);
+        }
       }
-    }, [status]);
+    }, [status,socket]);
   return (
     <div className='flex flex-row gap-2 overflow-hidden'>
       <TeacherNavbar />

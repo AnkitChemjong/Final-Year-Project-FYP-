@@ -16,7 +16,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function Navbar() {
-  const { specificUserNotification, setSpecificUserNotification } = useContext(UseContextApi);
+  const { specificUserNotification, setSpecificUserNotification,unreadCount, setUnreadCount } = useContext(UseContextApi);
   const proTog = useRef();
   const notifRef = useRef();
   const location = useLocation();
@@ -24,7 +24,6 @@ export default function Navbar() {
   const homePath = location?.pathname?.split(" ").pop();
   const [toggl, setToggl] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const logedUserState = useSelector((state) => state?.user);
   const { data: logedUser, loading } = logedUserState;
   const dispatch = useDispatch();
@@ -217,7 +216,17 @@ export default function Navbar() {
               className={`px-4 py-3 border-b border-gray-100 ${!notif.read ? 'bg-blue-50' : ''} mt-5 rounded-md flex justify-between items-start group`}
             >
               <div className="flex-1">
+                <div>
                 <p className="text-sm font-medium">{notif.title}</p>
+                 {
+                  notif?.courseTitle &&
+                  <p className="text-sm font-medium">{notif.courseTitle}</p>
+                 }
+                 {
+                  notif?.subscriptionType &&
+                  <p className="text-sm font-medium">{notif.subscriptionType}</p>
+                 }
+                </div>
                 <p className="text-xs text-gray-600">{notif.message}</p>
                 <p className="text-xs text-gray-400 mt-1">
                   {moment(notif.createdAt).format('MMM D, YYYY h:mm A')}
