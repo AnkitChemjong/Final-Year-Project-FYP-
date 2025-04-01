@@ -465,3 +465,6 @@ export const subscriptionPlans = [
     recommended: false
   }
 ];
+
+export const formatForTeacher=["",'S.N',"userName","email","Courses","Students","Role","Revenue","Status","action"];
+export const formatForCustomer=["",'S.N',"userName","email","Enrollment","course Completed","Role","Status","action"];

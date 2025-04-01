@@ -34,6 +34,10 @@ import Quiz from "./Pages/Quiz_Page";
 import Subscription from "./Pages/Subscription";
 import { getAllRating } from "./Store/Slices/Get_All_Rating";
 import Contact from "./Pages/Contact";
+import { getAllProgress } from "./Store/Slices/Get_All_Progress";
+import { getAllPurchasedCourse } from "./Store/Slices/Get_All_Purchased_Course_Model";
+import AdminCustomer from "./Pages/AdminCustomer";
+import AdminTeacher from "./Pages/AdminTeacher";
 
 
 let toastShown = false;
@@ -165,6 +169,8 @@ function App() {
   const allUsers=useSelector(state=>state?.allUsers);
   const hireApplications=useSelector(state=>state?.hireApplication);
   const allRatings=useSelector(state=>state?.rating);
+  const allPurchasedCourse=useSelector(state=>state?.coursePurchased);
+  const allProgress=useSelector(state=>state?.progress);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -186,6 +192,12 @@ function App() {
       if(!allRatings?.data){
         await dispatch(getAllRating());
       }
+      if(!allProgress?.data){
+        await dispatch(getAllProgress());
+      }
+      if(!allPurchasedCourse?.data){
+        await dispatch(getAllPurchasedCourse());
+      }
     };
   
     fetchData();
@@ -205,6 +217,8 @@ function App() {
           <Route path="/course/courseProgress/quiz/:id" element={<PrivateRoute><Quiz/></PrivateRoute>}/>
           <Route path="/admin/course" element={<AdminRoute><AdminCourse/></AdminRoute>}/>
           <Route path="/admin/application" element={<AdminRoute><AdminApplication/></AdminRoute>}/>
+          <Route path="/admin/customer" element={<AdminRoute><AdminCustomer/></AdminRoute>}/>
+          <Route path="/admin/teacher" element={<AdminRoute><AdminTeacher/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/edit_course/:courseId" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/teacher/dashboard" element={<TeacherRoute><TeacherDashboard/></TeacherRoute>}/>

@@ -26,9 +26,10 @@ import { Get_All_Course, Get_Purchase_Detail } from '@/Routes';
 import { axiosService } from '@/Services';
 import Search from '@/Components/Search';
 import { SEARCH_COURSE_ROUTES } from '@/Routes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import graduationcourse from '@/assets/graduationcourse.json';
 import renderStars from '@/Components/RenderStars';
+
 
 
 export default function Course() {

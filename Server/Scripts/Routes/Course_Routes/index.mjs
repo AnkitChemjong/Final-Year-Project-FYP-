@@ -19,6 +19,8 @@ import uploadCourseCertificate from "../../Services/UserService/Multer/certifica
 import rateCourse from "../../Controllers/Course_Controller/Rate_Course/index.mjs";
 import getStudentRating from "../../Controllers/Course_Controller/Get_Student_Rating/index.mjs";
 import getAllRatingData from "../../Controllers/Course_Controller/GetAllRating/index.mjs";
+import getAllProgress from "../../Controllers/Get_All_Progress/index.mjs";
+import getAllPurchasedCourse from "../../Controllers/Course_Controller/Get_All_Purchased_Course/index.mjs";
 
 const courseRouter=Router();
 
@@ -36,6 +38,7 @@ courseRouter.post('/bulkUpload',uploadCourse.array('files',10),bulkUpload);
 courseRouter.post("/searchedCourse",getSearchedCourse);
 courseRouter.get("/getEnrolledCourse/:studentId",getEnrolledCourses);
 courseRouter.get("/getTopFourCourses",getTopFourCourses);
+courseRouter.get("/getAllPurchasedCourse",getAllPurchasedCourse);
 
 //teacherdashboard
 courseRouter.get("/getTeacherCourses/:id",TeacherCourses.getTeachersCourses);
@@ -51,6 +54,7 @@ courseRouter.post("/storeCourseCertificate/:userId/:courseId",uploadCourseCertif
 courseRouter.post('/rateCourse/:userId/:courseId',rateCourse);
 courseRouter.get('/getRatingData/:userId/:courseId',getStudentRating);
 courseRouter.get('/getAllRating',getAllRatingData);
+courseRouter.get('/getAllProgress',getAllProgress);
 
 //for quiz
 courseRouter.get("/getCourseQuizData/:id",getCourseQuizData);

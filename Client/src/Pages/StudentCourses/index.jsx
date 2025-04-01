@@ -1,5 +1,5 @@
 import React,{useEffect,useContext,useState} from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navbar from '@/Components/Navbar';
@@ -15,11 +15,13 @@ import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
 import LottieAnimation from '@/Components/LottieAnimation';
 import successpayment from '@/assets/successpayment.json';
 import { useSocket } from '@/Services/Socket-Client-Provider';
+import { getAllPurchasedCourse } from '@/Store/Slices/Get_All_Purchased_Course_Model';
 
 export default function StudentCourses() {
     const userStates = useSelector(state => state?.user);
     const { data: user, loading } = userStates; 
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const location = useLocation();
   const params = new URLSearchParams(location.search);
   const status=params.get('payment');
@@ -67,6 +69,7 @@ export default function StudentCourses() {
       setPaymentMessage(message);
       setPaymentAmount(amount);
       setPaymentMessageDialog(true);
+      dispatch(getAllPurchasedCourse());
       if(!tostShown){
         toast.success(message);
         setTostShown(true);

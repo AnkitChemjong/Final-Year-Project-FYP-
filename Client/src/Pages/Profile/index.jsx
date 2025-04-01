@@ -65,6 +65,12 @@ export default function Profile() {
   const { data: user, loading } = userStates;
   const userApplicationStates = useSelector((state) => state?.application);
   const {data:userApplication,loading1}=userApplicationStates;
+  const progressState=useSelector(state=>state?.progress);
+  const {data:progress,loading2}=progressState;
+  const purchasedCourseState=useSelector(state=>state?.coursePurchased);
+  const {data:purchasedCourse,loading3}=purchasedCourseState;
+  const courseState=useSelector(state=>state?.course);
+  const {data:allCourse,loading4}=courseState;
   const [userApplicationData,setUserApplicationData]=useState(null);
   const [hover, setHover] = useState(false);
   const upProfileImage = useRef();
@@ -613,21 +619,21 @@ useEffect(() => {
         </div>
         <div className="flex flex-row items-center">
           <span className="text-sm text-gray-600">Courses Completed : </span>
-          <span className="text-2xl font-bold text-blue-600">12</span>
+          <span className="text-2xl font-bold text-blue-600">{progress?.filter(item=>item?.userId === user?._id && item?.completed === true)?.length}</span>
         </div>
         <div className="flex flex-row items-center">
           <span className="text-sm text-gray-600">Courses Bought : </span>
-          <span className="text-2xl font-bold text-blue-600">8</span>
+          <span className="text-2xl font-bold text-blue-600">{purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length}</span>
         </div>
         {user?.userRole?.includes("teacher") && (
           <div className="flex flex-row items-center">
             <span className="text-sm text-gray-600">Courses Uploaded : </span>
-            <span className="text-2xl font-bold text-blue-600">5</span>
+            <span className="text-2xl font-bold text-blue-600">{allCourse?.filter(item=>item?.creator?._id === user?._id)?.length}</span>
           </div>
         )}
         <div className="flex flex-row items-center">
           <span className="text-sm text-gray-600">Certificates : </span>
-          <span className="text-2xl font-bold text-blue-600">3</span>
+          <span className="text-2xl font-bold text-blue-600">{user?.courseCertificates?.length}</span>
         </div>
       </div>
            

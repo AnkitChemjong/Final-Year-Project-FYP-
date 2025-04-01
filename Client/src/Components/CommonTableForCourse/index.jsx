@@ -25,6 +25,7 @@ import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
 
 
+
 export default function CommonTableForCourse({data,header,type="",page}){
   const dispatch=useDispatch();
   const navigate=useNavigate();
@@ -194,7 +195,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                 </div>
           }
         </div>
-         <ScrollArea  className="max-h-[350px] overflow-auto rounded-lg">
+         <ScrollArea  className="border max-h-[350px] overflow-auto rounded-lg">
             <Table >
            <TableHeader className="bg-gray-200 rounded-t-lg">
            <TableRow>

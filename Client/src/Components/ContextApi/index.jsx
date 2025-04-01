@@ -46,6 +46,8 @@ export default function ContextApi({children}) {
 
   const [allCourses,setAllCourses]=useState([]);
   const [allTeachers,setAllTeachers]=useState([]);
+
+  const [extraResource,setExtraResource]=useState(null);
   
 
   const [studentEnrolledCourses,setStudentEnrolledCourses]=useState([]);
@@ -60,6 +62,10 @@ export default function ContextApi({children}) {
 
 
   const [specificUserNotification,setSpecificUserNotification]=useState([]);
+
+
+  const [allCustomer,setAllCustomer]=useState([]);
+  const [allTeacher,setAllTeacher]=useState([]);
   return (
    <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
@@ -82,7 +88,9 @@ export default function ContextApi({children}) {
     userRatingData,setUserRatingData,
     specificCourseRating,setSpecificCourseRating,
     specificUserNotification,setSpecificUserNotification,
-    unreadCount, setUnreadCount
+    unreadCount, setUnreadCount,
+    allCustomer,setAllCustomer,allTeacher,setAllTeacher,
+    extraResource,setExtraResource
    }}>
      {children}
    </UseContextApi.Provider>

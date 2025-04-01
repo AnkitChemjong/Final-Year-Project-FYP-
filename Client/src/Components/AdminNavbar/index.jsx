@@ -38,7 +38,7 @@ export default function AdminNavbar() {
       {
         name:"Customer",
         path:"/admin/customer",
-        pageName:"/customer",
+        pageName:"customer",
         icon:FaRegUserCircle
       },
       {
@@ -156,7 +156,7 @@ export default function AdminNavbar() {
             }
   </div>
 
-  {/* Profile and Logout Section */}
+  
   <div className='mt-auto p-2'>
     <div className='flex flex-row items-center gap-4 mb-4'>
       <div
@@ -210,7 +210,7 @@ export default function AdminNavbar() {
       <p className='text-lg text-black'>{admin?.userName}</p>
     </div>
 
-    {/* Logout Button */}
+   
     <div 
       className='flex flex-row items-center gap-3 text-black bg-blue-100 hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg  transition-transform duration-100 cursor-pointer'
       onClick={handleLogout}

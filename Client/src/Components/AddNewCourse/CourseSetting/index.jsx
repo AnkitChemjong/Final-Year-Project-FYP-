@@ -1,4 +1,4 @@
-import React,{useContext,useState} from 'react';
+import React,{useContext,useEffect,useState} from 'react';
 import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/card';
 import { UseContextApi } from '@/Components/ContextApi';
 import { Input } from '@/Components/ui/input';
@@ -15,9 +15,15 @@ export default function CourseSetting() {
      const {courseLandingFormData, setCourseLandingFormData
         ,mediaUploadProgress, setMediaUploadProgress
       ,mediaUploadProgressPercentage, 
-      setMediaUploadProgressPercentage
+      setMediaUploadProgressPercentage,
+      extraResource,setExtraResource
      }=useContext(UseContextApi);
-     const [extraResource,setExtraResource]=useState(false);
+     const [extraResources,setExtraResources]=useState(false);
+     useEffect(()=>{
+      if(extraResource){
+        setExtraResources(true);
+      }
+     },[extraResource])
      const handleThumbnailUpload=async (e)=>{
         try{
             setMediaUploadProgress(true);
@@ -61,7 +67,6 @@ export default function CourseSetting() {
                     .from('extra-resources')
                     .remove([courseLandingFormData?.extraResources]);
             }
-    
             const file = e.target.files[0];
     
             setMediaUploadProgressPercentage(50);
@@ -97,6 +102,7 @@ export default function CourseSetting() {
         }
     };
     
+    
   return (
    <Card>
     <CardHeader className="flex flex-row justify-between items-center">
@@ -123,11 +129,11 @@ export default function CourseSetting() {
         </div>
         
         <div className='flex flex-row gap-2'>
-            <Label>{courseLandingFormData?.extraResources? "Replace Extra Resources":"Add Extra Resources"} :</Label>
-            <Switch onCheckedChange={(value)=>setExtraResource(value)} checked={extraResource}/>
+            <Label>{courseLandingFormData?.extraResources || extraResource? "Replace Extra Resources":"Add Extra Resources"} :</Label>
+            <Switch onCheckedChange={(value)=>setExtraResources(value)} checked={extraResources}/>
         </div>
         {
-            extraResource && 
+            extraResources && 
             <div className='flex flex-col gap-2'>
                 <div className='flex items-center'>
                   <GoFileZip className='w-5 h-5 mr-1'/>

@@ -5,6 +5,8 @@ import courseSlice from './Slices/Course_Slice';
 import getAllUserSlice from './Slices/Get_All_User';
 import hireApplicationSlice from './Slices/Hire_Application';
 import getAllRatingSlice from './Slices/Get_All_Rating';
+import getAllProgressSlice from './Slices/Get_All_Progress';
+import getAllPurchasedCourseSlice from './Slices/Get_All_Purchased_Course_Model';
 
 const store=configureStore({
     reducer:{
@@ -13,7 +15,9 @@ const store=configureStore({
      course:courseSlice,
      allUsers:getAllUserSlice,
      hireApplication:hireApplicationSlice,
-     rating:getAllRatingSlice
+     rating:getAllRatingSlice,
+     progress:getAllProgressSlice,
+     coursePurchased:getAllPurchasedCourseSlice
     }
 });
 export default store;

@@ -74,7 +74,11 @@ const userSchema=new Schema({
     courseCertificates:{
         type:[String],
     }
-    
+    ,status:{
+        type:String,
+        enum:['active','banned'],
+        default:'active'
+    }
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){

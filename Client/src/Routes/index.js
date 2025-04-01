@@ -20,6 +20,7 @@ export const Get_All_User=`${User_Route}/getAllUsers`;
 export const SEARCH_TEACHERS_ROUTES=`${User_Route}/searchedTeacher`;
 export const Get_Teacher_Detail=`${User_Route}/get/details`;
 export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
+export const Handle_Status=`${User_Route}/handleStatus`;
 
 //Application routes
 //becometeacher
@@ -68,6 +69,8 @@ export const Update_Teacher_All_Course=`${Get_All_Course}/updateTeacherAllCourse
 export const Rate_Course=`${Get_All_Course}/rateCourse`;
 export const Get_Student_Rating_Data=`${Get_All_Course}/getRatingData`;
 export const Get_All_Rating_Data=`${Get_All_Course}/getAllRating`;
+export const Get_All_Progress_Data=`${Get_All_Course}/getAllProgress`;
+export const Get_All_Purchased_Course_Data=`${Get_All_Course}/getAllPurchasedCourse`;
 
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;

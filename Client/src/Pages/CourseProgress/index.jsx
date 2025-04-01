@@ -29,6 +29,7 @@ import Footer from "@/Components/Footer";
 import { handleDwn } from "@/Services";
 import { RateCourseDialog } from "@/Components/RateCourseDialog";
 import { getAllRating } from "@/Store/Slices/Get_All_Rating";
+import { getAllProgress } from "@/Store/Slices/Get_All_Progress";
 
 export const getSingleRateData=async(userId,courseId)=>{
   try{
@@ -139,6 +140,7 @@ export default function CourseProgress() {
       });
       if (response.status === 200) {
         getCourseProgress();
+        dispatch(getAllProgress());
       }
     }
   };
@@ -165,6 +167,7 @@ export default function CourseProgress() {
           setShowConfetti(false);
           setCourseCompletedDialog(false);
           getCourseProgress();
+          dispatch(getAllProgress());
           dispatch(getAllRating());
           toast.success(response?.data?.message);
         }

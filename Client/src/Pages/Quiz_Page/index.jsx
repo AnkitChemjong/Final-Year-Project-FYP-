@@ -2,7 +2,7 @@ import { UseContextApi } from '@/Components/ContextApi';
 import { Get_Course_Quiz_Data, Update_Quiz_Data, Get_Course_Progress, Store_Course_Certificate } from '@/Routes';
 import { axiosService } from '@/Services';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/Components/ui/button';
 import { toast } from 'react-toastify';
@@ -15,10 +15,12 @@ import { BlobProvider } from '@react-pdf/renderer';
 import CourseCertificate from '@/Components/Certificate';
 import signadmin from '/images/signadmin.jpg';
 import logo from '/images/logo.png';
+import { getAllProgress } from '@/Store/Slices/Get_All_Progress';
 
 export default function Quiz() {
   const userState = useSelector((state) => state?.user);
   const { data: user, loading } = userState;
+  const dispatch=useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
   const { courseQuizData, setCourseQuizData, showConfetti, setShowConfetti, courseCompletedDialog, setCourseCompletedDialog } = useContext(UseContextApi);
@@ -112,6 +114,7 @@ export default function Quiz() {
         } else {
           setQuizSubmitted(response?.data?.data?.quizSubmitted);
           setSelectedAnswers({});
+          dispatch(getAllProgress());
           toast.info(`You scored ${response?.data?.data?.marksObtained} out of ${courseQuizData.length * 10}! Retake exam.`);
         }
       }
@@ -177,6 +180,7 @@ export default function Quiz() {
         },
       });
       if (response?.status === 200) {
+        dispatch(getAllProgress);
         console.log('Certificate stored successfully:', response);
       }
     } catch (error) {

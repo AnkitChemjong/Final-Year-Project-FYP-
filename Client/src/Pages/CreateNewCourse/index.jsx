@@ -16,13 +16,16 @@ import { getCourse } from '@/Store/Slices/Course_Slice';
 import { Button } from '@/Components/ui/button';
 import { FaChevronLeft } from "react-icons/fa";
 import AddQuiz from '@/Components/AddNewCourse/AddQuiz';
+import supabaseClient from '@/Components/SupabaseClient';
+
 
 
 
 
 export default function CreateNewCourse() {
   const {courseLandingFormData,courseCurriculumFormData,setCourseLandingFormData,setCourseCurriculumFormData
-    ,currentEditedCourseId,setCurrentEditedCourseId,courseQuizFormData, setCourseQuizFormData
+    ,currentEditedCourseId,setCurrentEditedCourseId,courseQuizFormData, setCourseQuizFormData,loadingSpin,setLoadingSpin
+    ,extraResource,setExtraResource
   }=useContext(UseContextApi);
   const user=useSelector(state=>state?.user?.data);
   const useStates=useSelector(state=>state?.course);
@@ -76,6 +79,7 @@ export default function CreateNewCourse() {
 
   const handleAddNewCourse=async ()=>{
     try{
+      setLoadingSpin(true);
       const courseFinalData=
       {
         creator:user?._id,
@@ -87,19 +91,27 @@ export default function CreateNewCourse() {
           question:courseQuizFormData
         }
       }
-      console.log(courseFinalData);
+      //console.log(courseFinalData);
         const response=currentEditedCourseId === null? await axiosService.post(Add_New_Course,courseFinalData):await axiosService.put(`${Update_Course}/${currentEditedCourseId}`,courseFinalData);
           if(response.status===200){
+            if(response?.data?.data?.extraResources !== extraResource){
+                await supabaseClient.storage
+                    .from('extra-resources')
+                    .remove([extraResource]);
+            }
+            setLoadingSpin(false);
            setCourseLandingFormData(courseLandingInitialFormData);
            setCourseCurriculumFormData(courseCurriculumInitialFormData);
            setCurrentEditedCourseId(null);
            dispatch(getCourse());
+           setExtraResource(null);
           toast.success(response?.data?.message);
           navigate(-1);
           }
          
        }
        catch(error){
+        setLoadingSpin(false);
          toast.error(error?.response?.data?.message);
        }
   }
@@ -108,7 +120,7 @@ export default function CreateNewCourse() {
     },[params?.courseId]);
 
   const getCourseDetailsById=()=>{
-    const courseDetails=allCourse.find((item)=>item._id===currentEditedCourseId);
+    const courseDetails=allCourse?.find((item)=>item._id===currentEditedCourseId);
     if(courseDetails){
       const setCourseFormData = Object.keys(
         courseLandingInitialFormData
@@ -117,6 +129,12 @@ export default function CreateNewCourse() {
 
         return acc;
       }, {});
+       if(courseDetails?.extraResources){
+        setExtraResource(courseDetails?.extraResources);
+       }
+       else{
+        setExtraResource(null);
+       }
       setCourseLandingFormData(setCourseFormData);
       setCourseCurriculumFormData(courseDetails?.curriculum);
     }
@@ -124,7 +142,7 @@ export default function CreateNewCourse() {
   useEffect(() => {
     if (currentEditedCourseId !== null && !loading) getCourseDetailsById();
   }, [currentEditedCourseId,loading]);
-  
+
   return (
     <div className='container mx-auto p-4'>
       <div className='flex justify-between'>
@@ -133,7 +151,7 @@ export default function CreateNewCourse() {
              Return
            </Button>
           <h1 className='text-3xl font-bold mb-5'>Create New Course</h1>
-           <CommonButton func={handleAddNewCourse} disable={!validateFormData()} text="Submit"/>
+           <CommonButton func={handleAddNewCourse} disable={!validateFormData() || loadingSpin} text= "Submit"/>
       </div>
       <Card>
         <CardContent>

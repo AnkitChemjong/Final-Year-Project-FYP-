@@ -209,7 +209,7 @@ export default function CommonTableForHireApplication({ data, type, header,page 
     </div>
   )}
           </div>
-          <ScrollArea className="max-h-[350px] overflow-auto rounded-lg">
+          <ScrollArea className="border max-h-[400px] overflow-auto rounded-lg">
             <Table className="w-full">
               <TableHeader className="bg-gray-200 rounded-t-lg">
                 <TableRow>
