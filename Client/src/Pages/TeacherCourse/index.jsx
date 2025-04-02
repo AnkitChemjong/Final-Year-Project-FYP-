@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { UseContextApi } from '@/Components/ContextApi';
 import { Get_Teacher_Courses } from '@/Routes';
 import { axiosService } from '@/Services';
+import SkeletonCard from '@/Components/SkeletonCard';
 
 
 
@@ -36,8 +37,16 @@ export default function TeacherCourse() {
               };
     },[loading]);
 
+    if(!user || !teacherCourseList){
+      return(
+        <div className='flex flex-row gap-2 overflow-hidden min-h-screen bg-gray-50'>
+                <TeacherNavbar />
+                <SkeletonCard />
+         </div>
+      )
+    }
   return (
-     <div className='flex flex-row gap-2 overflow-hidden'>
+     <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
               <TeacherNavbar />
               <div className='flex-1'>
                <TeacherCoursesData courseList={teacherCourseList} teacherData={user}/>

@@ -4,7 +4,7 @@ import Courses from '@/Components/Courses';
 
 export default function AdminCourse() {
   return (
-    <div className='flex flex-row gap-2 overflow-hidden'>
+    <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
       <AdminNavbar/>
       <div className='flex-1'>
       <Courses/>

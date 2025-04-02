@@ -18,6 +18,7 @@ import getTeacherDetails from "../../Controllers/User_Controller/GetTeacherDetai
 import { updateTeacherInfo } from "../../Controllers/User_Controller/UpdateTeacherInfo/index.mjs";
 import uploadCertificate from "../../Services/UserService/Multer/certificates/TeacherCertificate/index.mjs";
 import handleStatus from "../../Controllers/User_Controller/HandleStatus/index.mjs";
+import getOnlineUsers from "../../Controllers/User_Controller/GetOnlineUsers/index.mjs";
 
 
 const userRoute=Router();
@@ -60,5 +61,7 @@ userRoute.post('/searchedTeacher',getSearchedTeacher);
 userRoute.get('/get/details/:id',getTeacherDetails);
 userRoute.post('/update/teacherinfo/:id',uploadCertificate.single("certificate"),updateTeacherInfo);
 userRoute.patch('/handleStatus',handleStatus);  
+
+userRoute.get('/getOnlineUsers',getOnlineUsers);
 
 export default userRoute;

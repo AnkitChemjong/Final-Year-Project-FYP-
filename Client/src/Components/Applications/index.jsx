@@ -9,6 +9,7 @@ import LottieAnimation from '@/Components/LottieAnimation';
 import hirerequest from '@/assets/hirerequest.json';
 import { FaFileAlt, FaClock, FaCheckCircle, FaUserTie, FaTimesCircle } from 'react-icons/fa';
 
+
 export default function Applications() {
   const [tabValue, setTabValue] = useState("all");
   const applicationState = useSelector(state => state?.application);
@@ -24,6 +25,12 @@ export default function Applications() {
   const approvedApplications = applications?.filter(item => item.status === "approved").length || 0;
   const recruitedApplications = applications?.filter(item => item.status === "recruted").length || 0;
   const rejectedApplications = applications?.filter(item => item.status === "rejected").length || 0;
+
+  if(!applications){
+ return (
+  <SkeletonCard />
+ )
+  }
 
   return (
     <ScrollArea className="max-h-screen overflow-auto">

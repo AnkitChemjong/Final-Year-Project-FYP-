@@ -29,7 +29,11 @@ export default function Courses() {
   const totalCourses = courses?.length || 0;
   const adminCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("admin")).length || 0;
   const teacherCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("teacher")).length || 0;
-
+if(!courses){
+  return(
+    <SkeletonCard />
+  )
+}
   return (
     <ScrollArea className="max-h-screen overflow-auto">
       <div className="flex flex-col w-full p-6 min-h-screen">

@@ -9,6 +9,7 @@ import graduationcourse from '@/assets/graduationcourse.json';
 import { UseContextApi } from '../ContextApi';
 import { FaBook, FaCheckCircle, FaEyeSlash } from 'react-icons/fa';
 
+
 export default function TeacherCoursesData({ courseList, teacherData }) {
   const navigate = useNavigate();
   const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData, courseQuizFormData, setCourseQuizFormData } = useContext(UseContextApi);
@@ -24,7 +25,6 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
   const totalCourses = courseList?.length || 0;
   const publishedCourses = courseList?.filter(course => course.isPublished).length || 0;
   const unpublishedCourses = courseList?.filter(course => !course.isPublished).length || 0;
-
   return (
     <ScrollArea className="max-h-screen overflow-auto">
       <div className="flex flex-col w-full p-6 min-h-screen">

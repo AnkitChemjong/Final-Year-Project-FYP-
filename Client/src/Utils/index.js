@@ -424,9 +424,9 @@ export const hireTeacherInitialState=
 }
 
 
-export const formatForHireApplication=["",'S.N',"Student Name","Teacher Name","Requested On","Hiring Date","Time","Status","action"];
+export const formatForHireApplication=["",'S.N',"Student Name","Teacher Name","Requested On","Hiring Date","Time","Status","Action"];
 
-export const formatForTeacherCourses=["",'S.N',"Course","Price","Students","Date","Revenue","isPublished","action"];
+export const formatForTeacherCourses=["",'S.N',"Course","Price","Students","Date","Revenue","Earning","isPublished","Action"];
 
 
 export const subscriptionPlans = [
@@ -466,5 +466,5 @@ export const subscriptionPlans = [
   }
 ];
 
-export const formatForTeacher=["",'S.N',"userName","email","Courses","Students","Role","Revenue","Status","action"];
-export const formatForCustomer=["",'S.N',"userName","email","Enrollment","course Completed","Role","Status","action"];
+export const formatForTeacher=["",'S.N',"User Name","email","Courses","Students","Role","Revenue","Status","Action"];
+export const formatForCustomer=["",'S.N',"User Name","email","Enrollment","Course Completed","Role","Status","Action"];

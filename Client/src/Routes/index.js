@@ -21,6 +21,7 @@ export const SEARCH_TEACHERS_ROUTES=`${User_Route}/searchedTeacher`;
 export const Get_Teacher_Detail=`${User_Route}/get/details`;
 export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
 export const Handle_Status=`${User_Route}/handleStatus`;
+export const Get_Online_Users=`${User_Route}/getOnlineUsers`;
 
 //Application routes
 //becometeacher
@@ -71,6 +72,8 @@ export const Get_Student_Rating_Data=`${Get_All_Course}/getRatingData`;
 export const Get_All_Rating_Data=`${Get_All_Course}/getAllRating`;
 export const Get_All_Progress_Data=`${Get_All_Course}/getAllProgress`;
 export const Get_All_Purchased_Course_Data=`${Get_All_Course}/getAllPurchasedCourse`;
+export const Get_Teacher_Purchase_Data=`${Get_All_Course}/getPurchaseDataTeacher`;
+export const Get_All_Teacher_Purchase_Data=`${Get_All_Course}/getAllTeacherPurchaseData`;
 
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;

@@ -10,8 +10,8 @@ export default function ContextApi({children}) {
   const [hireTeacherApplicationEditId,setHireTeacherApplicationEditId]=useState(null);
 
   const [studentHireApplicationList,setStudentHireApplicationList]=useState([]);
-  const [teacherHireApplicationList,setTeacherHireApplicationList]=useState([]);
-  const [teacherCourseList,setTeacherCourseList]=useState([]);
+  const [teacherHireApplicationList,setTeacherHireApplicationList]=useState(null);
+  const [teacherCourseList,setTeacherCourseList]=useState(null);
 
   const [courseQuizData,setCourseQuizData]=useState([]);
 
@@ -66,6 +66,9 @@ export default function ContextApi({children}) {
 
   const [allCustomer,setAllCustomer]=useState([]);
   const [allTeacher,setAllTeacher]=useState([]);
+  const [teacherPurchaseData,setTeacherPurchaseData]=useState([]);
+  const [allTeacherPurchaseData,setAllteacherPurchaseData]=useState([]);
+  
   return (
    <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
     setCourseLandingFormData,courseCurriculumFormData, 
@@ -90,7 +93,9 @@ export default function ContextApi({children}) {
     specificUserNotification,setSpecificUserNotification,
     unreadCount, setUnreadCount,
     allCustomer,setAllCustomer,allTeacher,setAllTeacher,
-    extraResource,setExtraResource
+    extraResource,setExtraResource,
+    teacherPurchaseData,setTeacherPurchaseData,
+    allTeacherPurchaseData,setAllteacherPurchaseData
    }}>
      {children}
    </UseContextApi.Provider>

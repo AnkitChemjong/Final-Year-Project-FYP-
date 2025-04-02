@@ -5,6 +5,7 @@ import { UseContextApi } from '@/Components/ContextApi';
 import { useSelector } from 'react-redux';
 import { Get_Teacher_Hire_Application } from '@/Routes';
 import { axiosService } from '@/Services';
+import SkeletonCard from '@/Components/SkeletonCard';
 
 export const getTeacherHireApplication=async(id)=>{
   try{
@@ -34,9 +35,17 @@ export default function TeacherHireRequest() {
    
    },[loading]);
 
+   if(!user || !teacherHireApplicationList){
+    return(
+      <div className='flex flex-row gap-2 overflow-hidden min-h-screen bg-gray-50'>
+              <TeacherNavbar />
+              <SkeletonCard />
+       </div>
+    )
+  }
 
   return (
-    <div className='flex flex-row gap-2 overflow-hidden'>
+    <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
           <TeacherNavbar />
           <div className='flex-1'>
            <TeacherHireRequestData applicationList={teacherHireApplicationList}/>

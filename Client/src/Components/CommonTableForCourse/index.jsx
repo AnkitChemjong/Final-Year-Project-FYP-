@@ -160,7 +160,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
 
   
   return (
-    <div className='flex flex-col justify-center items-center gap-2'>
+    <div className='flex flex-col justify-center items-center gap-2 px-2'>
       <p className=" text-slate-500 text-sm">A list of {type} Courses.</p>
         {
             data && data.length >=1? 
@@ -221,6 +221,10 @@ export default function CommonTableForCourse({data,header,type="",page}){
                  <TableCell className="text-center">{item?.students.length}</TableCell>
                  <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
                  <TableCell className="text-center">Rs.{item?.students.length*item?.pricing}</TableCell>
+                 {
+                  page === 'teacher-page' &&
+                  <TableCell className="text-center">Rs.{((item?.students?.length || 0) * (item?.pricing || 0)*(10/100)).toFixed(2)}</TableCell>
+                 }
                  {
                   page === 'teacher-page' &&
                   <TableCell className="text-center">{item?.isPublished?.toString()}</TableCell>

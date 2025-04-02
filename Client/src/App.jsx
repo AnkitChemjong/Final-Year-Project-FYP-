@@ -38,6 +38,7 @@ import { getAllProgress } from "./Store/Slices/Get_All_Progress";
 import { getAllPurchasedCourse } from "./Store/Slices/Get_All_Purchased_Course_Model";
 import AdminCustomer from "./Pages/AdminCustomer";
 import AdminTeacher from "./Pages/AdminTeacher";
+import { getOnlineUser } from "./Store/Slices/Get_Online_Users";
 
 
 let toastShown = false;
@@ -171,6 +172,7 @@ function App() {
   const allRatings=useSelector(state=>state?.rating);
   const allPurchasedCourse=useSelector(state=>state?.coursePurchased);
   const allProgress=useSelector(state=>state?.progress);
+  const onlineUser=useSelector(state=>state?.onlineUsers);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -197,6 +199,9 @@ function App() {
       }
       if(!allPurchasedCourse?.data){
         await dispatch(getAllPurchasedCourse());
+      }
+      if(!onlineUser?.data){
+        await dispatch(getOnlineUser());
       }
     };
   

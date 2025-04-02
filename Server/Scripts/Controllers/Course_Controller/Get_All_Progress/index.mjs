@@ -1,4 +1,4 @@
-import ProgressModel from "../../Model/Course_Progress_Model/index.mjs";
+import ProgressModel from "../../../Model/Course_Progress_Model/index.mjs";
 
 const getAllProgress=async(req,res)=>{
 try{

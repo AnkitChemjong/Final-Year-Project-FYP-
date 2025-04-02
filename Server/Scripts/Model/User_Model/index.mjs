@@ -78,6 +78,10 @@ const userSchema=new Schema({
         type:String,
         enum:['active','banned'],
         default:'active'
+    },
+    lastSubscriptionNotification: {
+        type: String,
+        default: null
     }
 },{timestamps:true})
 

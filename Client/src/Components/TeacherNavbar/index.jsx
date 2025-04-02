@@ -46,12 +46,6 @@ export default function TeacherNavbar() {
       path: "/teacher/course",
       pageName: "course",
       icon: MdOutlineLaptopChromebook
-    },
-    {
-      name: "Chats",
-      path: "/teacher/chats",
-      pageName: "chats",
-      icon: FaRegComments
     }
   ];
 

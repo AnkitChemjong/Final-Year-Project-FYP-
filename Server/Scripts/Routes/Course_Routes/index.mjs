@@ -19,8 +19,10 @@ import uploadCourseCertificate from "../../Services/UserService/Multer/certifica
 import rateCourse from "../../Controllers/Course_Controller/Rate_Course/index.mjs";
 import getStudentRating from "../../Controllers/Course_Controller/Get_Student_Rating/index.mjs";
 import getAllRatingData from "../../Controllers/Course_Controller/GetAllRating/index.mjs";
-import getAllProgress from "../../Controllers/Get_All_Progress/index.mjs";
+import getAllProgress from "../../Controllers/Course_Controller/Get_All_Progress/index.mjs";
 import getAllPurchasedCourse from "../../Controllers/Course_Controller/Get_All_Purchased_Course/index.mjs";
+import GetPurchaseData from "../../Controllers/Course_Controller/GetPurchaseData/index.mjs";
+import getAllTeacherCoursePurchaseData from "../../Controllers/Course_Controller/Get_All_Teacher_Course_Purchase_Data/index.mjs";
 
 const courseRouter=Router();
 
@@ -59,4 +61,10 @@ courseRouter.get('/getAllProgress',getAllProgress);
 //for quiz
 courseRouter.get("/getCourseQuizData/:id",getCourseQuizData);
 courseRouter.post("/updateQuizData",CourseProgress.updateQuizData);
+
+
+//Purchase model
+courseRouter.get('/getPurchaseDataTeacher/:id',GetPurchaseData.getPurchaseTeacherModel);
+courseRouter.post('/getAllTeacherPurchaseData',getAllTeacherCoursePurchaseData);
+
 export default courseRouter;

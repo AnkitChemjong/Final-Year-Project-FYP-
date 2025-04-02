@@ -129,7 +129,7 @@ export default function CourseSetting() {
         </div>
         
         <div className='flex flex-row gap-2'>
-            <Label>{courseLandingFormData?.extraResources || extraResource? "Replace Extra Resources":"Add Extra Resources"} :</Label>
+            <Label>{courseLandingFormData?.extraResources || extraResource? "Replace Extra Resources":"Add Extra Resources"}{extraResource && <span className='text-red-600'>-if you replace while editing you have to submit the edit.</span>} :</Label>
             <Switch onCheckedChange={(value)=>setExtraResources(value)} checked={extraResources}/>
         </div>
         {

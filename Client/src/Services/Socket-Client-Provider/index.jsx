@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import { Host } from '@/Routes';
 import { UseContextApi } from '@/Components/ContextApi';
+import { registerServiceWorker, requestNotificationPermission, subscribeToPush } from '@/Utils/pushNotifications';
+
+
 
 const SocketContext = createContext();
 
@@ -15,7 +18,18 @@ export default function SocketProvider({ children }) {
     const userState = useSelector(state => state?.user);
     const { data: userInfo } = userState;
     const {specificUserNotification,setSpecificUserNotification,unreadCount, setUnreadCount}=useContext(UseContextApi);
-
+    useEffect(() => {
+        if (socket && userInfo?._id) {
+            const setupPushNotifications = async () => {
+                await registerServiceWorker();
+                const permission = await requestNotificationPermission();
+                if (permission === 'granted') {
+                    await subscribeToPush(socket, userInfo._id);
+                }
+            };
+            setupPushNotifications();
+        }
+    }, [socket, userInfo?._id]);
     useEffect(() => {
         if (userInfo?._id && !socket) {
             console.log("Initializing socket...");
@@ -27,6 +41,7 @@ export default function SocketProvider({ children }) {
                 reconnectionAttempts: 5,
                 reconnectionDelay: 1000,
             });
+            
 
             newSocket.on("connect", () => {
                 console.log("Socket connected");

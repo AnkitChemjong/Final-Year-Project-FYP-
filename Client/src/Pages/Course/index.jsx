@@ -32,6 +32,7 @@ import renderStars from '@/Components/RenderStars';
 
 
 
+
 export default function Course() {
   const userStates = useSelector(state => state?.user);
     const { data: user, loading } = userStates;
@@ -132,7 +133,7 @@ export default function Course() {
 
     useEffect(() => {
       setSort("create-rtoo");
-      setFilters(JSON.parse(localStorage.getItem("filters")) || {});
+        setFilters(JSON.parse(localStorage.getItem("filters")) || {});
     }, []);
      
     useEffect(() => {

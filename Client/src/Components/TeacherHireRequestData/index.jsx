@@ -20,7 +20,6 @@ export default function TeacherHireRequestData({ applicationList }) {
   const pendingRequests = applicationList?.filter(item => item.status === "pending").length || 0;
   const rejectedRequests = applicationList?.filter(item => item.status === "rejected").length || 0;
   const acceptedRequests = applicationList?.filter(item => item.status === "approved").length || 0;
-
   return (
     <ScrollArea className="max-h-screen overflow-auto">
       <div className="flex flex-col w-full p-6 min-h-screen">
