@@ -31,6 +31,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
   const {allTeacherPurchaseData,setAllteacherPurchaseData}=useContext(UseContextApi);
   const [toggleDrawer,setToggleDrawer]=useState(false);
   const [temporaryUserData,setTemporaryUserData]=useState(false);
+  const [thisMonthEarning,setThisMonthEarning]=useState(0);
 
   const handleUserStatus = async ({ type, data = "", status }) => {
     try {
@@ -203,14 +204,29 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                     </Button>
                     <Button onClick={()=>{
                         setToggleDrawer(true);
-                        setTemporaryUserData(customer)
+                        setTemporaryUserData(customer);
+                        setThisMonthEarning(Array.isArray(allTeacherPurchaseData) && customer
+                        ? allTeacherPurchaseData?.filter(item => item?.teacherId === customer?._id)
+                            .flatMap(item => item?.courses || [])
+                            .flatMap(course => course?.purchases || [])
+                            .filter(purchase => {
+                              if (!purchase?.createdAt) return false;
+                              const purchaseDate = new Date(purchase.createdAt);
+                              const now = new Date();
+                              return (
+                                purchaseDate.getFullYear() === now.getFullYear() &&
+                                purchaseDate.getMonth() === now.getMonth()
+                              );
+                            })
+                            .reduce((sum, purchase) => sum + (parseFloat(purchase?.teacherAmount) || 0), 0)
+                        : 0)
 
                     }} className="bg-green-600 hover:bg-blue-600 hover:scale-105 transition-all ease-in-out">
                     View
                   </Button>
                   {toggleDrawer &&
                   <DrawerForCustomer handleDrawer={toggleDrawer} setHandleDrawer={setToggleDrawer} title={"User Data."} description={"View the user Data."}
-                  footer={"Final data view."} data={temporaryUserData} setTemporaryUserData={setTemporaryUserData}/>
+                  footer={"Final data view."} thisMonthEarn={thisMonthEarning} setThisMonthEarning={setThisMonthEarning} data={temporaryUserData} setTemporaryUserData={setTemporaryUserData}/>
                   }
                     </div>
                   ) : customer?.status === 'banned' ? (

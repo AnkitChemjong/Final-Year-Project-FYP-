@@ -4,6 +4,8 @@ import CommonTableForUsers from '../CommonTableForUsers';
 import { formatForCustomer } from '@/Utils';
 import { FaUsers, FaUserSlash, FaUserCheck } from 'react-icons/fa';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import customer from '@/assets/customer.json';
+import LottieAnimation from '../LottieAnimation';
 
 export default function AdminCustomerData({ customerList }) {
   const [tabValue, setTabValue] = useState("all");
@@ -22,8 +24,10 @@ export default function AdminCustomerData({ customerList }) {
   return (
     <ScrollArea className="max-h-screen overflow-auto p-4">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-4">ALL CUSTOMERS</h1>
-        
+        <div className='flex items-center gap-2'>
+               <h2 className="text-2xl font-bold mb-2">All Customers</h2>
+               <LottieAnimation animationData={customer} width={150} height={150} speed={1} />
+          </div>
        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         

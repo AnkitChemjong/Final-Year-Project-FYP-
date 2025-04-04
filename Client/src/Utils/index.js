@@ -371,6 +371,14 @@ export const languageOptions = [
           componentType: "input",
           placeholder: "Fee per Hour",
         },
+        {
+          label: "Experience",
+          name: "experience",
+          mendatory:true,
+          type: "number",
+          componentType: "input",
+          placeholder: "In Years",
+        }
   ]
 
 export const updateTeacherInfoInitialState=
@@ -383,7 +391,8 @@ export const updateTeacherInfoInitialState=
   category:"",
   feePerHour:"",
   college:"",
-  university:""
+  university:"",
+  experience:""
 }
 
 
@@ -468,3 +477,54 @@ export const subscriptionPlans = [
 
 export const formatForTeacher=["",'S.N',"User Name","email","Courses","Students","Role","Revenue","Status","Action"];
 export const formatForCustomer=["",'S.N',"User Name","email","Enrollment","Course Completed","Role","Status","Action"];
+
+
+export const bannerSlides = [
+  {
+    title: "Efficient Pathsala - Revolutionizing E-Learning",
+    description: "Your gateway to modern, efficient, and personalized education experiences",
+    bgColor: "bg-blue-600"
+  },
+  {
+    title: "Learn Anytime, Anywhere",
+    description: "Access quality education from the comfort of your home",
+    bgColor: "bg-green-600"
+  },
+  {
+    title: "Expert Instructors",
+    description: "Learn from industry professionals with real-world experience",
+    bgColor: "bg-purple-600"
+  },
+  {
+    title: "Certified Courses",
+    description: "Get recognized certificates upon course completion",
+    bgColor: "bg-orange-600"
+  }
+];
+
+export const features = [
+  {
+    title: "Tech Courses",
+    description: "Latest technology courses with hands-on projects"
+  },
+  {
+    title: "Become a Teacher",
+    description: "Share your knowledge and earn by teaching"
+  },
+  {
+    title: "Hire Teachers",
+    description: "Find expert instructors for personalized learning"
+  },
+  {
+    title: "Certificates",
+    description: "Earn recognized certificates upon completion"
+  },
+  {
+    title: "Quizzes",
+    description: "Test your knowledge and track progress"
+  },
+  {
+    title: "Flexible Learning",
+    description: "Learn at your own pace, anytime"
+  }
+];

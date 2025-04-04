@@ -23,7 +23,7 @@ export default function Footer() {
 
     <div className="flex flex-col gap-6 text-gray-200 text-sm mb-8 md:mb-0">
       <h3 className="font-semibold text-xl text-white">Quick Links</h3>
-      <a href="/about" className="text-white  transition-all duration-300 hover:underline">About Us</a>
+      <a href="/aboutus" className="text-white  transition-all duration-300 hover:underline">About Us</a>
       <a href="/contact" className="text-white transition-all duration-300 hover:underline">Contact Us</a>
       <a href="/privacyPolicy" className="text-white transition-all duration-300 hover:underline">Privacy Policy</a>
     </div>

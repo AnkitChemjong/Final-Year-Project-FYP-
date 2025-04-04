@@ -287,6 +287,7 @@ useEffect(() => {
       formData.append("university", data?.university);
       formData.append("category",data?.category);
       formData.append("primaryLanguage",data?.primaryLanguage);
+      formData.append("experience",data?.experience);
       if(user){
         const response = await axiosService.post(`${Update_Teacher_Info}/${user?._id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -350,7 +351,7 @@ useEffect(() => {
     setDialog6(!dialog6);
   };
 
-  if(!user && !userApplicationData){
+  if(!user || !allCourse || !purchasedCourse){
     return(
 <div>
         <Navbar />
@@ -433,15 +434,18 @@ useEffect(() => {
                 accept=".png, .jpg, .jpeg, .svg, .webp"
               />
             </div>
-            {
-              !loading && user?.subscription?.subscriptionType === 'elite' &&
-              <LottieAnimation animationData={verified} width={100} height={100} speed={1} />
-            }
+           
             <div className="flex flex-col justify-center items-start gap-3 bg-white">
               <div className="flex flex-row justify-center items-center gap-4">
+                <div className="flex gap-2 items-center justify-center">
                 <h1 className="text-3xl font-bold text-gray-900">
                   {user?.userName}
                 </h1>
+                {
+              !loading && user?.subscription?.subscriptionType === 'elite' &&
+            <LottieAnimation animationData={verified} width={50} height={50} speed={1} />
+            }
+                </div>
                 <div className="relative cursor-pointer group">
                   <TbLockPassword
                     onClick={toggleDialog2}
@@ -587,6 +591,14 @@ useEffect(() => {
             </p>
           </div>
         )}
+      {user?.teacherInfo?.experience && (
+              <div className="flex flex-row items-center gap-3">
+                <span className="text-xl">🏆</span>
+                <p className="text-sm text-gray-700">
+                  <strong>Experience:</strong> {user?.teacherInfo?.experience} Yr
+                </p>
+              </div>
+     )}
       </div>
     </div>
   )}
@@ -623,7 +635,7 @@ useEffect(() => {
         </div>
         <div className="flex flex-row items-center">
           <span className="text-sm text-gray-600">Courses Bought : </span>
-          <span className="text-2xl font-bold text-blue-600">{purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length}</span>
+          <span className="text-2xl font-bold text-blue-600">{purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length ||0}</span>
         </div>
         {user?.userRole?.includes("teacher") && (
           <div className="flex flex-row items-center">

@@ -39,6 +39,8 @@ import { getAllPurchasedCourse } from "./Store/Slices/Get_All_Purchased_Course_M
 import AdminCustomer from "./Pages/AdminCustomer";
 import AdminTeacher from "./Pages/AdminTeacher";
 import { getOnlineUser } from "./Store/Slices/Get_Online_Users";
+import AboutUs from "./Pages/AboutUs";
+import { getAllPurchaseData } from "./Store/Slices/Get_All_Purchase_Data";
 
 
 let toastShown = false;
@@ -173,6 +175,7 @@ function App() {
   const allPurchasedCourse=useSelector(state=>state?.coursePurchased);
   const allProgress=useSelector(state=>state?.progress);
   const onlineUser=useSelector(state=>state?.onlineUsers);
+  const purchaseData=useSelector(state=>state?.purchase);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -203,6 +206,9 @@ function App() {
       if(!onlineUser?.data){
         await dispatch(getOnlineUser());
       }
+      if(!purchaseData?.data){
+        await dispatch(getAllPurchaseData());
+      }
     };
   
     fetchData();
@@ -218,6 +224,7 @@ function App() {
           <Route path="/course" element={<PrivateRoute><Course/></PrivateRoute>}/>
           <Route path="/course/details/:id" element={<PrivateRoute><CourseDetails/></PrivateRoute>}/>
           <Route path="/teacher" element={<PrivateRoute><Teacher/></PrivateRoute>}/>
+          <Route path="/aboutus" element={<PrivateRoute><AboutUs/></PrivateRoute>}/>
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard/></AdminRoute>}/>
           <Route path="/course/courseProgress/quiz/:id" element={<PrivateRoute><Quiz/></PrivateRoute>}/>
           <Route path="/admin/course" element={<AdminRoute><AdminCourse/></AdminRoute>}/>

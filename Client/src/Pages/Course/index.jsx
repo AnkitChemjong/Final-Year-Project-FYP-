@@ -199,10 +199,10 @@ export default function Course() {
       <div className='container mx-auto p-4'>
         <div className='flex gap-2 items-center'>
         <h1 className='text-3xl font-bold mb-4'>All Courses</h1>
-          <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
+          <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
         </div>
          <div className='flex flex-col md:flex-row gap-4'>
-          <aside className='w-full md:w-64 space-y-4'>
+          <aside className='w-full md:w-64 space-y-4 sticky top-2 h-fit self-start'>
             <div className='p-4'>
              {
               Object.keys(filterOptions).map((item,index)=>{

@@ -18,7 +18,7 @@ export default function DrawerForHireTeacherDataView({ handleDrawer, setHandleDr
 
     return (
         <Drawer open={handleDrawer} onOpenChange={setHandleDrawer}>
-            <DrawerContent className="h-[85vh] flex flex-col bg-white backdrop-blur-0">
+            <DrawerContent showOverlay={false} className="h-[85vh] flex flex-col bg-white backdrop-blur-0">
     
                 <DrawerHeader className="flex flex-row justify-between items-start sticky top-0 bg-white z-10 border-b border-gray-200 px-6 py-4">
                     <div className='flex flex-col gap-1'>

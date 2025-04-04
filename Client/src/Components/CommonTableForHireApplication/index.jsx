@@ -270,7 +270,7 @@ export default function CommonTableForHireApplication({ data, type, header,page 
         </Button>
       </div>
        <Button className="bg-slate-700 hover:scale-105 ease-in-out transition-all" onClick={()=>setHandleDrawer(true)}>View</Button>
-       <DrawerForHireTeacherDataView footer={"Contact User by the details."} handleDrawer={handleDrawer} setHandleDrawer={setHandleDrawer} data={item} title={"Data of user."} description={"All the details of user is present here."}/>
+       {handleDrawer&&<DrawerForHireTeacherDataView footer={"Contact User by the details."} handleDrawer={handleDrawer} setHandleDrawer={setHandleDrawer} data={item} title={"Data of user."} description={"All the details of user is present here."}/>}
       </div>
     ) : (
       <Button disabled={true} className="bg-slate-400 cursor-not-allowed">

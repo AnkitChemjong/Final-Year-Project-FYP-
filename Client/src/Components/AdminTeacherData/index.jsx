@@ -4,6 +4,8 @@ import CommonTableForUsers from '../CommonTableForUsers';
 import { formatForTeacher } from '@/Utils';
 import { FaUsers, FaUserSlash, FaUserCheck } from 'react-icons/fa';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import LottieAnimation from '../LottieAnimation';
+import teacher from '@/assets/teacher.json';
 
 export default function AdminTeacherData({ teacherList }) {
   const [tabValue, setTabValue] = useState("all");
@@ -22,9 +24,10 @@ export default function AdminTeacherData({ teacherList }) {
   return (
     <ScrollArea className="max-h-screen overflow-auto p-4">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-4">ALL CUSTOMERS</h1>
-        
-       
+      <div className='flex  gap-2 items-center'>
+               <h2 className="text-2xl font-bold mb-2">All Teachers</h2>
+               <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
+          </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">

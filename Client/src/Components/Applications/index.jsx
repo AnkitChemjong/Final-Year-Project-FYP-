@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useSelector } from 'react-redux';
 import { formatForAllApplication } from '@/Utils';
@@ -15,7 +15,7 @@ export default function Applications() {
   const applicationState = useSelector(state => state?.application);
   const { data: applications, loading } = applicationState;
   const uniqueStatus = [...new Set(applications?.map((applicantItem) => applicantItem.status).flat(1))];
-
+  const [load,setLoad]=useState(true);
   const handleTabValue = (value) => {
     setTabValue(value);
   };
@@ -25,8 +25,12 @@ export default function Applications() {
   const approvedApplications = applications?.filter(item => item.status === "approved").length || 0;
   const recruitedApplications = applications?.filter(item => item.status === "recruted").length || 0;
   const rejectedApplications = applications?.filter(item => item.status === "rejected").length || 0;
-
-  if(!applications){
+  useEffect(()=>{
+    setTimeout(()=>{
+     setLoad(false);
+    },1000);
+ },[]);
+  if(load){
  return (
   <SkeletonCard />
  )
@@ -37,7 +41,7 @@ export default function Applications() {
       <div className="flex flex-col w-full p-6 min-h-screen">
         <div className="flex md:flex-row items-center mb-8 gap-1">
           <h1 className="text-3xl font-bold text-gray-800">Applications</h1>
-          <LottieAnimation animationData={hirerequest} width={100} height={100} speed={1}/>
+          <LottieAnimation animationData={hirerequest} width={150} height={150} speed={1}/>
         </div>
 
         

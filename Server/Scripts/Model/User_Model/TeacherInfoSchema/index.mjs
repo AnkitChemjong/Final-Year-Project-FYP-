@@ -24,6 +24,9 @@ const teacherInfoSchema=new Schema({
     category:{
         type:String
     },
+    experience:{
+      type:String
+    },
     primaryLanguage:{
         type:String
     }

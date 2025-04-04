@@ -35,8 +35,8 @@ export default function PaymentDialog({ openDialog, setOpenDialog, courseDetail=
             paymentStatus:"processing",
             amountPaid:courseDetail?.pricing,
             courseId:courseDetail?._id,
-            siteAmount:Number(courseDetail?.pricing)-teacherAmountOnly,
-            teacherAmount:teacherAmountOnly,
+            siteAmount:courseDetail?.creator?.userRole?.includes('admin')? courseDetail?.pricing:Number(courseDetail?.pricing)-teacherAmountOnly,
+            teacherAmount:courseDetail?.creator?.userRole?.includes('admin')? 0:teacherAmountOnly,
             paymentFor:"course purchase"
         }
         const data = new URLSearchParams(queryString).toString();

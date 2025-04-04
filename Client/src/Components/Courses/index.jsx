@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState,useEffect } from 'react';
 import CommonButton from '../CommonButton';
 import { courseCurriculumInitialFormData, courseLandingInitialFormData, formatForAllCourses, courseQuizInitialFormData } from '@/Utils';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ export default function Courses() {
   const { data: courses, loading } = coursesState;
   const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData, courseQuizFormData, setCourseQuizFormData } = useContext(UseContextApi);
   const navigate = useNavigate();
+  const [load,setLoad]=useState(true);
 
   const handleNavigation = () => {
     setCurrentEditedCourseId(null);
@@ -25,11 +26,16 @@ export default function Courses() {
     setCourseCurriculumFormData(courseCurriculumInitialFormData);
     navigate("/createnewcourse");
   };
+  useEffect(()=>{
+    setTimeout(()=>{
+     setLoad(false);
+    },1000);
+ },[]);
 
   const totalCourses = courses?.length || 0;
   const adminCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("admin")).length || 0;
   const teacherCreatedCourses = courses?.filter(item => item?.creator?.userRole?.includes("teacher")).length || 0;
-if(!courses){
+if(load){
   return(
     <SkeletonCard />
   )
@@ -40,7 +46,7 @@ if(!courses){
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className='flex gap-1 items-center'>
             <h1 className="text-3xl font-bold text-gray-800">All Courses</h1>
-            <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
+            <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
           </div>
           <CommonButton
             func={handleNavigation}

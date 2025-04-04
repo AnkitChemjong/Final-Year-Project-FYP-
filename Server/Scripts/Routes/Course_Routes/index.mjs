@@ -66,5 +66,6 @@ courseRouter.post("/updateQuizData",CourseProgress.updateQuizData);
 //Purchase model
 courseRouter.get('/getPurchaseDataTeacher/:id',GetPurchaseData.getPurchaseTeacherModel);
 courseRouter.post('/getAllTeacherPurchaseData',getAllTeacherCoursePurchaseData);
+courseRouter.get('/getAllPurchaseData',GetPurchaseData.getAllPurchasedDataOfCourse);
 
 export default courseRouter;

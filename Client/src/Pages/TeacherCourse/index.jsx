@@ -1,4 +1,4 @@
-import React,{useContext, useEffect} from 'react';
+import React,{useContext, useEffect,useState} from 'react';
 import TeacherNavbar from '@/Components/TeacherNavbar';
 import TeacherCoursesData from '@/Components/TeacherCoursesData';
 import { useSelector } from 'react-redux';
@@ -25,6 +25,7 @@ export default function TeacherCourse() {
     const {teacherCourseList,setTeacherCourseList}=useContext(UseContextApi);
     const userStates=useSelector(state=>state?.user);
     const {data:user,loading}=userStates;
+    const [load,setLoad]=useState(true);
 
     useEffect(()=>{
        if (user) {
@@ -36,8 +37,13 @@ export default function TeacherCourse() {
               getUsersCourses();
               };
     },[loading]);
+    useEffect(()=>{
+      setTimeout(()=>{
+       setLoad(false);
+      },1000);
+   },[]);
 
-    if(!user || !teacherCourseList){
+    if(!user || load){
       return(
         <div className='flex flex-row gap-2 overflow-hidden min-h-screen bg-gray-50'>
                 <TeacherNavbar />

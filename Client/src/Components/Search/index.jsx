@@ -1,10 +1,9 @@
-import React,{useState} from 'react';
+import React,{ useState} from 'react';
 import { Input } from '../ui/input';
 import { FcSearch } from "react-icons/fc";
 
 export default function Search({searchFunc,onChangeFunc}) {
     const [searchTerm,setSearchTerm]=useState("");
-    
     
   return (
     <div className="flex items-center mt-2 md:mt-0 md:px-80 relative md:left-10 px-10">

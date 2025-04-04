@@ -31,7 +31,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className='flex gap-1 items-center'>
             <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Your Courses</h1>
-            <LottieAnimation animationData={graduationcourse} width={100} height={100} speed={1}/>
+            <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
           </div>
           <CommonButton
             disable={!teacherData?.subscription && courseList?.length >= 3}

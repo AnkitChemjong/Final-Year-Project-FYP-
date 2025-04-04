@@ -28,8 +28,8 @@ export default function TeacherHireRequestData({ applicationList }) {
             <h1 className="text-3xl font-bold text-gray-800">Hire Requests</h1>
             <LottieAnimation
               animationData={hirerequest}
-              width={100}
-              height={100}
+              width={150}
+              height={150}
               speed={1}
             />
           </div>

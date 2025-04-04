@@ -70,7 +70,6 @@ export default function CourseDetails() {
                 if(response.status===200 && !response?.data?.coursePurchased){
                     setSpecificCourseDetails(response?.data?.data);
                     setSpecificCourseRating(response?.data?.ratingData);
-                
             }
             else{
                 setSpecificCourseDetails(null);
@@ -94,6 +93,7 @@ export default function CourseDetails() {
     const averageRating = specificCourseRating.length > 0 
     ? specificCourseRating.reduce((acc, curr) => acc + curr.rating, 0) / specificCourseRating.length
     : 0;
+    //console.log(specificCourseDetails);
 
 if(!setSpecificCourseDetails){
     return (

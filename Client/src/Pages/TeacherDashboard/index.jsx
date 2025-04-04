@@ -17,6 +17,8 @@ import SkeletonCard from '@/Components/SkeletonCard';
 import { UseContextApi } from '@/Components/ContextApi';
 import { axiosService } from '@/Services';
 import { Get_Teacher_Purchase_Data } from '@/Routes';
+import dashboard  from '@/assets/dashboard.json';
+import moment from 'moment';
 
 export const getTeacherPurchaseData = async (id) => {
   try {
@@ -31,7 +33,7 @@ export const getTeacherPurchaseData = async (id) => {
   }
 };
 
-const processEnrollmentData = (purchases) => {
+export const processEnrollmentData = (purchases) => {
   const monthlyData = Array.from({ length: 12 }, (_, i) => ({
     name: new Date(0, i).toLocaleString('default', { month: 'short' }),
     enrollments: 0
@@ -79,6 +81,7 @@ export default function TeacherApplication() {
   const [topCourseRating, setTopCourseRating] = useState(null);
   const [earningOfThisMonth, setEarningOfThisMonth] = useState(0);
   const [enrollmentData, setEnrollmentData] = useState([]);
+  const [load,setLoad]=useState(true);
 
   const resetUserData = () => {
     setTeacherPurchaseData(null);
@@ -136,7 +139,7 @@ export default function TeacherApplication() {
 
   useEffect(() => {
     if (teacherPurchaseData?.purchase) {
-      setEnrollmentData(processEnrollmentData(teacherPurchaseData.purchase));
+      setEnrollmentData(processEnrollmentData(teacherPurchaseData?.purchase));
     } else {
       setEnrollmentData([]);
     }
@@ -156,7 +159,7 @@ export default function TeacherApplication() {
 
   useEffect(() => {
     if (topPerformingCourse && rating) {
-      const courseRatings = rating.filter(r => r?.courseId?._id === topPerformingCourse?._id);
+      const courseRatings = rating?.filter(r => r?.courseId?._id === topPerformingCourse?._id);
       if (courseRatings.length > 0) {
         const avgRating = courseRatings.reduce((sum, r) => sum + (r.rating || 0), 0) / courseRatings.length;
         setTopCourseRating(avgRating.toFixed(1));
@@ -187,8 +190,14 @@ export default function TeacherApplication() {
       setEarningOfThisMonth(earnings);
     }
   }, [teacherPurchaseData]);
+  useEffect(()=>{
+    setTimeout(()=>{
+     setLoad(false);
+    },1000);
+ },[]);
 
-  if (isLoading || !user || !course || !rating) {
+
+  if (isLoading || !user || load) {
     return (
       <div className='flex flex-row gap-2 overflow-hidden min-h-screen bg-gray-50'>
         <TeacherNavbar />
@@ -202,11 +211,14 @@ export default function TeacherApplication() {
       <TeacherNavbar />
       <ScrollArea className="max-h-screen overflow-auto">
         <div className='flex-1 p-6'>
-          
           <div className='flex justify-between items-center mb-8'>
+          <div className='flex gap-2 items-center'>
             <h1 className='text-3xl font-bold text-gray-800'>Teacher Dashboard</h1>
+          <LottieAnimation animationData={dashboard} width={150} height={150} speed={1}/>
+        </div>
             <div className='flex items-center gap-4'>
-              <Badge className='px-4 py-2 bg-purple-100 text-purple-800'>
+              <CommonButton func={()=>navigate('/')}  text="Go Home"/>
+              <Badge className='px-4 py-2 bg-green-600 hover:bg-blue-600 cursor-pointer'>
                 {user?.subscription?.subscriptionType || 'Basic'}
               </Badge>
               <CommonButton
@@ -235,7 +247,7 @@ export default function TeacherApplication() {
               },
               {
                 title: 'Total Students',
-                value: course.filter(c => c?.creator?._id === user._id)
+                value: course?.filter(c => c?.creator?._id === user._id)
                   .reduce((sum, c) => sum + (c?.students?.length || 0), 0),
                 icon: <FaUsers size={24} />,
                 bg: 'bg-orange-100',
@@ -243,7 +255,7 @@ export default function TeacherApplication() {
               },
               {
                 title: 'Courses Uploaded',
-                value: course.filter(c => c?.creator?._id === user._id).length,
+                value: course?.filter(c => c?.creator?._id === user._id).length,
                 icon: <FaBook size={24} />,
                 bg: 'bg-purple-100',
                 color: 'text-purple-600'
@@ -335,7 +347,7 @@ export default function TeacherApplication() {
                         label: 'Rating',
                         value: (
                           <>
-                            ({topCourseRating || '0.0'} from {rating.filter(r => r?.courseId?._id === topPerformingCourse._id).length} reviews)
+                            ({topCourseRating || '0.0'} from {rating?.filter(r => r?.courseId?._id === topPerformingCourse._id).length} reviews)
                             <FaStar className='ml-1 text-yellow-400' />
                           </>
                         )
@@ -377,7 +389,7 @@ export default function TeacherApplication() {
                     </thead>
                     <tbody className='bg-white divide-y divide-gray-200'>
                       {teacherPurchaseData.purchase.slice(0, 5).map((purchase, i) => {
-                        const courseData = course.find(c => c._id === purchase.courseId);
+                        const courseData = course?.find(c => c._id === purchase.courseId);
                         return (
                           <tr key={i}>
                             <td className='px-6 py-4 whitespace-nowrap'>
@@ -387,10 +399,10 @@ export default function TeacherApplication() {
                               {purchase.userId?.email || 'Unknown User'}
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap'>
-                              {new Date(purchase.createdAt || purchase.orderDate).toLocaleDateString()}
+                              {moment(purchase?.createdAt||purchase?.orderDate).format("MMMM DD, YYYY")}
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-green-600 font-medium'>
-                              Rs.{parseFloat(purchase.teacherAmount || 0).toFixed(2)}
+                              Rs.{parseFloat(purchase?.teacherAmount || 0).toFixed(2)}
                             </td>
                           </tr>
                         );

@@ -121,13 +121,13 @@ export default function TeacherDetails() {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-green-50">
+    <div className="min-h-screen">
     <Navbar />
     <div className="container mx-auto px-4 py-12">
    
       <div className="flex flex-col md:flex-row gap-12 items-center">
      
-        <div className="w-full md:w-1/3 flex flex-col items-center">
+        <div className="w-full md:w-1/3 flex flex-col items-center bg-white rounded-full shadow-xl">
           {specificTeacherDetails?.teacherDetails?.userImage? <img
             src={specificTeacherDetails?.teacherDetails?.userImage.startsWith("http") ? specificTeacherDetails?.teacherDetails?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${specificTeacherDetails?.teacherDetails?.userImage}`}
             alt="Teacher"
@@ -143,7 +143,7 @@ export default function TeacherDetails() {
         </div>
 
     
-        <div className="w-full md:w-2/3 space-y-8 bg-white p-8 rounded-xl shadow-lg">
+        <div className="w-full md:w-2/3 space-y-8 bg-gray-100 p-8 rounded-xl shadow-xl">
         <div className='flex gap-2 items-center'>
           <h1 className="text-5xl font-bold text-black">{specificTeacherDetails?.teacherDetails?.userName}</h1>
           {
@@ -235,6 +235,13 @@ export default function TeacherDetails() {
       <span>🗣️</span> 
       <span>Primary Language:</span>
       <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.primaryLanguage || "N/A"}</span>
+    </div>
+  </li>
+  <li>
+    <div className="flex flex-row items-center gap-2">
+      <span>🏆</span> 
+      <span>Experience:</span>
+      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.experience || "N/A"}</span>
     </div>
   </li>
 </ul>

@@ -11,12 +11,19 @@ import { UseContextApi } from '@/Components/ContextApi';
 import SkeletonCard from '@/Components/SkeletonCard';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import LottieAnimation from '@/Components/LottieAnimation';
+import category from '@/assets/category.json';
 import homeanimation from '@/assets/homeanimation.json';
-import { Card,CardContent,CardTitle,CardHeader} from '@/Components/ui/card';
+import { Card,CardContent,CardTitle,CardHeader,CardDescription} from '@/Components/ui/card';
 import moment from 'moment';
 import { FaStar} from "react-icons/fa";
-
-
+import teacher from '@/assets/teacher.json';
+import graduationcourse from '@/assets/graduationcourse.json';
+import student from '@/assets/student.json';
+import { useGSAP } from "@gsap/react";
+import { FaArrowRight } from "react-icons/fa";
+import gsap from "gsap";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
+// gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const userStates = useSelector(state => state?.user);
@@ -24,17 +31,27 @@ export default function Home() {
   const ratingState= useSelector(state=>state?.rating);
   const {data:rating,loading1}=ratingState;
   const {loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
+  const allUserState=useSelector(state=>state?.allUsers);
+      const {data:allUser,loading2}=allUserState;
   const [topSellerCourses,setTopSellerCourses]=useState([]);
-  const navigate=useNavigate();
-
+  const [instructors,setInstructors]=useState([]);
   const [topTestimonials, setTopTestimonials] = useState([]);
+  const navigate=useNavigate();
   
   useEffect(() => {
-    if (rating?.length > 0) {
-      const sorted = [...rating].sort((a, b) => b.rating - a.rating).slice(0, 3);
+    if (rating?.length > 0 && allUser) {
+      const sorted = [...rating]?.sort((a, b) => b.rating - a.rating).slice(0, 3);
+      let oldestUsers;
+      if(user){
+        oldestUsers = [...allUser]?.filter(item=>item?.userRole?.includes('teacher') && item?._id!==user?._id)?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      }
+      else{
+        oldestUsers = [...allUser]?.filter(item=>item?.userRole?.includes('teacher'))?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      }
+      setInstructors(oldestUsers);
       setTopTestimonials(sorted);
     }
-  }, [rating,loading1]);
+  }, [rating,loading1,user]);
   const handleButtonClick=()=>{
   if(!loading && user){
       navigate("/course");
@@ -98,10 +115,54 @@ export default function Home() {
           console.log(error);
         }
   }
+
+  const {contextSafe}=useGSAP();
+  const onPositive=contextSafe(()=>{
+ 
+    gsap.to(".word",{
+      transform:"translateX(-200%)",
+      duration:4,
+      ease:"none",
+      repeat:-1
+    })
+    gsap.to(".word>.h",{
+        rotate:180
+    })
+    
+  })
+  const onNegative=contextSafe(()=>{
+  
+    gsap.to(".word",{
+      transform:"translateX(0%)",
+      duration:4,
+      ease:"none",
+      repeat:-1
+    })
+    gsap.to(".word>.h",{
+        rotate:0
+    })
+    
+  });
+  useEffect(()=>{
+    const func=(e)=>{
+     
+      if(e.deltaY>0){
+        onPositive();
+      }
+      else{
+        onNegative();
+      }
+    }
+  window.addEventListener("wheel",func)
+  return ()=>{
+    window.removeEventListener("wheel",func)
+  }
+  
+  },[]);
   return (
-    <main >
+    <main className='hello'>
       <Navbar/>
-        <div className="w-full h-screen bg-white">
+        <div className=" w-full h-screen bg-white">
           <div className='flex flex-row justify-evenly items-center md:-mt-8'>
             <div className='flex flex-col md:gap-20 -mt-15'>
             <div className='flex flex-col gap-2'>
@@ -120,8 +181,23 @@ export default function Home() {
             </div> <LottieAnimation animationData={homeanimation} width={"md:w-[700px] w-[200px]"} height={"md:h-[550px] h-[200px]"} speed={1} />
           </div>
         </div>
+        <div className="w-[100vw] bg-yellow-400 flex flex-row gap-8">
+          {
+            [...Array(7)].map((index)=>{
+              return (
+        <div key={index} className=" word flex flex-row items-center justify-center py-4 gap-5 shrink-0 -translate-x-96">
+          <h1 className="text-2xl">Grab the opportunity!</h1>
+          <FaArrowRight className="h"  size={25}/>
+        </div>
+              )
+            })
+          }
+      </div>
         <section className="py-8 px-4 lg:px-8 bg-gray-100">
-        <h2 className="text-2xl font-bold mb-6">Course Categories</h2>
+        <div className='flex gap-2 items-center'>
+        <h1 className='text-3xl font-bold'>Course Categories</h1>
+          <LottieAnimation animationData={category} width={150} height={150} speed={1}/>
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {courseCategories.map((categoryItem,index) => (
             <Button
@@ -136,7 +212,10 @@ export default function Home() {
         </div>
       </section>
       <section className="py-12 px-4 lg:px-8">
-        <h2 className="text-2xl font-bold mb-6">Top Courses</h2>
+      <div className='flex gap-2 items-center'>
+        <h1 className='text-3xl font-bold mb-2'>Top Courses</h1>
+          <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {topSellerCourses && topSellerCourses.length > 0 ? (
             topSellerCourses.map((courseItem,index) => (
@@ -183,8 +262,51 @@ export default function Home() {
           )}
         </div>
       </section>
+      
+      
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 ">
+          <div className="max-w-7xl mx-auto">
+            <div className='flex items-center gap-2'>
+                           <h2 className="text-2xl font-bold mb-2">Our Instructors</h2>
+                           <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
+                      </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {instructors.map((teacher, index) => (
+                <Card onClick={()=>navigate(`/teacher/details/${teacher?._id}`)} key={index} className="text-center p-6 cursor-pointer hover:scale-105 transition-all ease-in-out duration-100">
+                   <Avatar className="w-24 h-24 rounded-full cursor-pointer flex justify-center items-center border-4 border-primary">
+        {teacher?.userImage ? (
+          <AvatarImage
+            className="rounded-full"
+            src={
+              teacher?.userImage?.startsWith("http")
+                ? teacher?.userImage
+                : `${import.meta.env.VITE_BACKEND_URL}/${teacher?.userImage}`
+            }
+            alt="Teacher Profile"
+          />
+        ) : (
+          <div className="bg-primarr text-4xl font-bold flex justify-center items-center w-full h-full rounded-full">
+            {teacher?.userName?.charAt(0).toUpperCase()}
+          </div>
+        )}
+      </Avatar>
+                  <CardTitle>{teacher?.userName}</CardTitle>
+                  <CardDescription className="mt-2">
+                    <p className="font-medium text-gray-900">{teacher?.teacherInfo?.category||"N/A"}</p>
+                    <p className="text-gray-600">
+  {teacher?.teacherInfo?.experience ? `${teacher?.teacherInfo?.experience} Yrs` : "N/A"} experience
+</p>
+                  </CardDescription>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
       <section className="py-12 px-4 lg:px-8 ">
-  <h2 className="text-2xl font-bold mb-6">Student Testimonials</h2>
+  <div className='flex gap-2 items-center'>
+        <h1 className='text-3xl font-bold'>Student Testimonials</h1>
+          <LottieAnimation animationData={student} width={150} height={150} speed={1}/>
+        </div>
   <Card className="mb-8">
     <CardHeader>
       <CardTitle className="text-xl">

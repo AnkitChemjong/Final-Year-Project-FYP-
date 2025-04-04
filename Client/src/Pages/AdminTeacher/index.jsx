@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect,useState } from 'react';
 import AdminNavbar from '@/Components/AdminNavbar';
 import { useSelector } from 'react-redux';
 import SkeletonCard from '@/Components/SkeletonCard';
@@ -23,7 +23,12 @@ export default function AdminTeacher() {
   const allUsersState=useSelector(state=>state?.allUsers);
   const {data:allUser,loading}=allUsersState;
   const {allTeacher,setAllTeacher,allTeacherPurchaseData,setAllteacherPurchaseData}=useContext(UseContextApi);
-
+  const [load,setLoad]=useState(true);
+  useEffect(()=>{
+    setTimeout(()=>{
+     setLoad(false);
+    },1000);
+ },[]);
      useEffect(()=>{
         if(allUser){
           setAllTeacher(allUser?.filter(item=>item?.userRole?.includes('teacher')));
@@ -40,7 +45,7 @@ export default function AdminTeacher() {
        }
      },[allTeacher]);
 
-   if(loading || allTeacher?.length===0){
+   if(loading || load){
     return (
       <div className='flex flex-row gap-2 overflow-hidden'>
       <AdminNavbar/>

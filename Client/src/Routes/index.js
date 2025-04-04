@@ -74,6 +74,7 @@ export const Get_All_Progress_Data=`${Get_All_Course}/getAllProgress`;
 export const Get_All_Purchased_Course_Data=`${Get_All_Course}/getAllPurchasedCourse`;
 export const Get_Teacher_Purchase_Data=`${Get_All_Course}/getPurchaseDataTeacher`;
 export const Get_All_Teacher_Purchase_Data=`${Get_All_Course}/getAllTeacherPurchaseData`;
+export const Get_All_Purchase_Data=`${Get_All_Course}/getAllPurchaseData`;
 
 //quiz
 export const Get_Course_Quiz_Data=`${Get_All_Course}/getCourseQuizData`;

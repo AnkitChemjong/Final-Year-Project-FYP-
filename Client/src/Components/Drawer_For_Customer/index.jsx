@@ -12,7 +12,9 @@ import {
 import { useSelector } from 'react-redux';
 import { Badge } from '../ui/badge';
 import moment from 'moment';
-
+import verified from '@/assets/verified.json';
+import LottieAnimation from '../LottieAnimation';
+import { FaMoneyBillWave} from 'react-icons/fa';
 export default function DrawerForCustomer({ 
     handleDrawer, 
     setHandleDrawer, 
@@ -20,20 +22,22 @@ export default function DrawerForCustomer({
     title, 
     description, 
     footer,
-    setTemporaryUserData
+    setTemporaryUserData,
+    thisMonthEarn,
+    setThisMonthEarning
 }) {
     const progressState = useSelector(state => state?.progress);
-    const { data: progress } = progressState;
+    const { data: progress,loading } = progressState;
     const purchasedCourseState = useSelector(state => state?.coursePurchased);
-    const { data: purchasedCourse } = purchasedCourseState;
+    const { data: purchasedCourse,loading1 } = purchasedCourseState;
     const courseState = useSelector(state => state?.course);
-    const { data: allCourse } = courseState;
-
+    const { data: allCourse,loading2 } = courseState;
+    const onlineUserState = useSelector(state => state?.onlineUsers);
+    const { data:onlineUser,loading3 } = onlineUserState;
     const closeDrawer = () => {
         setHandleDrawer(false);
         setTemporaryUserData(null);
     };
-
     const userStats = [
         {
             label: 'Courses Completed',
@@ -60,9 +64,14 @@ export default function DrawerForCustomer({
     return (
         <Drawer open={handleDrawer} onOpenChange={(value) => {
             setHandleDrawer(value);
-            if (!value) setTemporaryUserData(null);
+            if (!value){ 
+                setTemporaryUserData(null);
+                setThisMonthEarning(0);
+            }
         }}>
-            <DrawerContent className="mx-auto">
+            <DrawerContent
+            showOverlay={false}
+             className="mx-auto">
                 <DrawerHeader className="flex justify-between items-start px-8 pt-6 pb-4">
                     <div>
                         <DrawerTitle className="text-2xl font-bold text-gray-800">{title || 'User Details'}</DrawerTitle>
@@ -71,16 +80,15 @@ export default function DrawerForCustomer({
                     <button 
                         onClick={closeDrawer} 
                         className="text-gray-500 hover:text-gray-700 transition-colors"
-                        aria-label="Close drawer"
                     >
                         <GiCrossMark className='cursor-pointer hover:scale-105 ease-in-out transition-all' size={24} />
                     </button>
                 </DrawerHeader>
 
                 <div className="px-8 pb-6 overflow-y-auto max-h-[calc(100vh-200px)]">
-                    {/* Profile Section */}
+                   
                     <div className="flex flex-col items-center mb-8">
-                        <Avatar className="h-28 w-28 rounded-full border-4 border-white shadow-lg mb-4">
+                        <Avatar className="h-28 w-28 rounded-full border-4 border-gray-300 shadow-lg mb-4">
                             {data?.userImage ? 
                                 <AvatarImage
                                     src={
@@ -95,10 +103,22 @@ export default function DrawerForCustomer({
                                         {data?.userName?.charAt(0)?.toUpperCase() || "?"}
                                     </div>
                                 )}
+                        {onlineUser?.some(item=>item?._id===data?._id) &&
+                        <div className='rounded-full w-5 h-5 bg-green-600 absolute bottom-2 right-4 cursor-pointer hover:scale-105'>
+
+                        </div>
+                        }
                         </Avatar>
+                        <div className='flex gap-1 items-center justify-center'>
                         <h3 className="text-2xl font-bold text-gray-800">
                             {data?.userName || 'No name provided'}
                         </h3>
+                        {
+                            data?.subscription?.subscriptionType==='elite' &&
+
+                           <LottieAnimation animationData={verified} width={50} height={50} speed={1}/>
+                        }
+                        </div>
                         <p className="text-md text-gray-500 flex items-center gap-1 mt-1">
                             📧 {data?.email || 'No email provided'}
                         </p>
@@ -112,7 +132,7 @@ export default function DrawerForCustomer({
 
                     <div className="border-t border-gray-200 my-6"></div>
 
-                    {/* User Stats Grid */}
+                   
                     <div className="grid grid-cols-2 gap-4 mb-6">
                         {userStats.map((stat, index) => (
                             <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -127,7 +147,6 @@ export default function DrawerForCustomer({
                         ))}
                     </div>
 
-                    {/* Basic Information */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="space-y-4">
                             <div>
@@ -165,14 +184,15 @@ export default function DrawerForCustomer({
                         </div>
                     </div>
 
-                    {/* Teacher Information */}
+                  
                     {data?.userRole?.includes('teacher') && (
                         <>
                             <div className="border-t border-gray-200 my-6"></div>
                             
                             <div>
-                                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Teacher Information</h4>
+                                <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-8'>
                                 <ul className="space-y-5">
+                                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Teacher Information</h4>
                                     {[
                                         { 
                                             icon: '🎓', 
@@ -226,6 +246,48 @@ export default function DrawerForCustomer({
                                         </li>
                                     ))}
                                 </ul>
+                                <div>
+                                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Earning Information</h4>
+                                <ul className='flex flex-col gap-3'>
+
+                                <li >
+                                            <div className="flex items-start gap-3">
+                                                <span className="text-green-600 mt-1"><FaMoneyBillWave size={24}/></span>
+                                                <div>
+                                                    <p className="text-sm text-gray-500">Total Earning Till Now</p>
+                                                    <div className="mt-1">
+                                                        {allCourse?.filter(item=>item?.creator?._id===data?._id)? (
+                                                            <p className="font-medium">Rs.{allCourse?.filter(item=>item?.creator?._id===data?._id)?.reduce((sum,obj)=>sum+(obj?.students?.length*obj?.pricing||0),0)*(10/100)}</p>
+                                                        ) : (
+                                                            <div className="flex flex-wrap gap-1">
+                                                               Rs.0
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li >
+                                            <div className="flex items-start gap-3">
+                                                <span className="text-red-600 mt-1"><FaMoneyBillWave size={24}/></span>
+                                                <div>
+                                                    <p className="text-sm text-gray-500">This month Earning</p>
+                                                    <div className="mt-1">
+                                                        {thisMonthEarn? (
+                                                            <p className="font-medium">Rs.{thisMonthEarn}</p>
+                                                        ) : (
+                                                            <div className="flex flex-wrap gap-1">
+                                                                Rs.0
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                </ul>
+                                   
+                                </div>
+                                </div>
                             </div>
                         </>
                     )}

@@ -3,7 +3,7 @@ import fs from 'fs';
 
 export const updateTeacherInfo=async(req,res)=>{
     try{
-        const {degree,avilability,feePerHour,description,college,university,category,primaryLanguage}=req.body;
+        const {degree,avilability,feePerHour,description,college,university,category,primaryLanguage,experience}=req.body;
         const {id}=req.params;
         //console.log(degree,avilability,description,college,university);
         if(id){
@@ -24,7 +24,7 @@ export const updateTeacherInfo=async(req,res)=>{
            const certificate=`${user?.userId}/TeacherCertificate/${req.file.filename}`;
         
             const updatedUser=await User.findByIdAndUpdate(id,{teacherInfo:{certificate,degree,avilability,description
-                ,college,university,feePerHour,category,primaryLanguage
+                ,college,university,feePerHour,category,primaryLanguage,experience
             }},{new:true,runValidators:true});
             if(updatedUser){
                 return res.status(200).json({message:"Info Updated Successfully",data:updatedUser,error:null})

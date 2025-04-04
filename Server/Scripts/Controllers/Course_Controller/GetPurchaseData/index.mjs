@@ -71,5 +71,20 @@ class GetPurchaseData{
         return res.status(200).json({message:"Purchase model is fetched successfully.",error:error?.message});
     }
     }
+
+    static getAllPurchasedDataOfCourse=async(req,res)=>{
+      try{
+         const getAllpurchase=await PurchaseModel.find({}).populate('userId').populate('courseId').sort({createdAt:-1});
+         if(getAllpurchase){
+          return res.status(200).json({message:"all purchased data get.",data:getAllpurchase});
+         }
+         return res.status(200).json({message:"Empty data.",data:getAllpurchase});
+      }
+      catch(error){
+        console.log(error);
+        return res.status(200).json({message:"No purchaseData found",error:error?.message});
+        
+      }
+    }
 }
 export default GetPurchaseData;
