@@ -162,26 +162,37 @@ export default function Home() {
   return (
     <main className='hello'>
       <Navbar/>
-        <div className=" w-full h-screen bg-white">
-          <div className='flex flex-row justify-evenly items-center md:-mt-8'>
-            <div className='flex flex-col md:gap-20 -mt-15'>
-            <div className='flex flex-col gap-2'>
-            <h1 className='font-bold text-5xl'>Efficient Pathsala</h1>
-            <h1 className='font-bold text-5xl'>provides efficiency</h1>
-            <h1 className='font-bold text-5xl'>in learning</h1>
-            </div>
-            <div className='flex flex-col gap-2' >
-            <h2 className='font-medium font-mono text-3xl'>Don't think twice and</h2>
-            <h2 className='font-medium font-mono text-3xl'>start learning</h2>
-            </div>
-            <Button onClick={handleButtonClick} className="bg-green-600 text-white md:absolute bottom-5 px-10 py-5 animate-bounce hover:bg-blue-700 transition-all duration-3000 ease-in-out">Start</Button>
-            </div>
-            <div>
-             
-            </div> <LottieAnimation animationData={homeanimation} width={"md:w-[700px] w-[200px]"} height={"md:h-[550px] h-[200px]"} speed={1} />
-          </div>
-        </div>
-        <div className="w-[100vw] bg-yellow-400 flex flex-row gap-8">
+      <div className="w-full min-h-screen bg-white p-4">
+  <div className="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start gap-8 md:gap-0 md:-mt-8">
+    <div className="flex flex-col gap-6 md:gap-20 mt-0 md:mt-0 order-2 md:order-1 text-center md:text-left">
+      <div className="flex flex-col gap-2">
+        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">Efficient Pathsala</h1>
+        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">provides efficiency</h1>
+        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">in learning</h1>
+      </div>
+      <div className="flex flex-col gap-2">
+        <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">Don't think twice and</h2>
+        <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">start learning</h2>
+      </div>
+      <Button 
+        onClick={handleButtonClick} 
+        className="bg-green-600 text-white px-8 py-4 md:px-10 md:py-5 md:absolute md:bottom-5 animate-bounce hover:bg-blue-700 transition-all duration-300 ease-in-out mx-auto md:mx-0"
+      >
+        Start
+      </Button>
+    </div>
+    
+    <div className="order-1 md:order-2">
+      <LottieAnimation 
+        animationData={homeanimation} 
+        width={"w-[250px] sm:w-[400px] md:w-[500px] lg:w-[700px]"} 
+        height={"h-[200px] sm:h-[350px] md:h-[450px] lg:h-[550px]"} 
+        speed={1} 
+      />
+    </div>
+  </div>
+</div>
+        <div className="w-[100vw] bg-yellow-400 flex flex-row gap-8 overflow-hidden">
           {
             [...Array(7)].map((index)=>{
               return (

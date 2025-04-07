@@ -23,6 +23,7 @@ export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
 export const Handle_Status=`${User_Route}/handleStatus`;
 export const Get_Online_Users=`${User_Route}/getOnlineUsers`;
 
+
 //Application routes
 //becometeacher
 export const Get_All_Applications='/application';
@@ -44,6 +45,8 @@ export const Update_Hire_Application_Details=`${Get_All_Applications}/updatehire
 export const Update_Hire_Application_Single_Status=`${Get_All_Applications}/updatesinglehireapplicationstatus`;
 export const Update_Hire_Application_Selected_Status=`${Get_All_Applications}/updateselectedhireapplicationstatus`;
 export const Update_Hire_Application_All_Status=`${Get_All_Applications}/updateallhireapplicationstatus`;
+export const Rate_Teacher=`${Get_All_Applications}/rateTeacher`;
+
 
 //Course Routes
 export const Get_All_Course='/course';

@@ -38,6 +38,11 @@ export default function Course() {
     const { data: user, loading } = userStates;
   const ratingState=useSelector(state=>state?.rating);
   const {data:rating,loading1}=ratingState;
+  const coursePurchasedState=useSelector(state=>state?.coursePurchased);
+  const {data:purchasedAllCourse,loading2}=coursePurchasedState;
+  const progressState=useSelector(state=>state?.progress);
+  const {data:allProgress,loading3}=progressState;
+
   const navigate=useNavigate();
   const location=useLocation();
   const params = new URLSearchParams(location.search);
@@ -49,8 +54,17 @@ export default function Course() {
     const {allCourses,setAllCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
     const [paymentMessageDialog,setPaymentMessageDialog]=useState(false);
     const [paymentMessage,setPaymentMessage]=useState("");
+    const [userProgress,setUserProgress]=useState([]);
+    const [userPurchasedCourse,setUserPurchasedCourse]=useState(null);
     
-
+    useEffect(()=>{
+      if(user&&allProgress&&purchasedAllCourse){
+        const userProgressData=allProgress?.filter(item=>item?.userId===user?._id);
+        const userPruchasedCourseData=purchasedAllCourse?.find(item=>item?.userId===user?._id);
+        setUserProgress(userProgressData);
+        setUserPurchasedCourse(userPruchasedCourseData);
+      }
+    },[user,purchasedAllCourse,allProgress]);
     useEffect(() => {
       if (status && status === 'failed' ) {
         setPaymentMessage(message);
@@ -202,7 +216,7 @@ export default function Course() {
           <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
         </div>
          <div className='flex flex-col md:flex-row gap-4'>
-          <aside className='w-full md:w-64 space-y-4 sticky top-2 h-fit self-start'>
+          <aside className='w-full md:w-64 space-y-4 md:sticky top-2 h-fit self-start'>
             <div className='p-4'>
              {
               Object.keys(filterOptions).map((item,index)=>{
@@ -335,9 +349,23 @@ export default function Course() {
         <p>{item?.level?.toUpperCase()}</p>
         <p>•</p>
         <p>{item?.category?.toUpperCase()}</p>
-      </div>
 
-      
+        <p>•</p>
+        <p>
+  {userPurchasedCourse?.courses?.some(course => course.courseId === item?._id)
+    ? "Purchased"
+    : "Not-Purchased"}
+</p>
+{userPurchasedCourse?.courses?.some(course => course.courseId === item?._id) &&
+<>
+<p>•</p>
+        <p>{ 
+        userProgress?.find(itemData=>itemData?.userId===user?._id&&itemData?.courseId===item?._id)?.completed? "Completed":"Learning"
+      }</p>
+</>
+      }
+  </div>
+
       <p className='font-bold text-lg text-green-600 mt-2'>
         Rs. {item?.pricing || "Free"}
       </p>

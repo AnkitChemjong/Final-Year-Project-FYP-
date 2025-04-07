@@ -17,6 +17,7 @@ import { hireTeacherInitialState } from "@/Utils";
 
 
 
+
 export default function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
   const {hireTeacherApplicationEditId,setHireTeacherApplicationEditId,hireTeacherInitialStateData,setHireTeacherInitialStateData}=useContext(UseContextApi);
     const [error, setError] = useState({});

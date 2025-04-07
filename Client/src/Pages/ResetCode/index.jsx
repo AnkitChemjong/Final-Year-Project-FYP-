@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ResetForm from '@/Components/ResetForm';
 import { axiosService } from '@/Services';
 import { User_Check_Code_Route } from '@/Routes';
@@ -6,12 +6,14 @@ import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
+import { UseContextApi } from '@/Components/ContextApi';
 
 export default function ResetCode() {
     const location=useLocation();
     const email=location?.state || null;
     //console.log(email);
     const navigate=useNavigate();
+    const {loadingSpin,setLoadingSpin}=useContext(UseContextApi);
     const value=[
         {
             name:"code",
@@ -21,6 +23,7 @@ export default function ResetCode() {
     ]
     const handleCheckCode=async (data)=>{
        try{
+        setLoadingSpin(true);
         const data1={...data,email:email}
          const returnData=await axiosService.post(User_Check_Code_Route,data1);
          if(returnData?.status===200){
@@ -40,6 +43,9 @@ export default function ResetCode() {
        }
        catch(error){
         console.log(error);
+       }
+       finally{
+        setLoadingSpin(false);
        }
 
     }

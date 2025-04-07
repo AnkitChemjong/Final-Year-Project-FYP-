@@ -8,6 +8,7 @@ import GetSpecificApplication from "../../Controllers/Hiring_Controller/Get_Spec
 import DeleteHireApplication from "../../Controllers/Hiring_Controller/Delete_Hire_Application/index.mjs";
 import ManipulateApplication from "../../Controllers/Hiring_Controller/Manipulate_Application_Hire/index.mjs";
 import UpdateHireApplication from "../../Controllers/Hiring_Controller/Update_Application_Status/index.mjs";
+import rateTeacher from "../../Controllers/Hiring_Controller/Rate_Teacher/index.mjs";
 
 const appRouter=Router();
 
@@ -31,6 +32,7 @@ appRouter.patch('/updatehireapplicationdetails/:id',ManipulateApplication.update
 appRouter.patch('/updatesinglehireapplicationstatus',UpdateHireApplication.updateSingleApplication);
 appRouter.patch('/updateallhireapplicationstatus',UpdateHireApplication.updateAllApplication);
 appRouter.patch('/updateselectedhireapplicationstatus',UpdateHireApplication.updateSelectedApplication);
+appRouter.post('/rateTeacher/:userId/:teacherId',rateTeacher);
 
 
 export default appRouter;

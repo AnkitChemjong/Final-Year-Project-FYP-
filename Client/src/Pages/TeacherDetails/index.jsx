@@ -18,6 +18,9 @@ import { toast } from 'react-toastify';
 import DialogForm from '@/Components/DialogForm';
 import { hireTeacherComponents } from '@/Utils';
 import verified from '@/assets/verified.json';
+import { RateDialog } from '@/Components/RateDialog';
+import CommonButton from '@/Components/CommonButton';
+import renderStars from '@/Components/RenderStars';
 
 export default function TeacherDetails() {
     const {specificTeacherDetailsId,setSpecificTeacherDetailsId,
@@ -25,9 +28,23 @@ export default function TeacherDetails() {
         }=useContext(UseContextApi);
     const userStates=useSelector(state=>state?.user);
     const {data:user,loading}=userStates;
+    const ratingState=useSelector(state=>state?.rating);
+    const {data:allRating,loading1}=ratingState;
     const {id}=useParams();
     const navigate=useNavigate();
     const [ hireDialog,setHireDialog]=useState(false);
+    const [togRating,setTogRating]=useState(false);
+    const [teacherAverageRating,setTeacherAverageRating]=useState(null);
+    useEffect(()=>{
+
+      if(user&&allRating){
+        const teacherRating=allRating?.filter(item=>item?.teacherId===id);
+        if(teacherRating?.length>0){
+          const averageRating=teacherRating?.reduce((sum,obj)=>sum+(obj?.rating||0)/teacherRating?.length,0)?.toFixed(2);
+          setTeacherAverageRating(averageRating);
+        }
+      }
+    },[user,allRating]);
     
         useEffect(()=>{
             const getTeacherDetail=async ()=>{
@@ -118,8 +135,6 @@ export default function TeacherDetails() {
 
   )
   }
-  
-
   return (
     <div className="min-h-screen">
     <Navbar />
@@ -161,6 +176,8 @@ export default function TeacherDetails() {
                 <li>📞 Phone: {specificTeacherDetails?.teacherDetails?.phone}</li>
                 <li>🏠 Address: {specificTeacherDetails?.teacherDetails?.address}</li>
                 <li>🎂 Date of Birth: {moment(specificTeacherDetails?.teacherDetails?.DOB).format("MMMM DD, YYYY")}</li>
+                <li className='flex flex-row items-center gap-1'>⭐ Rating:{renderStars(teacherAverageRating)} (from {allRating?.filter(item=>item?.teacherId===id)?.length ||0} {allRating?.filter(item=>item?.teacherId===id)?.length>1? "Reviews":"Review"})</li>
+
               </ul>
             </div>
             <div>
@@ -248,6 +265,8 @@ export default function TeacherDetails() {
             </div>
           </div>
           <div className="flex gap-4 mt-8">
+    {!allRating?.find(item=>item?.userId?._id===user?._id && item?.teacherId===specificTeacherDetails?.teacherDetails?._id) &&
+    <CommonButton func={()=>setTogRating(true)} text="Give Rating"/>}
     <Button
       className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
       onClick={() =>setHireDialog(true)}
@@ -267,11 +286,9 @@ export default function TeacherDetails() {
 
      
       <div className="mt-16">
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-1 md:gap-4 mb-8 overflow-hidden">
           <h2 className="text-4xl font-bold text-black">Courses Created</h2>
-          <div className="w-24">
             <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1} />
-          </div>
         </div>
 
         <div className="grid text-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -298,6 +315,7 @@ export default function TeacherDetails() {
 
       </div>
     </div>
+    {togRating && <RateDialog open={togRating} onOpenChange={setTogRating} userId={user?._id} teacherId={id}/>}
 
     <DialogForm
             title="Hire Teacher."

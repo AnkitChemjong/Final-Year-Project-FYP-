@@ -10,7 +10,10 @@ const rateCourseSchema=new Schema({
     courseId:{
         type:Schema.Types.ObjectId,
         ref:"CourseModel",
-        required:true
+   },
+   teacherId:{
+    type:Schema.Types.ObjectId,
+    ref:"User"
    },
     rating:{
         type:Number,

@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useContext, useEffect} from 'react';
 import ResetForm from '@/Components/ResetForm';
 import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { User_Change_Pass_Route } from '@/Routes';
 import { axiosService } from '@/Services';
 import Navbar from '@/Components/Navbar';
+import { UseContextApi } from '@/Components/ContextApi';
 
 export default function ChangePass() {
     const navigate=useNavigate();
     const location=useLocation();
+    const {setLoadingSpin}=useContext(UseContextApi);
     const email=location?.state || null;
     const value=[
         {
@@ -25,6 +27,7 @@ export default function ChangePass() {
     ]
     const handleEvent=async (data)=>{
            try{
+            setLoadingSpin(true);
             const data1={...data,email:email}
              const returnData=await axiosService.patch(User_Change_Pass_Route,data1);
              if(returnData?.status===200){
@@ -38,6 +41,9 @@ export default function ChangePass() {
            }
            catch(error){
             console.log(error);
+           }
+           finally{
+            setLoadingSpin(false);
            }
     
         }

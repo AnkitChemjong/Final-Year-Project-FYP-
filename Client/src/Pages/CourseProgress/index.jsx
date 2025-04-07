@@ -27,7 +27,7 @@ import supabaseClient from "@/Components/SupabaseClient";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 import { handleDwn } from "@/Services";
-import { RateCourseDialog } from "@/Components/RateCourseDialog";
+import { RateDialog } from "@/Components/RateDialog";
 import { getAllRating } from "@/Store/Slices/Get_All_Rating";
 import { getAllProgress } from "@/Store/Slices/Get_All_Progress";
 
@@ -522,7 +522,7 @@ export default function CourseProgress() {
           onClose={handleCourseDialogClose}
         />}
 
-        {showRateCourseDialog && <RateCourseDialog open={showRateCourseDialog} onOpenChange={setShowRateCourseDialog} userId={user?._id} courseId={id} 
+        {showRateCourseDialog && <RateDialog open={showRateCourseDialog} onOpenChange={setShowRateCourseDialog} userId={user?._id} courseId={id} 
         onSubmitRating={()=>{}}  />}
       </div>
       <Footer />

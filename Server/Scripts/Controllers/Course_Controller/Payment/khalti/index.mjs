@@ -42,22 +42,30 @@ class KhaltiPayment{
       const {
         pidx,
         txnId,
-        amount,
         mobile,
+        total_amount,
         purchase_order_id,
         purchase_order_name,
         transaction_id,
       } = req.query;
       const user=req.user;
-    
+      console.log(purchase_order_id)
+       
+      // if(pidx===undefined){
+      //     const purchasedDataCancel=await PurchaseModel.findOne({
+      //       _id: purchase_order_id,
+      //       amountPaid: (total_amount/100),
+      //     });
+      //   await PurchaseModel.findByIdAndDelete(purchasedDataCancel?._id);
+      //   return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`); 
+      // }
       try {
         const paymentInfo = await verifyKhaltiPayment(pidx);
-    
         // Check if payment is completed and details match
         if (
           paymentInfo?.status !== "Completed" ||
           paymentInfo.transaction_id !== transaction_id ||
-          Number(paymentInfo.total_amount) !== Number(amount)
+          Number(paymentInfo.total_amount) !== Number(total_amount)
         ) {
           return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=purchase record error`);
         }
@@ -65,7 +73,7 @@ class KhaltiPayment{
         // Check if payment done in valid item
         const purchasedData = await PurchaseModel.findOne({
           _id: purchase_order_id,
-          amountPaid: (amount/100),
+          amountPaid: (total_amount/100),
         }).populate('courseId');
         
     
@@ -110,12 +118,12 @@ class KhaltiPayment{
         }
         const courseData=await CourseModel.findByIdAndUpdate(purchasedData?.courseId?._id,{$addToSet:{students:{studentId:user?._id}}},{ runValidators: true,new:true });
 
-        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${amount/100}&creatorId=${courseData?.creator}&courseTitle=${courseData?.title}`);
+        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS}?payment=success&message=payment successfull&amount=${total_amount/100}&creatorId=${courseData?.creator}&courseTitle=${courseData?.title}`);
       } catch (error) {
         console.log(error);
         const purchasedData=await PurchaseModel.findOne({
             _id: purchase_order_id,
-            amountPaid: (amount/100),
+            amountPaid: (total_amount/100),
           });
         await PurchaseModel.findByIdAndDelete(purchasedData?._id);
         return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);

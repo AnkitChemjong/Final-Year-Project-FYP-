@@ -20,6 +20,8 @@ import { getAllPurchasedCourse } from '@/Store/Slices/Get_All_Purchased_Course_M
 export default function StudentCourses() {
     const userStates = useSelector(state => state?.user);
     const { data: user, loading } = userStates; 
+    const progressState=useSelector(state=>state?.progress);
+      const {data:allProgress,loading3}=progressState;
     const navigate=useNavigate();
     const dispatch=useDispatch();
     const location = useLocation();
@@ -33,11 +35,18 @@ export default function StudentCourses() {
   const [paymentMessage,setPaymentMessage]=useState("");
   const [paymentAmount,setPaymentAmount]=useState("");
   const [tostShown,setTostShown]=useState(false);
+  const [userProgress,setUserProgress]=useState([]);
 
   const {studentEnrolledCourses,setStudentEnrolledCourses,loadingStateCourse,setLoadingStateCourse}=useContext(UseContextApi);
   const {socket}=useSocket();
   
+ useEffect(()=>{
+  if(user&&allProgress){
+    const userProgressData=allProgress?.filter(item=>item?.userId===user?._id);
+    setUserProgress(userProgressData);
+  }
 
+ },[user,allProgress])
   useEffect(()=>{
       const getStudentEnrolledCourses=async()=>{
         try{
@@ -94,11 +103,12 @@ export default function StudentCourses() {
                                      />
                                      <h3 className='font-bold mb-1'>{course?.title}</h3>
                                      <p className='text-sm text-gray-700 mb-2'>{course?.instructorName}</p>
+                                     <p className='text-sm text-gray-700 mb-2'>Status: {userProgress?.find(itemData=>itemData?.userId===user?._id&&itemData?.courseId===course?.courseId)?.completed? "Completed":"Learning"}</p>
                                </CardContent>
                                <CardFooter>
                                  <Button onClick={()=>navigate(`/courseProgress/${course?.courseId}`)} className="flex-1 bg-green-600 text-white hover:bg-blue-700">
                                      <IoStopwatchOutline className='mr-2 h-4 w-4'/>
-                                     Start Learning
+                                     {userProgress?.find(item=>item?.courseId===course?.courseId)?  (userProgress?.find(itemData=>itemData?.userId===user?._id&&itemData?.courseId===course?.courseId)?.completed? "Completed":"Continue Learning"):"Start Learning"}
                                  </Button>
                                </CardFooter>
                            </Card>

@@ -14,7 +14,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import DeleteDialog from "@/Components/DeleteDialog";
 import verified from '@/assets/verified.json';
 import LottieAnimation from "@/Components/LottieAnimation";
-
 import {
   User_Upload_Profile_Image,
   User_Delete_Profile_Image,
@@ -23,7 +22,6 @@ import {
   User_Become_Teacher,
   Update_Teacher_Info,
   Delete_Single_Application
- 
 } from "@/Routes";
 import HireApplication from "@/Components/Hire_Application";
 import SkeletonCard from "@/Components/SkeletonCard";
@@ -43,7 +41,7 @@ import {
   updateTeacherInfoInitialState,
   updateTeacherInfoComponents
 } from "@/Utils";
-import  DialogForm from "@/Components/DialogForm";
+import DialogForm from "@/Components/DialogForm";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { UseContextApi } from "@/Components/ContextApi";
@@ -91,17 +89,16 @@ export default function Profile() {
      }
   },[userApplication,user]);
 
-useEffect(() => {
-  if (user) {
-    const getUsersRequestApplication=async()=>{
-
-      const result=await getStudentHireApplication(user?._id);
-      setStudentHireApplicationList(result);
-    }
-    getUsersRequestApplication();
+  useEffect(() => {
+    if (user) {
+      const getUsersRequestApplication=async()=>{
+        const result=await getStudentHireApplication(user?._id);
+        setStudentHireApplicationList(result);
+      }
+      getUsersRequestApplication();
     };
+  },[loading]);
 
-},[loading]);
   const updateProfileInputs = [
     {
       label: "User Name",
@@ -228,9 +225,9 @@ useEffect(() => {
       const response = await axiosService.patch(User_Info_Update, data);
       if (response?.status === 200) {
         dispatch(getUser());
-          dispatch(getApplication());
-          dispatch(getCourse());
-          dispatch(getAllUser());
+        dispatch(getApplication());
+        dispatch(getCourse());
+        dispatch(getAllUser());
         setDialog1(false);
         toast.success(response?.data?.message);
       }
@@ -245,8 +242,8 @@ useEffect(() => {
       if (response?.status === 200) {
         dispatch(getUser());
         dispatch(getApplication());
-          dispatch(getCourse());
-          dispatch(getAllUser());
+        dispatch(getCourse());
+        dispatch(getAllUser());
         setDialog2(false);
         toast.success(response?.data?.message);
       }
@@ -264,9 +261,9 @@ useEffect(() => {
       });
       if (response?.status === 200) {
         dispatch(getUser());
-          dispatch(getApplication());
-          dispatch(getCourse());
-          dispatch(getAllUser());
+        dispatch(getApplication());
+        dispatch(getCourse());
+        dispatch(getAllUser());
         setDialog3(false);
         toast.success(response?.data?.message);
       }
@@ -301,7 +298,6 @@ useEffect(() => {
           toast.success(response?.data?.message);
         }
       }
-
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -312,12 +308,12 @@ useEffect(() => {
       if(userApplicationData){
         const response=await axiosService.delete(Delete_Single_Application,{data:{data:userApplicationData}},{withCredentials:true, headers: {
           "Content-Type": "application/json"
-  }});
-  if(response.status===200){
-    dispatch(getApplication());
-    setDialog6(false);
-    toast.success(response?.data?.message);
-  }
+        }});
+        if(response.status===200){
+          dispatch(getApplication());
+          setDialog6(false);
+          toast.success(response?.data?.message);
+        }
       }
       else{
         toast.error("no application data to delete.")
@@ -347,13 +343,12 @@ useEffect(() => {
     setDialog5(!dialog5);
   };
   const toggleDialog6= () => {
-  
     setDialog6(!dialog6);
   };
 
   if(!user || !allCourse || !purchasedCourse){
     return(
-<div>
+      <div>
         <Navbar />
         <SkeletonCard />
         <Footer />
@@ -362,368 +357,402 @@ useEffect(() => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
+      <main className="flex-grow">
         {!user?.DOB && (
-            <div className="flex w-full p-2 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
-              <GrCircleInformation className="w-5 h-5 text-red-800"/>
-          <span className="text-sm text-red-800">
-            Complete your profile info to become a Teacher.
-          </span>
-           </div>
+          <div className="flex w-full p-2 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
+            <GrCircleInformation className="w-5 h-5 text-red-800"/>
+            <span className="text-sm text-red-800">
+              Complete your profile info to become a Teacher.
+            </span>
+          </div>
         )}
-      {
-        (user?.userRole?.includes("teacher") && !user?.teacherInfo) && 
-      <div className="flex w-full p-3 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
-        <GrCircleInformation className="w-5 h-5 text-red-800"/>
-            <span className="text-sm  text-red-800">
-            Please Complete your Teacher info.
-          </span>
-      </div>   
-      }
-      <div className="w-full flex flex-col justify-center items-center pb-4 bg-white">
-    
-        <div className="w-full max-w-6xl flex flex-row justify-between items-start p-8 bg-white rounded-lg shadow-lg">
-          <div className="w-1/3 flex flex-col gap-6 justify-center items-start bg-white">
-            <div
-              className="relative flex items-center justify-center"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-            >
-              <Avatar className="h-32 w-32 rounded-full cursor-pointer flex justify-center items-center border-4 border-blue-500">
-                {user?.userImage ? (
-                  <AvatarImage
-                    src={
-                      user?.userImage.startsWith("http")
-                        ? user?.userImage
-                        : `${import.meta.env.VITE_BACKEND_URL}/${
-                            user?.userImage
-                          }`
-                    }
-                    alt="profile"
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className="bg-blue-100 w-full h-full flex justify-center items-center text-4xl font-bold text-blue-700">
-                    {user?.userName?.split("")[0].toUpperCase()}
-                  </div>
-                )}
-              </Avatar>
-              {hover && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
-                  onClick={
-                    user?.userImage
-                      ? handleProfileImageDelete
-                      : handleFileInputClick
-                  }
-                >
-                  {user?.userImage ? (
-                    <FaTrash className="text-white text-3xl cursor-pointer" />
-                  ) : (
-                    <FaPlus className="text-white text-3xl cursor-pointer" />
-                  )}
-                </div>
-              )}
-              <input
-                type="file"
-                ref={upProfileImage}
-                onChange={handleImageChange}
-                className="hidden"
-                name="profile-image"
-                accept=".png, .jpg, .jpeg, .svg, .webp"
-              />
-            </div>
+        {
+          (user?.userRole?.includes("teacher") && !user?.teacherInfo) && 
+          <div className="flex w-full p-3 gap-3 justify-center items-center bg-blue-200 rounded-lg mb-1">
+            <GrCircleInformation className="w-5 h-5 text-red-800"/>
+            <span className="text-sm text-red-800">
+              Please Complete your Teacher info.
+            </span>
+          </div>   
+        }
+        
+        <div className="w-full px-4 py-8 bg-white">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
            
-            <div className="flex flex-col justify-center items-start gap-3 bg-white">
-              <div className="flex flex-row justify-center items-center gap-4">
-                <div className="flex gap-2 items-center justify-center">
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {user?.userName}
-                </h1>
-                {
-              !loading && user?.subscription?.subscriptionType === 'elite' &&
-            <LottieAnimation animationData={verified} width={50} height={50} speed={1} />
-            }
-                </div>
-                <div className="relative cursor-pointer group">
-                  <TbLockPassword
-                    onClick={toggleDialog2}
-                    size={30}
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+            <div className="w-full lg:w-1/3 flex flex-col gap-6">
+          
+              <div className="flex flex-col items-center">
+                <div
+                  className="relative flex items-center justify-center"
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                >
+                  <Avatar className="h-32 w-32 rounded-full cursor-pointer flex justify-center items-center border-4 border-blue-500">
+                    {user?.userImage ? (
+                      <AvatarImage
+                        src={
+                          user?.userImage.startsWith("http")
+                            ? user?.userImage
+                            : `${import.meta.env.VITE_BACKEND_URL}/${user?.userImage}`
+                        }
+                        alt="profile"
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <div className="bg-blue-100 w-full h-full flex justify-center items-center text-4xl font-bold text-blue-700">
+                        {user?.userName?.split("")[0].toUpperCase()}
+                      </div>
+                    )}
+                  </Avatar>
+                  {hover && (
+                    <div
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
+                      onClick={
+                        user?.userImage
+                          ? handleProfileImageDelete
+                          : handleFileInputClick
+                      }
+                    >
+                      {user?.userImage ? (
+                        <FaTrash className="text-white text-3xl cursor-pointer" />
+                      ) : (
+                        <FaPlus className="text-white text-3xl cursor-pointer" />
+                      )}
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    ref={upProfileImage}
+                    onChange={handleImageChange}
+                    className="hidden"
+                    name="profile-image"
+                    accept=".png, .jpg, .jpeg, .svg, .webp"
                   />
-                  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 px-2 py-1 text-white text-sm bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    Change Password
+                </div>
+              </div>
+
+             
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="flex gap-2 items-center">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    {user?.userName}
+                  </h1>
+                  {!loading && user?.subscription?.subscriptionType === 'elite' &&
+                    <LottieAnimation animationData={verified} width={50} height={50} speed={1} />
+                  }
+                </div>
+                
+                <div className="flex gap-2 items-center">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {user?.userRole?.map((item, index) => (
+                      <Badge
+                        key={index}
+                        className="bg-green-600 text-white px-3 py-1"
+                      >
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="relative cursor-pointer group">
+                    <TbLockPassword
+                      onClick={toggleDialog2}
+                      size={24}
+                      className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+                    />
+                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-white text-xs bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+                      Change Password
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-row gap-2">
-                {user?.userRole?.map((item, index) => (
-                  <Badge
-                    key={index}
-                    className="bg-green-600 text-white px-3 py-1"
-                  >
-                    {item}
-                  </Badge>
+
+             
+              <div className="flex flex-col gap-3">
+                {details?.map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="text-xl">{item.icon}</span>
+                    <p className="text-sm text-gray-700">{item?.text}</p>
+                  </div>
                 ))}
               </div>
-            </div>
 
-            <div className="flex flex-col justify-center items-start gap-3 bg-white">
-              {details?.map((item, index) => (
-                <div key={index} className="flex flex-row items-center gap-3">
-                 <span className="text-xl">{item.icon}</span>
-                  <p className="text-sm text-gray-700">{item?.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-     
-          <div className="w-1/3 flex flex-col justify-center items-center gap-6 bg-white">
-
-  <div className="w-full flex flex-col justify-center items-center gap-3 bg-white">
-    <div className="flex flex-row items-center gap-4">
-      <GrCircleInformation size={30} className="text-green-600" />
-      <h1 className="text-3xl font-bold text-gray-900">More Info</h1>
-    </div>
-    <div className="flex flex-col gap-2">
-      {moreDetails?.map((item, index) => (
-        <div key={index} className="flex flex-row items-center gap-3">
-          <span className="text-xl">{item.icon}</span>
-          <p className="text-sm text-gray-700">{item?.text}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-
-
-  {user?.userRole?.includes("teacher") && user?.teacherInfo && (
-    <div className="w-full flex flex-col justify-center items-start gap-3 bg-white">
-      <div className="flex flex-row items-center gap-4">
-        <GrCircleInformation size={30} className="text-green-600" />
-        <h1 className="text-3xl font-bold text-gray-900">Teacher Info</h1>
-      </div>
-      <div className="flex flex-col justify-center items-start gap-2 w-full">
-        {user?.teacherInfo?.degree && (
-          <div className="flex flex-col items-start gap-2 w-full">
-            <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">🎓</span>
-              <p className="text-sm text-gray-700 font-semibold">Degree:</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {user?.teacherInfo?.degree?.split(",").map((item, index) => (
-                <Badge className="bg-green-600 text-white px-3 py-1" key={index}>
-                  {item.trim()}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {user?.teacherInfo?.avilability && (
-          <div className="flex flex-col items-start gap-2 w-full">
-            <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">📅</span>
-              <p className="text-sm text-gray-700 font-semibold">Availability:</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {user?.teacherInfo?.avilability?.split(",").map((item, index) => (
-                <Badge className="bg-green-600 text-white px-3 py-1" key={index}>
-                  {item.trim()}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
- 
-        {user?.teacherInfo?.description && (
-          <div className="flex flex-col items-start gap-2 w-full">
-            <div className="flex flex-row items-center gap-3">
-              <GrCircleInformation className="text-blue-600" size={20} />
-              <p className="text-sm text-gray-700 font-semibold">Description:</p>
-            </div>
-            <div className="w-full max-h-32 overflow-y-auto bg-gray-100 p-2 rounded-lg">
-              <p className="text-sm text-gray-700">
-                {user?.teacherInfo?.description}
-              </p>
-            </div>
-          </div>
-        )}
-        {user?.teacherInfo?.college && (
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">🏫</span>
-            <p className="text-sm text-gray-700">
-              <strong>College:</strong> {user?.teacherInfo?.college}
-            </p>
-          </div>
-        )}
-        {user?.teacherInfo?.university && (
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">🏛️</span>
-            <p className="text-sm text-gray-700">
-              <strong>University:</strong> {user?.teacherInfo?.university}
-            </p>
-          </div>
-        )}
-        {user?.teacherInfo?.feePerHour && (
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">₹</span>
-            <p className="text-sm text-gray-700">
-              <strong>Fee: Rs.</strong> {`${user?.teacherInfo?.feePerHour} /hr`}
-            </p>
-          </div>
-        )}
-        {user?.teacherInfo?.category && (
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">📂</span>
-            <p className="text-sm text-gray-700">
-              <strong>Category:</strong> {user?.teacherInfo?.category}
-            </p>
-          </div>
-        )}
-        {user?.teacherInfo?.primaryLanguage && (
-          <div className="flex flex-row items-center gap-3">
-            <span className="text-xl">🗣️</span>
-            <p className="text-sm text-gray-700">
-              <strong>Primary Language:</strong> {user?.teacherInfo?.primaryLanguage}
-            </p>
-          </div>
-        )}
-      {user?.teacherInfo?.experience && (
-              <div className="flex flex-row items-center gap-3">
-                <span className="text-xl">🏆</span>
-                <p className="text-sm text-gray-700">
-                  <strong>Experience:</strong> {user?.teacherInfo?.experience} Yr
-                </p>
+            
+              <div className="flex justify-center">
+                <Button
+                  onClick={toggleDialog1}
+                  className="bg-green-600 text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                >
+                  Update Info
+                </Button>
               </div>
-     )}
-      </div>
-    </div>
-  )}
-
-
-  <div className="flex gap-2">
-    <Button
-      onClick={toggleDialog1}
-      className="bg-green-600 text-white px-6 py-3 hover:scale-105  hover:bg-blue-700 transition-colors duration-300 shadow-md"
-    >
-      Update Info
-    </Button>
-    {user?.userRole?.includes("teacher") && (
-      <Button
-        onClick={toggleDialog5}
-        className="bg-green-600 text-white px-6 py-3 hover:scale-105  hover:bg-blue-700 transition-colors duration-300 shadow-md"
-      >
-        Update TeacherInfo
-      </Button>
-    )}
-  </div>
-</div>
-
-<div className="w-1/3 flex flex-col justify-center items-end gap-2 bg-gray-100 rounded-xl shadow-lg px-2 py-5 md:ml-4">
-   
-      <div className="w-full flex flex-col justify-center items-center gap-2 bg-transparent">
-        <div className="flex items-center gap-2">
-         <IoMdStats size={30} color="green"/>
-      <h1 className="text-3xl font-bold text-gray-900">Statistics</h1>
-        </div>
-        <div className="flex flex-row items-center">
-          <span className="text-sm text-gray-600">Courses Completed : </span>
-          <span className="text-2xl font-bold text-blue-600">{progress?.filter(item=>item?.userId === user?._id && item?.completed === true)?.length}</span>
-        </div>
-        <div className="flex flex-row items-center">
-          <span className="text-sm text-gray-600">Courses Bought : </span>
-          <span className="text-2xl font-bold text-blue-600">{purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length ||0}</span>
-        </div>
-        {user?.userRole?.includes("teacher") && (
-          <div className="flex flex-row items-center">
-            <span className="text-sm text-gray-600">Courses Uploaded : </span>
-            <span className="text-2xl font-bold text-blue-600">{allCourse?.filter(item=>item?.creator?._id === user?._id)?.length}</span>
-          </div>
-        )}
-        <div className="flex flex-row items-center">
-          <span className="text-sm text-gray-600">Certificates : </span>
-          <span className="text-2xl font-bold text-blue-600">{user?.courseCertificates?.length}</span>
-        </div>
-      </div>
-           
-            <div className="w-full flex flex-row justify-center items-center gap-4 bg-transparent">
-              {user?.userRole?.includes("teacher") ? (
-                <Button onClick={()=>navigate('/teacher/dashboard')} className="bg-green-600 hover:scale-105  text-white px-3 py-3 hover:bg-blue-700 transition-colors duration-300 shadow-md">
-                  Dashboard
-                </Button>
-              ) : (
-                <Button
-                  onClick={toggleDialog3}
-                  disabled={
-                    !user?.DOB ||
-                    userApplicationData
-                  }
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md"
-                >
-                  {userApplicationData
-                    ? "Processing"
-                    : "Become Teacher"}
-                </Button>
-              )}
-              {user?.userRole?.includes("teacher") && (
-                <Button
-                  onClick={toggleDialog4}
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105  transition-colors duration-300 shadow-md"
-                >
-                  My CV
-                </Button>
-              )}
-              <Button
-                  onClick={()=>navigate("/studentCourse")}
-                  className="bg-green-600 text-white px-3 py-3 hover:bg-blue-700 hover:scale-105  transition-colors duration-300 shadow-md"
-                >
-                  Enrolled Courses
-                </Button>
             </div>
-            {
-  userApplicationData && (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 mt-4">
-      <h2 className="text-lg font-semibold text-slate-800 mb-4 text-center">
-        Your Application to Become a Teacher
-      </h2>
-      <div className="flex flex-row justify-between items-center">
-        <div className="space-y-2">
-          <p className="text-sm text-slate-600">
-            <span className="font-medium">Status:</span>{" "}
-            <span
-              className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                userApplicationData?.status === "approved"
-                  ? "bg-green-100 text-green-800"
-                  : userApplicationData?.status === "pending"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-red-100 text-red-800"
-              }`}
-            >
-              {userApplicationData?.status}
-            </span>
-          </p>
-          <p className="text-sm text-slate-600">
-            <span className="font-medium">Created At:</span>{" "}
-            {moment(userApplicationData?.createdAt).format("MMMM DD, YYYY")}
-          </p>
-        </div>
-        <button onClick={toggleDialog6} className="p-2 text-slate-500 hover:text-red-500 transition-colors duration-200">
-          <RiDeleteBin6Line size={20} />
-        </button>
-      </div>
-    </div>
-  )
-}       
-          </div>
-          <div>
 
+        
+            <div className="w-full lg:w-1/3 flex flex-col gap-6">
+            
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <GrCircleInformation size={24} className="text-green-600" />
+                  <h1 className="text-2xl font-bold text-gray-900">More Info</h1>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {moreDetails?.map((item, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <span className="text-xl">{item.icon}</span>
+                      <p className="text-sm text-gray-700">{item?.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+        
+              {user?.userRole?.includes("teacher") && user?.teacherInfo && (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
+                    <GrCircleInformation size={24} className="text-green-600" />
+                    <h1 className="text-2xl font-bold text-gray-900">Teacher Info</h1>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {user?.teacherInfo?.degree && (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">🎓</span>
+                          <p className="text-sm text-gray-700 font-semibold">Degree:</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {user?.teacherInfo?.degree?.split(",").map((item, index) => (
+                            <Badge className="bg-green-600 text-white px-2 py-1 text-xs" key={index}>
+                              {item.trim()}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.avilability && (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">📅</span>
+                          <p className="text-sm text-gray-700 font-semibold">Availability:</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {user?.teacherInfo?.avilability?.split(",").map((item, index) => (
+                            <Badge className="bg-green-600 text-white px-2 py-1 text-xs" key={index}>
+                              {item.trim()}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.description && (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-3">
+                          <GrCircleInformation className="text-blue-600" size={16} />
+                          <p className="text-sm text-gray-700 font-semibold">Description:</p>
+                        </div>
+                        <div className="w-full max-h-32 overflow-y-auto bg-gray-100 p-2 rounded-lg">
+                          <p className="text-sm text-gray-700">
+                            {user?.teacherInfo?.description}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.college && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🏫</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>College:</strong> {user?.teacherInfo?.college}
+                        </p>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.university && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🏛️</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>University:</strong> {user?.teacherInfo?.university}
+                        </p>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.feePerHour && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">₹</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>Fee: Rs.</strong> {`${user?.teacherInfo?.feePerHour} /hr`}
+                        </p>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.category && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">📂</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>Category:</strong> {user?.teacherInfo?.category}
+                        </p>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.primaryLanguage && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🗣️</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>Primary Language:</strong> {user?.teacherInfo?.primaryLanguage}
+                        </p>
+                      </div>
+                    )}
+
+                    {user?.teacherInfo?.experience && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">🏆</span>
+                        <p className="text-sm text-gray-700">
+                          <strong>Experience:</strong> {user?.teacherInfo?.experience} Yr
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Teacher Info Update Button */}
+              {user?.userRole?.includes("teacher") && (
+                <div className="flex justify-center">
+                  <Button
+                    onClick={toggleDialog5}
+                    className="bg-green-600 text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                  >
+                    Update TeacherInfo
+                  </Button>
+                </div>
+              )}
+            </div>
+
+         
+            <div className="w-full lg:w-1/3 flex flex-col gap-6 bg-gray-100 rounded-xl p-6">
+         
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <IoMdStats size={24} color="green"/>
+                  <h1 className="text-2xl font-bold text-gray-900">Statistics</h1>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Courses Completed</span>
+                    <span className="text-xl font-bold text-blue-600">
+                      {progress?.filter(item=>item?.userId === user?._id && item?.completed === true)?.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Courses Bought</span>
+                    <span className="text-xl font-bold text-blue-600">
+                      {purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length || 0}
+                    </span>
+                  </div>
+                  {user?.userRole?.includes("teacher") && (
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">Courses Uploaded</span>
+                      <span className="text-xl font-bold text-blue-600">
+                        {allCourse?.filter(item=>item?.creator?._id === user?._id)?.length}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Certificates</span>
+                    <span className="text-xl font-bold text-blue-600">
+                      {user?.courseCertificates?.length}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+        
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {user?.userRole?.includes("teacher") ? (
+                    <Button 
+                      onClick={()=>navigate('/teacher/dashboard')} 
+                      className="bg-green-600 hover:scale-105 text-white px-4 py-2 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                    >
+                      Dashboard
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={toggleDialog3}
+                      disabled={!user?.DOB || userApplicationData}
+                      className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                    >
+                      {userApplicationData ? "Processing" : "Become Teacher"}
+                    </Button>
+                  )}
+                  
+                  {user?.userRole?.includes("teacher") && (
+                    <Button
+                      onClick={toggleDialog4}
+                      className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                    >
+                      My CV
+                    </Button>
+                  )}
+                  
+                  <Button
+                    onClick={()=>navigate("/studentCourse")}
+                    className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                  >
+                    Enrolled Courses
+                  </Button>
+                </div>
+              </div>
+
+            
+              {userApplicationData && (
+                <div className="w-full p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-300 mt-2">
+                  <h2 className="text-lg font-semibold text-slate-800 mb-2 text-center">
+                    Your Application to Become a Teacher
+                  </h2>
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div className="space-y-1">
+                      <p className="text-sm text-slate-600">
+                        <span className="font-medium">Status:</span>{" "}
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            userApplicationData?.status === "approved"
+                              ? "bg-green-100 text-green-800"
+                              : userApplicationData?.status === "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {userApplicationData?.status}
+                        </span>
+                      </p>
+                      <p className="text-sm text-slate-600">
+                        <span className="font-medium">Created At:</span>{" "}
+                        {moment(userApplicationData?.createdAt).format("MMMM DD, YYYY")}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={toggleDialog6} 
+                      className="p-2 text-slate-500 hover:text-red-500 transition-colors duration-200"
+                      aria-label="Delete application"
+                    >
+                      <RiDeleteBin6Line size={20} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-       <HireApplication applicationList={studentHireApplicationList}/>
+      </main>
+     
+      <HireApplication applicationList={studentHireApplicationList}/>
+
+      
+      {/* Dialogs */}
       {dialog1 && <DialogForm
         title="Update Profile Info"
         description="Enter New Profile Data."
@@ -734,6 +763,7 @@ useEffect(() => {
         componentInputs={updateProfileInputs}
         initialState={updateProfileInitialState}
       />}
+      
       {dialog5 && <DialogForm
         title="Update Teacher Info"
         description="Enter New Data. Files should be in single pdf format."
@@ -745,6 +775,7 @@ useEffect(() => {
         initialState={updateTeacherInfoInitialState}
         accept="application/pdf"
       />}
+      
       {dialog2 && <DialogForm
         title="Update Your Password"
         description="Make new Password."
@@ -755,6 +786,7 @@ useEffect(() => {
         componentInputs={changePasswordForm}
         initialState={changePasswordInitialState}
       />}
+      
       {dialog3 && <DialogForm
         title="Become Teacher"
         description="Provide your valid CV in pdf format."
@@ -766,6 +798,7 @@ useEffect(() => {
         componentInputs={becomeTeacherForm}
         initialState={becomeTeacherInitialState}
       />}
+      
       {dialog4 && <DialogForCV
         dialog4={dialog4}
         setDialog4={setDialog4}
@@ -773,6 +806,7 @@ useEffect(() => {
         description="View and update your CV to keep your profile up-to-date."
         user={user}
       />}
+      
       {dialog6 && <DeleteDialog
         deleteDialog={dialog6}
         setDeleteDialog={setDialog6}

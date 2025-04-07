@@ -46,7 +46,6 @@ async function verifyKhaltiPayment(pidx) {
       let bodyContent = JSON.stringify({
         pidx,
       });
-  
       let reqOptions = {
         url: `${process.env.KHALTI_GATEWAY_URL}/api/v2/epayment/lookup/`,
         method: "POST",

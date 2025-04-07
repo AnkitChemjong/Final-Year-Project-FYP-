@@ -22,7 +22,7 @@ import { UseContextApi } from '../ContextApi';
 import { FiLoader } from "react-icons/fi";
 
 export default function SigninForm({func}) {
-  const {loadingSpin}=useContext(UseContextApi);
+  const {loadingSpin,setLoadingSpin}=useContext(UseContextApi);
   const navigate=useNavigate();
   const [dialog,setDialog]=useState(false);
   const toggleDialog=()=>{
@@ -46,6 +46,7 @@ export default function SigninForm({func}) {
     }}
     const handleEvent=async (data)=>{
       try{
+        setLoadingSpin(true);
             const returnData=await axiosService.post(User_Token_Gen_Route,data,{withCredentials:true,headers:{"Content-Type":"application/json"}});
              if(returnData.status===200){
                 toast.success(returnData?.data?.message);
@@ -54,53 +55,120 @@ export default function SigninForm({func}) {
              if(returnData.status===400){
               toast.error(returnData?.data?.message)
               window.location.reload();
-
            }
       }
       catch(error){
         console.log(error);
       }
+      finally{
+        setLoadingSpin(false);
+      }
     }
   return (
-    <main className='w-[100vw] flex justify-center items-center gap-20'>
-            <img src="images/login.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-10'/>
-          <div className='flex flex-col gap-6 justify-center items-center relative bottom-10'>
-               <FaFacebook onClick={handleFacebook} className='cursor-pointer' size={30}/>
-               <FcGoogle onClick={handleGoogle} className='cursor-pointer' size={30}/>
-               <TfiGithub onClick={handleGithub} className='cursor-pointer' size={30}/>
+    <main className='w-full h-screen flex flex-col lg:flex-row justify-center items-center gap-4 lg:gap-8 xl:gap-12 p-4 overflow-hidden'>
+    
+      <div className='hidden lg:block flex-shrink-0'>
+        <img 
+          src="images/login.png" 
+          alt="login illustration" 
+          className='w-[280px] lg:w-[350px] xl:w-[420px] h-auto object-contain'
+        />
+      </div>
+      
+     
+      <div className='flex lg:flex-col gap-4 lg:gap-5 justify-center items-center flex-shrink-0 order-first lg:order-none'>
+        <FaFacebook 
+          onClick={handleFacebook} 
+          className='cursor-pointer text-blue-600 hover:scale-105 transition-all ease-in-out duration-200' 
+          size={26}
+        />
+        <FcGoogle 
+          onClick={handleGoogle} 
+          className='cursor-pointer hover:scale-105 transition-all ease-in-out duration-200' 
+          size={26}
+        />
+        <TfiGithub 
+          onClick={handleGithub} 
+          className='cursor-pointer hover:scale-105 transition-all ease-in-out duration-200' 
+          size={26}
+        />
+      </div>
+      
+     
+      <div className='w-full max-w-md flex flex-col justify-center items-center gap-4 lg:gap-5 overflow-y-auto py-4'>
+      
+        <h1 className='font-bold text-2xl sm:text-3xl text-center'>Welcome Back</h1>
+        
+       
+        <form onSubmit={onFormSubmit} className='w-full flex flex-col justify-center items-center gap-4'>
+          <div className='w-full flex flex-col gap-3'>
+            {loginForm.map((item,index)=>{
+              return (
+                <div key={index} className='w-full flex flex-col gap-1'>
+                  <Label>{item?.Label}:</Label>
+                  <Input 
+                    name={item?.name} 
+                    placeholder={item?.placeholder} 
+                    onChange={handleChange} 
+                    className="w-full rounded-full"
+                  />
+                  {error[item?.name] && (
+                    <span className="text-xs text-red-600">{error[item?.name]}</span>
+                  )}
+                </div>
+              )
+            })}
           </div>
-          <div className='flex flex-col gap-5 justify-center items-center'>
-            
-                <h1  className='font-bold text-3xl relative bottom-10'>Welcome Back</h1>
-              <form onSubmit={onFormSubmit} className='flex flex-col justify-center items-center gap-4'>
-
-            <div className='flex flex-col gap-2 relative bottom-10'>
-            {
-                loginForm.map((item,index)=>{
-                    return (
-                        <div key={index} className='flex flex-col gap-2'>
-                         <Label>{item?.Label}:</Label>
-                         <Input name={item?.name} placeholder={item?.placeholder} onChange={handleChange} className="rounded-full"/>
-                         {error[item?.name]? <span className="text-xs text-red-700">{error[item?.name]}</span>:null}
-                        </div>
-                    )
-                })
-            }
-            
-            </div>
-            <Link onClick={toggleDialog} className='text-green-600 relative bottom-10 hover:text-blue-700'>Forget Password?</Link>
-            <DialogForm title="Update Password" description="Enter your registered email here." dialog={dialog} setDialog={setDialog} func={handleEvent} type="email" componentInputs={emailInputs} initialState={emailDialogInitialState}/>
-             <Button disabled={loadingSpin} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">{loadingSpin && <FiLoader className='w-6 h-6 animate-spin'/>} Login</Button>
-              </form>
-             <div className='flex flex-row items-center justify-center gap-5 relative bottom-10'>
-              <div className='h-1 w-24 bg-black'></div>
-              <p>or</p>
-              <div className='h-1 w-24 bg-black'></div>
-             </div>
-             <div className='flex flex-row items-center justify-center relative bottom-10'>
-                <Link to="/signup" className='text-green-600 hover:text-blue-700'>Create New Account?</Link>
-             </div>
-          </div>
-        </main>
-      )
+          
+       
+          <Link 
+            onClick={toggleDialog} 
+            className='text-green-600 hover:text-blue-700 text-sm sm:text-base transition-colors duration-200'
+          >
+            Forgot Password?
+          </Link>
+          
+        
+          {dialog && <DialogForm 
+            title="Update Password" 
+            description="Enter your registered email here." 
+            dialog={dialog} 
+            setDialog={setDialog} 
+            func={handleEvent} 
+            type="email" 
+            componentInputs={emailInputs} 
+            initialState={emailDialogInitialState}
+          />}
+          
+          
+          <Button 
+            disabled={loadingSpin} 
+            className="w-full bg-green-600 hover:bg-green-700 text-white px-5 py-3 transition-colors duration-200"
+          >
+            {loadingSpin ? (
+              <FiLoader className='w-5 h-5 animate-spin mr-2'/>
+            ) : null}
+            Login
+          </Button>
+        </form>
+        
+     
+        <div className='w-full flex items-center my-2'>
+          <div className='flex-1 h-px bg-gray-300'></div>
+          <span className='px-3 text-sm text-gray-500'>or</span>
+          <div className='flex-1 h-px bg-gray-300'></div>
+        </div>
+        
+       
+        <div className='w-full flex justify-center'>
+          <Link 
+            to="/signup" 
+            className='text-green-600 hover:text-blue-700 text-sm sm:text-base transition-colors duration-200'
+          >
+            Create New Account?
+          </Link>
+        </div>
+      </div>
+    </main>
+  )
 }

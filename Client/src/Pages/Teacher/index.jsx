@@ -11,6 +11,7 @@ import { axiosService } from '@/Services';
 import { SEARCH_TEACHERS_ROUTES } from '@/Routes';
 import LottieAnimation from '@/Components/LottieAnimation';
 import teacher from '@/assets/teacher.json';
+import renderStars from '@/Components/RenderStars';
 
 
 
@@ -21,6 +22,8 @@ export default function Teacher() {
     const {data:user,loading1}=userState;
     const allUsersState=useSelector((state)=>state?.allUsers);
     const {data:allUsers,loading2}=allUsersState;
+    const ratingState=useSelector(state=>state?.rating);
+        const {data:allRating,loading3}=ratingState;
 
     const getTeacher=()=>{
         const roleTeacher=allUsers?.filter((item)=>item?.userRole.includes('teacher') && item?._id !== user?._id);
@@ -103,6 +106,16 @@ export default function Teacher() {
                            {item?.userName?.toUpperCase()}
                          </p>
                          </div>
+                         <p className="text-sm text-gray-700 mb-2 flex flex-row items-center gap-1">
+                          Rating: {(()=>{
+                            const teacherRating=allRating?.filter(itemData=>itemData?.teacherId===item?._id);
+                            const teacherAvg=teacherRating?.reduce((sum,obj)=>sum+(obj?.rating||0)/teacherRating?.length,0)?.toFixed(2);
+                            return (
+                              renderStars(teacherAvg)
+                            )
+
+                          })()}
+                         </p>
                          <p className="text-sm text-gray-700 mb-2">
                           Category: {`${item?.teacherInfo?.category? item?.teacherInfo?.category?.toUpperCase():"N/A"}`}
                          </p>

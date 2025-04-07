@@ -6,14 +6,15 @@ import { toast } from 'react-toastify';
 import { UseContextApi } from '../ContextApi';
 import { FiLoader } from "react-icons/fi";
 import { axiosService } from '@/Services';
-import { Rate_Course } from '@/Routes';
+import { Rate_Course,Rate_Teacher } from '@/Routes';
 import { getSingleRateData } from '@/Pages/CourseProgress';
 import { useDispatch } from 'react-redux';
 import { getAllRating } from '@/Store/Slices/Get_All_Rating';
 
-export function RateCourseDialog({ 
-  courseId,
+export function RateDialog({ 
+  courseId="",
   userId,
+  teacherId="",
   open,
   onOpenChange
 }) {
@@ -26,7 +27,7 @@ export function RateCourseDialog({
   
   const { loadingSpin, setLoadingSpin,userRatingData,setUserRatingData } = useContext(UseContextApi);
 
-  const handleSubmit = async () => {
+  const handleSubmitCourse = async () => {
     setLoadingSpin(true);
     try {
       const response=await axiosService.post(`${Rate_Course}/${userId}/${courseId}`,data);
@@ -34,6 +35,21 @@ export function RateCourseDialog({
           toast.success(response?.data?.message);
           const result=await getSingleRateData(userId,courseId);
           setUserRatingData(result);
+          dispatch(getAllRating());
+          onOpenChange(false);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setLoadingSpin(false);
+    }
+  };
+  const handleSubmitTeacher = async () => {
+    setLoadingSpin(true);
+    try {
+      const response=await axiosService.post(`${Rate_Teacher}/${userId}/${teacherId}`,data);
+      if(response?.status===200){
+          toast.success(response?.data?.message);
           dispatch(getAllRating());
           onOpenChange(false);
       }
@@ -103,7 +119,7 @@ export function RateCourseDialog({
             Later
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={courseId? handleSubmitCourse:handleSubmitTeacher}
             disabled={isSubmitDisabled}
             className="flex items-center gap-2 bg-green-600 hover:bg-blue-600 transition-all ease-in-out hover:scale-105"
           >

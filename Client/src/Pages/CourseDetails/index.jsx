@@ -108,37 +108,41 @@ if(!setSpecificCourseDetails){
 return (
     <div>
     <Navbar/>
-     <div className='mx-auto p-4'>
-          <div className="bg-indigo-600 text-white p-8 rounded-t-lg" >
-            <h1 className='text-3xl font-bold font-mono mb-4'>
-                {specificCourseDetails?.title}
-            </h1>
-            <p className='text-xl mb-4 '>Subtitle: {specificCourseDetails?.subtitle}</p>
-             <div className='flex items-center space-x-4 mt-2 text-sm'>
-                <span>Published By : {specificCourseDetails?.creator?.userName}</span>
-                <span>Published On : {moment(specificCourseDetails?.createdAt).format("MMMM DD, YYYY")}</span>
-                <span className='flex items-center'>
-                <FaGlobeAsia className='mr-1 h-4 w-4'/>
-                  {specificCourseDetails?.primaryLanguage}
-                </span>
-                <span>
-                  Enrolled {specificCourseDetails?.students?.length<=1? "Student":"Students"} :  {specificCourseDetails?.students?.length}
-                </span>
-                <span className="flex items-center">
-  Rating: 
-  <span className="flex ml-1">
-    {renderStars(averageRating)}
-  </span>
-  <span className="ml-1 text-sm">
-    {specificCourseRating.length > 0 
-      ? `(${averageRating.toFixed(1)} from ${specificCourseRating.length} review${specificCourseRating.length !== 1 ? 's' : ''})`
-      : '(No ratings yet)'}
-  </span>
-</span>
-                
-             </div>
-          </div>
-     </div>
+    <div className='mx-auto p-2 sm:p-4 max-w-7xl'>
+  <div className="bg-indigo-600 text-white p-4 sm:p-6 md:p-8 rounded-t-lg">
+    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold font-mono mb-2 sm:mb-3 md:mb-4'>
+      {specificCourseDetails?.title}
+    </h1>
+    <p className='text-base sm:text-lg md:text-xl mb-3 sm:mb-4'>Subtitle: {specificCourseDetails?.subtitle}</p>
+    
+    <div className='flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm'>
+      <span className="flex items-center">
+        Published By: {specificCourseDetails?.creator?.userName}
+      </span>
+      <span className="flex items-center">
+        Published On: {moment(specificCourseDetails?.createdAt).format("MMMM DD, YYYY")}
+      </span>
+      <span className='flex items-center'>
+        <FaGlobeAsia className='mr-1 h-3 w-3 sm:h-4 sm:w-4'/>
+        {specificCourseDetails?.primaryLanguage}
+      </span>
+      <span>
+        Enrolled {specificCourseDetails?.students?.length <= 1 ? "Student" : "Students"}: {specificCourseDetails?.students?.length}
+      </span>
+      <span className="flex flex-wrap items-center gap-1">
+        Rating:
+        <span className="flex">
+          {renderStars(averageRating)}
+        </span>
+        <span className="text-xs sm:text-sm">
+          {specificCourseRating.length > 0 
+            ? `(${averageRating.toFixed(1)} from ${specificCourseRating.length} review${specificCourseRating.length !== 1 ? 's' : ''})`
+            : '(No ratings yet)'}
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
      <div className='flex flex-col md:flex-row gap-8 mt-8'>
         <main className='flex-grow ml-3'>
         <Card className="mb-8">

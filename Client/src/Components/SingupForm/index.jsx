@@ -16,63 +16,100 @@ import { UseContextApi } from '../ContextApi';
 import { FiLoader } from "react-icons/fi";
 
 export default function SignupForm({func}) {
-const {loadingSpin}=useContext(UseContextApi);
-const [error, setError] = useState({});
-const [data,setData]=useState(initialSignData);
-const handleChange=(e)=>{
+  const {loadingSpin}=useContext(UseContextApi);
+  const [error, setError] = useState({});
+  const [data,setData]=useState(initialSignData);
+  
+  const handleChange=(e)=>{
     const {name,value}=e.target;
     setData((prev)=>({...prev,[name]:value}))
-}
-
-const onFormSubmit=(e)=>{
-  
-  e.preventDefault();
-  const errors=signupValidation(data);
-  setError(errors);
-  if(errors.email === '' &&
-    errors.userName === '' &&
-    errors.password === '' &&
-    errors.confirmPassword === ''){
-    func(data);
   }
-}
 
+  const onFormSubmit=(e)=>{
+    e.preventDefault();
+    const errors=signupValidation(data);
+    setError(errors);
+    if(errors.email === '' &&
+      errors.userName === '' &&
+      errors.password === '' &&
+      errors.confirmPassword === ''){
+      func(data);
+    }
+  }
 
   return (
-    <main className='w-[100vw] flex justify-center items-center gap-20'>
-        <img src="images/signup.png" alt="photo for register" className='w-[500px] h-[500px] relative bottom-00'/>
-      <div className='flex flex-col gap-6 justify-center items-center relative bottom-10'>
-           <FaFacebook onClick={handleFacebook} className='cursor-pointer' size={30}/>
-           <FcGoogle onClick={handleGoogle} className='cursor-pointer' size={30}/>
-           <TfiGithub onClick={handleGithub} className='cursor-pointer' size={30}/>
+    <main className='w-full min-h-screen flex flex-col lg:flex-row justify-center items-center gap-2 lg:gap-10 xl:gap-20 p-4'>
+   
+      <div className='hidden lg:block'>
+        <img 
+          src="images/signup.png" 
+          alt="photo for register" 
+          className='w-[300px] lg:w-[400px] xl:w-[500px] h-auto'
+        />
       </div>
-      <div className='flex flex-col gap-5 justify-center items-center '>
-        <h1 className='font-bold text-3xl relative bottom-10'>Create New Account</h1>
-        <form onSubmit={onFormSubmit} className='flex flex-col justify-center items-center gap-3'>
-        <div className='flex flex-col gap-2 relative bottom-10'>
-        {
-            registerForm.map((item,index)=>{
-                return (
-                    <div key={index} className='flex flex-col gap-2'>
-                     <Label>{item?.Label}:</Label>
-                     <Input onChange={handleChange} name={item?.name} placeholder={item?.placeholder} className="rounded-full"/>
-                     {error[item?.name]? <span className="text-xs text-red-700">{error[item?.name]}</span>:null}
-                    </div>
-                )
-            })
-        }
-        </div>
-         <Button disabled={loadingSpin} type="submit" className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 relative bottom-10">{loadingSpin && <FiLoader className='w-6 h-6 animate-spin'/>}Register</Button>
+      
+      
+      <div className='flex lg:flex-col gap-4 sm:gap-6 justify-center items-center order-first lg:order-none mb-4 lg:mb-0'>
+        <FaFacebook 
+          onClick={handleFacebook} 
+          className='cursor-pointer text-blue-600 hover:scale-105 transition-all ease-in-out' 
+          size={24}
+        />
+        <FcGoogle 
+          onClick={handleGoogle} 
+          className='cursor-pointer hover:scale-105 transition-all ease-in-out' 
+          size={24}
+        />
+        <TfiGithub 
+          onClick={handleGithub} 
+          className='cursor-pointer hover:scale-105 transition-all ease-in-out' 
+          size={24}
+        />
+      </div>
+      <div className='w-full max-w-md flex flex-col gap-4 sm:gap-5 justify-center items-center'>
+        <h1 className='font-bold text-2xl sm:text-3xl mb-2 sm:mb-4'>Create New Account</h1>
+        
+        <form onSubmit={onFormSubmit} className='w-full flex flex-col justify-center items-center gap-3 sm:gap-4'>
+          <div className='w-full flex flex-col gap-2 sm:gap-3'>
+            {registerForm.map((item,index)=>{
+              return (
+                <div key={index} className='w-full flex flex-col gap-1'>
+                  <Label>{item?.Label}:</Label>
+                  <Input 
+                    onChange={handleChange} 
+                    name={item?.name} 
+                    placeholder={item?.placeholder} 
+                    className="w-full rounded-full"
+                  />
+                  {error[item?.name]? <span className="text-xs text-red-700">{error[item?.name]}</span>:null}
+                </div>
+              )
+            })}
+          </div>
+          
+          <Button 
+            disabled={loadingSpin} 
+            type="submit" 
+            className="w-full bg-green-600 text-white px-5 py-3 hover:bg-blue-700"
+          >
+            {loadingSpin && <FiLoader className='w-6 h-6 animate-spin mr-2'/>}
+            Register
+          </Button>
         </form>
-         <div className='flex flex-row items-center justify-center gap-5 relative bottom-10'>
-          <div className='h-1 w-24 bg-black'></div>
-          <p>or</p>
-          <div className='h-1 w-24 bg-black'></div>
-         </div>
-         <div className='flex flex-row items-center justify-center relative bottom-10'>
-            <Link to="/signin" className='text-green-600 hover:text-blue-700'>Already have account?</Link>
-            
-         </div>
+        <div className='w-full flex flex-row items-center justify-center gap-2 sm:gap-4 my-2'>
+          <div className='h-px flex-1 bg-gray-300'></div>
+          <p className='text-sm sm:text-base px-2'>or</p>
+          <div className='h-px flex-1 bg-gray-300'></div>
+        </div>
+        
+        <div className='w-full flex flex-row items-center justify-center'>
+          <Link 
+            to="/signin" 
+            className='text-green-600 hover:text-blue-700 text-sm sm:text-base'
+          >
+            Already have an account?
+          </Link>
+        </div>
       </div>
     </main>
   )

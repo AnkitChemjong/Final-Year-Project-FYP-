@@ -26,16 +26,19 @@ import { useSelector } from 'react-redux';
 import { hireTeacherComponents } from '@/Utils';
 import DrawerForHireTeacherDataView from '../DrawerForHireTeacherDataView';
 
-
-export default function CommonTableForHireApplication({ data, type, header,page }) {
+export default function CommonTableForHireApplication({ data, type, header, page }) {
   const [selectedApplication, setSelectedApplication] = useState([]);
-  const [handleDrawer,setHandleDrawer]=useState(false);
+  const [handleDrawer, setHandleDrawer] = useState(false);
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
-  const { studentHireApplicationList, setStudentHireApplicationList,
-    teacherHireApplicationList, setTeacherHireApplicationList,loadingSpin,setLoadingSpin,
-    hireTeacherApplicationEditId,setHireTeacherApplicationEditId,hireTeacherInitialStateData,setHireTeacherInitialStateData } = useContext(UseContextApi);
-    const [hireDialogEdit,setHireDialogEdit]=useState(false);
+  const { 
+    studentHireApplicationList, setStudentHireApplicationList,
+    teacherHireApplicationList, setTeacherHireApplicationList,
+    loadingSpin, setLoadingSpin,
+    hireTeacherApplicationEditId, setHireTeacherApplicationEditId,
+    hireTeacherInitialStateData, setHireTeacherInitialStateData 
+  } = useContext(UseContextApi);
+  const [hireDialogEdit, setHireDialogEdit] = useState(false);
 
   const deleteHireApplication = async ({ data = null, type, status }) => {
     try {
@@ -171,134 +174,184 @@ export default function CommonTableForHireApplication({ data, type, header,page 
     toast.error(error?.response?.data?.message);
    }
   }
+
   return (
-    <div className='w-full overflow-x-auto py-7 px-7'>
-      <p className="text-slate-500 text-sm mb-4">A list of {type} Requests.</p>
-      {data && data.length >= 1 ? (
-        <>
-          <div className="flex flex-row justify-between items-center mb-4">
-            {
-              page === 'profile' &&
-            <div className='flex flex-row gap-2'>
-              <p className="text-black">Total Requests =</p>
-              <p className="text-black">{data?.length}</p>
-            </div>
-            }
-            {
-             page === "profile" &&
-            <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
-              <RiDeleteBin6Line onClick={() => deleteHireApplication({ type: "all", status: type, data })} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20} />
-            </div>
-            }
-            {page === "teacherdashboard" && type === "pending" &&(
-    <div className="flex gap-2">
+    <div className="w-full overflow-x-auto p-2 sm:p-4">
+      <div className="min-w-[800px]"> {/* Minimum width to prevent squeezing */}
+        <p className="text-slate-500 text-sm mb-4">A list of {type} Requests.</p>
+        
+        {data && data.length >= 1 ? (
+          <>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+              {page === 'profile' && (
+                <div className='flex items-center gap-2'>
+                  <p className="text-black">Total Requests =</p>
+                  <p className="text-black font-medium">{data?.length}</p>
+                </div>
+              )}
+              
+              {page === "profile" && (
+                <div className="tooltip-container">
+                  <RiDeleteBin6Line 
+                    onClick={() => deleteHireApplication({ type: "all", status: type, data })} 
+                    className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' 
+                    size={20} 
+                  />
+                  <span className="tooltip-text">Delete All</span>
+                </div>
+              )}
 
-      <Button
-        onClick={() => updateHireApplication({type:"all",status:"approved"})}
-        className="bg-green-500 text-white hover:scale-105  ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
-      >
-       { selectedApplication?.length>0? "Accept Selected":"Accept All"}
-      </Button>
+              {page === "teacherdashboard" && type === "pending" && (
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    onClick={() => updateHireApplication({type:"all",status:"approved"})}
+                    className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-all duration-200 text-sm sm:text-base"
+                  >
+                    {selectedApplication?.length > 0 ? "Accept Selected" : "Accept All"}
+                  </Button>
 
-      <Button
-        onClick={() => updateHireApplication({type:"all",status:"rejected"})}
-        className="bg-red-500 hover:scale-105  ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
-      >
-        {selectedApplication?.length>0? "Reject Selected":"Reject All"}
-      </Button>
-    </div>
-  )}
+                  <Button
+                    onClick={() => updateHireApplication({type:"all",status:"rejected"})}
+                    className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-all duration-200 text-sm sm:text-base"
+                  >
+                    {selectedApplication?.length > 0 ? "Reject Selected" : "Reject All"}
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="border rounded-lg overflow-hidden">
+              <ScrollArea className="h-[400px] sm:h-[200px]">
+                <Table className="w-full">
+                  <TableHeader className="bg-gray-100 sticky top-0">
+                    <TableRow>
+                      {header.map((item, index) => (
+                        <TableHead 
+                          key={index} 
+                          className={`text-black px-3 py-3 ${index === 0 ? 'sticky left-0 bg-gray-100' : ''}`}
+                        >
+                          {item}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {data.map((item, index) => (
+                      <TableRow key={index} className="hover:bg-gray-50">
+                        <TableCell className="font-medium sticky left-0 bg-white">
+                          <Checkbox 
+                            disabled={page === 'teacherdashboard' && type !== 'pending'} 
+                            checked={selectedApplication.includes(item)} 
+                            onCheckedChange={(checked) => handleAddApplication(item, checked)} 
+                          />
+                        </TableCell>
+                        <TableCell className="px-3 py-3">{index + 1}</TableCell>
+                        <TableCell className="px-3 py-3">{item?.studentId?.userName}</TableCell>
+                        <TableCell className="px-3 py-3">{item?.teacherId?.userName}</TableCell>
+                        <TableCell className="px-3 py-3 whitespace-nowrap">
+                          {moment(item?.createdAt).format("MMM D, YYYY")}
+                        </TableCell>
+                        <TableCell className="px-3 py-3 whitespace-nowrap">
+                          {moment(item?.hiringDate).format("MMM D, YYYY")}
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-center whitespace-nowrap">
+                          {item?.startTime} - {item?.endTime}
+                        </TableCell>
+                        <TableCell className="px-3 py-3">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            item?.status === 'approved' ? 'bg-green-100 text-green-800' :
+                            item?.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                            'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {item?.status}
+                          </span>
+                        </TableCell>
+                        <TableCell className="px-3 py-3 text-right">
+                          <div className="flex flex-col sm:flex-row gap-2 justify-end items-center">
+                            {page === "profile" && (
+                              <>
+                                {type === "pending" && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    onClick={() => handleSetApplicationId(item?._id)}
+                                    className="hover:bg-gray-200 p-2"
+                                  >
+                                    <FaRegEdit className="text-blue-600" size={16} />
+                                  </Button>
+                                )}
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm"
+                                  onClick={() => deleteHireApplication({ data: item, type: "single" })}
+                                  className="hover:bg-gray-200 p-2"
+                                >
+                                  <RiDeleteBin6Line className="text-red-600" size={16} />
+                                </Button>
+                              </>
+                            )}
+                            
+                            {page === "teacherdashboard" && (
+                              type === "pending" ? (
+                                <>
+                                  <div className="flex gap-2">
+                                    <Button
+                                      onClick={() => updateHireApplication({type:"single",data:item,status:"approved"})}
+                                      className="bg-green-500 text-white hover:bg-green-600 h-8 px-3 text-xs sm:text-sm"
+                                    >
+                                      Accept
+                                    </Button>
+                                    <Button
+                                      onClick={() => updateHireApplication({type:"single",data:item,status:"rejected"})}
+                                      className="bg-red-500 text-white hover:bg-red-600 h-8 px-3 text-xs sm:text-sm"
+                                    >
+                                      Reject
+                                    </Button>
+                                  </div>
+                                  <Button 
+                                    className="bg-gray-700 text-white hover:bg-gray-800 h-8 px-3 text-xs sm:text-sm"
+                                    onClick={() => setHandleDrawer(true)}
+                                  >
+                                    View
+                                  </Button>
+                                  {handleDrawer&&<DrawerForHireTeacherDataView footer={"Contact User by the details."} handleDrawer={handleDrawer} setHandleDrawer={setHandleDrawer} data={item} title={"Data of user."} description={"All the details of user is present here."}/>}
+                                </>
+                              ) : (
+                                <Button 
+                                  disabled 
+                                  className="bg-gray-300 text-gray-600 cursor-not-allowed h-8 px-3 text-xs sm:text-sm"
+                                >
+                                  N/A
+                                </Button>
+                              )
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </div>
+          </>
+        ) : (
+          <div className="flex justify-center items-center h-32">
+            <p className="text-slate-500">No Hire Requests Available</p>
           </div>
-          <ScrollArea className="border max-h-[400px] overflow-auto rounded-lg">
-            <Table className="w-full">
-              <TableHeader className="bg-gray-200 rounded-t-lg">
-                <TableRow>
-                  {header && header.map((item, index) => (
-                    <TableHead key={index} className="text-black">
-                      {item}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">
-                      <Checkbox disabled={page==='teacherdashboard'&& type !== 'pending'} checked={selectedApplication.includes(item)} onCheckedChange={(checked) => handleAddApplication(item, checked)} />
-                    </TableCell>
-                    <TableCell>{data.indexOf(item) + 1}</TableCell>
-                    <TableCell>{item?.studentId?.userName}</TableCell>
-                    <TableCell>{item?.teacherId?.userName}</TableCell>
-                    <TableCell>{moment(item?.createdAt).format("MMMM DD, YYYY")}</TableCell>
-                    <TableCell>{moment(item?.hiringDate).format("MMMM DD, YYYY")}</TableCell>
-                    <TableCell className="text-center">{item?.startTime} To {item?.endTime}</TableCell>
-                    <TableCell>{item?.status}</TableCell>
-                    <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
-{page === "profile" && (
-  <>
-    {type === "pending" && (
-      <FaRegEdit
-        className="cursor-pointer"
-        onClick={() => handleSetApplicationId(item?._id)}
-        size={20}
-      />
-    )}
-    <RiDeleteBin6Line
-      onClick={() => deleteHireApplication({ data: item, type: "single" })}
-      className="cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out"
-      size={20}
-    />
-  </>
-)}
-   {page === "teacherdashboard" && (
-    type === "pending" ? (
-      <div className='flex flex-col gap-2'>
-
-      <div className="flex gap-2">
-        <Button
-          onClick={() => updateHireApplication({type:"single",data:item,status:"approved"})}
-          className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
-        >
-          Accept
-        </Button>
-
-        <Button
-          onClick={() => updateHireApplication({type:"single",data:item,status:"rejected"})}
-          className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
-        >
-          Reject
-        </Button>
+        )}
       </div>
-       <Button className="bg-slate-700 hover:scale-105 ease-in-out transition-all" onClick={()=>setHandleDrawer(true)}>View</Button>
-       {handleDrawer&&<DrawerForHireTeacherDataView footer={"Contact User by the details."} handleDrawer={handleDrawer} setHandleDrawer={setHandleDrawer} data={item} title={"Data of user."} description={"All the details of user is present here."}/>}
-      </div>
-    ) : (
-      <Button disabled={true} className="bg-slate-400 cursor-not-allowed">
-        N/A
-      </Button>
-    )
-  )}              </TableCell>
 
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </ScrollArea>
-        </>
-      ) : (
-        <p className="text-slate-500 text-sm">No Hire Requests Available.</p>
-      )}
       <DialogForm
-                  title="Update Hire Application."
-                  description="Fill all the Information as Instructed."
-                  dialog={hireDialogEdit}
-                  setDialog={setHireDialogEdit}
-                  func={updateHireApplicationDetails}
-                  type="hireteacher"
-                  componentInputs={hireTeacherComponents}
-                  initialState={hireTeacherInitialStateData}
-                />
-    
+        title="Update Hire Application"
+        description="Fill all the Information as Instructed"
+        dialog={hireDialogEdit}
+        setDialog={setHireDialogEdit}
+        func={updateHireApplicationDetails}
+        type="hireteacher"
+        componentInputs={hireTeacherComponents}
+        initialState={hireTeacherInitialStateData}
+      />
+      
     </div>
   );
 }

@@ -38,7 +38,7 @@ class KhaltiPaymentSubscription{
       const {
         pidx,
         txnId,
-        amount,
+        total_amount,
         mobile,
         purchase_order_id,
         purchase_order_name,
@@ -50,12 +50,19 @@ class KhaltiPaymentSubscription{
     
       try {
         const paymentInfo = await verifyKhaltiPayment(pidx);
-    
+        if(paymentInfo?.status==="User canceled"){
+          const purchasedDataCancel=await PaymentSubscription.findOne({
+            _id: purchase_order_id,
+            amountPaid: (total_amount/100),
+          });
+        await PaymentSubscription.findByIdAndDelete(purchasedDataCancel?._id);
+        return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=Payment Cancelled`);
+        }
         // Check if payment is completed and details match
         if (
           paymentInfo?.status !== "Completed" ||
-          paymentInfo.transaction_id !== transaction_id ||
-          Number(paymentInfo.total_amount) !== Number(amount)
+          paymentInfo?.transaction_id !== transaction_id ||
+          Number(paymentInfo?.total_amount) !== Number(total_amount)
         ) {
           return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=purchase record error`);
         }
@@ -63,7 +70,7 @@ class KhaltiPaymentSubscription{
         // Check if payment done in valid item
         const purchasedData = await PaymentSubscription.findOne({
           _id: purchase_order_id,
-          amountPaid: (amount/100),
+          amountPaid: (total_amount/100),
         });
         if (!purchasedData) {
           return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=purchase record not found`);
@@ -143,12 +150,12 @@ else {
 
 await userData.save();
 
-        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS_TEACHER}?payment=success&message=payment successfull&amount=${amount/100}&subscriptionType=${purchasedData?.subscriptionType}`);
+        res.redirect(`${process.env.AFTER_PAYMENT_SUCCESS_TEACHER}?payment=success&message=payment successfull&amount=${total_amount/100}&subscriptionType=${purchasedData?.subscriptionType}`);
       } catch (error) {
         console.log(error);
         const purchasedData=await PaymentSubscription.findOne({
             _id: purchase_order_id,
-            amountPaid: (amount/100),
+            amountPaid: (total_amount/100),
           });
         await PaymentSubscription.findByIdAndDelete(purchasedData?._id);
         return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=Payment Cancelled`);

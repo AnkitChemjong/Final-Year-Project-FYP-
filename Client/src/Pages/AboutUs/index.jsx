@@ -34,7 +34,7 @@ export default function AboutUs() {
         if(allUser && user){
             const teacherData=allUser?.filter(item=>item?.userRole?.includes('teacher') && item?._id !== user?._id)?.slice(0,3);
             const adminData=allUser?.find(item=>item?.userRole?.includes('admin'));
-            const ratingData=ratings?.sort((a, b) => b.rating - a.rating) .slice(0, 3);
+            const ratingData=[...(ratings || [])]?.filter(item=>!item?.teacherId)?.sort((a, b) => b.rating - a.rating) .slice(0, 3);
             setTopRating(ratingData);
           setTeachers(teacherData);
           setAdminsData(adminData);
