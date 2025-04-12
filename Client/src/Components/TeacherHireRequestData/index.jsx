@@ -25,7 +25,7 @@ export default function TeacherHireRequestData({ applicationList }) {
       <div className="flex flex-col w-full p-6 min-h-screen">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-gray-800">Hire Requests</h1>
+            <h1 className="text-3xl font-bold text-gray-800 font-heading">Hire Requests</h1>
             <LottieAnimation
               animationData={hirerequest}
               width={150}
@@ -41,7 +41,7 @@ export default function TeacherHireRequestData({ applicationList }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Total Requests</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Total Requests</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{totalRequests}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
@@ -54,7 +54,7 @@ export default function TeacherHireRequestData({ applicationList }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Pending Requests</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Pending Requests</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{pendingRequests}</p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
@@ -67,7 +67,7 @@ export default function TeacherHireRequestData({ applicationList }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Accepted Requests</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Accepted Requests</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{acceptedRequests}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -80,7 +80,7 @@ export default function TeacherHireRequestData({ applicationList }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Rejected Requests</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Rejected Requests</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{rejectedRequests}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">

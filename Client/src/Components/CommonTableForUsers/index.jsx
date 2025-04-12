@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { Handle_Status } from '@/Routes';
 import { UseContextApi } from '../ContextApi';
 import DrawerForCustomer from '../Drawer_For_Customer';
+import DeleteDialog from '../DeleteDialog';
 
 export default function CommonTableForUsers({ tableFormat, customerList = [], status = "", forType = "" }) {
   const dispatch = useDispatch();
@@ -32,6 +33,10 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
   const [toggleDrawer,setToggleDrawer]=useState(false);
   const [temporaryUserData,setTemporaryUserData]=useState(false);
   const [thisMonthEarning,setThisMonthEarning]=useState(0);
+  const [banSingle,setBanSingle]=useState(false);
+  const [unBanSingle,setUnBanSingle]=useState(false);
+  const [banMulti,setBanMulti]=useState(false);
+  const [unBanMulti,setUnBanMulti]=useState(false);
 
   const handleUserStatus = async ({ type, data = "", status }) => {
     try {
@@ -93,22 +98,41 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
       {status !== '' && (
         <div className="flex w-full justify-end p-5">
           {status === 'active' && (
+            <>
             <Button
-              onClick={() => handleUserStatus({ type: "all", status: "ban" })}
+              onClick={() =>setBanMulti(true) }
               className="hover:scale-105 transition-all ease-in-out px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-2"
               disabled={customerList.length === 0} 
             >
               {selectedUser?.length > 0 ? "Ban Selected" : "Ban All"}
             </Button>
+            {banMulti && <DeleteDialog
+                                deleteDialog={banMulti}
+                                setDeleteDialog={setBanMulti}
+                                title={`Ban ${selectedUser?.length>0? "Selected":"Multiple"} Users.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>handleUserStatus({ type: "all", status: "ban" })}
+                              />}
+            </>
+
           )}
           {status === 'banned' && (
+            <>
             <Button
-              onClick={() => handleUserStatus({ type: "all", status: "unban" })}
+              onClick={() => setUnBanMulti(true)}
               className="hover:scale-105 transition-all ease-in-out px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2"
               disabled={customerList.length === 0} 
             >
               {selectedUser?.length > 0 ? "Unban Selected" : "Unban All"}
             </Button>
+            {unBanMulti && <DeleteDialog
+                                deleteDialog={unBanMulti}
+                                setDeleteDialog={setUnBanMulti}
+                                title={`UnBan ${selectedUser?.length>0? "Selected":"Multiple"} Users.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>handleUserStatus({ type: "all", status: "unban" })}
+                              />}
+            </>
           )}
         </div>
       )}
@@ -230,19 +254,37 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                   }
                     </div>
                   ) : customer?.status === 'banned' ? (
+                    <>
                     <Button
-                      onClick={() => handleUserStatus({ type: "single", data: customer, status: "unban" })}
+                      onClick={() => setUnBanSingle(true)}
                       className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Unban
                     </Button>
+                    {unBanSingle && <DeleteDialog
+                                deleteDialog={unBanSingle}
+                                setDeleteDialog={setUnBanSingle}
+                                title={`UnBan Single Users.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>handleUserStatus({ type: "single", data: customer, status: "unban" })}
+                              />}
+                    </>
                   ) : (
+                    <>
                     <Button
-                      onClick={() => handleUserStatus({ type: "single", data: customer, status: "ban" })}
+                      onClick={() =>setBanSingle(true) }
                       className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Ban
                     </Button>
+                    {banSingle && <DeleteDialog
+                                deleteDialog={banSingle}
+                                setDeleteDialog={setBanSingle}
+                                title={`Ban Single Users.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>handleUserStatus({ type: "single", data: customer, status: "ban" })}
+                              />}
+                    </>
                   )}
                 </TableCell>
               </TableRow>

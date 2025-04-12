@@ -1,7 +1,7 @@
 export default function signupValidation(value) {
     let error={};
     const email_pattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[a-zA-Z0-9\W_]{8,}$/;
     if (value.userName===""){
         error.userName="UserName should not be empty";
 
@@ -24,10 +24,13 @@ export default function signupValidation(value) {
         error.password="Password should not be empty";
 
     }
-    //else if(!pass_pattern.test(value.password)){
-    //     error.password="Use correct format of password!"
+    else if(value.password.length<8){
+        error.password="Minimun pass length is 8."
+    }
+    else if(!pass_pattern.test(value.password)){
+         error.password="Password most contain one uppercase,lowercase,special character and digit."
 
-    // }
+     }
     else{
         error.password="";
     }
@@ -49,7 +52,6 @@ export default function signupValidation(value) {
 export function signinValidation(value) {
     let error={};
     const email_pattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
     
     if (value.email===""){
         error.email="Email should not be empty";
@@ -66,10 +68,6 @@ export function signinValidation(value) {
         error.password="Password should not be empty";
 
     }
-    //else if(!pass_pattern.test(value.password)){
-    //     error.password="Use correct format of password!"
-
-    // }
     else{
         error.password="";
     }
@@ -120,16 +118,19 @@ export function codeValidation(value) {
 }
 export function passwordValidation(value) {
     let error={};
-    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[a-zA-Z0-9\W_]{8,}$/;
     
     if (value.password===""){
         error.password="Password should not be empty";
 
     }
-    //else if(!pass_pattern.test(value.password)){
-    //     error.password="Use correct format of password!"
+    else if(value.password.length<8){
+        error.password="Minimun pass length is 8."
+    }
+    else if(!pass_pattern.test(value.password)){
+         error.password="Password most contain one uppercase,lowercase,special character and digit."
 
-    // }
+     }
     else{
         error.password="";
     }

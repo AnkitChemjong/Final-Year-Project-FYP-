@@ -15,16 +15,21 @@ import { Button } from '@/Components/ui/button';
 import { useSelector } from 'react-redux';
 import { handleDwn } from '@/Services';
 import { toast } from 'react-toastify';
+import { FaStar} from "react-icons/fa";
 import DialogForm from '@/Components/DialogForm';
 import { hireTeacherComponents } from '@/Utils';
 import verified from '@/assets/verified.json';
 import { RateDialog } from '@/Components/RateDialog';
 import CommonButton from '@/Components/CommonButton';
 import renderStars from '@/Components/RenderStars';
+import { Card } from '@/Components/ui/card';
+import student from '@/assets/student.json';
+import { Avatar,AvatarImage } from '@/Components/ui/avatar';
 
 export default function TeacherDetails() {
     const {specificTeacherDetailsId,setSpecificTeacherDetailsId,
         specificTeacherDetails,setSpecificTeacherDetails,hireTeacherInitialStateData,setHireTeacherInitialStateData,
+        loadingSpin,setLoadingSpin
         }=useContext(UseContextApi);
     const userStates=useSelector(state=>state?.user);
     const {data:user,loading}=userStates;
@@ -38,7 +43,7 @@ export default function TeacherDetails() {
     useEffect(()=>{
 
       if(user&&allRating){
-        const teacherRating=allRating?.filter(item=>item?.teacherId===id);
+        const teacherRating=allRating?.filter(item=>item?.teacherId?._id===id);
         if(teacherRating?.length>0){
           const averageRating=teacherRating?.reduce((sum,obj)=>sum+(obj?.rating||0)/teacherRating?.length,0)?.toFixed(2);
           setTeacherAverageRating(averageRating);
@@ -74,6 +79,7 @@ export default function TeacherDetails() {
 
     const handleEvent=async(data)=>{
     try{
+      setLoadingSpin(true);
       if(user && id){
         const finalData={studentId:user?._id,teacherId:id,...data};
         const response=await axiosService.post(Hire_Teacher,finalData);
@@ -90,6 +96,7 @@ export default function TeacherDetails() {
     }
     finally{
       setHireDialog(false);
+      setLoadingSpin(false);
     }
     }
 
@@ -176,7 +183,7 @@ export default function TeacherDetails() {
                 <li>📞 Phone: {specificTeacherDetails?.teacherDetails?.phone}</li>
                 <li>🏠 Address: {specificTeacherDetails?.teacherDetails?.address}</li>
                 <li>🎂 Date of Birth: {moment(specificTeacherDetails?.teacherDetails?.DOB).format("MMMM DD, YYYY")}</li>
-                <li className='flex flex-row items-center gap-1'>⭐ Rating:{renderStars(teacherAverageRating)} (from {allRating?.filter(item=>item?.teacherId===id)?.length ||0} {allRating?.filter(item=>item?.teacherId===id)?.length>1? "Reviews":"Review"})</li>
+                <li className='flex flex-row items-center gap-1'>⭐ Rating:{renderStars(teacherAverageRating)} (from {allRating?.filter(item=>item?.teacherId?._id===id)?.length ||0} {allRating?.filter(item=>item?.teacherId?._id===id)?.length>1? "Reviews":"Review"})</li>
 
               </ul>
             </div>
@@ -258,14 +265,14 @@ export default function TeacherDetails() {
     <div className="flex flex-row items-center gap-2">
       <span>🏆</span> 
       <span>Experience:</span>
-      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.experience || "N/A"}</span>
+      <span>{specificTeacherDetails?.teacherDetails?.teacherInfo?.experience  || "N/A"} Yr</span>
     </div>
   </li>
 </ul>
             </div>
           </div>
           <div className="flex gap-4 mt-8">
-    {!allRating?.find(item=>item?.userId?._id===user?._id && item?.teacherId===specificTeacherDetails?.teacherDetails?._id) &&
+    {!allRating?.find(item=>item?.userId?._id===user?._id && item?.teacherId?._id===specificTeacherDetails?.teacherDetails?._id) &&
     <CommonButton func={()=>setTogRating(true)} text="Give Rating"/>}
     <Button
       className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
@@ -313,8 +320,85 @@ export default function TeacherDetails() {
 </div>
 
 
+
       </div>
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-7xl mx-auto">
+    <div className="flex gap-2 items-center">
+      <h1 className="text-3xl font-bold mb-2">Student Saying</h1>
+      <LottieAnimation animationData={student} width={150} height={150} speed={1} />
     </div>
+
+    {/* Filter ratings specific to this teacher */}
+    {(() => {
+      const filteredRatings = allRating?.filter(item => item?.teacherId?._id === id);
+
+      return filteredRatings && filteredRatings.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredRatings.map((feedback, index) => (
+            <Card key={index} className="hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-start gap-4 mb-4">
+                  <Avatar className="w-16 h-16 border-2 border-primary/20">
+                    {feedback?.userId?.userImage ? (
+                      <AvatarImage
+                        className="rounded-full"
+                        src={
+                          feedback?.userId?.userImage?.startsWith("http")
+                            ? feedback?.userId?.userImage
+                            : `${import.meta.env.VITE_BACKEND_URL}/${feedback?.userId?.userImage}`
+                        }
+                        alt={feedback?.userId?.userName}
+                      />
+                    ) : (
+                      <div className="bg-primary/10 text-primary text-2xl font-bold flex justify-center items-center w-full h-full rounded-full">
+                        {feedback?.userId?.userName?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                  </Avatar>
+
+                  <div>
+                    <p className="font-semibold text-gray-900">{feedback?.userId?.userName}</p>
+                    <div className="flex items-center mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={`w-4 h-4 ${i < feedback?.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                        />
+                      ))}
+                      <span className="ml-2 text-sm text-gray-600">{feedback?.rating}.0</span>
+                    </div>
+                  </div>
+                </div>
+
+                <blockquote className="text-gray-700 italic mb-4 flex-1">
+                  "{feedback?.comment}"
+                </blockquote>
+
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <p className="font-medium text-gray-900">{feedback?.teacherId?.userName}</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+          <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+            <FaStar className="w-10 h-10 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-medium text-gray-900 mb-2">No Reviews Yet</h3>
+          <p className="text-gray-600 max-w-md mx-auto">
+            Be the first to share your experience with our Instructor!
+          </p>
+        </div>
+      );
+    })()}
+  </div>
+</section>
+
+    </div>
+
     {togRating && <RateDialog open={togRating} onOpenChange={setTogRating} userId={user?._id} teacherId={id}/>}
 
     <DialogForm

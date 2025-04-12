@@ -212,7 +212,7 @@ export default function Course() {
       <Search searchFunc={searchCourses} onChangeFunc={onChangeFunc}/>
       <div className='container mx-auto p-4'>
         <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold mb-4'>All Courses</h1>
+        <h1 className='text-3xl font-bold mb-4 font-heading'>All Courses</h1>
           <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
         </div>
          <div className='flex flex-col md:flex-row gap-4'>

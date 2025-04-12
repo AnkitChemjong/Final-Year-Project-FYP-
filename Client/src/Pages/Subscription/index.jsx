@@ -56,7 +56,7 @@ export default function Subscription() {
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="text-center mb-16">
             <div className='flex gap-2 items-center justify-center'>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 font-heading">Choose Your Plan</h1>
           <LottieAnimation animationData={planSub} width={100} height={100} speed={1} />
             </div>
 

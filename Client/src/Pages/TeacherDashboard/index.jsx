@@ -213,7 +213,7 @@ export default function TeacherApplication() {
         <div className='flex-1 p-6'>
           <div className='flex justify-between items-center mb-8'>
           <div className='flex gap-2 items-center'>
-            <h1 className='text-3xl font-bold text-gray-800'>Teacher Dashboard</h1>
+            <h1 className='text-3xl font-bold text-gray-800 font-heading'>Teacher Dashboard</h1>
           <LottieAnimation animationData={dashboard} width={150} height={150} speed={1}/>
         </div>
             <div className='flex items-center gap-4'>

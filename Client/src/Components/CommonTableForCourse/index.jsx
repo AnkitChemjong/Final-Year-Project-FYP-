@@ -23,6 +23,7 @@ import { Button } from '../ui/button';
 import { getTeacherCoursesFromBackend } from '@/Pages/TeacherCourse';
 import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
+import DeleteDialog from '../DeleteDialog';
 
 
 
@@ -33,6 +34,12 @@ export default function CommonTableForCourse({data,header,type="",page}){
   const { data: user, loading } = userStates;
   const {teacherCourseList,setTeacherCourseList}=useContext(UseContextApi);
   const [selectedCourse,setSelectedCourse]=useState([]);
+  const [publishSingle,setPublishSingle]=useState(false);
+  const [unPublishSingle,setUnPublishSingle]=useState(false);
+  const [publishMulti,setPublishMulti]=useState(false);
+  const [unPublishMulti,setUnPublishMulti]=useState(false);
+  const [deleteSingle,setDeleteSingle]=useState(false);
+  const [deleteMulti,setDeleteMulti]=useState(false);
 
   const deleteCourse=async ({data=null,type,status})=>{
     try{
@@ -161,7 +168,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
   
   return (
     <div className='flex flex-col justify-center items-center gap-2 px-2'>
-      <p className=" text-slate-500 text-sm">A list of {type} Courses.</p>
+      <p className=" text-slate-500 text-sm font-heading">A list of {type} Courses.</p>
         {
             data && data.length >=1? 
             (
@@ -169,9 +176,18 @@ export default function CommonTableForCourse({data,header,type="",page}){
         <div className="flex flex-row justify-evenly items-center w-full">
           {
             page === "admin-page" &&
+            <>
           <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
-          <RiDeleteBin6Line onClick={()=>deleteCourse({type:"all",status:type,data})} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+          <RiDeleteBin6Line onClick={()=>setDeleteMulti(true)} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
           </div>
+          {deleteMulti && <DeleteDialog
+                                deleteDialog={deleteMulti}
+                                setDeleteDialog={setDeleteMulti}
+                                title={`Delete ${selectedCourse?.length>0? "Selected":"Multiple"} Courses.`}
+                                description={"The process cannot be undone after Completion."}
+                                func={()=>deleteCourse({type:"all",status:type,data})}
+                              />}
+            </>
           }
           {
             page === "teacher-page" &&
@@ -179,19 +195,33 @@ export default function CommonTableForCourse({data,header,type="",page}){
             
                   <Button
                   disabled={teacherCourseList?.every(item=>item?.isPublished===true)}
-                    onClick={() =>updateCourse({type:"all",status:true})}
+                    onClick={() =>setPublishMulti(true)}
                     className="bg-green-500 text-white hover:scale-105  ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
                   >
                    { selectedCourse?.length>0? "Publish Selected":"Publish All"}
                   </Button>
+                  {publishMulti && <DeleteDialog
+                                deleteDialog={publishMulti}
+                                setDeleteDialog={setPublishMulti}
+                                title={`Publish ${selectedCourse?.length>0? "Selected":"Multiple"} Courses.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>updateCourse({type:"all",status:true})}
+                              />}
             
                   <Button
                    disabled={teacherCourseList?.every(item=>item?.isPublished===false)}
-                    onClick={() => updateCourse({type:"all",status:false})}
+                    onClick={() =>setUnPublishMulti(true)}
                     className="bg-red-500 hover:scale-105  ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
                   >
                     {selectedCourse?.length>0? "unPublish Selected":"unPublish All"}
                   </Button>
+                  {unPublishMulti && <DeleteDialog
+                                deleteDialog={unPublishMulti}
+                                setDeleteDialog={setUnPublishMulti}
+                                title={`UnPublish ${selectedCourse?.length>0? "Selected":"Multiple"} Courses.`}
+                                description={"The process can be undone after Completion."}
+                                func={()=>updateCourse({type:"all",status:false})}
+                              />}
                 </div>
           }
         </div>
@@ -234,25 +264,52 @@ export default function CommonTableForCourse({data,header,type="",page}){
                    <FaRegEdit className='cursor-pointer hover:scale-105 duration-100 ease-in-out transition-all' onClick={()=>handleCourseEditId(item?._id)} size={20}/>
                     {
                       page === "admin-page" &&
-                     <RiDeleteBin6Line onClick={()=>deleteCourse({data:item,type:"single"})} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+                      <>
+                     <RiDeleteBin6Line onClick={()=>setDeleteSingle(true)} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+                     {deleteSingle && <DeleteDialog
+                                deleteDialog={deleteSingle}
+                                setDeleteDialog={setDeleteSingle}
+                                title={`Delete Single Courses.`}
+                                description={"The process cannot be undone after Completion."}
+                                func={()=>deleteCourse({data:item,type:"single"})}
+                              />}
+                      </>
                     }
                     {
                       page === 'teacher-page' && 
                       (
                         item?.isPublished? 
+                        <>
                         <Button
-                        onClick={() => updateCourse({type:"single",data:item,status:false})}
+                        onClick={() => setUnPublishSingle(true)}
                         className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
                       >
                         unPublish
                       </Button>
+                      {unPublishSingle && <DeleteDialog
+                                  deleteDialog={unPublishSingle}
+                                  setDeleteDialog={setUnPublishSingle}
+                                  title={"UnPublish Single Course."}
+                                  description={"The process can be undone after completion."}
+                                  func={()=>updateCourse({type:"single",data:item,status:false})}
+                                />}
+                        </>
                                     :
+                                    <>
                                     <Button
-                                  onClick={() => updateCourse({type:"single",data:item,status:true})}
+                                  onClick={() =>setPublishSingle(true) }
                                   className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
                                 >
                                   Publish
                                 </Button>
+                                {publishSingle && <DeleteDialog
+                                  deleteDialog={publishSingle}
+                                  setDeleteDialog={setPublishSingle}
+                                  title={"Publish Single Course."}
+                                  description={"The process can be undone after completion."}
+                                  func={()=>updateCourse({type:"single",data:item,status:true})}
+                                />}
+                                    </>
                       )
                     }
                  </TableCell>

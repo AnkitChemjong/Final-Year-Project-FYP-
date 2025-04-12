@@ -225,7 +225,8 @@ export default function DrawerForCustomer({
                                                 <span className="text-gray-500">N/A</span>
                                         },
                                         { icon: '📂', label: 'Category', value: data?.teacherInfo?.category || "N/A" },
-                                        { icon: '🗣️', label: 'Primary Language', value: data?.teacherInfo?.primaryLanguage || "N/A" }
+                                        { icon: '🗣️', label: 'Primary Language', value: data?.teacherInfo?.primaryLanguage || "N/A" },
+                                        {icon:'🏆', label:'Experience' , value:`${data?.teacherInfo?.experience} Yr` || "N/A"}
                                     ].map((item, index) => (
                                         <li key={index}>
                                             <div className="flex items-start gap-3">

@@ -25,7 +25,7 @@ export default function AdminCustomerData({ customerList }) {
     <ScrollArea className="max-h-screen overflow-auto p-4">
       <div className="mb-6">
         <div className='flex items-center gap-2'>
-               <h2 className="text-2xl font-bold mb-2">All Customers</h2>
+               <h2 className="text-2xl font-bold mb-2 font-heading">All Customers</h2>
                <LottieAnimation animationData={customer} width={150} height={150} speed={1} />
           </div>
        
@@ -34,7 +34,7 @@ export default function AdminCustomerData({ customerList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Total Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Total Customers</p>
                 <p className="text-2xl font-bold">{totalCustomers}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
@@ -47,7 +47,7 @@ export default function AdminCustomerData({ customerList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Active Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Active Customers</p>
                 <p className="text-2xl font-bold text-green-600">{totalActive}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -60,7 +60,7 @@ export default function AdminCustomerData({ customerList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Banned Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Banned Customers</p>
                 <p className="text-2xl font-bold text-red-600">{totalBanned}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">

@@ -40,7 +40,7 @@ export default function Applications() {
     <ScrollArea className="max-h-screen overflow-auto">
       <div className="flex flex-col w-full p-6 min-h-screen">
         <div className="flex md:flex-row items-center mb-8 gap-1">
-          <h1 className="text-3xl font-bold text-gray-800">Applications</h1>
+          <h1 className="text-3xl font-bold text-gray-800 font-heading">Applications</h1>
           <LottieAnimation animationData={hirerequest} width={150} height={150} speed={1}/>
         </div>
 
@@ -50,7 +50,7 @@ export default function Applications() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Total Applications</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Total Applications</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{totalApplications}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
@@ -63,7 +63,7 @@ export default function Applications() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Pending Applications</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Pending Applications</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{pendingApplications}</p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
@@ -76,7 +76,7 @@ export default function Applications() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Approved Applications</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Approved Applications</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{approvedApplications}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -89,7 +89,7 @@ export default function Applications() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Recruited Applications</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Recruited Applications</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{recruitedApplications}</p>
               </div>
               <div className="bg-purple-100 p-3 rounded-full">
@@ -102,7 +102,7 @@ export default function Applications() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Rejected Applications</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Rejected Applications</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{rejectedApplications}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">

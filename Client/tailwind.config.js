@@ -7,6 +7,11 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			display: ["Poppins", "sans-serif"], 
+			heading: ["Arial", "sans-serif"],  
+			body: ["Roboto", "sans-serif"],     
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

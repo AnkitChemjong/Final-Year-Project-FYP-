@@ -2,7 +2,7 @@ import RateCourse from "../../../Model/Course_Rate_Model/index.mjs";
 
 const getAllRatingData=async(req,res)=>{
     try{
-        const allRating=await RateCourse.find({}).populate('userId').populate('courseId');
+        const allRating=await RateCourse.find({}).populate('userId').populate('courseId').populate('teacherId');
         if(allRating.length>0){
             return res.status(200).json({message:"all rating fetched successfully",data:allRating});
 

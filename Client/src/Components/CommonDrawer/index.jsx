@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     Drawer,
     DrawerContent,
@@ -18,9 +18,11 @@ import { getApplication } from '@/Store/Slices/ApplicationSlice';
 import { GoDownload } from "react-icons/go";
 import { handleDwn } from '@/Services';
 import moment from 'moment';
+import { UseContextApi } from '../ContextApi';
 
 export default function CommonDrawer({ handleDrawer, setHandleDrawer, data }) {
     const dispatch = useDispatch();
+    const {setLoadingSpin}=useContext(UseContextApi);
 
     const closeDrawer = () => {
         setHandleDrawer(false);
@@ -28,6 +30,7 @@ export default function CommonDrawer({ handleDrawer, setHandleDrawer, data }) {
 
     const handleApplicationStatus = async (status, applicationData) => {
         try {
+            setLoadingSpin(true);
             const response = await axiosService.patch(Update_Application, { application: applicationData, status }, {
                 withCredentials: true, headers: {
                     "Content-Type": "application/json",
@@ -41,6 +44,9 @@ export default function CommonDrawer({ handleDrawer, setHandleDrawer, data }) {
         }
         catch (error) {
             toast.error(error?.response?.data?.message);
+        }
+        finally{
+            setLoadingSpin(false);
         }
     }
 

@@ -47,17 +47,16 @@ class KhaltiPaymentSubscription{
 
       } = req.query;
       const user=req.user;
-    
       try {
-        const paymentInfo = await verifyKhaltiPayment(pidx);
-        if(paymentInfo?.status==="User canceled"){
-          const purchasedDataCancel=await PaymentSubscription.findOne({
-            _id: purchase_order_id,
-            amountPaid: (total_amount/100),
+        if(pidx===undefined){
+          await PaymentSubscription.deleteOne({
+            userId:user?._id,
+             paymentStatus:'processing',
+              paymentMethod:'khalti'
           });
-        await PaymentSubscription.findByIdAndDelete(purchasedDataCancel?._id);
         return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=Payment Cancelled`);
         }
+        const paymentInfo = await verifyKhaltiPayment(pidx);
         // Check if payment is completed and details match
         if (
           paymentInfo?.status !== "Completed" ||

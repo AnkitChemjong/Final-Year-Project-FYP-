@@ -12,29 +12,33 @@ export const initialSignData={
 }
 export const registerForm=[
     {
-    Label:'Email',
+    label:'Email',
     name:"email",
+    type:"email",
     componentType:"input",
     placeholder:'Enter your email'
 
 },
 {
-    Label:'User Name',
+    label:'User Name',
     name:"userName",
+    type:"text",
     componentType:"input",
     placeholder:'Enter your User Name'
 
 },
 {
-    Label:'Password',
+    label:'Password',
     name:"password",
+    type:"password",
     componentType:"input",
     placeholder:'Create Password'
 
 },
 {
-    Label:'Confirm Password',
+    label:'Confirm Password',
     name:"confirmPassword",
+    type:"password",
     componentType:"input",
     placeholder:'Password Confirmation'
 
@@ -43,21 +47,21 @@ export const registerForm=[
 
 export const loginForm=[
     {
-    Label:'Email',
+    label:'Email',
     name:"email",
     componentType:"input",
     placeholder:'Enter your email'
 
 },
 {
-    Label:'Password',
+    label:'Password',
     name:"password",
     componentType:"input",
     placeholder:'Enter Password'
 
 },
 {
-    Label:'Confirm Password',
+    label:'Confirm Password',
     name:"confirmPassword",
     componentType:"input",
     placeholder:'Password Confirmation'

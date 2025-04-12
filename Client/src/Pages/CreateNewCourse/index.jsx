@@ -150,7 +150,7 @@ export default function CreateNewCourse() {
              <FaChevronLeft className='w-4 h-4 mr-2'/>
              Return
            </Button>
-          <h1 className='text-3xl font-bold mb-5'>Create New Course</h1>
+          <h1 className='text-3xl font-bold mb-5 font-heading'>Create New Course</h1>
            <CommonButton func={handleAddNewCourse} disable={!validateFormData() || loadingSpin} text= "Submit"/>
       </div>
       <Card>
@@ -158,10 +158,10 @@ export default function CreateNewCourse() {
             <div className='container mx-auto p-4'>
                    <Tabs defaultValue="curriculum" className="space-y-4">
                     <TabsList>
-                        <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-                        <TabsTrigger value="course-landing-page">Course Landing Page</TabsTrigger>
-                        <TabsTrigger value="setting">Setting</TabsTrigger>
-                        <TabsTrigger value="quiz">Add Quiz</TabsTrigger>
+                        <TabsTrigger value="curriculum font-heading">Curriculum</TabsTrigger>
+                        <TabsTrigger value="course-landing-page font-heading">Course Landing Page</TabsTrigger>
+                        <TabsTrigger value="setting font-heading">Setting</TabsTrigger>
+                        <TabsTrigger value="quiz font-heading">Add Quiz</TabsTrigger>
                     </TabsList>
                     <TabsContent value="curriculum">
                          <CourseCurriculum/>

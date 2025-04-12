@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react';
+import React,{useState,useEffect,useContext,useRef} from 'react';
 import { Button } from '@/Components/ui/button';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +37,8 @@ export default function Home() {
   const [instructors,setInstructors]=useState([]);
   const [topTestimonials, setTopTestimonials] = useState([]);
   const navigate=useNavigate();
+  const mouseSVG=useRef();
+  const buttonMove=useRef();
   
   useEffect(() => {
     if (rating?.length > 0 && allUser) {
@@ -159,29 +161,92 @@ export default function Home() {
   }
   
   },[]);
+
+  useEffect(() => {
+    const initial = 'M 10 100 Q 500 100 990 100';
+    
+    const handleClick = (e) => {
+      const svgRect = mouseSVG.current.getBoundingClientRect();
+      const clickX = e.clientX - svgRect.left;
+      const clickY = e.clientY - svgRect.top;
+      
+      const clickedPath = `M 10 100 Q ${clickX} ${clickY} 990 100`;
+      
+      gsap.to(".hi", {
+        attr: { d: clickedPath },
+        duration: 0.3,
+        ease: "power3.out"
+      });
+      
+      setTimeout(() => {
+        gsap.to(".hi", {
+          attr: { d: initial },
+          duration: 1.5,
+          ease: "elastic.out(1,0.2)"
+        });
+      }, 500);
+    };
+    const handleMouseLeave = () => {
+      gsap.to(".hi", {
+        attr: { d: initial },
+        duration: 1.5,
+        ease: "elastic.out(0,4)"
+      });
+    };
+  
+    const svgElement = mouseSVG.current;
+    svgElement.addEventListener('click', handleClick);
+    svgElement.addEventListener('mouseleave', handleMouseLeave);
+  
+    return () => {
+      svgElement.removeEventListener('click', handleClick);
+      svgElement.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
+const rotateImg = contextSafe(() => {
+  gsap.to(buttonMove.current, {
+    x: gsap.utils.random(-100, 200),
+    y: gsap.utils.random(-50, 200),
+    rotate: gsap.utils.random(-30, 30),
+    duration: 0.5,
+    ease: "power2.out"
+  });
+});
+useEffect(() => {
+  if (buttonMove.current) {
+    const buttonAnimation = buttonMove.current;
+    buttonAnimation.addEventListener('mouseenter', rotateImg);
+    
+    return () => {
+      buttonAnimation.removeEventListener('mouseenter', rotateImg);
+    };
+  }
+}, [rotateImg]);
+
   return (
     <main className='hello'>
       <Navbar/>
       <div className="w-full min-h-screen bg-white p-4">
   <div className="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start gap-8 md:gap-0 md:-mt-8">
     <div className="flex flex-col gap-6 md:gap-20 mt-0 md:mt-0 order-2 md:order-1 text-center md:text-left">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 font-display">
         <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">Efficient Pathsala</h1>
         <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">provides efficiency</h1>
         <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">in learning</h1>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 font-heading">
         <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">Don't think twice and</h2>
         <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">start learning</h2>
       </div>
       <Button 
-        onClick={handleButtonClick} 
-        className="bg-green-600 text-white px-8 py-4 md:px-10 md:py-5 md:absolute md:bottom-5 animate-bounce hover:bg-blue-700 transition-all duration-300 ease-in-out mx-auto md:mx-0"
-      >
-        Start
-      </Button>
+  ref={buttonMove}
+  onClick={handleButtonClick} 
+  className="bg-green-600 z-50 text-white px-8 py-4 md:px-10 md:py-5 md:absolute md:bottom-5 hover:bg-blue-700 transition-all duration-300 ease-in-out mx-auto md:mx-0 "
+>
+  Start
+</Button>
     </div>
-    
     <div className="order-1 md:order-2">
       <LottieAnimation 
         animationData={homeanimation} 
@@ -191,13 +256,30 @@ export default function Home() {
       />
     </div>
   </div>
+  <svg 
+    ref={mouseSVG}
+    width="100%"
+    height="100%" 
+    viewBox="0 0 1000 200" 
+    preserveAspectRatio="xMidYMid meet"
+    xmlns="http://www.w3.org/2000/svg"
+    className="cursor-pointer" 
+  >
+    <path 
+      className="hi" 
+      d="M 10 100 Q 500 100 990 100" 
+      stroke="green" 
+      strokeWidth="2"
+      fill="transparent"
+    />
+  </svg>
 </div>
         <div className="w-[100vw] bg-yellow-400 flex flex-row gap-8 overflow-hidden">
           {
             [...Array(7)].map((index)=>{
               return (
         <div key={index} className=" word flex flex-row items-center justify-center py-4 gap-5 shrink-0 -translate-x-96">
-          <h1 className="text-2xl">Grab the opportunity!</h1>
+          <h1 className="text-2xl font-heading">Grab the opportunity!</h1>
           <FaArrowRight className="h"  size={25}/>
         </div>
               )
@@ -206,7 +288,7 @@ export default function Home() {
       </div>
         <section className="py-8 px-4 lg:px-8 bg-gray-100">
         <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold'>Course Categories</h1>
+        <h1 className='text-3xl font-bold font-heading'>Course Categories</h1>
           <LottieAnimation animationData={category} width={150} height={150} speed={1}/>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -224,7 +306,7 @@ export default function Home() {
       </section>
       <section className="py-12 px-4 lg:px-8">
       <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold mb-2'>Top Courses</h1>
+        <h1 className='text-3xl font-bold mb-2 font-heading'>Top Courses</h1>
           <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -269,7 +351,7 @@ export default function Home() {
               </div>
             ))
           ) : (
-           loadingStateCourse?  <SkeletonCard/>:<h1 className="text-">No Courses Found</h1>
+           loadingStateCourse?  <SkeletonCard/>:<h1 className="font-heading">No Courses Found</h1>
           )}
         </div>
       </section>
@@ -278,7 +360,7 @@ export default function Home() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 ">
           <div className="max-w-7xl mx-auto">
             <div className='flex items-center gap-2'>
-                           <h2 className="text-2xl font-bold mb-2">Our Instructors</h2>
+                           <h2 className="text-2xl font-bold mb-2 font-heading ">Our Instructors</h2>
                            <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
                       </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -315,12 +397,12 @@ export default function Home() {
         </section>
       <section className="py-12 px-4 lg:px-8 ">
   <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold'>Student Testimonials</h1>
+        <h1 className='text-3xl font-bold font-heading'>Student Testimonials</h1>
           <LottieAnimation animationData={student} width={150} height={150} speed={1}/>
         </div>
   <Card className="mb-8">
     <CardHeader>
-      <CardTitle className="text-xl">
+      <CardTitle className="text-xl font-">
         What Our Students Say
       </CardTitle>
     </CardHeader>

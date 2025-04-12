@@ -14,16 +14,13 @@ import { handleGithub } from '../ThirdAuth';
 import { handleFacebook } from '../ThirdAuth';
 import { UseContextApi } from '../ContextApi';
 import { FiLoader } from "react-icons/fi";
+import CommonRenderFormInput from '../CommonRenderFormInput';
 
 export default function SignupForm({func}) {
   const {loadingSpin}=useContext(UseContextApi);
   const [error, setError] = useState({});
   const [data,setData]=useState(initialSignData);
   
-  const handleChange=(e)=>{
-    const {name,value}=e.target;
-    setData((prev)=>({...prev,[name]:value}))
-  }
 
   const onFormSubmit=(e)=>{
     e.preventDefault();
@@ -73,16 +70,7 @@ export default function SignupForm({func}) {
           <div className='w-full flex flex-col gap-2 sm:gap-3'>
             {registerForm.map((item,index)=>{
               return (
-                <div key={index} className='w-full flex flex-col gap-1'>
-                  <Label>{item?.Label}:</Label>
-                  <Input 
-                    onChange={handleChange} 
-                    name={item?.name} 
-                    placeholder={item?.placeholder} 
-                    className="w-full rounded-full"
-                  />
-                  {error[item?.name]? <span className="text-xs text-red-700">{error[item?.name]}</span>:null}
-                </div>
+                <CommonRenderFormInput key={index} getCurrentControl={item} data={data} setData={setData} error={error}/>
               )
             })}
           </div>

@@ -49,17 +49,16 @@ class KhaltiPayment{
         transaction_id,
       } = req.query;
       const user=req.user;
-      console.log(purchase_order_id)
-       
-      // if(pidx===undefined){
-      //     const purchasedDataCancel=await PurchaseModel.findOne({
-      //       _id: purchase_order_id,
-      //       amountPaid: (total_amount/100),
-      //     });
-      //   await PurchaseModel.findByIdAndDelete(purchasedDataCancel?._id);
-      //   return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`); 
-      // }
+      
       try {
+        if(pidx===undefined){
+          await PaymentSubscription.deleteOne({
+            userId:user?._id,
+             paymentStatus:'processing',
+              paymentMethod:'khalti'
+          });
+        return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=Payment Cancelled`);
+        }
         const paymentInfo = await verifyKhaltiPayment(pidx);
         // Check if payment is completed and details match
         if (

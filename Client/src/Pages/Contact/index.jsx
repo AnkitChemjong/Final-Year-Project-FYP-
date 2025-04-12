@@ -72,7 +72,7 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className='flex gap-6 items-center justify-center'>
-            <h1 className="text-4xl font-bold text-black mb-4">Contact Us</h1>
+            <h1 className="text-4xl font-bold text-black mb-4 font-heading">Contact Us</h1>
             <LottieAnimation animationData={contact} width={200} height={200} speed={1} />
             </div>
             <p className="text-lg text-gray-700 max-w-2xl mx-auto">
@@ -225,7 +225,7 @@ export default function Contact() {
                   </div>
 
                   <div className="pt-4">
-                    <h3 className="text-lg font-medium text-black mb-3">Follow Us</h3>
+                    <h3 className="text-lg font-medium text-black mb-3 ">Follow Us</h3>
                     <div className="flex space-x-4">
                     <a href="#" className="bg-blue-100 p-3 rounded-full text-blue-600 hover:bg-blue-200 transition">
                         <FaFacebook className="text-xl hover:text-blue-600 hover:scale-105 transition-all ease-out" />

@@ -9,6 +9,7 @@ import { Checkbox } from '../ui/checkbox';
 import { getStudentHireApplication } from '@/Pages/Profile';
 import { getTeacherHireApplication } from '@/Pages/TeacherHireRequest';
 import { Button } from '../ui/button';
+import DeleteDialog from '../DeleteDialog';
 import {
   Table,
   TableBody,
@@ -39,9 +40,16 @@ export default function CommonTableForHireApplication({ data, type, header, page
     hireTeacherInitialStateData, setHireTeacherInitialStateData 
   } = useContext(UseContextApi);
   const [hireDialogEdit, setHireDialogEdit] = useState(false);
+  const [dialogSingle, setDialogSingle] = useState(false);
+  const [dialogMulti, setDialogMulti] = useState(false);
+  const [rejectSingle, setRejectSingle] = useState(false);
+  const [acceptSingle, setAcceptSingle] = useState(false);
+  const [rejectMulti, setRejectMulti] = useState(false);
+  const [acceptMulti, setAcceptMulti] = useState(false);
 
   const deleteHireApplication = async ({ data = null, type, status }) => {
     try {
+      setLoadingSpin(true);
       if (type === "all") {
         if (selectedApplication.length < 1) {
           const response = await axiosService.delete(Delete_Hire_All_Application, { data: { status, data } }, { withCredentials: true, headers: {
@@ -76,10 +84,14 @@ export default function CommonTableForHireApplication({ data, type, header, page
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
+    finally{
+      setLoadingSpin(false);
+    }
   };
 
   const updateHireApplication = async ({ data = null, type, status }) => {
     try {
+      setLoadingSpin(true);
       if (type === "all") {
         if (selectedApplication.length < 1) {
           const response = await axiosService.patch(Update_Hire_Application_All_Status, { data:teacherHireApplicationList,status} , { withCredentials: true, headers: {
@@ -120,6 +132,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
+    }
+    finally{
+      setLoadingSpin(false);
     }
   };
 
@@ -173,12 +188,15 @@ export default function CommonTableForHireApplication({ data, type, header, page
     console.log(error);
     toast.error(error?.response?.data?.message);
    }
+   finally{
+    setLoadingSpin(false);
+   }
   }
 
   return (
     <div className="w-full overflow-x-auto p-2 sm:p-4">
-      <div className="min-w-[800px]"> {/* Minimum width to prevent squeezing */}
-        <p className="text-slate-500 text-sm mb-4">A list of {type} Requests.</p>
+      <div className="min-w-[800px]"> 
+        <p className="text-slate-500 text-sm mb-4 font-heading">A list of {type} Requests.</p>
         
         {data && data.length >= 1 ? (
           <>
@@ -191,31 +209,63 @@ export default function CommonTableForHireApplication({ data, type, header, page
               )}
               
               {page === "profile" && (
-                <div className="tooltip-container">
-                  <RiDeleteBin6Line 
-                    onClick={() => deleteHireApplication({ type: "all", status: type, data })} 
-                    className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' 
-                    size={20} 
+                <div className="relative group inline-block"> 
+                <RiDeleteBin6Line 
+                  onClick={() => setDialogMulti(true)} 
+                  className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' 
+                  size={20} 
+                />
+                <span className="
+                  absolute -top-6 left-1/2 -translate-x-1/2 
+                  bg-gray-800 text-white px-2 py-1 rounded 
+                  text-xs whitespace-nowrap opacity-0 
+                  group-hover:opacity-100 pointer-events-none
+                  transition-opacity duration-200
+                ">
+                  Delete All
+                </span>
+                
+                {dialogMulti && (
+                  <DeleteDialog
+                    deleteDialog={dialogMulti}
+                    setDeleteDialog={setDialogMulti}
+                    title={`Delete ${selectedApplication?.length > 0 ? "Selected" : "Multiple"} Hire Application.`}
+                    description={"The process cannot be undone after deletion."}
+                    func={() => deleteHireApplication({ type: "all", status: type, data })}
                   />
-                  <span className="tooltip-text">Delete All</span>
-                </div>
+                )}
+              </div>
               )}
 
               {page === "teacherdashboard" && type === "pending" && (
                 <div className="flex flex-wrap gap-2">
                   <Button
-                    onClick={() => updateHireApplication({type:"all",status:"approved"})}
+                    onClick={() => setAcceptMulti(true)}
                     className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-all duration-200 text-sm sm:text-base"
                   >
                     {selectedApplication?.length > 0 ? "Accept Selected" : "Accept All"}
                   </Button>
+                  {acceptMulti && <DeleteDialog
+              deleteDialog={acceptMulti}
+              setDeleteDialog={setAcceptMulti}
+              title={`Accept ${selectedApplication?.length>0? "Selected":"Multiple"} Hire Application.`}
+              description={"The process cannot be undone after Completion."}
+              func={()=>updateHireApplication({type:"all",status:"approved"})}
+            />}
 
                   <Button
-                    onClick={() => updateHireApplication({type:"all",status:"rejected"})}
+                    onClick={() =>setRejectMulti(true) }
                     className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-all duration-200 text-sm sm:text-base"
                   >
                     {selectedApplication?.length > 0 ? "Reject Selected" : "Reject All"}
                   </Button>
+                  {rejectMulti && <DeleteDialog
+              deleteDialog={rejectMulti}
+              setDeleteDialog={setRejectMulti}
+              title={`Reject ${selectedApplication?.length>0? "Selected":"Multiple"} Hire Application.`}
+              description={"The process cannot be undone after Completion."}
+              func={()=>updateHireApplication({type:"all",status:"rejected"})}
+            />}
                 </div>
               )}
             </div>
@@ -283,11 +333,18 @@ export default function CommonTableForHireApplication({ data, type, header, page
                                 <Button 
                                   variant="ghost" 
                                   size="sm"
-                                  onClick={() => deleteHireApplication({ data: item, type: "single" })}
+                                  onClick={() => setDialogSingle(true)}
                                   className="hover:bg-gray-200 p-2"
                                 >
                                   <RiDeleteBin6Line className="text-red-600" size={16} />
                                 </Button>
+                                {dialogSingle && <DeleteDialog
+              deleteDialog={dialogSingle}
+              setDeleteDialog={setDialogSingle}
+              title={"Delete Single Hire Application."}
+              description={"The process cannot be undone after deletion."}
+              func={()=>deleteHireApplication({ data: item, type: "single" })}
+            />}
                               </>
                             )}
                             
@@ -296,17 +353,31 @@ export default function CommonTableForHireApplication({ data, type, header, page
                                 <>
                                   <div className="flex gap-2">
                                     <Button
-                                      onClick={() => updateHireApplication({type:"single",data:item,status:"approved"})}
+                                      onClick={() => setAcceptSingle(true)}
                                       className="bg-green-500 text-white hover:bg-green-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Accept
                                     </Button>
+                                    {acceptSingle && <DeleteDialog
+              deleteDialog={acceptSingle}
+              setDeleteDialog={setAcceptSingle}
+              title={"Accept Single Hire Application."}
+              description={"The process cannot be undone after completion."}
+              func={()=>updateHireApplication({type:"single",data:item,status:"approved"})}
+            />}
                                     <Button
-                                      onClick={() => updateHireApplication({type:"single",data:item,status:"rejected"})}
+                                      onClick={() => setRejectSingle(true)}
                                       className="bg-red-500 text-white hover:bg-red-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Reject
                                     </Button>
+                                    {rejectSingle && <DeleteDialog
+              deleteDialog={rejectSingle}
+              setDeleteDialog={setRejectSingle}
+              title={"Reject Single Hire Application."}
+              description={"The process cannot be undone after completion."}
+              func={()=>updateHireApplication({type:"single",data:item,status:"rejected"})}
+            />}
                                   </div>
                                   <Button 
                                     className="bg-gray-700 text-white hover:bg-gray-800 h-8 px-3 text-xs sm:text-sm"
@@ -340,8 +411,8 @@ export default function CommonTableForHireApplication({ data, type, header, page
           </div>
         )}
       </div>
-
-      <DialogForm
+      
+      {hireDialogEdit && <DialogForm
         title="Update Hire Application"
         description="Fill all the Information as Instructed"
         dialog={hireDialogEdit}
@@ -350,7 +421,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
         type="hireteacher"
         componentInputs={hireTeacherComponents}
         initialState={hireTeacherInitialStateData}
-      />
+      />}
       
     </div>
   );

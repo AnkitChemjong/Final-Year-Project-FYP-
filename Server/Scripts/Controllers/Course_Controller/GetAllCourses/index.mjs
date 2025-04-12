@@ -5,6 +5,7 @@ const getAllCourses=async (req,res)=>{
     try{
         const {category=[],level=[],primaryLanguage=[],sortBy="create-rtoo"}=req.query;
         let filters={};
+        filters.isPublished=true;
         if(category.length){
             filters.category={$in:category.split(',')};
         }

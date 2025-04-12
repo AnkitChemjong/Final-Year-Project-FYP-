@@ -312,13 +312,13 @@ export default function CourseProgress() {
                 <TabsList className="grid w-full grid-cols-2 p-0 h-14">
                   <TabsTrigger
                     value="content"
-                    className="text-black rounded-tl-md rounded-bl-md h-full"
+                    className="text-black rounded-tl-md rounded-bl-md h-full font-heading"
                   >
                     Course Content
                   </TabsTrigger>
                   <TabsTrigger
                     value="overview"
-                    className="text-black rounded-tr-md rounded-br-md h-full"
+                    className="text-black rounded-tr-md rounded-br-md h-full font-heading"
                   >
                     Overview
                   </TabsTrigger>
@@ -416,7 +416,7 @@ export default function CourseProgress() {
                     )}
                     <div className="p-4 flex flex-col gap-4">
                       <div className="flex flex-col gap-1">
-                        <h1 className="text-xl font-bold mb-4">
+                        <h1 className="text-xl font-bold mb-4 font-heading">
                           About this course.
                         </h1>
                         <div className="flex gap-2 items-center">
@@ -478,7 +478,7 @@ export default function CourseProgress() {
                           </div>
                         </div>
                         <div>
-                          <h2 className="text-xl font-bold mb-4">Description</h2>
+                          <h2 className="text-xl font-bold mb-4 font-heading">Description</h2>
                           <p className="text-black">
                             {courseProgress?.courseDetails?.description}
                           </p>

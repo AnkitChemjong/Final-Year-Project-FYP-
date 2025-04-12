@@ -2,9 +2,7 @@ import React,{useState,useContext} from 'react';
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { TfiGithub } from "react-icons/tfi";
-import { Label } from '@/Components/ui/label';
 import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
 import { loginForm } from '@/Utils';
 import { Link } from 'react-router-dom';
 import { signinValidation } from '@/FormValidation';
@@ -20,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { emailDialogInitialState,emailInputs } from '@/Utils';
 import { UseContextApi } from '../ContextApi';
 import { FiLoader } from "react-icons/fi";
+import CommonRenderFormInput from '../CommonRenderFormInput';
 
 export default function SigninForm({func}) {
   const {loadingSpin,setLoadingSpin}=useContext(UseContextApi);
@@ -30,10 +29,7 @@ export default function SigninForm({func}) {
   }
   const [error, setError] = useState({});
   const [data,setData]=useState(initialLogData);
-  const handleChange=(e)=>{
-      const {name,value}=e.target;
-      setData((prev)=>({...prev,[name]:value}))
-  }
+
 
   const onFormSubmit=(e)=>{
     e.preventDefault();
@@ -65,7 +61,7 @@ export default function SigninForm({func}) {
       }
     }
   return (
-    <main className='w-full h-screen flex flex-col lg:flex-row justify-center items-center gap-4 lg:gap-8 xl:gap-12 p-4 overflow-hidden'>
+    <main className='w-full h-screen flex flex-col lg:flex-row justify-center items-center gap-4 lg:gap-6 xl:gap-7 p-4 overflow-hidden'>
     
       <div className='hidden lg:block flex-shrink-0'>
         <img 
@@ -104,18 +100,7 @@ export default function SigninForm({func}) {
           <div className='w-full flex flex-col gap-3'>
             {loginForm.map((item,index)=>{
               return (
-                <div key={index} className='w-full flex flex-col gap-1'>
-                  <Label>{item?.Label}:</Label>
-                  <Input 
-                    name={item?.name} 
-                    placeholder={item?.placeholder} 
-                    onChange={handleChange} 
-                    className="w-full rounded-full"
-                  />
-                  {error[item?.name] && (
-                    <span className="text-xs text-red-600">{error[item?.name]}</span>
-                  )}
-                </div>
+                <CommonRenderFormInput key={index} getCurrentControl={item} data={data} setData={setData} error={error}/>
               )
             })}
           </div>

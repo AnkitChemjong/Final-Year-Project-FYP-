@@ -205,7 +205,7 @@ export default function Quiz() {
 
         <div className="w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
           <div className="flex items-center gap-2 justify-center">
-            <h1 className="text-3xl font-bold mb-8 text-gray-800">Course Quiz</h1>
+            <h1 className="text-3xl font-bold mb-8 text-gray-800 font-heading">Course Quiz</h1>
             <LottieAnimation animationData={quiz} width={200} height={200} speed={1} />
           </div>
 

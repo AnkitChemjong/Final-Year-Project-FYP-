@@ -69,7 +69,7 @@ export default function AboutUs() {
               {bannerSlides.map((slide, index) => (
                 <CarouselItem key={index}>
                   <div className={`p-12 ${slide.bgColor} text-white text-center h-96 flex flex-col items-center justify-center`}>
-                    <h1 className="text-4xl font-bold mb-4">{slide.title}</h1>
+                    <h1 className="text-4xl font-bold mb-4 font-display">{slide.title}</h1>
                     <p className="text-xl">{slide.description}</p>
                   </div>
                 </CarouselItem>
@@ -83,7 +83,7 @@ export default function AboutUs() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
           <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold mb-2'>What We Offer</h1>
+        <h1 className='text-3xl font-bold mb-2 font-heading'>What We Offer</h1>
           <LottieAnimation animationData={category} width={150} height={150} speed={1}/>
         </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -104,7 +104,7 @@ export default function AboutUs() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
   <div className="max-w-7xl mx-auto">
     <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold mb-2'>Meet Our Founder</h1>
+        <h1 className='text-3xl font-bold mb-2 font-heading'>Meet Our Founder</h1>
           <LottieAnimation animationData={admin} width={150} height={150} speed={1}/>
         </div>
     <div className="flex flex-col md:flex-row items-center gap-8 bg-white p-8 rounded-lg shadow-md">
@@ -180,7 +180,7 @@ export default function AboutUs() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 ">
           <div className="max-w-7xl mx-auto">
           <div className='flex items-center gap-2 '>
-               <h2 className="text-2xl font-bold mb-2">Our Expert Instructors</h2>
+               <h2 className="text-2xl font-bold mb-2 font-heading">Our Expert Instructors</h2>
                <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
           </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -219,7 +219,7 @@ export default function AboutUs() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
   <div className="max-w-7xl mx-auto">
   <div className='flex gap-2 items-center'>
-        <h1 className='text-3xl font-bold mb-2'>Student Saying</h1>
+        <h1 className='text-3xl font-bold mb-2 font-heading'>Student Saying</h1>
           <LottieAnimation animationData={student} width={150} height={150} speed={1}/>
         </div>
     

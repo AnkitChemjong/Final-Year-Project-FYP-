@@ -78,7 +78,7 @@ export default function Teacher() {
       <Search searchFunc={searchTeachers} onChangeFunc={getTeacher} />
         <section className="py-12 px-4 lg:px-8 mt-5 mb-5">
           <div className='flex items-center gap-2'>
-               <h2 className="text-2xl font-bold mb-2">Our Instructors</h2>
+               <h2 className="text-2xl font-bold mb-2 font-heading">Our Instructors</h2>
                <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
           </div>
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,7 +108,7 @@ export default function Teacher() {
                          </div>
                          <p className="text-sm text-gray-700 mb-2 flex flex-row items-center gap-1">
                           Rating: {(()=>{
-                            const teacherRating=allRating?.filter(itemData=>itemData?.teacherId===item?._id);
+                            const teacherRating=allRating?.filter(itemData=>itemData?.teacherId?._id===item?._id);
                             const teacherAvg=teacherRating?.reduce((sum,obj)=>sum+(obj?.rating||0)/teacherRating?.length,0)?.toFixed(2);
                             return (
                               renderStars(teacherAvg)

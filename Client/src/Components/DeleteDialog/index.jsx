@@ -28,8 +28,11 @@ export default function DeleteDialog({deleteDialog,setDeleteDialog,func,title,de
     </DialogHeader>
     <DialogFooter className="flex justify-between mt-6">
       <CommonButton
-        func={func}
-        text="Delete"
+        func={()=>{
+          func();
+          setDeleteDialog(false);
+        }}
+        text="Ok"
         
       />
       <CommonButton

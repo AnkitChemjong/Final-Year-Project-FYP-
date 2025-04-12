@@ -160,7 +160,7 @@ return (
             </Card>
             <Card className="mb-8">
                 <CardHeader>
-                    <CardTitle>
+                    <CardTitle className="font-heading">
                     Key Learning Outcomes
                     </CardTitle>
                 </CardHeader>
@@ -185,7 +185,7 @@ return (
             </Card>
             <Card className="mb-8">
                 <CardHeader>
-                    <CardTitle>Course Content</CardTitle>
+                    <CardTitle className="font-heading">Course Content</CardTitle>
 
                 </CardHeader>
                 <CardContent>
@@ -210,7 +210,7 @@ return (
 
                         <DialogContent className="w-[600px]">
                             <DialogHeader>
-                               <DialogTitle>Preview Free Video</DialogTitle>
+                               <DialogTitle className="font-heading">Preview Free Video</DialogTitle>
                             </DialogHeader>
                     <div className='aspect-video rounded-lg flex items-center justify-center'>
                       <VideoPlayerReact url={displayVideoFreePreview? displayVideoFreePreview:null}
@@ -250,7 +250,7 @@ return (
 
                 <Card className="mb-8">
     <CardHeader>
-        <CardTitle>
+        <CardTitle className="font-heading">
             Some Students Feedbacks
         </CardTitle>
     </CardHeader>

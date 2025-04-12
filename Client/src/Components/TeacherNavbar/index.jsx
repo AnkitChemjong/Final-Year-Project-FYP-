@@ -118,7 +118,7 @@ export default function TeacherNavbar() {
   
       <div className='flex flex-row justify-center items-center mb-8'>
         <img className='w-20 h-20 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
-        <h1 className='font-bold text-2xl text-blue-900'>E-Pathsala</h1>
+        <h1 className='font-bold text-2xl text-blue-900 font-heading' >E-Pathsala</h1>
       </div>
 
       <div className='flex flex-col gap-3'>

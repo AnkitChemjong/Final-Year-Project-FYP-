@@ -80,7 +80,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const navigate=useNavigate();
   const [dialog6, setDialog6] = useState(false);
-  const {studentHireApplicationList,setStudentHireApplicationList}=useContext(UseContextApi);
+  const {studentHireApplicationList,setStudentHireApplicationList,setLoadingSpin}=useContext(UseContextApi);
 
   useEffect(()=>{
      if(user && userApplication){
@@ -222,6 +222,7 @@ export default function Profile() {
 
   const handleEvent1 = async (data) => {
     try {
+      setLoadingSpin(true);
       const response = await axiosService.patch(User_Info_Update, data);
       if (response?.status === 200) {
         dispatch(getUser());
@@ -234,10 +235,14 @@ export default function Profile() {
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
+    finally{
+      setLoadingSpin(false);
+    }
   };
 
   const handleEvent2 = async (data) => {
     try {
+      setLoadingSpin(true);
       const response = await axiosService.patch(User_Update_Pass_Route, data);
       if (response?.status === 200) {
         dispatch(getUser());
@@ -250,10 +255,14 @@ export default function Profile() {
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
+    finally{
+      setLoadingSpin(false);
+    }
   };
 
   const handleEvent3 = async (data) => {
     try {
+      setLoadingSpin(true);
       const formData = new FormData();
       formData.append("cv", data?.cv);
       const response = await axiosService.post(User_Become_Teacher, formData, {
@@ -270,10 +279,14 @@ export default function Profile() {
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
+    finally{
+      setLoadingSpin(false);
+    }
   };
 
   const handleEvent4 = async (data) => {
     try {
+      setLoadingSpin(true);
       const formData = new FormData();
       formData.append("certificate", data?.certificate);
       formData.append("feePerHour",data?.feePerHour);
@@ -301,10 +314,14 @@ export default function Profile() {
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
+    finally{
+      setLoadingSpin(false);
+    }
   };
 
   const handleDeleteApplication=async()=>{
     try{
+      setLoadingSpin(true);
       if(userApplicationData){
         const response=await axiosService.delete(Delete_Single_Application,{data:{data:userApplicationData}},{withCredentials:true, headers: {
           "Content-Type": "application/json"
@@ -321,6 +338,9 @@ export default function Profile() {
     }
     catch(error){
       toast.error(error?.response?.data?.message);
+    }
+    finally{
+      setLoadingSpin(false);
     }
   }
 
@@ -618,7 +638,7 @@ export default function Profile() {
                 </div>
               )}
 
-              {/* Teacher Info Update Button */}
+              
               {user?.userRole?.includes("teacher") && (
                 <div className="flex justify-center">
                   <Button

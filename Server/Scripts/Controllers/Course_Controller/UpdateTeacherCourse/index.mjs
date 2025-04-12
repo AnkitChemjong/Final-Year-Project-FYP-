@@ -7,7 +7,7 @@ static updateSingleCourse=async (req,res)=>{
         const {data,status}=req.body;
         if(data,status.toString()){
             await CourseModel.findByIdAndUpdate(data?._id,{isPublished:status},{runValidators:true});
-            return res.status(200).json({message:"Course updated successfully updated.",error:null});
+            return res.status(200).json({message:"Course updated successfully.",error:null});
         }
         else{
             return res.status(400).json({message:"Both data and status are required.",error:null});

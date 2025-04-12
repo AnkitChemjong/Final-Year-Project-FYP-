@@ -30,7 +30,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
       <div className="flex flex-col w-full p-6 min-h-screen">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className='flex gap-1 items-center'>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Your Courses</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0 font-heading">Your Courses</h1>
             <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
           </div>
           <CommonButton
@@ -47,7 +47,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Total Courses</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Total Courses</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{totalCourses}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
@@ -60,7 +60,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Published Courses</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Published Courses</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{publishedCourses}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -73,7 +73,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium">Unpublished Courses</h3>
+                <h3 className="text-gray-600 text-sm font-medium font-heading">Unpublished Courses</h3>
                 <p className="text-3xl font-bold text-gray-800 mt-2">{unpublishedCourses}</p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">

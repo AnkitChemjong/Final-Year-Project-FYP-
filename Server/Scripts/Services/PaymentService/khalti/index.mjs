@@ -52,7 +52,6 @@ async function verifyKhaltiPayment(pidx) {
         headers: headersList,
         data: bodyContent,
       };
-  
       let response = await axios.request(reqOptions);
       return response.data;
     } catch (error) {

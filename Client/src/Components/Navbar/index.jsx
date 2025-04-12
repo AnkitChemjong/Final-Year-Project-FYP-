@@ -52,6 +52,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const menuSheet = useRef(null);
+  const [theme, setTheme] = useState(false);
 
   const { contextSafe } = useGSAP();
 
@@ -425,6 +426,9 @@ export default function Navbar() {
                   <TbLogout2 size={20} />
                   Log out
                 </button>
+                <button>
+                  hel
+                </button>
               </>
             )}
           </div>
@@ -480,7 +484,7 @@ export default function Navbar() {
               className="cursor-pointer"
               data-profile-button
             >
-              <Avatar className="w-10 h-10 rounded-full flex justify-center items-center border-2 border-black">
+              <Avatar className="w-10 h-10 rounded-full flex justify-center items-center border-2 border-blue-600">
                 {logedUser?.userImage ? (
                   logedUser?.provider ? (
                     <AvatarImage

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AdminNavbar from '@/Components/AdminNavbar';
 import { ScrollArea } from '@/Components/ui/scroll-area';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
@@ -7,8 +7,22 @@ import { MdOnlinePrediction } from "react-icons/md";
 import SkeletonCard from '@/Components/SkeletonCard';
 import dashboard from '@/assets/dashboard.json';
 import LottieAnimation from '@/Components/LottieAnimation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { TbLockPassword } from "react-icons/tb";
+import DialogForm from '@/Components/DialogForm';
+import { changePasswordForm,changePasswordInitialState,updateProfileInitialState } from '@/Utils';
+import { getAllUser } from '@/Store/Slices/Get_All_User';
+import { User_Update_Pass_Route } from '@/Routes';
+import { axiosService } from '@/Services';
+import { toast } from 'react-toastify';
+import { UseContextApi } from '@/Components/ContextApi';
+import { getUser } from '@/Store/Slices/User_Slice';
+import { getApplication } from '@/Store/Slices/ApplicationSlice';
+import { getCourse } from '@/Store/Slices/Course_Slice';
+import { Button } from '@/Components/ui/button';
+
+
 
 
 const processRegistrationData = (users) => {
@@ -116,6 +130,7 @@ export default function AdminDashboard() {
   const { data: purchases } = purchaseState;
   const ratingState = useSelector(state => state?.rating);
   const { data: rating } = ratingState;
+  const{setLoadingSpin}=useContext(UseContextApi);
 
   const [recentPurchases, setRecentPurchases] = useState(null);
   const [topPerformingCourse, setTopPerformingCourse] = useState(null);
@@ -124,6 +139,45 @@ export default function AdminDashboard() {
   const [purchaseForChart, setPurchaseForChart] = useState(null);
   const [courseForChart, setCourseForChart] = useState(null);
   const [load,setLoad]=useState(true);
+  const [dialog1, setDialog1] = useState(false);
+  const [dialog2,setDialog2]=useState(false);
+  const dispatch=useDispatch();
+
+  const updateProfileInputs = [
+    {
+      label: "User Name",
+      name: "userName",
+      placeholder: user?.userName,
+      type: "text",
+      componentType: "input",
+    },
+    {
+      label: "Address",
+      name: "address",
+      placeholder: user?.address || "Enter Your Address.",
+      type: "text",
+      componentType: "input",
+    },
+    {
+      label: "Phone",
+      name: "phone",
+      placeholder: user?.phone || "Enter Your Contact Number.",
+      type: "number",
+      componentType: "input",
+    },
+    {
+      label: "Gender",
+      name: "gender",
+      type: "radio",
+      componentType: "gender",
+    },
+    {
+      label: "Date Of Birth",
+      name: "DOB",
+      type: "date",
+      componentType: "date",
+    }
+  ];
 
   useEffect(() => {
     if (user && purchases && allCourse && allUser) {
@@ -146,6 +200,50 @@ export default function AdminDashboard() {
       setLoad(false);
      },1000);
   },[]);
+  const toggleDialog1 = () => {
+    setDialog1(!dialog1);
+  };
+  const toggleDialog2 = () => {
+    setDialog2(!dialog2);
+  };
+  const handleEvent2 = async (data) => {
+    try {
+      setLoadingSpin(true);
+      const response = await axiosService.patch(User_Update_Pass_Route, data);
+      if (response?.status === 200) {
+        dispatch(getUser());
+        dispatch(getApplication());
+        dispatch(getCourse());
+        dispatch(getAllUser());
+        setDialog2(false);
+        toast.success(response?.data?.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+    finally{
+      setLoadingSpin(false);
+    }
+  };
+  const handleEvent1 = async (data) => {
+    try {
+      setLoadingSpin(true);
+      const response = await axiosService.patch(User_Info_Update, data);
+      if (response?.status === 200) {
+        dispatch(getUser());
+        dispatch(getApplication());
+        dispatch(getCourse());
+        dispatch(getAllUser());
+        setDialog1(false);
+        toast.success(response?.data?.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+    finally{
+      setLoadingSpin(false);
+    }
+  };
 
   if (!user || load) {
     return (
@@ -162,12 +260,50 @@ export default function AdminDashboard() {
       <div className='flex-1 flex flex-col overflow-hidden'>
         <ScrollArea className='flex-1 overflow-auto w-full'>
           <div className='p-6'>
-            <div className='flex justify-between items-center mb-8'>
-              <div className='flex gap-2 items-center'>
-                <h1 className='text-3xl font-bold text-gray-800'>Admin Dashboard</h1>
-                <LottieAnimation animationData={dashboard} width={150} height={150} speed={1}/>
-              </div>
-            </div>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+
+  <div className="flex items-center gap-2 sm:gap-4">
+    <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 font-heading">
+      Admin Dashboard
+    </h1>
+    <LottieAnimation 
+      animationData={dashboard} 
+      width={120} 
+      height={120} 
+      speed={1}
+      className="hidden sm:block"
+    />
+  </div>
+
+
+  <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 mr-6">
+ 
+    <Button
+      onClick={toggleDialog1}
+      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 transition-all duration-300 shadow-md hover:shadow-lg rounded-lg transform hover:scale-[1.02]"
+      aria-label="Update information"
+    >
+      <span>Update Info</span>
+    </Button>
+
+
+    <div className="relative group w-full sm:w-auto">
+      <Button
+        onClick={toggleDialog2}
+        variant="ghost"
+        className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300 rounded-lg"
+        aria-label="Change password"
+      >
+        <TbLockPassword size={30} />
+      </Button>
+      
+ 
+      <div className="hidden sm:block absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-white text-xs bg-gray-800 dark:bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+        Change Password
+      </div>
+    </div>
+  </div>
+</div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
               {[
@@ -563,6 +699,26 @@ export default function AdminDashboard() {
             </div>
           </div>
         </ScrollArea>
+        {dialog1 && <DialogForm
+        title="Update Profile Info"
+        description="Enter New Profile Data."
+        dialog={dialog1}
+        setDialog={setDialog1}
+        func={handleEvent1}
+        type="updateProfile"
+        componentInputs={updateProfileInputs}
+        initialState={updateProfileInitialState}
+      />}
+        {dialog2 && <DialogForm
+        title="Update Your Password"
+        description="Make new Password."
+        dialog={dialog2}
+        setDialog={setDialog2}
+        func={handleEvent2}
+        type="updatePassword"
+        componentInputs={changePasswordForm}
+        initialState={changePasswordInitialState}
+      />}
       </div>
     </div>
   );

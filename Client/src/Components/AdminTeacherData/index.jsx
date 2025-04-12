@@ -25,7 +25,7 @@ export default function AdminTeacherData({ teacherList }) {
     <ScrollArea className="max-h-screen overflow-auto p-4">
       <div className="mb-6">
       <div className='flex  gap-2 items-center'>
-               <h2 className="text-2xl font-bold mb-2">All Teachers</h2>
+               <h2 className="text-2xl font-bold mb-2 font-heading">All Teachers</h2>
                <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
           </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -33,7 +33,7 @@ export default function AdminTeacherData({ teacherList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Total Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Total Teachers</p>
                 <p className="text-2xl font-bold">{totalTeachers}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
@@ -46,7 +46,7 @@ export default function AdminTeacherData({ teacherList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Active Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Active Teachers</p>
                 <p className="text-2xl font-bold text-green-600">{totalActive}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -59,7 +59,7 @@ export default function AdminTeacherData({ teacherList }) {
           <div className="bg-white rounded-lg shadow p-4 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Banned Customers</p>
+                <p className="text-gray-500 text-sm font-heading">Banned Teachers</p>
                 <p className="text-2xl font-bold text-red-600">{totalBanned}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">

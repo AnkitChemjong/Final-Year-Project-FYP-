@@ -89,7 +89,7 @@ export default function StudentCourses() {
     <div>
         <Navbar />
       <div className='p-4'>
-        <h1 className='text-center text-3xl font-bold mb-8'>My Enrolled Courses</h1>
+        <h1 className='text-center text-3xl font-bold mb-8 font-heading'>My Enrolled Courses</h1>
         <div className='grid grid-cols-1 md:grid-cols-3 md:px-5 lg:grid-cols-4 lg:px-10 gap-5'>
             {
                 studentEnrolledCourses && studentEnrolledCourses.length > 0? 
