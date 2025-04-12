@@ -6,7 +6,9 @@ import { formatForHireApplication } from "@/Utils";
 import CommonTableForHireApplication from '../CommonTableForHireApplication';
 
 
+
 export default function HireApplication({ applicationList }) {
+  
   const uniqueStatus = [...new Set(applicationList?.map(item => item?.status).flat(1))];
   const [tabValue, setTabValue] = useState("all");
 

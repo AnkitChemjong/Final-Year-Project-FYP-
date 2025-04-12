@@ -10,6 +10,8 @@ export default function AdminCustomer() {
   const {data:allUser,loading}=allUsersState;
   const {allCustomer,setAllCustomer}=useContext(UseContextApi);
   const [load,setLoad]=useState(true);
+  const userState=useSelector(state=>state?.user);
+  const {data:user}=userState;
 
      useEffect(()=>{
         if(allUser){
@@ -32,7 +34,7 @@ export default function AdminCustomer() {
     )
    }
   return (
-    <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
+    <div className={`flex flex-row overflow-hidden  ${user?.theme? "bg-gray-50":"bg-zinc-900 text-white"}`}>
           <AdminNavbar/>
           <div className='flex-1'>
           <AdminCustomerData customerList={allCustomer} />

@@ -7,8 +7,12 @@ import CommonTableForHireApplication from '../CommonTableForHireApplication';
 import SkeletonCard from '../SkeletonCard';
 import { ScrollArea } from '../ui/scroll-area';
 import { FaEnvelope, FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 export default function TeacherHireRequestData({ applicationList }) {
+  const userState=useSelector(state=>state?.user);
+  const {data:user,loading}=userState;
+  
   const uniqueStatus = [...new Set(applicationList?.map(item => item?.status).flat(1))];
   const [tabValue, setTabValue] = useState("all");
 
@@ -22,10 +26,10 @@ export default function TeacherHireRequestData({ applicationList }) {
   const acceptedRequests = applicationList?.filter(item => item.status === "approved").length || 0;
   return (
     <ScrollArea className="max-h-screen overflow-auto">
-      <div className="flex flex-col w-full p-6 min-h-screen">
+      <div className={`flex flex-col w-full p-6 min-h-screen`}>
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-gray-800 font-heading">Hire Requests</h1>
+            <h1 className={`text-3xl font-bold  ${user?.theme? "text-gray-800":"text-white"} font-heading`}>Hire Requests</h1>
             <LottieAnimation
               animationData={hirerequest}
               width={150}
@@ -38,11 +42,11 @@ export default function TeacherHireRequestData({ applicationList }) {
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
          
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={` ${user?.theme? "bg-white":"bg-black "} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Total Requests</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{totalRequests}</p>
+                <h3 className=" text-sm font-medium font-heading">Total Requests</h3>
+                <p className="text-3xl font-bold  mt-2">{totalRequests}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <FaEnvelope className="text-blue-600 text-xl" />
@@ -51,11 +55,11 @@ export default function TeacherHireRequestData({ applicationList }) {
           </div>
 
           {/* Pending Requests */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={` ${user?.theme? "bg-white":"bg-black "} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Pending Requests</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{pendingRequests}</p>
+                <h3 className=" text-sm font-medium font-heading">Pending Requests</h3>
+                <p className="text-3xl font-bold  mt-2">{pendingRequests}</p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
                 <FaClock className="text-yellow-600 text-xl" />
@@ -64,11 +68,11 @@ export default function TeacherHireRequestData({ applicationList }) {
           </div>
 
           
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={` ${user?.theme? "bg-white":"bg-black "} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Accepted Requests</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{acceptedRequests}</p>
+                <h3 className=" text-sm font-medium font-heading">Accepted Requests</h3>
+                <p className="text-3xl font-bold  mt-2">{acceptedRequests}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <FaCheckCircle className="text-green-600 text-xl" />
@@ -77,11 +81,11 @@ export default function TeacherHireRequestData({ applicationList }) {
           </div>
 
          
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={` ${user?.theme? "bg-white":"bg-black "} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Rejected Requests</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{rejectedRequests}</p>
+                <h3 className=" text-sm font-medium font-heading">Rejected Requests</h3>
+                <p className="text-3xl font-bold  mt-2">{rejectedRequests}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">
                 <FaTimesCircle className="text-red-600 text-xl" />
@@ -92,7 +96,7 @@ export default function TeacherHireRequestData({ applicationList }) {
 
         <Tabs defaultValue="all" value={tabValue} className="w-full max-w-6xl mx-auto">
           <div className="flex justify-center py-4 border-b border-gray-200">
-            <TabsList className="flex gap-4 bg-white rounded-lg shadow-sm p-2">
+            <TabsList className={`flex gap-4  ${user?.theme? "bg-white":"bg-black text-white"} rounded-lg shadow-sm p-2`}>
               <TabsTrigger
                 value="all"
                 onClick={() => handleTabValue("all")}

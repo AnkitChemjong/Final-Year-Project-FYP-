@@ -19,6 +19,7 @@ import { updateTeacherInfo } from "../../Controllers/User_Controller/UpdateTeach
 import uploadCertificate from "../../Services/UserService/Multer/certificates/TeacherCertificate/index.mjs";
 import handleStatus from "../../Controllers/User_Controller/HandleStatus/index.mjs";
 import getOnlineUsers from "../../Controllers/User_Controller/GetOnlineUsers/index.mjs";
+import toggleTheme from "../../Controllers/User_Controller/ToggleTheme/index.mjs";
 
 
 const userRoute=Router();
@@ -63,5 +64,6 @@ userRoute.post('/update/teacherinfo/:id',uploadCertificate.single("certificate")
 userRoute.patch('/handleStatus',handleStatus);  
 
 userRoute.get('/getOnlineUsers',getOnlineUsers);
+userRoute.post('/toggleTheme/:id',toggleTheme);
 
 export default userRoute;

@@ -37,6 +37,7 @@ export default function DrawerForCustomer({
     const closeDrawer = () => {
         setHandleDrawer(false);
         setTemporaryUserData(null);
+        setThisMonthEarning(0);
     };
     const userStats = [
         {

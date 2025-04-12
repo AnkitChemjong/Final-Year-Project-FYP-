@@ -39,6 +39,12 @@ export default function CourseDetails() {
     const [displayVideoFreePreview, setDisplayVideoFreePreview] =useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
   const [openDialog,setOpenDialog]=useState(false);
+  const [load,setLoad]=useState(true);
+  useEffect(()=>{
+    setTimeout(()=>{
+     setLoad(false);
+    },1000);
+ },[]);
   
 
 
@@ -95,7 +101,7 @@ export default function CourseDetails() {
     : 0;
     //console.log(specificCourseDetails);
 
-if(!setSpecificCourseDetails){
+if(!user || load){
     return (
       <div>
          <Navbar />

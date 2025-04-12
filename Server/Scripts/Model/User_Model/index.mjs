@@ -82,6 +82,10 @@ const userSchema=new Schema({
     lastSubscriptionNotification: {
         type: String,
         default: null
+    },
+    theme:{
+        type:Boolean,
+        default:true
     }
 },{timestamps:true})
 

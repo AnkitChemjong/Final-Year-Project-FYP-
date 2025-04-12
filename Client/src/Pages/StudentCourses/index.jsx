@@ -106,7 +106,7 @@ export default function StudentCourses() {
                                      <p className='text-sm text-gray-700 mb-2'>Status: {userProgress?.find(itemData=>itemData?.userId===user?._id&&itemData?.courseId===course?.courseId)?.completed? "Completed":"Learning"}</p>
                                </CardContent>
                                <CardFooter>
-                                 <Button onClick={()=>navigate(`/courseProgress/${course?.courseId}`)} className="flex-1 bg-green-600 text-white hover:bg-blue-700">
+                                 <Button onClick={()=>navigate(`/courseProgress/${course?.courseId}`)} className="flex-1 bg-green-600 text-white hover:bg-blue-700 font-playfair">
                                      <IoStopwatchOutline className='mr-2 h-4 w-4'/>
                                      {userProgress?.find(item=>item?.courseId===course?.courseId)?  (userProgress?.find(itemData=>itemData?.userId===user?._id&&itemData?.courseId===course?.courseId)?.completed? "Completed":"Continue Learning"):"Start Learning"}
                                  </Button>

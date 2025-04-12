@@ -196,7 +196,7 @@ export default function Quiz() {
         <div className="mb-6">
           <Button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 bg-green-600 hover:scale-105 transition-all duration-100 ease-in-out hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md"
+            className="flex items-center font-playfair gap-2 bg-green-600 hover:scale-105 transition-all duration-100 ease-in-out hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md"
           >
             <FaChevronLeft className="w-4 h-4 mr-2" />
             Return
@@ -236,7 +236,7 @@ export default function Quiz() {
           <div className="flex justify-between mt-8">
             <Button
               onClick={handleResetQuiz}
-              className="flex items-center gap-2 bg-gray-600 hover:scale-105 transition-all duration-100 ease-in-out hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md"
+              className="flex items-center font-playfair gap-2 bg-gray-600 hover:scale-105 transition-all duration-100 ease-in-out hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md"
             >
               <FaRedo className="h-4 w-4" />
               Reset Quiz
@@ -245,7 +245,7 @@ export default function Quiz() {
             {!quizSubmitted ? (
               <Button
                 onClick={handleSubmitQuiz}
-                className="bg-green-600 hover:bg-blue-700 hover:scale-105 transition-all duration-100 ease-in-out text-white px-6 py-2 rounded-lg shadow-md"
+                className="bg-green-600 font-playfair hover:bg-blue-700 hover:scale-105 transition-all duration-100 ease-in-out text-white px-6 py-2 rounded-lg shadow-md"
                 disabled={Object.keys(selectedAnswers).length !== courseQuizData?.length}
               >
                 Submit Quiz
@@ -257,7 +257,7 @@ export default function Quiz() {
                 </p>
                 <Button
                   onClick={handleRetakeQuiz}
-                  className="bg-green-600 hover:bg-blue-700 hover:scale-105 transition-all duration-100 ease-in-out text-white px-6 py-2 rounded-lg shadow-md"
+                  className="bg-green-600 font-playfair hover:bg-blue-700 hover:scale-105 transition-all duration-100 ease-in-out text-white px-6 py-2 rounded-lg shadow-md"
                 >
                   Retake Quiz
                 </Button>

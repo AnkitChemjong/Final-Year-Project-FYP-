@@ -27,6 +27,7 @@ import { useSelector } from 'react-redux';
 import { hireTeacherComponents } from '@/Utils';
 import DrawerForHireTeacherDataView from '../DrawerForHireTeacherDataView';
 
+
 export default function CommonTableForHireApplication({ data, type, header, page }) {
   const [selectedApplication, setSelectedApplication] = useState([]);
   const [handleDrawer, setHandleDrawer] = useState(false);
@@ -196,15 +197,15 @@ export default function CommonTableForHireApplication({ data, type, header, page
   return (
     <div className="w-full overflow-x-auto p-2 sm:p-4">
       <div className="min-w-[800px]"> 
-        <p className="text-slate-500 text-sm mb-4 font-heading">A list of {type} Requests.</p>
+        <p className=" text-sm mb-4 font-heading">A list of {type} Requests.</p>
         
         {data && data.length >= 1 ? (
           <>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
               {page === 'profile' && (
                 <div className='flex items-center gap-2'>
-                  <p className="text-black">Total Requests =</p>
-                  <p className="text-black font-medium">{data?.length}</p>
+                  <p >Total Requests =</p>
+                  <p className=" font-medium">{data?.length}</p>
                 </div>
               )}
               
@@ -212,7 +213,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
                 <div className="relative group inline-block"> 
                 <RiDeleteBin6Line 
                   onClick={() => setDialogMulti(true)} 
-                  className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' 
+                  className='cursor-pointer  hover:scale-110 transition-transform duration-100 ease-in-out' 
                   size={20} 
                 />
                 <span className="
@@ -241,7 +242,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
                 <div className="flex flex-wrap gap-2">
                   <Button
                     onClick={() => setAcceptMulti(true)}
-                    className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-all duration-200 text-sm sm:text-base"
+                    className="bg-green-500 font-playfair text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-all duration-200 text-sm sm:text-base"
                   >
                     {selectedApplication?.length > 0 ? "Accept Selected" : "Accept All"}
                   </Button>
@@ -255,7 +256,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
 
                   <Button
                     onClick={() =>setRejectMulti(true) }
-                    className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-all duration-200 text-sm sm:text-base"
+                    className="bg-red-500 font-playfair hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-all duration-200 text-sm sm:text-base"
                   >
                     {selectedApplication?.length > 0 ? "Reject Selected" : "Reject All"}
                   </Button>
@@ -287,9 +288,10 @@ export default function CommonTableForHireApplication({ data, type, header, page
                   </TableHeader>
                   <TableBody>
                     {data.map((item, index) => (
-                      <TableRow key={index} className="hover:bg-gray-50">
-                        <TableCell className="font-medium sticky left-0 bg-white">
+                      <TableRow key={index} >
+                        <TableCell className="font-medium sticky left-0 ">
                           <Checkbox 
+                          className={`${user?.theme? "":"bg-white"}`}
                             disabled={page === 'teacherdashboard' && type !== 'pending'} 
                             checked={selectedApplication.includes(item)} 
                             onCheckedChange={(checked) => handleAddApplication(item, checked)} 
@@ -354,7 +356,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
                                   <div className="flex gap-2">
                                     <Button
                                       onClick={() => setAcceptSingle(true)}
-                                      className="bg-green-500 text-white hover:bg-green-600 h-8 px-3 text-xs sm:text-sm"
+                                      className="bg-green-500 font-playfair text-white hover:bg-green-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Accept
                                     </Button>
@@ -367,7 +369,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
             />}
                                     <Button
                                       onClick={() => setRejectSingle(true)}
-                                      className="bg-red-500 text-white hover:bg-red-600 h-8 px-3 text-xs sm:text-sm"
+                                      className="bg-red-500 font-playfair text-white hover:bg-red-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Reject
                                     </Button>
@@ -380,7 +382,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
             />}
                                   </div>
                                   <Button 
-                                    className="bg-gray-700 text-white hover:bg-gray-800 h-8 px-3 text-xs sm:text-sm"
+                                    className="bg-gray-700 font-playfair text-white hover:bg-gray-800 h-8 px-3 text-xs sm:text-sm"
                                     onClick={() => setHandleDrawer(true)}
                                   >
                                     View

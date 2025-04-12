@@ -12,6 +12,7 @@ import {
   Get_User_Notification,
   Delete_Notification,
   Update_Notification,
+  Toggle_Theme
 } from "@/Routes";
 import { UseContextApi } from "../ContextApi";
 import { axiosService } from "@/Services";
@@ -27,8 +28,23 @@ import { IoIosLogIn } from "react-icons/io";
 import { RiLoginCircleLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 import { FaRegUserCircle } from "react-icons/fa";
+import { FaSun } from "react-icons/fa";
+import { FaMoon } from "react-icons/fa";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+
+export const toggleTheme=async(id)=>{
+  try{
+    const response=await axiosService.post(`${Toggle_Theme}/${id}`);
+    if(response?.status===200){
+       toast.success(response?.data?.message);
+    }  
+  }
+  catch(error){
+    console.log(error);
+    toast.error(error?.response?.data?.message);
+  }
+}
 
 export default function Navbar() {
   const {
@@ -52,7 +68,29 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const menuSheet = useRef(null);
-  const [theme, setTheme] = useState(false);
+  const [theme, setTheme] = useState(true);
+
+  useEffect(()=>{
+    if(logedUser){
+      setTheme(logedUser?.theme);
+    }
+  },[logedUser]);
+  
+  const toggleUserTheme=async()=>{
+    if(logedUser){
+      await toggleTheme(logedUser?._id);
+      dispatch(getUser());
+    }
+  }
+  useEffect(() => {
+    if (theme === false) {
+      document.body.classList.add("dark");
+    } 
+    else{
+      document.body.classList.remove("dark");
+    }
+  }, [theme]);
+  
 
   const { contextSafe } = useGSAP();
 
@@ -233,8 +271,10 @@ export default function Navbar() {
     }
   };
 
+
+
   const NotificationDropdown = () => (
-    <div className={`absolute z-20 mt-2 w-72 bg-white rounded-md shadow-lg ring-1 ring-black/5 right-0`}>
+    <div className={`absolute z-20 mt-2 w-72 ${theme? "bg-white":"bg-black"} rounded-md shadow-lg ring-1 ring-black/5 right-0`}>
       <div className="py-1">
         <div className="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
           <h3 className="text-sm font-medium">Notifications</h3>
@@ -318,7 +358,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="flex flex-row flex-wrap justify-between items-center z-50 md:px-20 px-4 bg-white shadow-sm sticky top-0 md:mb-5">
+    <nav className={`flex flex-row flex-wrap justify-between items-center z-50 md:px-20 px-4 ${theme? "bg-white":"bg-slate-900"} shadow-sm sticky top-0 md:mb-5`}>
       <div className="flex flex-row justify-center items-center gap-1 md:gap-5">
         <img
           src="/images/logo.png"
@@ -334,19 +374,19 @@ export default function Navbar() {
           <div ref={mobileNotifRef} className="relative">
             <button
               onClick={handleToggleMobileNotif}
-              className="p-2 rounded-full hover:bg-gray-100 relative"
+              className={`p-2 rounded-full  ${theme? "hover:bg-gray-100":"bg-gray-100"} relative`}
               aria-label="Notifications"
               data-mobile-notification-button
             >
               {unreadCount > 0 ? (
                 <>
-                  <MdOutlineNotificationsActive className="text-2xl text-gray-700" />
+                  <MdOutlineNotificationsActive className={`text-2xl  ${theme? "text-gray-700":"text-black"}`} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {unreadCount}
                   </span>
                 </>
               ) : (
-                <IoMdNotificationsOutline className="text-2xl text-gray-700" />
+                <IoMdNotificationsOutline className={`text-2xl  ${theme? "text-gray-700":"text-black"}`} />
               )}
             </button>
             {showMobileNotif && <NotificationDropdown isMobile />}
@@ -370,9 +410,9 @@ export default function Navbar() {
 
       <div
         ref={menuSheet}
-        className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform translate-x-full opacity-0 z-50 p-4"
+        className={`fixed top-0 right-0 w-64 h-full ${theme? "bg-white":"bg-black"} shadow-lg transform translate-x-full opacity-0 z-50 p-4`}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full ">
           <div className="flex justify-end mb-8">
             <AiOutlineClose 
               onClick={closeMenu} 
@@ -381,7 +421,7 @@ export default function Navbar() {
             />
           </div>
           
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col space-y-6 ">
             {NavItem.map(
               (item, index) =>
                 item.show && (
@@ -389,7 +429,7 @@ export default function Navbar() {
                     key={index}
                     to={item.path}
                     onClick={toggleMenu}
-                    className={`flex items-center gap-3 text-lg hover:text-blue-600 ${
+                    className={`flex items-center gap-3 text-lg hover:text-blue-600 ${theme? "":"text-white"} ${
                       pagePath === item.path || homePath === item.path 
                         ? "text-blue-700 font-medium"
                         : "text-gray-700"
@@ -410,8 +450,7 @@ export default function Navbar() {
                   }}
                   className={`flex items-center gap-3 text-lg hover:text-blue-600 ${
                     pagePath === "profile"
-                      ? "text-blue-700 font-medium"
-                      : "text-gray-700"}`} 
+                      && "text-blue-700 font-medium"}`} 
                 >
                   <FaRegUserCircle size={20} />
                   Your Profile
@@ -426,9 +465,18 @@ export default function Navbar() {
                   <TbLogout2 size={20} />
                   Log out
                 </button>
-                <button>
-                  hel
-                </button>
+                <button className="cursor-pointer" onClick={toggleUserTheme}>
+  <div className={`py-1 px-5 border ${theme ? "border-black" : "border-white"} w-fit rounded-xl flex items-center gap-2`}>
+    {
+      theme
+        ? <FaMoon className="text-black" size={15} />:<FaSun className="text-yellow-500" size={15} />
+       
+    }
+    <span className={`text-sm  ${theme? "text-black":"text-white"}`}>{theme ? "Dark" : "Light"}</span>
+  </div>
+</button>
+
+
               </>
             )}
           </div>
@@ -443,7 +491,7 @@ export default function Navbar() {
               <Link
                 key={index}
                 to={item.path}
-                className={`text-[16px] lg:text-[18px] relative after:absolute after:-bottom-1 after:left-0 after:h-[4px] after:bg-black hover:text-blue-600 flex items-center gap-1 ${
+                className={`text-[16px] lg:text-[18px] relative after:absolute after:-bottom-1 after:left-0 after:h-[4px]  ${theme? "after:bg-black":"after:bg-white"} hover:text-blue-600 flex items-center gap-1 ${
                   pagePath === item.path || homePath === item.path
                     ? "after:w-full text-blue-700"
                     : "after:w-0 after:transition-all after:duration-300 hover:after:w-full"
@@ -460,19 +508,19 @@ export default function Navbar() {
             <div ref={notifRef} className="relative">
               <button
                 onClick={handleToggleNotif}
-                className="p-2 rounded-full hover:bg-gray-100 relative"
+                className={`p-2 rounded-full ${theme? "hover:bg-gray-100":"bg-gray-100"} relative`}
                 aria-label="Notifications"
                 data-notification-button
               >
                 {unreadCount > 0 ? (
                   <>
-                    <MdOutlineNotificationsActive className="text-2xl text-gray-700" />
+                    <MdOutlineNotificationsActive className={`text-2xl ${theme? "text-gray-700":"text-black"}`} />
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   </>
                 ) : (
-                  <IoMdNotificationsOutline className="text-2xl text-gray-700" />
+                  <IoMdNotificationsOutline className={`text-2xl ${theme? "text-gray-700":"text-black"} `} />
                 )}
               </button>
               {showNotif && <NotificationDropdown />}
@@ -484,7 +532,7 @@ export default function Navbar() {
               className="cursor-pointer"
               data-profile-button
             >
-              <Avatar className="w-10 h-10 rounded-full flex justify-center items-center border-2 border-blue-600">
+              <Avatar className={`w-10 h-10 rounded-full flex justify-center ${theme? "":"bg-white"} items-center border-2 border-blue-600`}>
                 {logedUser?.userImage ? (
                   logedUser?.provider ? (
                     <AvatarImage
@@ -512,7 +560,7 @@ export default function Navbar() {
         )}
 
         {toggl && (
-          <div className="absolute right-3 z-10 mt-32 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
+          <div className={`absolute right-3 z-10 mt-32 w-48 origin-top-right rounded-md ${theme? "bg-white":"bg-black"} py-1 shadow-lg ring-1 ring-black/5 focus:outline-none`}>
             <div
               onClick={navigateToProfile}
               className={`px-4 py-2 text-sm  hover:bg-slate-100 cursor-pointer flex flex-row gap-2 items-center hover:text-blue-600 ${
@@ -523,10 +571,20 @@ export default function Navbar() {
             </div>
             <div
               onClick={handleLogout}
-              className="px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-slate-100 flex flex-row gap-2 items-center"
+              className={`px-4 py-2 text-sm  ${theme? "text-gray-700":"text-white"} hover:bg-slate-100 cursor-pointer hover:text-blue-600 flex flex-row gap-2 items-center`}
             >
               <TbLogout2 size={20}/>Log out
             </div>
+            <button className="cursor-pointer" onClick={toggleUserTheme}>
+  <div className={`py-1 px-5 border ${theme ? "border-black" : "border-white"} w-fit rounded-xl flex items-center gap-2`}>
+    {
+      theme
+        ? <FaMoon className="text-black" size={15} />:<FaSun className="text-yellow-500" size={15} />
+       
+    }
+    <span className={`text-sm  ${theme? "text-black":"text-white"}`}>{theme ? "Dark" : "Light"}</span>
+  </div>
+</button>
           </div>
         )}
       </div>

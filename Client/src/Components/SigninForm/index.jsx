@@ -128,7 +128,7 @@ export default function SigninForm({func}) {
           
           <Button 
             disabled={loadingSpin} 
-            className="w-full bg-green-600 hover:bg-green-700 text-white px-5 py-3 transition-colors duration-200"
+            className="w-full bg-green-600 font-playfair hover:bg-green-700 text-white px-5 py-3 transition-colors duration-200"
           >
             {loadingSpin ? (
               <FiLoader className='w-5 h-5 animate-spin mr-2'/>

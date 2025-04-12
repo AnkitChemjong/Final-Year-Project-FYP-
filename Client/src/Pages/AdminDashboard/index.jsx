@@ -21,6 +21,9 @@ import { getUser } from '@/Store/Slices/User_Slice';
 import { getApplication } from '@/Store/Slices/ApplicationSlice';
 import { getCourse } from '@/Store/Slices/Course_Slice';
 import { Button } from '@/Components/ui/button';
+import { FaSun } from "react-icons/fa";
+import { FaMoon } from "react-icons/fa";
+import { toggleTheme } from '@/Components/Navbar';
 
 
 
@@ -143,6 +146,13 @@ export default function AdminDashboard() {
   const [dialog2,setDialog2]=useState(false);
   const dispatch=useDispatch();
 
+  const toggleUserTheme=async()=>{
+    if(user){
+      await toggleTheme(user?._id);
+      dispatch(getUser());
+    }
+  }
+
   const updateProfileInputs = [
     {
       label: "User Name",
@@ -255,7 +265,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className='flex h-screen bg-gray-50'>
+    <div className={`flex h-screen  ${user?.theme===true && "bg-gray-50"} ${user?.theme===false && "bg-zinc-900"}`}>
       <AdminNavbar />
       <div className='flex-1 flex flex-col overflow-hidden'>
         <ScrollArea className='flex-1 overflow-auto w-full'>
@@ -263,7 +273,7 @@ export default function AdminDashboard() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
 
   <div className="flex items-center gap-2 sm:gap-4">
-    <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100 font-heading">
+    <h1 className={`text-2xl md:text-3xl font-bold ${user?.theme & "text-gray-800"} ${user?.theme===false && " text-white"} dark:text-gray-100 font-heading`}>
       Admin Dashboard
     </h1>
     <LottieAnimation 
@@ -277,10 +287,19 @@ export default function AdminDashboard() {
 
 
   <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-4 mr-6">
- 
+  <button className="cursor-pointer" onClick={toggleUserTheme}>
+  <div className={`py-1 px-5 border ${user?.theme ? "border-black" : "border-white"} w-fit rounded-xl flex items-center gap-2`}>
+    {
+      user?.theme
+        ? <FaMoon className="text-black" size={15} />:<FaSun className="text-yellow-500" size={15} />
+       
+    }
+    <span className={`text-sm  ${user?.theme? "text-black":"text-white"}`}>{user?.theme ? "Dark" : "Light"}</span>
+  </div>
+</button>
     <Button
       onClick={toggleDialog1}
-      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 transition-all duration-300 shadow-md hover:shadow-lg rounded-lg transform hover:scale-[1.02]"
+      className="w-full sm:w-auto flex items-center justify-center gap-2 font-playfair bg-green-600 hover:bg-green-700 text-white px-6 py-3 transition-all duration-300 shadow-md hover:shadow-lg rounded-lg transform hover:scale-[1.02]"
       aria-label="Update information"
     >
       <span>Update Info</span>
@@ -392,10 +411,10 @@ export default function AdminDashboard() {
                   color: 'text-orange-600',
                 }
               ].map((stat, index) => (
-                <div key={index} className='bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow'>
+                <div key={index} className={` ${user?.theme && "bg-white"} ${user?.theme === false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow`}>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <p className='text-gray-500 text-sm font-medium'>{stat.title}</p>
+                      <p className=' text-sm font-medium'>{stat.title}</p>
                       <h3 className='text-2xl font-bold mt-1'>{stat?.value}</h3>
                       {stat?.value1 && 
                         <p className='text-sm font-bold mt-1'>Total: Rs.{stat?.value1}</p>
@@ -417,9 +436,9 @@ export default function AdminDashboard() {
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
             
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>User Registrations</h3>
+                  <h3 className='text-lg font-semibold font-heading'>User Registrations</h3>
                   <div className='text-orange-500'>
                     <FaUserPlus size={18} />
                   </div>
@@ -471,9 +490,9 @@ export default function AdminDashboard() {
                 </div>
               </div>
           
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"}  p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>Course Uploads</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Course Uploads</h3>
                   <div className='text-blue-500'>
                     <FaChartLine size={18} />
                   </div>
@@ -509,7 +528,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
                   <h3 className='text-lg font-semibold'>Monthly Enrollments</h3>
                   <div className='text-blue-500'>
@@ -547,9 +566,9 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>Monthly Earnings</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Monthly Earnings</h3>
                   <div className='text-green-500'>
                     <FaMoneyBillWave size={18} />
                   </div>
@@ -607,9 +626,9 @@ export default function AdminDashboard() {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>Top Performing Courses</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Top Performing Courses</h3>
                   <div className='text-yellow-500'>
                     <FaStar size={18} />
                   </div>
@@ -620,8 +639,8 @@ export default function AdminDashboard() {
                     topPerformingCourse?.map((course, index) => (
                       <div key={index} className="border-b border-gray-100 pb-4 last:border-b-0 last:pb-0">
                         <div className="flex justify-between items-start">
-                          <h4 className="font-semibold text-gray-800">{course?.title}</h4>
-                          <span className="flex items-center text-sm bg-yellow-50 text-yellow-700 gap-1 px-2 py-1 rounded">
+                          <h4 className="font-semibold">{course?.title}</h4>
+                          <span className={`flex items-center text-sm ${user?.theme & "bg-yellow-50"} ${user?.theme===false && "bg-black "} text-yellow-700 gap-1 px-2 py-1 rounded`}>
                             {(() => {
                               const courseRatings = rating?.filter(item => item?.courseId?._id === course?._id) || [];
                               if (courseRatings?.length === 0) return 0;
@@ -658,28 +677,28 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className='bg-white p-5 rounded-xl shadow-sm border border-gray-100'>
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold'>Recent Purchases</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Recent Purchases</h3>
                   <div className='text-green-500'>
                     <FaMoneyBillWave size={18} />
                   </div>
                 </div>
                 {recentPurchases && recentPurchases?.length > 0 ? (
                   <div className='overflow-x-auto'>
-                    <table className='min-w-full divide-y divide-gray-200'>
-                      <thead className='bg-gray-50'>
+                    <table className={`min-w-full divide-y divide-gray-200 `}>
+                      <thead className={` ${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"}`}>
                         <tr>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Course</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Amount</th>
                         </tr>
                       </thead>
-                      <tbody className='bg-white divide-y divide-gray-200'>
+                      <tbody className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} divide-y divide-gray-200`}>
                         {recentPurchases.map((purchase, index) => (
                           <tr key={index} className="hover:bg-gray-50">
-                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900'>{purchase?.courseId?.title}</td>
-                            <td className='px-4 py-3 whitespace-nowrap text-sm text-gray-500'>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium '>{purchase?.courseId?.title}</td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm '>
                               {moment(purchase?.createdAt || purchase?.orderDate).format("MMMM DD, YYYY")}
                             </td>
                             <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>

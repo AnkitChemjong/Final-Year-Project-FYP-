@@ -223,26 +223,26 @@ useEffect(() => {
     };
   }
 }, [rotateImg]);
-
+console.log(user?.theme)
   return (
-    <main className='hello'>
+    <main>
       <Navbar/>
-      <div className="w-full min-h-screen bg-white p-4">
+      <div className={`w-full min-h-screen ${user?.theme===true && "bg-white"} ${user?.theme===false && "bg-zinc-900"} p-4`}>
   <div className="flex flex-col md:flex-row justify-center md:justify-evenly items-center md:items-start gap-8 md:gap-0 md:-mt-8">
     <div className="flex flex-col gap-6 md:gap-20 mt-0 md:mt-0 order-2 md:order-1 text-center md:text-left">
       <div className="flex flex-col gap-2 font-display">
-        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">Efficient Pathsala</h1>
-        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">provides efficiency</h1>
-        <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">in learning</h1>
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">Efficient Pathsala</h1>
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">provides efficiency</h1>
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">in learning</h1>
       </div>
       <div className="flex flex-col gap-2 font-heading">
-        <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">Don't think twice and</h2>
-        <h2 className="font-medium font-mono text-xl sm:text-2xl md:text-3xl">start learning</h2>
+        <h2 className="font-medium font-mono text-lg sm:text-xl md:text-2xl">Don't think twice and</h2>
+        <h2 className="font-medium font-mono text-lg sm:text-xl md:text-2xl">start learning</h2>
       </div>
       <Button 
   ref={buttonMove}
   onClick={handleButtonClick} 
-  className="bg-green-600 z-50 text-white px-8 py-4 md:px-10 md:py-5 md:absolute md:bottom-5 hover:bg-blue-700 transition-all duration-300 ease-in-out mx-auto md:mx-0 "
+  className="font-playfair bg-green-600 text-white px-8 py-4 md:px-10 md:py-5 md:absolute md:bottom-5 hover:bg-blue-700 transition-all duration-300 ease-in-out mx-auto md:mx-0 "
 >
   Start
 </Button>
@@ -278,7 +278,7 @@ useEffect(() => {
           {
             [...Array(7)].map((index)=>{
               return (
-        <div key={index} className=" word flex flex-row items-center justify-center py-4 gap-5 shrink-0 -translate-x-96">
+        <div key={index} className={` word flex flex-row items-center justify-center py-4 gap-5 shrink-0 -translate-x-96 ${user?.theme? "":"text-black"}`}>
           <h1 className="text-2xl font-heading">Grab the opportunity!</h1>
           <FaArrowRight className="h"  size={25}/>
         </div>
@@ -286,7 +286,7 @@ useEffect(() => {
             })
           }
       </div>
-        <section className="py-8 px-4 lg:px-8 bg-gray-100">
+        <section className={`py-8 px-4 lg:px-8 ${user?.theme && "bg-white"} ${user?.theme===false && "bg-zinc-900"}`}>
         <div className='flex gap-2 items-center'>
         <h1 className='text-3xl font-bold font-heading'>Course Categories</h1>
           <LottieAnimation animationData={category} width={150} height={150} speed={1}/>
@@ -326,7 +326,7 @@ useEffect(() => {
                 <div className="p-4 flex flex-col gap-2">
                   <h3 className="font-bold mb-2">{courseItem?.title}</h3>
                   <div className='flex flex-row items-center gap-5'>
-                  <Avatar className='w-10 h-10 rounded-full flex justify-center items-center'>
+                  <Avatar className={`w-10 h-10 rounded-full flex justify-center items-center ${user?.theme? "":"bg-white"}`}>
                           {courseItem?.creatorDetails?.userImage? 
                           <AvatarImage 
                           className="rounded-full"
@@ -335,16 +335,16 @@ useEffect(() => {
                               <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{courseItem?.creatorDetails?.userName.split("")[0].toUpperCase()}</div>
                           )}
                         </Avatar>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className={`text-sm  ${user?.theme? "text-gray-700":"text-white"} mb-2`}>
                     {courseItem?.creatorDetails?.userName?.toUpperCase()}
                   </p>
                   </div>
                   
-                  <p className="font-bold text-sm text-slate-600">
+                  <p className={`font-bold text-sm  ${user?.theme? "text-slate-600":"text-white"}`}>
                   {courseItem?.category?.toUpperCase()}
                   </p>
           
-                  <p className="font-bold text-sm text-slate-600">
+                  <p className={`font-bold text-sm  ${user?.theme? "text-slate-600":"text-white"}`}>
                     Price: Rs. {courseItem?.pricing}
                   </p>
                 </div>
@@ -357,14 +357,14 @@ useEffect(() => {
       </section>
       
       
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 ">
+      <section className={`py-16 px-4 sm:px-6 lg:px-8 ${user?.theme && "bg-white"} ${user?.theme===false && "bg-zinc-900"}`}>
           <div className="max-w-7xl mx-auto">
             <div className='flex items-center gap-2'>
                            <h2 className="text-2xl font-bold mb-2 font-heading ">Our Instructors</h2>
                            <LottieAnimation animationData={teacher} width={150} height={150} speed={1} />
                       </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {instructors.map((teacher, index) => (
+              {instructors?.map((teacher, index) => (
                 <Card onClick={()=>navigate(`/teacher/details/${teacher?._id}`)} key={index} className="text-center p-6 cursor-pointer hover:scale-105 transition-all ease-in-out duration-100">
                    <Avatar className="w-24 h-24 rounded-full cursor-pointer flex justify-center items-center border-4 border-primary">
         {teacher?.userImage ? (
@@ -378,15 +378,15 @@ useEffect(() => {
             alt="Teacher Profile"
           />
         ) : (
-          <div className="bg-primarr text-4xl font-bold flex justify-center items-center w-full h-full rounded-full">
+          <div className=" text-4xl font-bold flex justify-center items-center w-full h-full rounded-full">
             {teacher?.userName?.charAt(0).toUpperCase()}
           </div>
         )}
       </Avatar>
                   <CardTitle>{teacher?.userName}</CardTitle>
                   <CardDescription className="mt-2">
-                    <p className="font-medium text-gray-900">{teacher?.teacherInfo?.category||"N/A"}</p>
-                    <p className="text-gray-600">
+                    <p className={`font-medium ${user?.theme? "text-gray-900":"text-white"}`}>Category: {teacher?.teacherInfo?.category||"N/A"}</p>
+                    <p className={`${user?.theme? "text-gray-600":"text-white"}`}>
   {teacher?.teacherInfo?.experience ? `${teacher?.teacherInfo?.experience} Yrs` : "N/A"} experience
 </p>
                   </CardDescription>
@@ -400,9 +400,9 @@ useEffect(() => {
         <h1 className='text-3xl font-bold font-heading'>Student Testimonials</h1>
           <LottieAnimation animationData={student} width={150} height={150} speed={1}/>
         </div>
-  <Card className="mb-8">
+  <Card className="mb-8 ">
     <CardHeader>
-      <CardTitle className="text-xl font-">
+      <CardTitle className="text-xl font-heading">
         What Our Students Say
       </CardTitle>
     </CardHeader>
@@ -412,12 +412,12 @@ useEffect(() => {
           {topTestimonials.map((feedback, index) => (
             <div 
               key={index} 
-              className="border rounded-lg p-4 hover:shadow-md  cursor-pointer bg-white
-              hover:scale-105 transition-all ease-in-out"
+              className={`border rounded-lg p-4 hover:shadow-md  cursor-pointer 
+              hover:scale-105 transition-all ease-in-out"`}
             >
               <div className="flex flex-col h-full">
                 <div className="flex items-start gap-3 mb-3">
-                  <Avatar className="w-10 h-10 rounded-full cursor-pointer flex justify-center items-center border">
+                  <Avatar className={`w-10 h-10 rounded-full cursor-pointer flex justify-center items-center border ${user?.theme? "":"bg-white"}`}>
                     {feedback.userId?.userImage ? (
                       <AvatarImage
                         className="rounded-full"
@@ -435,10 +435,10 @@ useEffect(() => {
                     )}
                   </Avatar>
                   <div>
-                    <h4 className="font-medium line-clamp-1">
+                    <h4 className={`font-medium line-clamp-1 ${user?.theme? "":"text-white"}`}>
                       {feedback.userId?.userName || 'Anonymous User'}
                     </h4>
-                    <p className="text-gray-600 text-xs">
+                    <p className={` ${user?.theme? "text-gray-600":"text-white"} text-xs`}>
                       {moment(feedback.createdAt).format("MMM D, YYYY")}
                     </p>
                   </div>
@@ -454,11 +454,11 @@ useEffect(() => {
                   ))}
                 </div>
                 
-                <p className="text-gray-800 text-sm flex-grow line-clamp-4">
+                <p className={` ${user?.theme? "text-gray-800":"text-white"} text-sm flex-grow line-clamp-4`}>
                   {feedback.comment || "No comment provided"}
                 </p>
                 
-                <p className="text-xs text-gray-500 mt-2">
+                <p className={`text-xs  mt-2 ${user?.theme? "text-gray-500":"text-white"}`}>
                   Rated course: {feedback.courseId?.title || "Unknown Course"}
                 </p>
               </div>
@@ -466,7 +466,7 @@ useEffect(() => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center py-4">
+        <p className={` ${user?.theme? "text-gray-500":"text-white"} text-center py-4`}>
           No testimonials yet. Be the first to share your experience!
         </p>
       )}

@@ -10,7 +10,8 @@ export default {
 		fontFamily: {
 			display: ["Poppins", "sans-serif"], 
 			heading: ["Arial", "sans-serif"],  
-			body: ["Roboto", "sans-serif"],     
+			body: ["Roboto", "sans-serif"],   
+			playfair: ["Playfair Display", "serif"]  
 		  },
   		borderRadius: {
   			lg: 'var(--radius)',

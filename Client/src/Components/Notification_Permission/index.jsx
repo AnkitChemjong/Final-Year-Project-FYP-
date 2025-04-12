@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { Button } from '../ui/button';
 
 const NotificationPermission = () => {
   useEffect(() => {
@@ -17,7 +18,7 @@ const NotificationPermission = () => {
         <div>
           <p>Enable notifications for course updates?</p>
           <div className="flex gap-2 mt-2">
-            <button 
+            <Button 
               onClick={async () => {
                 const permission = await Notification.requestPermission();
                 localStorage.setItem('notificationPermissionAsked', 'true');
@@ -25,19 +26,19 @@ const NotificationPermission = () => {
                   toast.success('Notifications enabled!');
                 }
               }}
-              className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
+              className="px-3 py-1 font-playfair bg-blue-600 text-white rounded text-sm"
             >
               Allow
-            </button>
-            <button 
+            </Button>
+            <Button 
               onClick={() => {
                 localStorage.setItem('notificationPermissionAsked', 'true');
                 toast.dismiss();
               }}
-              className="px-3 py-1 bg-gray-200 text-gray-800 rounded text-sm"
+              className="px-3 py-1 font-playfair bg-gray-200 text-gray-800 rounded text-sm"
             >
               Later
-            </button>
+            </Button>
           </div>
         </div>,
         {

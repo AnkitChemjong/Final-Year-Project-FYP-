@@ -78,7 +78,7 @@ export default function SignupForm({func}) {
           <Button 
             disabled={loadingSpin} 
             type="submit" 
-            className="w-full bg-green-600 text-white px-5 py-3 hover:bg-blue-700"
+            className="w-full bg-green-600 text-white px-5 py-3 hover:bg-blue-700 font-playfair"
           >
             {loadingSpin && <FiLoader className='w-6 h-6 animate-spin mr-2'/>}
             Register

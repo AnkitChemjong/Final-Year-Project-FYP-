@@ -18,13 +18,17 @@ import { Table,
  import { useDispatch } from 'react-redux';
  import { getApplication } from '@/Store/Slices/ApplicationSlice';
  import DeleteDialog from '../DeleteDialog';
+ import { useSelector } from 'react-redux';
 
 
 export default function CommonTable({data,header,type}){
   const dispatch=useDispatch();
   const [handleDrawer,setHandleDrawer]=useState(false);
+  const userState=useSelector(state=>state?.user);
+  const {data:user}=userState;
   const handleDrawerFunction=()=>{
     setHandleDrawer(true);  
+
   }
   const [selectedApplication,setSelectedApplication]=useState([]);
   const [deleteMulti,setDeleteMulti]=useState(false);
@@ -84,10 +88,10 @@ export default function CommonTable({data,header,type}){
   
   return (
     <div className='flex flex-col justify-center items-center gap-2 '>
-      <p className=" text-slate-500 text-sm font-heading">A list of {type} Applications.</p>
+      <p className="  text-sm font-heading">A list of {type} Applications.</p>
         <div className="flex flex-row justify-evenly items-center w-full">
           <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
-          <RiDeleteBin6Line onClick={()=>setDeleteMulti(true)} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+          <RiDeleteBin6Line onClick={()=>setDeleteMulti(true)} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
           {deleteMulti && <DeleteDialog
                                 deleteDialog={deleteMulti}
                                 setDeleteDialog={setDeleteMulti}
@@ -117,7 +121,8 @@ export default function CommonTable({data,header,type}){
         {data.map((item,index) => (
           <TableRow key={index}>
             <TableCell className="font-medium">
-              <Checkbox checked={selectedApplication.includes(item)} onCheckedChange={(checked)=>handleAddApplication(item,checked)}/>
+              <Checkbox className={`${user?.theme ===false && 'bg-white'}`}
+               checked={selectedApplication.includes(item)} onCheckedChange={(checked)=>handleAddApplication(item,checked)}/>
             </TableCell>
             <TableCell>{data?.indexOf(item)+1}</TableCell>
             <TableCell>{item?.user?.userName}</TableCell>

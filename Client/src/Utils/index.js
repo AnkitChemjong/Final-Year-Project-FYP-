@@ -50,6 +50,7 @@ export const loginForm=[
     label:'Email',
     name:"email",
     componentType:"input",
+    type:'email',
     placeholder:'Enter your email'
 
 },
@@ -57,6 +58,7 @@ export const loginForm=[
     label:'Password',
     name:"password",
     componentType:"input",
+    type:'password',
     placeholder:'Enter Password'
 
 },
@@ -64,6 +66,7 @@ export const loginForm=[
     label:'Confirm Password',
     name:"confirmPassword",
     componentType:"input",
+    type:'password',
     placeholder:'Password Confirmation'
 
 },

@@ -250,7 +250,7 @@ export default function CourseProgress() {
           <div className="flex items-center space-x-4">
             <Button
               onClick={() => navigate(`/studentCourse`)}
-              className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md"
+              className="bg-green-600 font-playfair text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md"
               size="sm"
             >
               <FaChevronLeft className="h-4 w-4 mr-2" />
@@ -263,7 +263,7 @@ export default function CourseProgress() {
           <div className="flex items center gap-2">
             {
              courseProgress?.progressData?.completed &&
-            <Button onClick={resetCourse} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
+            <Button onClick={resetCourse} className="font-playfair bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
             Reset Course
           </Button>
             }
@@ -371,11 +371,11 @@ export default function CourseProgress() {
                     {courseProgress?.progressData?.certificate && (
   <div className="mt-6 p-4">
     <div className="bg-gray-400 p-5 rounded-lg shadow-md">
-    <h2 className="text-xl font-semibold text-gray-800 mb-4">
+    <h2 className="text-xl font-semibold text-gray-800 mb-4 font-heading">
       Download Your Certificate
     </h2>
     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-500 transition-all">
-      <p onClick={()=>handleDwn('view',courseProgress?.progressData?.certificate)} className="cursor-pointer text-gray-700 text-sm truncate flex-1 mr-4">
+      <p onClick={()=>handleDwn('view',courseProgress?.progressData?.certificate)} className="cursor-pointer text-gray-700 text-sm truncate flex-1 mr-4 font-playfair">
         {courseProgress?.progressData?.certificate.split("/").pop()}
       </p>
       <Button

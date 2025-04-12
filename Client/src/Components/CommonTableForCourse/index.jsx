@@ -24,6 +24,7 @@ import { getTeacherCoursesFromBackend } from '@/Pages/TeacherCourse';
 import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
 import DeleteDialog from '../DeleteDialog';
+import CourseDetailsDrawer from '../CourseDetailsDrawer';
 
 
 
@@ -32,6 +33,8 @@ export default function CommonTableForCourse({data,header,type="",page}){
   const navigate=useNavigate();
   const userStates = useSelector(state => state?.user);
   const { data: user, loading } = userStates;
+  const purchaseStates = useSelector(state => state?.purchase);
+  const { data: purchaseData, loading1 } = purchaseStates;
   const {teacherCourseList,setTeacherCourseList}=useContext(UseContextApi);
   const [selectedCourse,setSelectedCourse]=useState([]);
   const [publishSingle,setPublishSingle]=useState(false);
@@ -40,6 +43,9 @@ export default function CommonTableForCourse({data,header,type="",page}){
   const [unPublishMulti,setUnPublishMulti]=useState(false);
   const [deleteSingle,setDeleteSingle]=useState(false);
   const [deleteMulti,setDeleteMulti]=useState(false);
+  const [toggleDrawer,setToggleDrawer]=useState(false);
+  const [temporaryCourseData,setTemporaryCourseData]=useState(null);
+  const [purchasedData,setPurchasedData]=useState([]);
 
   const deleteCourse=async ({data=null,type,status})=>{
     try{
@@ -165,10 +171,9 @@ export default function CommonTableForCourse({data,header,type="",page}){
     navigate(`/edit_course/${id}`);
    }
 
-  
   return (
     <div className='flex flex-col justify-center items-center gap-2 px-2'>
-      <p className=" text-slate-500 text-sm font-heading">A list of {type} Courses.</p>
+      <p className="  text-sm font-heading">A list of {type} Courses.</p>
         {
             data && data.length >=1? 
             (
@@ -178,7 +183,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
             page === "admin-page" &&
             <>
           <div className="relative cursor-pointer before:content-['Delete-All'] before:absolute before:-top-14 before:left-1/2 before:-translate-x-1/2 before:px-2 before:py-1 before:text-white before:text-sm before:bg-slate-900 before:rounded-md before:opacity-0 before:pointer-events-none before:transition-opacity before:duration-300 hover:before:opacity-100">
-          <RiDeleteBin6Line onClick={()=>setDeleteMulti(true)} className='cursor-pointer text-black hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+          <RiDeleteBin6Line onClick={()=>setDeleteMulti(true)} className='cursor-pointer  hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
           </div>
           {deleteMulti && <DeleteDialog
                                 deleteDialog={deleteMulti}
@@ -196,7 +201,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                   <Button
                   disabled={teacherCourseList?.every(item=>item?.isPublished===true)}
                     onClick={() =>setPublishMulti(true)}
-                    className="bg-green-500 text-white hover:scale-105  ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
+                    className="bg-green-500 text-white font-playfair hover:scale-105  ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
                   >
                    { selectedCourse?.length>0? "Publish Selected":"Publish All"}
                   </Button>
@@ -211,7 +216,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                   <Button
                    disabled={teacherCourseList?.every(item=>item?.isPublished===false)}
                     onClick={() =>setUnPublishMulti(true)}
-                    className="bg-red-500 hover:scale-105  ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
+                    className="bg-red-500 hover:scale-105 font-playfair  ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
                   >
                     {selectedCourse?.length>0? "unPublish Selected":"unPublish All"}
                   </Button>
@@ -240,10 +245,10 @@ export default function CommonTableForCourse({data,header,type="",page}){
        </TableRow>
      </TableHeader>
            <TableBody>
-             {data.map((item,index) => (
+             {data?.map((item,index) => (
                <TableRow key={index}>
                  <TableCell className="font-medium">
-                   <Checkbox checked={selectedCourse.includes(item)} onCheckedChange={(checked)=>handleAddCourse(item,checked)}/>
+                   <Checkbox className={`${user?.theme? "":"bg-white"}`} checked={selectedCourse.includes(item)} onCheckedChange={(checked)=>handleAddCourse(item,checked)}/>
                  </TableCell>
                  <TableCell>{data?.indexOf(item)+1}</TableCell>
                  <TableCell>{item?.title}</TableCell>
@@ -260,7 +265,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                   <TableCell className="text-center">{item?.isPublished?.toString()}</TableCell>
                  }
 
-                 <TableCell className="text-right flex flex-row gap-5 justify-center items-center">
+                 <TableCell className="text-right flex flex-row gap-5 justify-center items-center ">
                    <FaRegEdit className='cursor-pointer hover:scale-105 duration-100 ease-in-out transition-all' onClick={()=>handleCourseEditId(item?._id)} size={20}/>
                     {
                       page === "admin-page" &&
@@ -282,7 +287,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                         <>
                         <Button
                         onClick={() => setUnPublishSingle(true)}
-                        className="bg-red-500 hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
+                        className="bg-red-500 font-playfair hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
                       >
                         unPublish
                       </Button>
@@ -298,7 +303,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                                     <>
                                     <Button
                                   onClick={() =>setPublishSingle(true) }
-                                  className="bg-green-500 text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
+                                  className="bg-green-500 font-playfair text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
                                 >
                                   Publish
                                 </Button>
@@ -312,6 +317,22 @@ export default function CommonTableForCourse({data,header,type="",page}){
                                     </>
                       )
                     }
+                    <Button onClick={()=>{
+                                            setToggleDrawer(true);
+                                            setTemporaryCourseData(item);
+                                            setPurchasedData(purchaseData?.filter(
+                                              purchasedItem => purchasedItem?.courseId?._id === item?._id
+                                            ));
+                    }}
+                                            className="bg-green-600 font-playfair hover:bg-blue-600 hover:scale-105 transition-all ease-in-out">
+                                        View
+                                      </Button>
+                                      {toggleDrawer && 
+                                      <CourseDetailsDrawer handleDrawer={toggleDrawer} setHandleDrawer={setToggleDrawer} title={"Course Data."} description={"View the user Data."}
+                                                        footer={"Final data view."}   data={temporaryCourseData} setTemporaryCourseData={setTemporaryCourseData} purchasedData={purchasedData} 
+                                                        setPurchasedData={setPurchasedData}/>
+                                      
+                                      }
                  </TableCell>
                  
                </TableRow>

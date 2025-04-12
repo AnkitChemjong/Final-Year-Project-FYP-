@@ -22,6 +22,7 @@ export const Get_Teacher_Detail=`${User_Route}/get/details`;
 export const Update_Teacher_Info=`${User_Route}/update/teacherinfo`;
 export const Handle_Status=`${User_Route}/handleStatus`;
 export const Get_Online_Users=`${User_Route}/getOnlineUsers`;
+export const Toggle_Theme=`${User_Route}/toggleTheme`;
 
 
 //Application routes

@@ -19,6 +19,7 @@ import { axiosService } from '@/Services';
 import { Get_Teacher_Purchase_Data } from '@/Routes';
 import dashboard  from '@/assets/dashboard.json';
 import moment from 'moment';
+import { Button } from '@/Components/ui/button';
 
 export const getTeacherPurchaseData = async (id) => {
   try {
@@ -91,7 +92,6 @@ export default function TeacherApplication() {
     setEnrollmentData([]);
     setIsLoading(true);
   };
-
   useEffect(() => {
     if (status === 'success' && user?._id) {
       socket?.emit('subscription-bought', {
@@ -207,13 +207,13 @@ export default function TeacherApplication() {
   }
 
   return (
-    <div className='flex flex-row gap-2 overflow-hidden min-h-screen bg-gray-50'>
+    <div className={`flex flex-row gap-2 overflow-hidden min-h-screen  ${user?.theme? "bg-gray-50":"bg-zinc-900"}`}>
       <TeacherNavbar />
       <ScrollArea className="max-h-screen overflow-auto">
         <div className='flex-1 p-6'>
           <div className='flex justify-between items-center mb-8'>
           <div className='flex gap-2 items-center'>
-            <h1 className='text-3xl font-bold text-gray-800 font-heading'>Teacher Dashboard</h1>
+            <h1 className={`text-3xl font-bold  ${user?.theme? "text-gray-800":"text-white"} font-heading`}>Teacher Dashboard</h1>
           <LottieAnimation animationData={dashboard} width={150} height={150} speed={1}/>
         </div>
             <div className='flex items-center gap-4'>
@@ -261,10 +261,10 @@ export default function TeacherApplication() {
                 color: 'text-purple-600'
               }
             ].map((stat, index) => (
-              <div key={index} className='bg-white p-6 rounded-lg shadow-sm border border-gray-100'>
-                <div className='flex items-center justify-between'>
+              <div key={index} className={` ${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-100`}>
+                <div className={`flex items-center justify-between ${user?.theme? "":"text-white"}`}>
                   <div>
-                    <p className='text-gray-500 font-medium'>{stat.title}</p>
+                    <p className=' font-medium'>{stat.title}</p>
                     <h3 className='text-2xl font-bold mt-2'>{stat.value}</h3>
                   </div>
                   <div className={`p-3 rounded-full ${stat.bg} ${stat.color}`}>
@@ -278,9 +278,9 @@ export default function TeacherApplication() {
         
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
          
-            <div className='bg-white p-6 rounded-lg shadow-sm border border-gray-100 lg:col-span-2'>
+            <div className={` ${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-100 lg:col-span-2 `}>
               <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-lg font-semibold'>Monthly Enrollments ({new Date().getFullYear()})</h3>
+                <h3 className={`text-lg font-semibold font-heading ${user?.theme? "":"text-white"}`}>Monthly Enrollments ({new Date().getFullYear()})</h3>
                 <div className='text-blue-500'>
                   <FaChartLine size={20} />
                 </div>
@@ -308,9 +308,9 @@ export default function TeacherApplication() {
             </div>
 
            
-            <div className='bg-white p-6 rounded-lg shadow-sm border border-gray-100'>
+            <div className={` ${user?.theme? "bg-white":"bg-black text-white"} p-6 rounded-lg shadow-sm border border-gray-100`}>
               <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-lg font-semibold'>Top Performing Course</h3>
+                <h3 className='text-lg font-semibold font-heading'>Top Performing Course</h3>
                 <div className='text-yellow-500'>
                   <FaStar size={20} />
                 </div>
@@ -353,18 +353,18 @@ export default function TeacherApplication() {
                         )
                       }
                     ].map((item, i) => (
-                      <div key={i} className='flex justify-between'>
-                        <span className='text-gray-500'>{item.label}:</span>
+                      <div key={i} className='flex justify-between text-gray-500'>
+                        <span >{item.label}:</span>
                         <span className='font-medium'>{item.value}</span>
                       </div>
                     ))}
                   </div>
-                  <button
+                  <Button
                     onClick={() => navigate('/teacher/course')}
-                    className='mt-6 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition'
+                    className='mt-6 w-full font-playfair py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition'
                   >
                     View All Courses
-                  </button>
+                  </Button>
                 </>
               ) : (
                 <p className='text-gray-500'>No course data available</p>
@@ -372,14 +372,14 @@ export default function TeacherApplication() {
             </div>
           </div>
 
-          <div className='bg-white p-6 rounded-lg shadow-sm border border-gray-100'>
-            <h3 className='text-lg font-semibold mb-4'>Recent Earnings</h3>
+          <div className={` ${user?.theme? "bg-white":"bg-black text-white"} p-6 rounded-lg shadow-sm border border-gray-100`}>
+            <h3 className='text-lg font-semibold mb-4 font-heading'>Recent Earnings</h3>
             
             {teacherPurchaseData?.purchase?.length ? (
               <div className='overflow-x-auto'>
                 <ScrollArea className="max-h-96 overflow-auto">
                   <table className='min-w-full divide-y divide-gray-200'>
-                    <thead className='bg-gray-100'>
+                    <thead className={` ${user?.theme? "bg-gray-100":"bg-black"}`}>
                       <tr>
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Course</th>
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Student</th>
@@ -387,7 +387,7 @@ export default function TeacherApplication() {
                         <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Earnings</th>
                       </tr>
                     </thead>
-                    <tbody className='bg-white divide-y divide-gray-200'>
+                    <tbody className={` ${user?.theme? "bg-white":"bg-black"} divide-y divide-gray-200`}>
                       {teacherPurchaseData.purchase.slice(0, 5).map((purchase, i) => {
                         const courseData = course?.find(c => c._id === purchase.courseId);
                         return (

@@ -29,9 +29,11 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
   const { data: enrolledCourse, loading1 } = purchasedCourseState;
   const allCourseState = useSelector(state => state?.course);
   const { data: courses, loading2 } = allCourseState;
+  const userState=useSelector(state=>state?.user);
+  const {data:user}=userState;
   const {allTeacherPurchaseData,setAllteacherPurchaseData}=useContext(UseContextApi);
   const [toggleDrawer,setToggleDrawer]=useState(false);
-  const [temporaryUserData,setTemporaryUserData]=useState(false);
+  const [temporaryUserData,setTemporaryUserData]=useState(null);
   const [thisMonthEarning,setThisMonthEarning]=useState(0);
   const [banSingle,setBanSingle]=useState(false);
   const [unBanSingle,setUnBanSingle]=useState(false);
@@ -101,7 +103,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
             <>
             <Button
               onClick={() =>setBanMulti(true) }
-              className="hover:scale-105 transition-all ease-in-out px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-2"
+              className="hover:scale-105 font-playfair transition-all ease-in-out px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-2"
               disabled={customerList.length === 0} 
             >
               {selectedUser?.length > 0 ? "Ban Selected" : "Ban All"}
@@ -120,7 +122,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
             <>
             <Button
               onClick={() => setUnBanMulti(true)}
-              className="hover:scale-105 transition-all ease-in-out px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2"
+              className="hover:scale-105 transition-all font-playfair ease-in-out px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-2"
               disabled={customerList.length === 0} 
             >
               {selectedUser?.length > 0 ? "Unban Selected" : "Unban All"}
@@ -151,6 +153,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
               <TableRow key={customer._id || index}>
                 <TableCell>
                   <Checkbox
+                  className={`${user?.theme===false && " bg-white"}`}
                     disabled={status === ''}
                     checked={selectedUser.some(user => user._id === customer._id)} 
                     onCheckedChange={(checked) => handleAddUser(customer, checked)}
@@ -245,7 +248,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                             .reduce((sum, purchase) => sum + (parseFloat(purchase?.teacherAmount) || 0), 0)
                         : 0)
 
-                    }} className="bg-green-600 hover:bg-blue-600 hover:scale-105 transition-all ease-in-out">
+                    }} className="bg-green-600 font-playfair hover:bg-blue-600 hover:scale-105 transition-all ease-in-out">
                     View
                   </Button>
                   {toggleDrawer &&
@@ -257,7 +260,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                     <>
                     <Button
                       onClick={() => setUnBanSingle(true)}
-                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 hover:scale-105 transition-all ease-in-out"
+                      className="px-3 py-1 font-playfair bg-green-500 text-white rounded hover:bg-green-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Unban
                     </Button>
@@ -273,7 +276,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                     <>
                     <Button
                       onClick={() =>setBanSingle(true) }
-                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 hover:scale-105 transition-all ease-in-out"
+                      className="px-3 py-1 font-playfair bg-red-500 text-white rounded hover:bg-red-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Ban
                     </Button>

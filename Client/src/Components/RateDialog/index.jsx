@@ -113,7 +113,7 @@ export function RateDialog({
      
         <div className="mt-6 flex justify-end gap-2">
           <Button 
-          className="flex items-center gap-2 border-2 border-black text-black bg-gray-200 hover:bg-gray-600 transition-all ease-in-out hover:scale-105" 
+          className="flex items-center gap-2 border-2 font-playfair border-black text-black bg-gray-200 hover:bg-gray-600 transition-all ease-in-out hover:scale-105" 
             onClick={() => onOpenChange(false)}
           >
             Later
@@ -121,7 +121,7 @@ export function RateDialog({
           <Button
             onClick={courseId? handleSubmitCourse:handleSubmitTeacher}
             disabled={isSubmitDisabled}
-            className="flex items-center gap-2 bg-green-600 hover:bg-blue-600 transition-all ease-in-out hover:scale-105"
+            className="flex items-center gap-2 font-playfair bg-green-600 hover:bg-blue-600 transition-all ease-in-out hover:scale-105"
           >
             {loadingSpin && <FiLoader className="w-4 h-4 animate-spin" />}
             Send

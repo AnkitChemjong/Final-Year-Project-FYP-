@@ -8,12 +8,14 @@ import LottieAnimation from '@/Components/LottieAnimation';
 import graduationcourse from '@/assets/graduationcourse.json';
 import { UseContextApi } from '../ContextApi';
 import { FaBook, FaCheckCircle, FaEyeSlash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 
 export default function TeacherCoursesData({ courseList, teacherData }) {
   const navigate = useNavigate();
   const { setCurrentEditedCourseId, setCourseLandingFormData, setCourseCurriculumFormData, courseQuizFormData, setCourseQuizFormData } = useContext(UseContextApi);
-
+  const userState=useSelector(state=>state?.user);
+  const {data:user,loading}=userState;
   const handleNavigation = () => {
     setCurrentEditedCourseId(null);
     setCourseQuizFormData(courseQuizInitialFormData);
@@ -27,10 +29,10 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
   const unpublishedCourses = courseList?.filter(course => !course.isPublished).length || 0;
   return (
     <ScrollArea className="max-h-screen overflow-auto">
-      <div className="flex flex-col w-full p-6 min-h-screen">
+      <div className={`flex flex-col w-full p-6 min-h-screen`}>
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className='flex gap-1 items-center'>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0 font-heading">Your Courses</h1>
+            <h1 className={`text-3xl font-bold  ${user?.theme? "text-gray-800":"text-white"} mb-4 md:mb-0 font-heading`}>Your Courses</h1>
             <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1}/>
           </div>
           <CommonButton
@@ -44,11 +46,11 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
          
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={`${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Total Courses</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{totalCourses}</p>
+                <h3 className=" text-sm font-medium font-heading">Total Courses</h3>
+                <p className="text-3xl font-bold mt-2">{totalCourses}</p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <FaBook className="text-blue-600 text-xl" />
@@ -57,11 +59,11 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           </div>
 
          
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={`${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Published Courses</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{publishedCourses}</p>
+                <h3 className=" text-sm font-medium font-heading">Published Courses</h3>
+                <p className="text-3xl font-bold  mt-2">{publishedCourses}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <FaCheckCircle className="text-green-600 text-xl" />
@@ -70,11 +72,11 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           </div>
 
           
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <div className={`${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-200`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-gray-600 text-sm font-medium font-heading">Unpublished Courses</h3>
-                <p className="text-3xl font-bold text-gray-800 mt-2">{unpublishedCourses}</p>
+                <h3 className=" text-sm font-medium font-heading">Unpublished Courses</h3>
+                <p className="text-3xl font-bold  mt-2">{unpublishedCourses}</p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
                 <FaEyeSlash className="text-yellow-600 text-xl" />
@@ -83,7 +85,7 @@ export default function TeacherCoursesData({ courseList, teacherData }) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm py-5 border border-gray-200 overflow-hidden">
+        <div className={` ${user?.theme? "bg-white":"bg-black text-white"} rounded-lg shadow-sm py-5 border border-gray-200 overflow-hidden`}>
           <CommonTableForCourse
             data={courseList}
             header={formatForTeacherCourses}

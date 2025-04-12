@@ -12,6 +12,7 @@ import PaymentMessageDialog from '@/Components/PaymentMessageDialog';
 import { useLocation } from 'react-router-dom';
 import cancelpayment from '@/assets/cancelpayment.json';
 import { toast } from 'react-toastify';
+import { Button } from '@/Components/ui/button';
 
 
 export default function Subscription() {
@@ -103,9 +104,9 @@ export default function Subscription() {
                   ))}
                 </ul>
                 
-                <button
+                <Button
                   onClick={() => handleSubscribe(plan.name,plan.price)}
-                  className={`w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center ${
+                  className={`w-full py-3 px-6 font-playfair rounded-lg font-semibold flex items-center justify-center ${
                     plan.recommended
                       ? 'bg-gradient-to-r from-green-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white'
                       : 'bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white'
@@ -113,7 +114,7 @@ export default function Subscription() {
                 >
                   <FaChalkboardTeacher className="mr-2" />
                   Get {plan.name} Plan
-                </button>
+                </Button>
               </div>
             </div>
           ))}

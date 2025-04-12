@@ -146,7 +146,7 @@ export default function CreateNewCourse() {
   return (
     <div className='container mx-auto p-4'>
       <div className='flex justify-between'>
-           <Button onClick={()=>navigate(-1)} className="bg-green-600 text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
+           <Button onClick={()=>navigate(-1)} className="bg-green-600 font-playfair text-white px-5 py-5 hover:bg-blue-700 hover:scale-105 transform transition-transform duration-300 ease-in-out shadow-md">
              <FaChevronLeft className='w-4 h-4 mr-2'/>
              Return
            </Button>

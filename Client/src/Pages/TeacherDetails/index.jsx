@@ -275,13 +275,13 @@ export default function TeacherDetails() {
     {!allRating?.find(item=>item?.userId?._id===user?._id && item?.teacherId?._id===specificTeacherDetails?.teacherDetails?._id) &&
     <CommonButton func={()=>setTogRating(true)} text="Give Rating"/>}
     <Button
-      className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
+      className="px-6 py-3 bg-green-500 font-playfair text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
       onClick={() =>setHireDialog(true)}
     >
       Hire Teacher
     </Button>
     <Button
-      className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
+      className="px-6 py-3 bg-green-500 font-playfair text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
       onClick={() =>downloadFile('view',specificTeacherDetails?.teacherDetails?.teacherInfo?.certificate)}
     >
       View Certificate
@@ -309,7 +309,7 @@ export default function TeacherDetails() {
       >
         <h3 className="text-2xl font-bold text-blue-800 mb-4 text-center">{course?.title}</h3> 
         <p className="text-gray-700 mb-6 text-center">📚 {course?.curriculum?.length > 1 ? "Contents" : "Content"}: {course?.curriculum?.length}</p> 
-        <Button onClick={()=>handleNavigate(course?._id)} className="w-full px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+        <Button onClick={()=>handleNavigate(course?._id)} className=" font-playfair w-full px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
           View Course
         </Button>
       </div>
@@ -329,7 +329,7 @@ export default function TeacherDetails() {
       <LottieAnimation animationData={student} width={150} height={150} speed={1} />
     </div>
 
-    {/* Filter ratings specific to this teacher */}
+ 
     {(() => {
       const filteredRatings = allRating?.filter(item => item?.teacherId?._id === id);
 

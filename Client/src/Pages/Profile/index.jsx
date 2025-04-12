@@ -398,7 +398,7 @@ export default function Profile() {
           </div>   
         }
         
-        <div className="w-full px-4 py-8 bg-white">
+        <div className={`w-full px-4 py-8 ${user?.theme? "bg-white":"bg-zinc-900"}`}>
           <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
            
             <div className="w-full lg:w-1/3 flex flex-col gap-6">
@@ -409,7 +409,7 @@ export default function Profile() {
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
                 >
-                  <Avatar className="h-32 w-32 rounded-full cursor-pointer flex justify-center items-center border-4 border-blue-500">
+                  <Avatar className={`h-32 w-32 rounded-full cursor-pointer flex justify-center items-center border-4 border-blue-500 ${user?.theme? "":"bg-white"}`}>
                     {user?.userImage ? (
                       <AvatarImage
                         src={
@@ -456,7 +456,7 @@ export default function Profile() {
              
               <div className="flex flex-col items-center gap-3 text-center">
                 <div className="flex gap-2 items-center">
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <h1 className={`text-2xl md:text-3xl font-bold  ${user?.theme? "text-gray-900":"text-white"}`}>
                     {user?.userName}
                   </h1>
                   {!loading && user?.subscription?.subscriptionType === 'elite' &&
@@ -493,7 +493,7 @@ export default function Profile() {
                 {details?.map((item, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <span className="text-xl">{item.icon}</span>
-                    <p className="text-sm text-gray-700">{item?.text}</p>
+                    <p className="text-sm ">{item?.text}</p>
                   </div>
                 ))}
               </div>
@@ -502,7 +502,7 @@ export default function Profile() {
               <div className="flex justify-center">
                 <Button
                   onClick={toggleDialog1}
-                  className="bg-green-600 text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                  className="bg-green-600 font-playfair text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
                 >
                   Update Info
                 </Button>
@@ -515,13 +515,13 @@ export default function Profile() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <GrCircleInformation size={24} className="text-green-600" />
-                  <h1 className="text-2xl font-bold text-gray-900">More Info</h1>
+                  <h1 className={`text-2xl font-bold ${user?.theme? "text-gray-900":"text-white"}`}>More Info</h1>
                 </div>
                 <div className="flex flex-col gap-2">
                   {moreDetails?.map((item, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <span className="text-xl">{item.icon}</span>
-                      <p className="text-sm text-gray-700">{item?.text}</p>
+                      <p className="text-sm ">{item?.text}</p>
                     </div>
                   ))}
                 </div>
@@ -532,14 +532,14 @@ export default function Profile() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
                     <GrCircleInformation size={24} className="text-green-600" />
-                    <h1 className="text-2xl font-bold text-gray-900">Teacher Info</h1>
+                    <h1 className={`text-2xl font-bold ${user?.theme? "text-gray-900":"text-white"}`}>Teacher Info</h1>
                   </div>
                   <div className="flex flex-col gap-2">
                     {user?.teacherInfo?.degree && (
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-3">
                           <span className="text-xl">🎓</span>
-                          <p className="text-sm text-gray-700 font-semibold">Degree:</p>
+                          <p className="text-sm  font-semibold">Degree:</p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {user?.teacherInfo?.degree?.split(",").map((item, index) => (
@@ -555,7 +555,7 @@ export default function Profile() {
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-3">
                           <span className="text-xl">📅</span>
-                          <p className="text-sm text-gray-700 font-semibold">Availability:</p>
+                          <p className="text-sm  font-semibold">Availability:</p>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {user?.teacherInfo?.avilability?.split(",").map((item, index) => (
@@ -571,10 +571,10 @@ export default function Profile() {
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-3">
                           <GrCircleInformation className="text-blue-600" size={16} />
-                          <p className="text-sm text-gray-700 font-semibold">Description:</p>
+                          <p className="text-sm  font-semibold">Description:</p>
                         </div>
-                        <div className="w-full max-h-32 overflow-y-auto bg-gray-100 p-2 rounded-lg">
-                          <p className="text-sm text-gray-700">
+                        <div className={`w-full max-h-32 overflow-y-auto ${user?.theme? "bg-gray-100":""} p-2 rounded-lg`}>
+                          <p className="text-sm ">
                             {user?.teacherInfo?.description}
                           </p>
                         </div>
@@ -584,7 +584,7 @@ export default function Profile() {
                     {user?.teacherInfo?.college && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">🏫</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>College:</strong> {user?.teacherInfo?.college}
                         </p>
                       </div>
@@ -593,7 +593,7 @@ export default function Profile() {
                     {user?.teacherInfo?.university && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">🏛️</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>University:</strong> {user?.teacherInfo?.university}
                         </p>
                       </div>
@@ -602,7 +602,7 @@ export default function Profile() {
                     {user?.teacherInfo?.feePerHour && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">₹</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>Fee: Rs.</strong> {`${user?.teacherInfo?.feePerHour} /hr`}
                         </p>
                       </div>
@@ -611,7 +611,7 @@ export default function Profile() {
                     {user?.teacherInfo?.category && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">📂</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>Category:</strong> {user?.teacherInfo?.category}
                         </p>
                       </div>
@@ -620,7 +620,7 @@ export default function Profile() {
                     {user?.teacherInfo?.primaryLanguage && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">🗣️</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>Primary Language:</strong> {user?.teacherInfo?.primaryLanguage}
                         </p>
                       </div>
@@ -629,7 +629,7 @@ export default function Profile() {
                     {user?.teacherInfo?.experience && (
                       <div className="flex items-center gap-3">
                         <span className="text-xl">🏆</span>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm ">
                           <strong>Experience:</strong> {user?.teacherInfo?.experience} Yr
                         </p>
                       </div>
@@ -643,7 +643,7 @@ export default function Profile() {
                 <div className="flex justify-center">
                   <Button
                     onClick={toggleDialog5}
-                    className="bg-green-600 text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                    className="bg-green-600 font-playfair text-white px-6 py-3 hover:scale-105 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
                   >
                     Update TeacherInfo
                   </Button>
@@ -652,36 +652,36 @@ export default function Profile() {
             </div>
 
          
-            <div className="w-full lg:w-1/3 flex flex-col gap-6 bg-gray-100 rounded-xl p-6">
+            <div className={`"w-full lg:w-1/3 flex flex-col gap-6  ${user?.theme? "bg-gray-100":"bg-slate-950"} rounded-xl p-6`}>
          
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <IoMdStats size={24} color="green"/>
-                  <h1 className="text-2xl font-bold text-gray-900">Statistics</h1>
+                  <h1 className={`text-2xl font-bold ${user?.theme? "text-gray-900":"text-white"}`}>Statistics</h1>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-600">Courses Completed</span>
+                    <span className="text-sm ">Courses Completed</span>
                     <span className="text-xl font-bold text-blue-600">
                       {progress?.filter(item=>item?.userId === user?._id && item?.completed === true)?.length}
                     </span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-600">Courses Bought</span>
+                    <span className="text-sm ">Courses Bought</span>
                     <span className="text-xl font-bold text-blue-600">
                       {purchasedCourse?.find(item=>item?.userId === user?._id)?.courses?.length || 0}
                     </span>
                   </div>
                   {user?.userRole?.includes("teacher") && (
                     <div className="flex flex-col">
-                      <span className="text-sm text-gray-600">Courses Uploaded</span>
+                      <span className="text-sm ">Courses Uploaded</span>
                       <span className="text-xl font-bold text-blue-600">
                         {allCourse?.filter(item=>item?.creator?._id === user?._id)?.length}
                       </span>
                     </div>
                   )}
                   <div className="flex flex-col">
-                    <span className="text-sm text-gray-600">Certificates</span>
+                    <span className="text-sm ">Certificates</span>
                     <span className="text-xl font-bold text-blue-600">
                       {user?.courseCertificates?.length}
                     </span>
@@ -695,7 +695,7 @@ export default function Profile() {
                   {user?.userRole?.includes("teacher") ? (
                     <Button 
                       onClick={()=>navigate('/teacher/dashboard')} 
-                      className="bg-green-600 hover:scale-105 text-white px-4 py-2 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                      className="bg-green-600 font-playfair hover:scale-105 text-white px-4 py-2 hover:bg-blue-700 transition-colors duration-300 shadow-md w-full sm:w-auto"
                     >
                       Dashboard
                     </Button>
@@ -703,7 +703,7 @@ export default function Profile() {
                     <Button
                       onClick={toggleDialog3}
                       disabled={!user?.DOB || userApplicationData}
-                      className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                      className="bg-green-600 font-playfair text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
                     >
                       {userApplicationData ? "Processing" : "Become Teacher"}
                     </Button>
@@ -712,7 +712,7 @@ export default function Profile() {
                   {user?.userRole?.includes("teacher") && (
                     <Button
                       onClick={toggleDialog4}
-                      className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                      className="bg-green-600 font-playfair text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
                     >
                       My CV
                     </Button>
@@ -720,7 +720,7 @@ export default function Profile() {
                   
                   <Button
                     onClick={()=>navigate("/studentCourse")}
-                    className="bg-green-600 text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
+                    className="bg-green-600 font-playfair text-white px-4 py-2 hover:bg-blue-700 hover:scale-105 transition-colors duration-300 shadow-md w-full sm:w-auto"
                   >
                     Enrolled Courses
                   </Button>

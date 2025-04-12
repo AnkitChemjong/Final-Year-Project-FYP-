@@ -52,7 +52,7 @@ export default function TeacherHireRequest() {
   }
 
   return (
-    <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
+    <div className={`flex flex-row overflow-hidden  ${user?.theme? "bg-gray-50":"bg-zinc-900 text-white"}`}>
           <TeacherNavbar />
           <div className='flex-1'>
            <TeacherHireRequestData applicationList={teacherHireApplicationList}/>

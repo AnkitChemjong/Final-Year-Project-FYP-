@@ -114,11 +114,11 @@ export default function TeacherNavbar() {
   };
 
   return (
-    <div className='h-screen md:min-w-80 w-fit p-4 flex flex-col bg-white border-r-2 border-gray-200 rounded-tr-xl rounded-br-xl shadow-lg'>
+    <div className={`h-screen md:min-w-80 w-fit p-4 flex flex-col  ${teacher?.theme? "bg-white":"bg-slate-900"} border-r-2 border-gray-200 rounded-tr-xl rounded-br-xl shadow-lg`}>
   
       <div className='flex flex-row justify-center items-center mb-8'>
         <img className='w-20 h-20 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
-        <h1 className='font-bold text-2xl text-blue-900 font-heading' >E-Pathsala</h1>
+        <h1 className={`font-bold text-2xl  ${teacher?.theme? "text-blue-900":"text-white"} font-heading`} >E-Pathsala</h1>
       </div>
 
       <div className='flex flex-col gap-3'>
@@ -143,7 +143,7 @@ export default function TeacherNavbar() {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Avatar className="h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900">
+            <Avatar className={`h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${teacher?.theme? "":"bg-white"}`}>
               {teacher &&
                 (teacher?.userImage ? (
                   <AvatarImage
@@ -186,12 +186,12 @@ export default function TeacherNavbar() {
               accept=".png, .jpg, .jpeg, .svg, .webp"
             />
           </div>
-          <p className='text-lg text-black'>{teacher?.userName}</p>
+          <p className='text-lg '>{teacher?.userName}</p>
         </div>
 
     
         <div
-          className='flex flex-row items-center gap-3 text-black bg-blue-100 hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg transition-transform duration-100 cursor-pointer'
+          className={`flex flex-row items-center gap-3   ${teacher?.theme? "bg-blue-100":"bg-slate-800"} hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg transition-transform duration-100 cursor-pointer`}
           onClick={handleLogout}
         >
           <IoIosLogOut size={20} />

@@ -22,6 +22,8 @@ export const getAllTeacherPurchasedData=async(data)=>{
 export default function AdminTeacher() {
   const allUsersState=useSelector(state=>state?.allUsers);
   const {data:allUser,loading}=allUsersState;
+   const userState=useSelector(state=>state?.user);
+    const {data:user}=userState;
   const {allTeacher,setAllTeacher,allTeacherPurchaseData,setAllteacherPurchaseData}=useContext(UseContextApi);
   const [load,setLoad]=useState(true);
   useEffect(()=>{
@@ -56,7 +58,7 @@ export default function AdminTeacher() {
     )
    }
   return (
-    <div className='flex flex-row gap-2 overflow-hidden bg-gray-50'>
+    <div className={`flex flex-row overflow-hidden  ${user?.theme? "bg-gray-50":"bg-zinc-900 text-white"}`}>
           <AdminNavbar/>
           <div className='flex-1'>
           <AdminTeacherData teacherList={allTeacher} />
