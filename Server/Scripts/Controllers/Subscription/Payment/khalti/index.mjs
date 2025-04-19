@@ -102,6 +102,7 @@ if (userData?.subscription?.subscriptionStatus === "expired" || userData?.subscr
   userData.subscription.subscriptionType = purchasedData?.subscriptionType;
   userData.subscription.subscriptionStartDate = currentDate;
   userData.subscription.subscriptionStatus = 'active'; 
+  userData.subscription.subscriptionRenewDate=currentDate;
   let endDate = new Date(currentDate);
   
   switch(purchasedData?.subscriptionType) {
@@ -121,6 +122,7 @@ if (userData?.subscription?.subscriptionStatus === "expired" || userData?.subscr
 else {
   // Extend existing subscription (BUG FIXED HERE)
   userData.subscription.subscriptionType = purchasedData?.subscriptionType;
+  userData.subscription.subscriptionRenewDate=currentDate;
   
   let extensionDays = 0;
   

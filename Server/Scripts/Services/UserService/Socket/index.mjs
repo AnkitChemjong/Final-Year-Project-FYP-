@@ -94,6 +94,21 @@ const setUpSocket=(server)=>{
         console.log(error);
     }
  }
+ const handleHireTeacher=async(message)=>{
+  try{
+      const socketId=userSocketMap.get(message?.userId);
+      const notificationMessage=await NotificationModel.create(message);
+      if(notificationMessage  ){
+          if(socketId){
+              io.to(socketId).emit('notification',notificationMessage);
+          }
+      }
+
+  }
+  catch(error){
+      console.log(error);
+  }
+}
  const handleSubscriptionBought=async(message)=>{
     try{
         const socketId=userSocketMap.get(message?.userId);
@@ -129,6 +144,8 @@ const setUpSocket=(server)=>{
     socket.on('course-bought-teacher',handleCourseBoughtTeacher);
     socket.on('course-bought-student',handleCourseBoughtStudent);
     socket.on('subscription-bought',handleSubscriptionBought);
+    socket.on("hire-teacher-message",handleHireTeacher);
+    socket.on("request-update",handleHireTeacher);
     socket.on('message',(e)=>console.log(e));
     socket.on('disconnect',()=>disconnect(socket))
  })

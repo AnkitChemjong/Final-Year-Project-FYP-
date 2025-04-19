@@ -96,6 +96,7 @@ export const Subscription='/subscription';
 export const Initialize_Esewa_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-esewa`;
 
 export const Initialize_Khalti_Payment_Subscription=`${import.meta.env.VITE_BACKEND_URL}${Subscription}/initialize-khalti`;
+export const Get_All_Subscription_Payment=`${Subscription}/getAllSubscriptionPayment`;
 
 
 //Notification

@@ -73,6 +73,7 @@ export default function PaymentDialog({ openDialog, setOpenDialog, courseDetail=
           orderStatus:"processing",
           paymentMethod:paymentGateway,
           paymentStatus:"processing",
+          processFor:user?.subscription && user?.subscription?.subscriptionStatus==="active"? "Renew":"Activate",
           amountPaid:subscriptionDetails?.subscriptionAmount,
           paymentFor:`${subscriptionDetails?.subscriptionType} subscription`,
           subscriptionType:subscriptionDetails?.subscriptionType

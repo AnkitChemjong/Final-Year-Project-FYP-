@@ -44,7 +44,6 @@ export default function CourseDetailsDrawer({
     const totalEarnings = data?.pricing * (data?.students?.length || 0);
     const totalStudents = data?.students?.length || 0;
 
-    // Process enrollment data by month
     const processEnrollmentData = () => {
         if (!Array.isArray(purchasedData) || purchasedData.length === 0) return [];
         
@@ -98,57 +97,56 @@ export default function CourseDetailsDrawer({
         }}>
             <DrawerContent 
                 showOverlay={false} 
-                
-                className="mx-auto max-h-[80vh] rounded-t-lg"
-                
+                className="mx-auto max-h-[80vh] rounded-t-lg dark:bg-gray-800"
             >
                 <div className="max-h-[78vh] overflow-y-auto">
-                    <DrawerHeader className="flex justify-between items-start px-6 pt-4 pb-3 border-b sticky top-0 bg-white z-10">
+                    <DrawerHeader className="flex justify-between items-start px-6 pt-4 pb-3 border-b sticky top-0 bg-white dark:bg-gray-800 dark:border-gray-700 z-10">
                         <div>
-                            <DrawerTitle className="text-xl font-bold text-gray-800">
+                            <DrawerTitle className="text-xl font-bold text-gray-800 dark:text-gray-100 font-heading">
                                 {data?.title || title || 'Course Details'}
                             </DrawerTitle>
                             {description && (
-                                <DrawerDescription className="text-gray-500 text-sm">
+                                <DrawerDescription className="text-gray-500 dark:text-gray-400 text-sm">
                                     {description}
                                 </DrawerDescription>
                             )}
                         </div>
                         <button 
                             onClick={closeDrawer} 
-                            className="text-gray-500 hover:text-gray-700 transition-colors"
+                            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                         >
                             <GiCrossMark className='cursor-pointer hover:scale-105 ease-in-out transition-all' size={20} />
                         </button>
                     </DrawerHeader>
 
                     <div className="px-4 pb-4 space-y-4">
-                     
-                        <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <h3 className="font-semibold text-base text-gray-800 font-heading">Course Information</h3>
+                                    <h3 className="font-semibold text-base text-gray-800 dark:text-gray-200 font-heading">Course Information</h3>
                                     <div className="space-y-1 text-sm">
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Category:</span>
-                                            <span className="text-gray-800">{data?.category || 'N/A'}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Category:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">{data?.category || 'N/A'}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Level:</span>
-                                            <span className="text-gray-800">{data?.level || 'N/A'}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Level:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">{data?.level || 'N/A'}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Price:</span>
-                                            <span className="text-gray-800">Rs. {data?.pricing || '0'}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Price:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">Rs. {data?.pricing || '0'}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Language:</span>
-                                            <span className="text-gray-800">{data?.primaryLanguage || 'N/A'}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Language:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">{data?.primaryLanguage || 'N/A'}</span>
                                         </p>
                                         <p className="flex justify-between items-center">
-                                            <span className="font-medium text-gray-600">Status:</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Status:</span>
                                             <span className={`px-2 py-0.5 rounded text-xs ${
-                                                data?.isPublished ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                data?.isPublished 
+                                                    ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100' 
+                                                    : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100'
                                             }`}>
                                                 {data?.isPublished ? 'Published' : 'Unpublished'}
                                             </span>
@@ -157,24 +155,24 @@ export default function CourseDetailsDrawer({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <h3 className="font-semibold text-base text-gray-800 font-heading">Statistics</h3>
+                                    <h3 className="font-semibold text-base text-gray-800 dark:text-gray-200 font-heading">Statistics</h3>
                                     <div className="space-y-1 text-sm">
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Total Enrollments:</span>
-                                            <span className="text-gray-800">{totalStudents}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Total Enrollments:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">{totalStudents}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Total Earnings:</span>
-                                            <span className="text-gray-800">Rs. {totalEarnings}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Total Earnings:</span>
+                                            <span className="text-gray-800 dark:text-gray-100">Rs. {totalEarnings}</span>
                                         </p>
                                         <p className="flex justify-between">
-                                            <span className="font-medium text-gray-600">Teacher Earnings (10%):</span>
-                                            <span className="text-gray-800">Rs. {(totalEarnings * 0.1).toFixed(2)}</span>
+                                            <span className="font-medium text-gray-600 dark:text-gray-300">Teacher Earnings (10%):</span>
+                                            <span className="text-gray-800 dark:text-gray-100">Rs. {(totalEarnings * 0.1).toFixed(2)}</span>
                                         </p>
                                         {user?.userRole?.includes('admin') && (
                                             <p className="flex justify-between">
-                                                <span className="font-medium text-gray-600">Site Earnings (90%):</span>
-                                                <span className="text-gray-800">Rs. {(totalEarnings * 0.9).toFixed(2)}</span>
+                                                <span className="font-medium text-gray-600 dark:text-gray-300">Site Earnings (90%):</span>
+                                                <span className="text-gray-800 dark:text-gray-100">Rs. {(totalEarnings * 0.9).toFixed(2)}</span>
                                             </p>
                                         )}
                                     </div>
@@ -182,16 +180,15 @@ export default function CourseDetailsDrawer({
                             </div>
                         </div>
 
-                      
                         {data?.curriculum?.length > 0 && (
-                            <div className="bg-white rounded-lg shadow-sm p-3 border">
-                                <h3 className="font-semibold text-base text-gray-800 mb-2 font-heading">Curriculum ({data.curriculum?.length})</h3>
+                            <div className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-3 border dark:border-gray-600">
+                                <h3 className="font-semibold text-base text-gray-800 dark:text-gray-200 mb-2 font-heading">Curriculum ({data.curriculum?.length})</h3>
                                 <div className="space-y-2">
                                     {data.curriculum.map((item, index) => (
-                                        <div key={index} className="border-l-2 border-blue-500 pl-3 py-1">
-                                            <p className="font-medium text-sm text-gray-800">{item.title || 'Untitled Section'}</p>
+                                        <div key={index} className="border-l-2 border-blue-500 dark:border-blue-400 pl-3 py-1">
+                                            <p className="font-medium text-sm text-gray-800 dark:text-gray-200">{item.title || 'Untitled Section'}</p>
                                             {item.description && (
-                                                <p className="text-xs text-gray-600 mt-0.5">{item.description}</p>
+                                                <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{item.description}</p>
                                             )}
                                         </div>
                                     ))}
@@ -199,8 +196,8 @@ export default function CourseDetailsDrawer({
                             </div>
                         )}
 
-                        <div className="bg-white rounded-lg shadow-sm p-3 border">
-                            <h3 className="font-semibold text-base text-gray-800 mb-2 font-heading">Enrollment Chart</h3>
+                        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-3 border dark:border-gray-600">
+                            <h3 className="font-semibold text-base text-gray-800 dark:text-gray-200 mb-2 font-heading">Enrollment Chart</h3>
                             <div className="h-52">
                                 {hasChartData ? (
                                     <ResponsiveContainer width="100%" height="100%">
@@ -208,7 +205,7 @@ export default function CourseDetailsDrawer({
                                             data={enrollmentData}
                                             margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                                         >
-                                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                                             <XAxis 
                                                 dataKey="name" 
                                                 tick={{ fill: '#6b7280', fontSize: 12 }}
@@ -223,10 +220,11 @@ export default function CourseDetailsDrawer({
                                                     backgroundColor: '#fff',
                                                     borderRadius: '6px',
                                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                                                    fontSize: '12px'
+                                                    fontSize: '12px',
+                                                    color: '#1f2937'
                                                 }}
                                             />
-                                            <Legend wrapperStyle={{ fontSize: '12px' }} />
+                                            <Legend wrapperStyle={{ fontSize: '12px', color: '#1f2937' }} />
                                             <Bar 
                                                 dataKey="enrollments" 
                                                 fill="#6366f1" 
@@ -236,39 +234,39 @@ export default function CourseDetailsDrawer({
                                         </BarChart>
                                     </ResponsiveContainer>
                                 ) : (
-                                    <div className="h-full flex items-center justify-center text-gray-500 text-sm">
+                                    <div className="h-full flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
                                         No enrollment data available
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg shadow-sm p-3 border">
-                            <h3 className="font-semibold text-base text-gray-800 mb-2 font-heading">
+                        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-3 border dark:border-gray-600">
+                            <h3 className="font-semibold text-base text-gray-800 dark:text-gray-200 mb-2 font-heading">
                                 Recent Enrollments
                             </h3>
                             {hasPurchaseData ? (
                                 <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-gray-100 ">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                        <thead className="bg-gray-100 dark:bg-gray-600">
                                             <tr>
-                                                <th className="px-3 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">Name</th>
-                                                <th className="px-3 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">Email</th>
-                                                <th className="px-3 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">Date</th>
+                                                <th className="px-3 py-2 text-left text-xs font-medium text-black dark:text-gray-200 uppercase tracking-wider">Name</th>
+                                                <th className="px-3 py-2 text-left text-xs font-medium text-black dark:text-gray-200 uppercase tracking-wider">Email</th>
+                                                <th className="px-3 py-2 text-left text-xs font-medium text-black dark:text-gray-200 uppercase tracking-wider">Date</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200">
+                                        <tbody className="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-600">
                                             {purchasedData
                                                 .slice(0, 5) 
                                                 .map((purchase, index) => (
                                                 <tr key={index} className="text-sm">
-                                                    <td className="px-3 py-2 whitespace-nowrap font-medium text-gray-900">
+                                                    <td className="px-3 py-2 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                                         {purchase?.userId?.userName || 'Anonymous'}
                                                     </td>
-                                                    <td className="px-3 py-2 whitespace-nowrap text-gray-600">
+                                                    <td className="px-3 py-2 whitespace-nowrap text-gray-600 dark:text-gray-300">
                                                         {purchase?.userId?.email || 'N/A'}
                                                     </td>
-                                                    <td className="px-3 py-2 whitespace-nowrap text-gray-600">
+                                                    <td className="px-3 py-2 whitespace-nowrap text-gray-600 dark:text-gray-300">
                                                         {purchase?.createdAt ? 
                                                             moment(purchase?.createdAt).format("MMMM Do, YYYY") : 
                                                             'N/A'}
@@ -279,7 +277,7 @@ export default function CourseDetailsDrawer({
                                     </table>
                                 </div>
                             ) : (
-                                <div className="text-center text-gray-500 text-sm py-3">
+                                <div className="text-center text-gray-500 dark:text-gray-400 text-sm py-3">
                                     No recent enrollments
                                 </div>
                             )}
@@ -287,7 +285,7 @@ export default function CourseDetailsDrawer({
                     </div>
 
                     {footer && (
-                        <DrawerFooter className="px-4 py-3 border-t sticky bottom-0 bg-white">
+                        <DrawerFooter className="px-4 py-3 border-t sticky bottom-0 bg-white dark:bg-gray-800 dark:border-gray-700">
                             {footer}
                         </DrawerFooter>
                     )}

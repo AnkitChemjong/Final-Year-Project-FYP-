@@ -40,6 +40,9 @@ const paymentSchema=new Schema({
     type:String,
     required:true,
     enum:['basic','premium','elite']
+  },processFor:{
+    type:String,
+    required:true
   }
 },{timestamps:true});
 const PaymentSubscription=model("PaymentSubscription",paymentSchema);

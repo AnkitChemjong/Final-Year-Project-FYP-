@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux';
@@ -19,15 +19,32 @@ import { MdOutlineLaptopChromebook } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import { RiDashboardHorizontalLine } from "react-icons/ri";
+import { MdSubscriptions } from "react-icons/md";
 
 export default function AdminNavbar() {
     const dispatch=useDispatch();
     const location=useLocation();
+    const userState=useSelector(state=>state?.user);
+    const {data:user}=userState;
     const pagePath=location?.pathname?.split("/").pop();
       const upProfileImage = useRef();
        const [hover, setHover] = useState(false);
-    const admin=useSelector(state=>state?.user?.data)
+    const admin=useSelector(state=>state?.user?.data);
     const navigate=useNavigate();
+    const [theme, setTheme] = useState(true);
+    useEffect(()=>{
+      if(user){
+        setTheme(user?.theme);
+      }
+    },[user])
+    useEffect(() => {
+        if (theme === false) {
+          document.body.classList.add("dark");
+        } 
+        else{
+          document.body.classList.remove("dark");
+        }
+      }, [theme]);
   const adminNavItem=[
       {
         name:"Dashboard",
@@ -58,6 +75,12 @@ export default function AdminNavbar() {
         path:"/admin/application",
         pageName:"application",
         icon:FaFileAlt
+      },
+      {
+        name:"Subscription",
+        path:"/admin/subscription",
+        pageName:"subscription",
+        icon:MdSubscriptions
       }
     ]
   
@@ -130,7 +153,7 @@ export default function AdminNavbar() {
     };
   return (
       <div className={`h-screen md:min-w-80 w-fit p-4 flex flex-col ${admin?.theme && "bg-white"} ${admin?.theme===false && "bg-slate-900"} border-r-2 border-gray-200 rounded-tr-xl rounded-br-xl shadow-lg`}>
-  {/* Logo and Title */}
+
   <div className='flex flex-row justify-center items-center mb-8'>
     <img className='w-20 h-20 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
     <h1 className={`font-bold text-2xl ${admin?.theme && "text-blue-900"} ${admin?.theme===false && "text-white"}`}>E-Pathsala</h1>
@@ -164,7 +187,7 @@ export default function AdminNavbar() {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        <Avatar className={`"h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${admin?.theme===false && "bg-white"}`}>
+        <Avatar className={`"h-10 w-10 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${admin?.theme===false && "bg-white"}`}>
           {admin &&
             (admin?.userImage ? (
               <AvatarImage
@@ -177,7 +200,7 @@ export default function AdminNavbar() {
                 className="rounded-full"
               />
             ) : (
-              <div className="bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full">
+              <div className={`bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full ${admin?.theme===false && "text-white"}`}>
                 {admin?.userName?.split("")[0].toUpperCase()}
               </div>
             ))}
@@ -207,12 +230,12 @@ export default function AdminNavbar() {
           accept=".png, .jpg, .jpeg, .svg, .webp"
         />
       </div>
-      <p className='text-lg'>{admin?.userName}</p>
+      <p className={`text-lg ${admin?.theme===false && "text-white"}`}>{admin?.userName}</p>
     </div>
 
    
     <div 
-      className={`flex flex-row items-center gap-3   ${admin?.theme && "bg-blue-100"} ${admin?.theme===false && "bg-slate-800"} hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg  transition-transform duration-100 cursor-pointer`}
+      className={`flex flex-row items-center gap-3   ${admin?.theme===true && "bg-blue-100"} ${admin?.theme===false && "bg-slate-800 text-white"} hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg  transition-transform duration-100 cursor-pointer`}
       onClick={handleLogout}
     >
       <IoIosLogOut size={20} />

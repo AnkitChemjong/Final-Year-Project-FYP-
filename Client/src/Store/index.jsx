@@ -9,6 +9,7 @@ import getAllProgressSlice from './Slices/Get_All_Progress';
 import getAllPurchasedCourseSlice from './Slices/Get_All_Purchased_Course_Model';
 import onlineUserSlice from './Slices/Get_Online_Users';
 import getAllPurchaseDataSlice from './Slices/Get_All_Purchase_Data';
+import getSubscriptionPaymentDataSlice from './Slices/Get_All_Subscription_Payment';
 
 const store=configureStore({
     reducer:{
@@ -21,7 +22,8 @@ const store=configureStore({
      progress:getAllProgressSlice,
      coursePurchased:getAllPurchasedCourseSlice,
      onlineUsers:onlineUserSlice,
-     purchase:getAllPurchaseDataSlice
+     purchase:getAllPurchaseDataSlice,
+     subscriptionPayment:getSubscriptionPaymentDataSlice
     }
 });
 export default store;

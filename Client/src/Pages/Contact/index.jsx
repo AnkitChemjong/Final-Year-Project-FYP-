@@ -66,16 +66,16 @@ export default function Contact() {
 
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col dark:bg-gray-900">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-12 -mt-14">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className='flex gap-6 items-center justify-center'>
-            <h1 className="text-4xl font-bold text-black mb-4 font-heading">Contact Us</h1>
+            <h1 className="text-4xl font-bold text-black dark:text-white mb-4 font-heading">Contact Us</h1>
             <LottieAnimation animationData={contact} width={200} height={200} speed={1} />
             </div>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
               Have questions or want to get in touch? We'd love to hear from you! 💬
             </p>
           </div>
@@ -83,12 +83,12 @@ export default function Contact() {
           <div className="flex flex-col gap-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              
-              <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 className="text-2xl font-semibold text-black mb-6">Send us a message 📧</h2>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-6">Send us a message 📧</h2>
                 
                 <form ref={formData} className="space-y-4" onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       To
                     </label>
                     <input
@@ -97,7 +97,7 @@ export default function Contact() {
                       name="websiteName"
                       value={data['websiteName']}
                       readOnly
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white dark:bg-gray-700 dark:text-white"
                       placeholder="Efficient Pathsala"
                       
                     />
@@ -105,7 +105,7 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Your Name
                       </label>
                       <input
@@ -113,14 +113,14 @@ export default function Contact() {
                         id="name"
                         name="userName"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white dark:bg-gray-700 dark:text-white"
                         placeholder="John Doe"
                         onChange={onChangeHandler}
                       />
                     </div>
                     
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Email Address
                       </label>
                       <input
@@ -128,7 +128,7 @@ export default function Contact() {
                         id="email"
                         name="email"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white dark:bg-gray-700 dark:text-white"
                         placeholder="john@example.com"
                         onChange={onChangeHandler}
                       />
@@ -136,7 +136,7 @@ export default function Contact() {
                   </div>
                   
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Subject
                     </label>
                     <input
@@ -144,14 +144,14 @@ export default function Contact() {
                       id="subject"
                       name="subject"
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white dark:bg-gray-700 dark:text-white"
                       placeholder="How can we help?"
                       onChange={onChangeHandler}
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Your Message
                     </label>
                     <textarea
@@ -159,7 +159,7 @@ export default function Contact() {
                       name="message"
                       rows="4"
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white dark:bg-gray-700 dark:text-white"
                       placeholder="Type your message here..."
                       onChange={onChangeHandler}
                     />
@@ -176,65 +176,65 @@ export default function Contact() {
               </div>
               
             
-              <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 className="text-2xl font-semibold text-black mb-6">Contact Information 📱</h2>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <h2 className="text-2xl font-semibold text-black dark:text-white mb-6">Contact Information 📱</h2>
                 
                 <div className="space-y-4">
                   <div className="flex items-start">
-                    <div className="bg-blue-100 p-3 rounded-full mr-4 text-blue-600 text-xl">
+                    <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-400 text-xl">
                     📧
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-black">Email Us</h3>
-                      <p className="text-gray-700">info@dharanbusiness.com</p>
-                      <p className="text-gray-700">support@dharanbusiness.com</p>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Email Us</h3>
+                      <p className="text-gray-700 dark:text-gray-300">info@dharanbusiness.com</p>
+                      <p className="text-gray-700 dark:text-gray-300">support@dharanbusiness.com</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-100 p-3 rounded-full mr-4 text-green-600 text-xl">
+                    <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full mr-4 text-green-600 dark:text-green-400 text-xl">
                       📞
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-black">Call Us</h3>
-                      <p className="text-gray-700">+977 98XXXXXXXX</p>
-                      <p className="text-gray-700">+977 25-XXXXXX</p>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Call Us</h3>
+                      <p className="text-gray-700 dark:text-gray-300">+977 98XXXXXXXX</p>
+                      <p className="text-gray-700 dark:text-gray-300">+977 25-XXXXXX</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-yellow-100 p-3 rounded-full mr-4 text-yellow-600 text-xl">
+                    <div className="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-full mr-4 text-yellow-600 dark:text-yellow-400 text-xl">
                       ⏰
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-black">Opening Hours</h3>
-                      <p className="text-gray-700">Sunday-Friday: 10AM - 6PM</p>
-                      <p className="text-gray-700">Saturday: Closed</p>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Opening Hours</h3>
+                      <p className="text-gray-700 dark:text-gray-300">Sunday-Friday: 10AM - 6PM</p>
+                      <p className="text-gray-700 dark:text-gray-300">Saturday: Closed</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-red-100 p-3 rounded-full mr-4 text-red-600 text-xl">
+                    <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full mr-4 text-red-600 dark:text-red-400 text-xl">
                     🏠
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-black">Visit Us</h3>
-                      <p className="text-gray-700">Dharan Bus Park</p>
-                      <p className="text-gray-700">Dharan-8, Sunsari, Nepal</p>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Visit Us</h3>
+                      <p className="text-gray-700 dark:text-gray-300">Dharan Bus Park</p>
+                      <p className="text-gray-700 dark:text-gray-300">Dharan-8, Sunsari, Nepal</p>
                     </div>
                   </div>
 
                   <div className="pt-4">
-                    <h3 className="text-lg font-medium text-black mb-3 ">Follow Us</h3>
+                    <h3 className="text-lg font-medium text-black dark:text-white mb-3 ">Follow Us</h3>
                     <div className="flex space-x-4">
-                    <a href="#" className="bg-blue-100 p-3 rounded-full text-blue-600 hover:bg-blue-200 transition">
-                        <FaFacebook className="text-xl hover:text-blue-600 hover:scale-105 transition-all ease-out" />
+                    <a href="#" className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition">
+                        <FaFacebook className="text-xl hover:text-blue-600 dark:hover:text-blue-400 hover:scale-105 transition-all ease-out" />
                       </a>
-                      <a href="#" className="bg-blue-100 p-3 rounded-full text-blue-600 hover:bg-blue-200 transition">
-                        <FaInstagram className="text-xl hover:text-red-600 hover:scale-105 transition-all ease-out" />
+                      <a href="#" className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition">
+                        <FaInstagram className="text-xl hover:text-red-600 dark:hover:text-red-400 hover:scale-105 transition-all ease-out" />
                       </a>
-                      <a href="#" className="bg-blue-100 p-3 rounded-full text-blue-600 hover:bg-blue-200 transition">
-                      <TfiGithub className='text-xl hover:text-black hover:scale-105 transition-all ease-out'/>
+                      <a href="#" className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition">
+                      <TfiGithub className='text-xl hover:text-black dark:hover:text-white hover:scale-105 transition-all ease-out'/>
                       </a>
                     </div>
                   </div>
@@ -243,7 +243,7 @@ export default function Contact() {
             </div>
             
          
-            <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-200 mx-auto w-full max-w-3xl">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 mx-auto w-full max-w-3xl">
               <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.108033397876!2d87.2822644!3d26.811083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef4199326d3af1%3A0x8022be8de74345a8!2sDharan%20Bus%20Park!5e0!3m2!1sen!2snp!4v1711860565307!5m2!1sen!2snp"

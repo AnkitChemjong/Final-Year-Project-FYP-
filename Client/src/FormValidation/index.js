@@ -24,7 +24,7 @@ export default function signupValidation(value) {
         error.password="Password should not be empty";
 
     }
-    else if(value.password.length<8){
+    else if(value.password?.toString().length<8){
         error.password="Minimun pass length is 8."
     }
     else if(!pass_pattern.test(value.password)){
@@ -124,7 +124,7 @@ export function passwordValidation(value) {
         error.password="Password should not be empty";
 
     }
-    else if(value.password.length<8){
+    else if(value.password?.toString().length<8){
         error.password="Minimun pass length is 8."
     }
     else if(!pass_pattern.test(value.password)){
@@ -173,6 +173,9 @@ export function updateProfileInfoValidation(value) {
     else if(value?.phone?.length>10){
         error.phone="Phone Number cannot be more then 10 digits."
     }
+    else if(value?.phone?.length<10){
+        error.phone="Phone Number cannot be less then 10 digits."
+    }
     else{
         error.phone="";
     }
@@ -196,7 +199,7 @@ export function updateProfileInfoValidation(value) {
 
 export function changePasswordValidation(value) {
     let error={};
-    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    const pass_pattern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])[a-zA-Z0-9\W_]{8,}$/;
     
     if (value.currentPassword===""){
         error.currentPassword="This field should not be empty";
@@ -210,10 +213,13 @@ export function changePasswordValidation(value) {
         error.newPassword="This field should not be empty";
 
     }
-    //else if(!pass_pattern.test(value.password)){
-    //     error.password="Use correct format of password!"
+    else if(value.newPassword?.toString().length<8){
+        error.newPassword="Minimun pass length is 8."
+    }
+    else if(!pass_pattern.test(value.newPassword)){
+         error.newPassword="Password most contain one uppercase,lowercase,special character and digit."
 
-    // }
+     }
     else{
         error.newPassword="";
     }

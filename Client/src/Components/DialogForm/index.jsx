@@ -18,25 +18,23 @@ import { hireTeacherInitialState } from "@/Utils";
 
 
 
+
 export default function DialogForm({title,description,dialog,setDialog,func,type,initialState,componentInputs,accept}) {
   const {hireTeacherApplicationEditId,setHireTeacherApplicationEditId,hireTeacherInitialStateData,setHireTeacherInitialStateData}=useContext(UseContextApi);
     const [error, setError] = useState({});
   const [data,setData]=useState(initialState);
   useEffect(() => {
-    if (dialog && hireTeacherInitialStateData) {
-      setData(hireTeacherInitialStateData);
-    }
-  }, [hireTeacherInitialStateData, dialog]);
+    if (dialog && hireTeacherApplicationEditId) {
+      setData({
+        hiringDate: hireTeacherInitialStateData?.hiringDate || '',
+        startTime: hireTeacherInitialStateData?.startTime || '',
+        endTime: hireTeacherInitialStateData?.endTime || '',
+        hireDescription: hireTeacherInitialStateData?.hireDescription || '',
+        ...hireTeacherInitialStateData
+      });
+    }else{setData(initialState);}
+  }, [dialog, hireTeacherApplicationEditId, hireTeacherInitialStateData]);
 
-  // Reset state when dialog closes
-  useEffect(() => {
-    if (!dialog) {
-      setData(initialState);
-      setError({});
-      setHireTeacherInitialStateData(hireTeacherInitialState);
-      setHireTeacherApplicationEditId(null);
-    }
-  }, [dialog]);
   const handleSubmit=(e)=>{
     if(type === "hireteacher"){
      const errors=hireTeacherValidation(data);
@@ -56,7 +54,8 @@ export default function DialogForm({title,description,dialog,setDialog,func,type
       }
     }
     if(type==="updateProfile"){
-      const errors=updateProfileInfoValidation(data)
+      const errors=updateProfileInfoValidation(data);
+      console.log(data);
      setError(errors);
      if(errors.userName===""&&
       errors.address===""&&
@@ -103,9 +102,21 @@ export default function DialogForm({title,description,dialog,setDialog,func,type
       }
     }
   }
+  const handleOpenChange = (open) => {
+    if (!open) {
+    
+      setDialog(false);
+      setData(initialState);
+      setError({});
+      setHireTeacherInitialStateData(hireTeacherInitialState);
+      setHireTeacherApplicationEditId(null);
+    } else {
+      setDialog(true);
+    }
+  };
   
   return (
-    <Dialog open={dialog} onOpenChange={(e)=>setDialog(e)}>
+    <Dialog open={dialog} onOpenChange={handleOpenChange}>
 
       <DialogContent className="w-full max-w-[500px] mx-auto"  showOverlay={false} >
        <ScrollArea className="max-h-[80vh]  overflow-y-auto px-5">

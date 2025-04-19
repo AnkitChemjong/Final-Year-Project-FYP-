@@ -24,8 +24,9 @@ import { Delete_Hire_All_Application, Delete_Hire_Selected_Application, Delete_H
  } from '@/Routes';
 import { UseContextApi } from '../ContextApi';
 import { useSelector } from 'react-redux';
-import { hireTeacherComponents } from '@/Utils';
+import { hireTeacherComponents, hireTeacherInitialState } from '@/Utils';
 import DrawerForHireTeacherDataView from '../DrawerForHireTeacherDataView';
+import { useSocket } from '@/Services/Socket-Client-Provider';
 
 
 export default function CommonTableForHireApplication({ data, type, header, page }) {
@@ -40,6 +41,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
     hireTeacherApplicationEditId, setHireTeacherApplicationEditId,
     hireTeacherInitialStateData, setHireTeacherInitialStateData 
   } = useContext(UseContextApi);
+  const {socket}=useSocket();
   const [hireDialogEdit, setHireDialogEdit] = useState(false);
   const [dialogSingle, setDialogSingle] = useState(false);
   const [dialogMulti, setDialogMulti] = useState(false);
@@ -99,6 +101,10 @@ export default function CommonTableForHireApplication({ data, type, header, page
             "Content-Type": "application/json"
           }});
           if (response.status === 200) {
+            teacherHireApplicationList?.forEach(item=>{
+              socket?.emit('request-update',{userId:item?.studentId?._id,title:"Hire Application Updated",message:`${item?.teacherId.userName} ${status} your application.`,type:'message'});
+
+            });
             const result = await getStudentHireApplication(user?._id);
             setStudentHireApplicationList(result);
             const teacherResult = await getTeacherHireApplication(user?._id);
@@ -110,6 +116,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
             "Content-Type": "application/json"
           }});
           if (response.status === 200) {
+            selectedApplication?.forEach(item=>{
+              socket?.emit('request-update',{userId:item?.studentId?._id,title:"Hire Application Updated",message:`${item?.teacherId.userName} ${status} your application.`,type:'message'});
+            });
             const result = await getStudentHireApplication(user?._id);
             setStudentHireApplicationList(result);
             const teacherResult = await getTeacherHireApplication(user?._id);
@@ -122,8 +131,8 @@ export default function CommonTableForHireApplication({ data, type, header, page
         const response = await axiosService.patch(Update_Hire_Application_Single_Status, { data,status}, { withCredentials: true, headers: {
           "Content-Type": "application/json"
         }});
-        console.log(response);
         if (response.status === 200) {
+          socket?.emit('request-update',{userId:data?.studentId?._id,title:"Hire Application Updated",message:`${data?.teacherId.userName} ${status} your application.`,type:'message'});
           const result = await getStudentHireApplication(user?._id);
           setStudentHireApplicationList(result);
           const teacherResult = await getTeacherHireApplication(user?._id);
@@ -172,6 +181,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
 
  useEffect(()=>{
   if(hireTeacherApplicationEditId !== null) getApplicationDetails();
+  else{
+      setHireTeacherInitialStateData(hireTeacherInitialState);
+  }
  },[hireTeacherApplicationEditId])
 
   const updateHireApplicationDetails=async(data)=>{
@@ -181,7 +193,8 @@ export default function CommonTableForHireApplication({ data, type, header, page
     if(response?.status === 200){
       toast.success(response?.data?.message);
       setLoadingSpin(false);
-      setHireDialogEdit(false);
+      setHireDialogEdit(false)
+      setHireTeacherApplicationEditId(null);
     }
 
    }

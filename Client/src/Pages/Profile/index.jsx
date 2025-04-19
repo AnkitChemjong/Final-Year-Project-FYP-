@@ -754,6 +754,8 @@ export default function Profile() {
                         {moment(userApplicationData?.createdAt).format("MMMM DD, YYYY")}
                       </p>
                     </div>
+                    {
+                      userApplicationData && (userApplicationData?.status==="rejected" || userApplicationData?.status==='recruted') &&
                     <button 
                       onClick={toggleDialog6} 
                       className="p-2 text-slate-500 hover:text-red-500 transition-colors duration-200"
@@ -761,6 +763,7 @@ export default function Profile() {
                     >
                       <RiDeleteBin6Line size={20} />
                     </button>
+                    }
                   </div>
                 </div>
               )}

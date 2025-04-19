@@ -15,6 +15,10 @@ const subscriptionSchema=new Schema({
         enum:['pending','active','expired'],
         default:'pending'
     }
+    ,
+    subscriptionRenewDate:{
+        type:Date,
+    },
     
 },{ _id: false });
 export default subscriptionSchema;

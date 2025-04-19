@@ -536,3 +536,6 @@ export const features = [
     description: "Learn at your own pace, anytime"
   }
 ];
+
+export  const subscribedUsers=["S.N.","User Name","Email","Status","Subscription Status","Action"];
+export const subscriptionPayment=["S.N.","Date","Type","For","Amount","Method","Status"];

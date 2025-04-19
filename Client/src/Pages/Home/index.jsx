@@ -326,8 +326,8 @@ console.log(user?.theme)
                 <div className="p-4 flex flex-col gap-2">
                   <h3 className="font-bold mb-2">{courseItem?.title}</h3>
                   <div className='flex flex-row items-center gap-5'>
-                  <Avatar className={`w-10 h-10 rounded-full flex justify-center items-center ${user?.theme? "":"bg-white"}`}>
-                          {courseItem?.creatorDetails?.userImage? 
+                  <Avatar className={`w-10 h-10 rounded-full flex justify-center items-center ${user?.theme===false && "bg-white"} border-2 border-gray-800`}>
+                          {courseItem?.creatorDetails?.userImage?  
                           <AvatarImage 
                           className="rounded-full"
                           src={courseItem?.creatorDetails?.userImage.startsWith("http") ? courseItem?.creatorDetails?.userImage:`${import.meta.env.VITE_BACKEND_URL}/${courseItem?.creatorDetails?.userImage}`} 
@@ -335,16 +335,16 @@ console.log(user?.theme)
                               <div className=' bg-slate-400 justify-center items-center px-5 py-3 rounded-full '>{courseItem?.creatorDetails?.userName.split("")[0].toUpperCase()}</div>
                           )}
                         </Avatar>
-                  <p className={`text-sm  ${user?.theme? "text-gray-700":"text-white"} mb-2`}>
+                  <p className={`text-sm   ${user?.theme===false && "text-white"} mb-2`}>
                     {courseItem?.creatorDetails?.userName?.toUpperCase()}
                   </p>
                   </div>
                   
-                  <p className={`font-bold text-sm  ${user?.theme? "text-slate-600":"text-white"}`}>
+                  <p className={`font-bold text-sm  ${user?.theme===false && "text-white"}`}>
                   {courseItem?.category?.toUpperCase()}
                   </p>
           
-                  <p className={`font-bold text-sm  ${user?.theme? "text-slate-600":"text-white"}`}>
+                  <p className={`font-bold text-sm  ${user?.theme===false && "text-white"}`}>
                     Price: Rs. {courseItem?.pricing}
                   </p>
                 </div>
@@ -385,8 +385,8 @@ console.log(user?.theme)
       </Avatar>
                   <CardTitle>{teacher?.userName}</CardTitle>
                   <CardDescription className="mt-2">
-                    <p className={`font-medium ${user?.theme? "text-gray-900":"text-white"}`}>Category: {teacher?.teacherInfo?.category||"N/A"}</p>
-                    <p className={`${user?.theme? "text-gray-600":"text-white"}`}>
+                    <p className={`font-medium ${user?.theme===false && "text-white"}`}>Category: {teacher?.teacherInfo?.category||"N/A"}</p>
+                    <p className={`${user?.theme===false && "text-white"}`}>
   {teacher?.teacherInfo?.experience ? `${teacher?.teacherInfo?.experience} Yrs` : "N/A"} experience
 </p>
                   </CardDescription>
@@ -435,10 +435,10 @@ console.log(user?.theme)
                     )}
                   </Avatar>
                   <div>
-                    <h4 className={`font-medium line-clamp-1 ${user?.theme? "":"text-white"}`}>
+                    <h4 className={`font-medium line-clamp-1 ${user?.theme===false && "text-white"}`}>
                       {feedback.userId?.userName || 'Anonymous User'}
                     </h4>
-                    <p className={` ${user?.theme? "text-gray-600":"text-white"} text-xs`}>
+                    <p className={` ${user?.theme===false && "text-white"} text-xs`}>
                       {moment(feedback.createdAt).format("MMM D, YYYY")}
                     </p>
                   </div>
@@ -454,7 +454,7 @@ console.log(user?.theme)
                   ))}
                 </div>
                 
-                <p className={` ${user?.theme? "text-gray-800":"text-white"} text-sm flex-grow line-clamp-4`}>
+                <p className={` ${user?.theme===false && "text-white"} text-sm flex-grow line-clamp-4`}>
                   {feedback.comment || "No comment provided"}
                 </p>
                 

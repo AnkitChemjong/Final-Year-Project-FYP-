@@ -151,6 +151,9 @@ export default function Navbar() {
       console.log(error);
     }
   };
+  useEffect(()=>{
+    setUnreadCount(specificUserNotification?.filter(item => !item?.read).length);
+  },[specificUserNotification]);
 
   const updateUserNotification = async (id) => {
     try {
@@ -380,13 +383,13 @@ export default function Navbar() {
             >
               {unreadCount > 0 ? (
                 <>
-                  <MdOutlineNotificationsActive className={`text-2xl  ${theme? "text-gray-700":"text-black"}`} />
+                  <MdOutlineNotificationsActive className={`text-2xl  ${theme===false && "text-black"}`} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {unreadCount}
                   </span>
                 </>
               ) : (
-                <IoMdNotificationsOutline className={`text-2xl  ${theme? "text-gray-700":"text-black"}`} />
+                <IoMdNotificationsOutline className={`text-2xl  ${theme===false && "text-black"}`} />
               )}
             </button>
             {showMobileNotif && <NotificationDropdown isMobile />}
@@ -429,7 +432,7 @@ export default function Navbar() {
                     key={index}
                     to={item.path}
                     onClick={toggleMenu}
-                    className={`flex items-center gap-3 text-lg hover:text-blue-600 ${theme? "":"text-white"} ${
+                    className={`flex items-center gap-3 text-lg hover:text-blue-600 ${theme===false && "text-white"} ${
                       pagePath === item.path || homePath === item.path 
                         ? "text-blue-700 font-medium"
                         : "text-gray-700"
@@ -514,13 +517,13 @@ export default function Navbar() {
               >
                 {unreadCount > 0 ? (
                   <>
-                    <MdOutlineNotificationsActive className={`text-2xl ${theme? "text-gray-700":"text-black"}`} />
+                    <MdOutlineNotificationsActive className={`text-2xl ${theme===false && "text-black"}`} />
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {unreadCount}
                     </span>
                   </>
                 ) : (
-                  <IoMdNotificationsOutline className={`text-2xl ${theme? "text-gray-700":"text-black"} `} />
+                  <IoMdNotificationsOutline className={`text-2xl ${theme===false && "text-black"} `} />
                 )}
               </button>
               {showNotif && <NotificationDropdown />}
@@ -532,7 +535,7 @@ export default function Navbar() {
               className="cursor-pointer"
               data-profile-button
             >
-              <Avatar className={`w-10 h-10 rounded-full flex justify-center ${theme? "":"bg-white"} items-center border-2 border-blue-600`}>
+              <Avatar className={`w-10 h-10 rounded-full flex justify-center ${theme===false && "bg-white"} items-center border-2 border-blue-600`}>
                 {logedUser?.userImage ? (
                   logedUser?.provider ? (
                     <AvatarImage
@@ -550,7 +553,7 @@ export default function Navbar() {
                     />
                   )
                 ) : (
-                  <div className="bg-white justify-center items-center px-5 py-3 rounded-full">
+                  <div className={`bg-white justify-center items-center px-5 py-3 rounded-full ${theme===false && 'text-black'}`}>
                     {logedUser?.userName?.[0]?.toUpperCase()}
                   </div>
                 )}
@@ -560,7 +563,7 @@ export default function Navbar() {
         )}
 
         {toggl && (
-          <div className={`absolute right-3 z-10 mt-32 w-48 origin-top-right rounded-md ${theme? "bg-white":"bg-black"} py-1 shadow-lg ring-1 ring-black/5 focus:outline-none`}>
+          <div className={`absolute right-3 z-10 mt-32 w-48 origin-top-right rounded-md ${theme===true && "bg-white"} ${theme===false && 'bg-black'} py-1 shadow-lg ring-1 ring-black/5 focus:outline-none`}>
             <div
               onClick={navigateToProfile}
               className={`px-4 py-2 text-sm  hover:bg-slate-100 cursor-pointer flex flex-row gap-2 items-center hover:text-blue-600 ${

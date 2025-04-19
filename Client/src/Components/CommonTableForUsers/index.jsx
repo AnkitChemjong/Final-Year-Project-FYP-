@@ -144,7 +144,9 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
           <TableHeader className="bg-gray-200">
             <TableRow>
               {tableFormat.map((header, index) => (
-                <TableHead key={index}>{header}</TableHead>
+                <TableHead
+                className=" text-black first:rounded-tl-lg last:rounded-tr-lg"
+                 key={index}>{header}</TableHead>
               ))}
             </TableRow>
           </TableHeader>

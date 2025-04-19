@@ -25,6 +25,8 @@ import renderStars from '@/Components/RenderStars';
 import { Card } from '@/Components/ui/card';
 import student from '@/assets/student.json';
 import { Avatar,AvatarImage } from '@/Components/ui/avatar';
+import { useSocket } from '@/Services/Socket-Client-Provider';
+
 
 export default function TeacherDetails() {
     const {specificTeacherDetailsId,setSpecificTeacherDetailsId,
@@ -40,6 +42,8 @@ export default function TeacherDetails() {
     const [ hireDialog,setHireDialog]=useState(false);
     const [togRating,setTogRating]=useState(false);
     const [teacherAverageRating,setTeacherAverageRating]=useState(null);
+     const {socket}=useSocket();
+
     useEffect(()=>{
 
       if(user&&allRating){
@@ -84,6 +88,7 @@ export default function TeacherDetails() {
         const finalData={studentId:user?._id,teacherId:id,...data};
         const response=await axiosService.post(Hire_Teacher,finalData);
         if(response.status === 200){
+          socket?.emit("hire-teacher-message",{userId:id,title:"Hire Teacher",message:`${user?.userName} send you hire request.`,type:'message'});
           toast.success(response?.data?.message);
           navigate('/profile');
         }
@@ -155,7 +160,8 @@ export default function TeacherDetails() {
             alt="Teacher"
             className="w-64 h-64 rounded-full object-cover border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform duration-300"
           />:(
-            <div className=' w-64 h-64 rounded-full flex items-center justify-center   border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform duration-300 text-8xl'>{specificTeacherDetails?.teacherDetails.userName.split("")[0].toUpperCase()}</div>
+            <div className={`${user?.theme===false && "text-black"} w-64 h-64 rounded-full flex items-center justify-center    
+            border-4 border-blue-500 shadow-lg hover:scale-105 transition-transform duration-300 text-8xl`}>{specificTeacherDetails?.teacherDetails.userName.split("")[0].toUpperCase()}</div>
           )
             
           }
@@ -294,7 +300,7 @@ export default function TeacherDetails() {
      
       <div className="mt-16">
         <div className="flex items-center gap-1 md:gap-4 mb-8 overflow-hidden">
-          <h2 className="text-4xl font-bold text-black">Courses Created</h2>
+          <h2 className="text-4xl font-bold">Courses Created</h2>
             <LottieAnimation animationData={graduationcourse} width={150} height={150} speed={1} />
         </div>
 
@@ -315,7 +321,7 @@ export default function TeacherDetails() {
       </div>
     )})
   ) : (
-    <h1 className="text-center text-2xl font-bold  text-slate-700 col-span-full">No Courses Created By Teacher.</h1> 
+    <h1 className="text-center text-2xl font-bold  col-span-full">No Courses Created By Teacher.</h1> 
   )}
 </div>
 
@@ -342,7 +348,7 @@ export default function TeacherDetails() {
                   <Avatar className="w-16 h-16 border-2 border-primary/20">
                     {feedback?.userId?.userImage ? (
                       <AvatarImage
-                        className="rounded-full"
+                        className={`${user?.theme===false && "bg-white"} rounded-full`}
                         src={
                           feedback?.userId?.userImage?.startsWith("http")
                             ? feedback?.userId?.userImage

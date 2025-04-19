@@ -31,7 +31,6 @@ export default function Quiz() {
   const [certificateBlob, setCertificateBlob] = useState(null); 
   const [courseProgress, setCourseProgress] = useState(null);
 
-
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -40,7 +39,6 @@ export default function Quiz() {
     return array;
   };
 
- 
   const getCourseQuizData = async () => {
     try {
       const response = await axiosService.get(`${Get_Course_Quiz_Data}/${id}`);
@@ -87,7 +85,6 @@ export default function Quiz() {
     }
   };
 
-
   const handleSubmitQuiz = async () => {
     try {
       let correctAnswers = 0;
@@ -119,13 +116,11 @@ export default function Quiz() {
         }
       }
 
-      // Handle 201 status
       if (response?.status === 201) {
         getCourseProgress();
         setSelectedAnswers({});
         toast.info(`${response?.data?.message}`);
       }
-      // Handle 202 status
       if (response?.status === 202) {
         setIsGeneratingCertificate(true);
         getCourseProgress();
@@ -168,7 +163,6 @@ export default function Quiz() {
     }
   }, [id, user]);
 
-
   const sendCertificateToBackend = async (blob) => {
     const formData = new FormData();
     formData.append('coursecertificate', blob, 'certificate.pdf');
@@ -188,11 +182,10 @@ export default function Quiz() {
     }
   };
 
-
   return (
-    <div>
+    <div className="dark:bg-slate-900">
       <Navbar />
-      <div className="p-6 bg-gradient-to-b min-h-screen">
+      <div className="p-6 bg-gradient-to-b from-blue-50 to-white dark:from-slate-800 dark:to-slate-900 min-h-screen">
         <div className="mb-6">
           <Button
             onClick={() => navigate(-1)}
@@ -203,15 +196,15 @@ export default function Quiz() {
           </Button>
         </div>
 
-        <div className="w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <div className="w-full mx-auto bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700">
           <div className="flex items-center gap-2 justify-center">
-            <h1 className="text-3xl font-bold mb-8 text-gray-800 font-heading">Course Quiz</h1>
+            <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white font-heading">Course Quiz</h1>
             <LottieAnimation animationData={quiz} width={200} height={200} speed={1} />
           </div>
 
           {courseQuizData?.map((question, index) => (
             <div key={question._id} className="mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-gray-700">
+              <h2 className="text-xl font-semibold mb-4 text-gray-700 dark:text-slate-300">
                 {index + 1}. {question.question}
               </h2>
               <div className="space-y-3">
@@ -220,13 +213,13 @@ export default function Quiz() {
                     key={optionKey}
                     className={`p-4 rounded-lg cursor-pointer transition-all duration-200 border ${
                       selectedAnswers[question._id] === optionKey
-                        ? 'bg-blue-100 border-blue-500'
-                        : 'bg-gray-50 hover:bg-gray-100'
+                        ? 'bg-blue-100 dark:bg-blue-900 border-blue-500 dark:border-blue-600'
+                        : 'bg-gray-50 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 border-gray-200 dark:border-slate-600'
                     }`}
                     onClick={() => !quizSubmitted && handleAnswerSelect(question._id, optionKey)}
                   >
-                    <span className="font-medium text-gray-700">{optionKey.slice(-1)}.</span>{' '}
-                    <span className="text-gray-700">{question[optionKey]}</span>
+                    <span className="font-medium text-gray-700 dark:text-slate-300">{optionKey.slice(-1)}.</span>{' '}
+                    <span className="text-gray-700 dark:text-slate-300">{question[optionKey]}</span>
                   </div>
                 ))}
               </div>
@@ -252,7 +245,7 @@ export default function Quiz() {
               </Button>
             ) : (
               <div className="text-center">
-                <p className="text-xl font-bold mb-4 text-gray-800">
+                <p className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
                   Mark Obtained: {score} / {courseQuizData?.length * 10}
                 </p>
                 <Button
@@ -266,7 +259,6 @@ export default function Quiz() {
           </div>
         </div>
       </div>
-
 
       {isGeneratingCertificate && (
         <BlobProvider
@@ -286,15 +278,12 @@ export default function Quiz() {
         >
           {({ blob, loading, error }) => {
             if (error) {
-            
-              setIsGeneratingCertificate(false); // Stop generating the certificate
+              setIsGeneratingCertificate(false);
             }
             if (!loading && blob) {
-           
-              setCertificateBlob(blob); // Store the generated blob in state
-              setIsGeneratingCertificate(false); // Stop generating the certificate
+              setCertificateBlob(blob);
+              setIsGeneratingCertificate(false);
 
-              // Send the blob to the backend
               sendCertificateToBackend(blob).then(() => {
                 setShowConfetti(true);
                 setCourseCompletedDialog(true);
@@ -304,7 +293,7 @@ export default function Quiz() {
                 toast.success(`You scored ${score} out of ${courseQuizData.length * 10}`);
               });
             }
-            return null; // Render nothing
+            return null;
           }}
         </BlobProvider>
       )}

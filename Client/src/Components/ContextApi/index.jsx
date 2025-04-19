@@ -68,6 +68,7 @@ export default function ContextApi({children}) {
   const [allTeacher,setAllTeacher]=useState([]);
   const [teacherPurchaseData,setTeacherPurchaseData]=useState([]);
   const [allTeacherPurchaseData,setAllteacherPurchaseData]=useState([]);
+  const [allSubscriptionUser,setAllSubscriptionUser]=useState([]);
   
   return (
    <UseContextApi.Provider  value={{loadingSpin,setLoadingSpin,downloading,setDownloading,courseLandingFormData,
@@ -95,7 +96,8 @@ export default function ContextApi({children}) {
     allCustomer,setAllCustomer,allTeacher,setAllTeacher,
     extraResource,setExtraResource,
     teacherPurchaseData,setTeacherPurchaseData,
-    allTeacherPurchaseData,setAllteacherPurchaseData
+    allTeacherPurchaseData,setAllteacherPurchaseData,
+    allSubscriptionUser,setAllSubscriptionUser
    }}>
      {children}
    </UseContextApi.Provider>

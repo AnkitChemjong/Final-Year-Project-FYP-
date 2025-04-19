@@ -143,7 +143,7 @@ export default function TeacherNavbar() {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Avatar className={`h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${teacher?.theme? "":"bg-white"}`}>
+            <Avatar className={`h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${teacher?.theme===false && "bg-white"}`}>
               {teacher &&
                 (teacher?.userImage ? (
                   <AvatarImage
@@ -156,7 +156,7 @@ export default function TeacherNavbar() {
                     className="rounded-full"
                   />
                 ) : (
-                  <div className="bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full">
+                  <div className={`bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full ${teacher?.theme===false && "text-black"}`}>
                     {teacher?.userName?.split("")[0].toUpperCase()}
                   </div>
                 ))}

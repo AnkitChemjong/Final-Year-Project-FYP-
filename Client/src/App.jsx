@@ -41,6 +41,8 @@ import AdminTeacher from "./Pages/AdminTeacher";
 import { getOnlineUser } from "./Store/Slices/Get_Online_Users";
 import AboutUs from "./Pages/AboutUs";
 import { getAllPurchaseData } from "./Store/Slices/Get_All_Purchase_Data";
+import AdminSubscription from "./Pages/AdminSubscription";
+import { getSubscriptionPaymentData } from "./Store/Slices/Get_All_Subscription_Payment";
 
 
 let toastShown = false;
@@ -176,6 +178,7 @@ function App() {
   const allProgress=useSelector(state=>state?.progress);
   const onlineUser=useSelector(state=>state?.onlineUsers);
   const purchaseData=useSelector(state=>state?.purchase);
+  const subscriptionPayment=useSelector(state=>state?.subscriptionPayment);
   const dispatch=useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -209,6 +212,9 @@ function App() {
       if(!purchaseData?.data){
         await dispatch(getAllPurchaseData());
       }
+      if(!subscriptionPayment?.data){
+        await dispatch(getSubscriptionPaymentData());
+      }
     };
   
     fetchData();
@@ -231,6 +237,7 @@ function App() {
           <Route path="/admin/application" element={<AdminRoute><AdminApplication/></AdminRoute>}/>
           <Route path="/admin/customer" element={<AdminRoute><AdminCustomer/></AdminRoute>}/>
           <Route path="/admin/teacher" element={<AdminRoute><AdminTeacher/></AdminRoute>}/>
+          <Route path="/admin/subscription" element={<AdminRoute><AdminSubscription/></AdminRoute>}/>
           <Route path="/createnewcourse" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/edit_course/:courseId" element={<AdminTeacherRoute><CreateNewCourse/></AdminTeacherRoute>}/>
           <Route path="/teacher/dashboard" element={<TeacherRoute><TeacherDashboard/></TeacherRoute>}/>

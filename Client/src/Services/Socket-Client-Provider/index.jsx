@@ -67,7 +67,6 @@ export default function SocketProvider({ children }) {
                 
             }
             newSocket.on('notification',handleAddCourseNotification);
-            newSocket.on('notification',handleAddCourseNotification);
             setSocket(newSocket);
         }
         return () => {

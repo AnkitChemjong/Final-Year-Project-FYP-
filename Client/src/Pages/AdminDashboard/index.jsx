@@ -24,6 +24,7 @@ import { Button } from '@/Components/ui/button';
 import { FaSun } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa";
 import { toggleTheme } from '@/Components/Navbar';
+import { MdSubscriptions } from "react-icons/md";
 
 
 
@@ -120,6 +121,22 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
+const processSubscriptionData = (subscriptions) => {
+  const monthlyData = Array(12).fill().map((_, i) => ({
+    name: new Date(0, i).toLocaleString('default', { month: 'short' }),
+    subscriptions: 0
+  }));
+
+  subscriptions?.forEach(subscription => {
+    const date = new Date(subscription.createdAt || subscription.orderDate);
+    const month = date.getMonth();
+    if (month >= 0 && month < 12) {
+      monthlyData[month].subscriptions += Number(subscription.amountPaid) || 0;
+    }
+  });
+
+  return monthlyData;
+};
 export default function AdminDashboard() {
   const userState = useSelector(state => state?.user);
   const { data: user } = userState;
@@ -133,6 +150,8 @@ export default function AdminDashboard() {
   const { data: purchases } = purchaseState;
   const ratingState = useSelector(state => state?.rating);
   const { data: rating } = ratingState;
+  const subscriptionState = useSelector(state => state?.subscriptionPayment);
+    const { data: subscriptionData } = subscriptionState;
   const{setLoadingSpin}=useContext(UseContextApi);
 
   const [recentPurchases, setRecentPurchases] = useState(null);
@@ -144,6 +163,8 @@ export default function AdminDashboard() {
   const [load,setLoad]=useState(true);
   const [dialog1, setDialog1] = useState(false);
   const [dialog2,setDialog2]=useState(false);
+  const [subscriptionChartData, setSubscriptionChartData] = useState(null);
+  const [recentSubscriptions, setRecentSubscriptions] = useState(null);
   const dispatch=useDispatch();
 
   const toggleUserTheme=async()=>{
@@ -190,19 +211,22 @@ export default function AdminDashboard() {
   ];
 
   useEffect(() => {
-    if (user && purchases && allCourse && allUser) {
+    if (user && purchases && allCourse && allUser && subscriptionData) {
       const recentPurchase = purchases?.slice(0, 5);
+      const recentSubscription = subscriptionData?.slice(0, 5);
       const topCourses = allCourse
         ?.slice()
         ?.sort((a, b) => (b?.students?.length || 0) - (a?.students?.length || 0))
         ?.slice(0, 3);
 
       setRegistrationData(processRegistrationData(allUser));
+      setSubscriptionChartData(processSubscriptionData(subscriptionData));
       setEarningsData(processEarningsData(purchases));
       setCourseForChart(processEnrollmentData(allCourse));
       setPurchaseForChart(processEnrollmentData(purchases));
       setTopPerformingCourse(topCourses);
       setRecentPurchases(recentPurchase);
+      setRecentSubscriptions(recentSubscription);
     }
   }, [user, purchases, allCourse, allUser]);
   useEffect(()=>{
@@ -355,7 +379,21 @@ export default function AdminDashboard() {
                   color: 'text-green-600'
                 },
                 {
-                  title: 'Total Earnings',
+                  title: 'Total Courses',
+                  value: allCourse?.length || 0,
+                  icon: <FaBook size={20} />,
+                  bg: 'bg-gray-100',
+                  color: 'text-gray-800',
+                },
+                {
+                  title: 'Active Users',
+                  value: allUser?.filter(item => item?.status === 'active')?.length || 0,
+                  icon: <FaUserPlus size={20} />,
+                  bg: 'bg-orange-100',
+                  color: 'text-orange-600',
+                },
+                {
+                  title: 'Total Course Earnings',
                   value1: purchases?.reduce((total, purchase) => total + (Number(purchase?.amountPaid) || 0), 0).toFixed(2),
                   value2: purchases?.reduce((total, purchase) => total + (Number(purchase?.siteAmount) || 0), 0).toFixed(2),
                   value3: purchases?.reduce((total, purchase) => total + (Number(purchase?.teacherAmount) || 0), 0).toFixed(2),
@@ -364,7 +402,7 @@ export default function AdminDashboard() {
                   color: 'text-indigo-600',
                 },
                 {
-                  title: 'This Month',
+                  title: 'This Month Course Earning',
                   value1: purchases
                     ?.filter(purchase => {
                       const purchaseDate = new Date(purchase?.createdAt || purchase?.orderDate);
@@ -396,18 +434,39 @@ export default function AdminDashboard() {
                   bg: 'bg-pink-100',
                   color: 'text-pink-600',
                 },
+                
                 {
-                  title: 'Total Courses',
-                  value: allCourse?.length || 0,
-                  icon: <FaBook size={20} />,
-                  bg: 'bg-gray-100',
-                  color: 'text-gray-800',
+                  title: 'Subscription Earning',
+                  value1: subscriptionData?.reduce((acc,obj)=>acc+Number(obj?.amountPaid||0),0)|| 0,
+                  value4:subscriptionData?.filter(item=>{
+                    const purchaseDate = new Date(item?.createdAt || item?.orderDate);
+                      const now = new Date();
+                      return purchaseDate.getMonth() === now.getMonth() && 
+                            purchaseDate.getFullYear() === now.getFullYear();
+                  })?.reduce((acc,obj)=>acc+Number(obj?.amountPaid||0),0)|| 0,
+                  icon: <MdSubscriptions size={20} />,
+                  bg: 'bg-orange-100',
+                  color: 'text-orange-600',
                 },
                 {
-                  title: 'Active Users',
-                  value: allUser?.filter(item => item?.status === 'active')?.length || 0,
-                  icon: <FaUserPlus size={20} />,
-                  bg: 'bg-orange-100',
+                  title: 'All Total Earning',
+                  value1: Number(subscriptionData?.reduce((acc,obj)=>acc+Number(obj?.amountPaid||0),0)|| 0) + Number(purchases?.reduce((total, purchase) => total + (Number(purchase?.amountPaid) || 0), 0).toFixed(2)),
+                  value4:Number(subscriptionData?.filter(item=>{
+                    const purchaseDate = new Date(item?.createdAt || item?.orderDate);
+                      const now = new Date();
+                      return purchaseDate.getMonth() === now.getMonth() && 
+                            purchaseDate.getFullYear() === now.getFullYear();
+                  })?.reduce((acc,obj)=>acc+Number(obj?.amountPaid||0),0)|| 0)+ Number(purchases
+                    ?.filter(purchase => {
+                      const purchaseDate = new Date(purchase?.createdAt || purchase?.orderDate);
+                      const now = new Date();
+                      return purchaseDate.getMonth() === now.getMonth() && 
+                            purchaseDate.getFullYear() === now.getFullYear();
+                    })
+                    ?.reduce((total, purchase) => total + (Number(purchase?.amountPaid) || 0), 0)
+                    .toFixed(2)),
+                  icon: <FaMoneyBillWave size={20} />,
+                  bg: 'bg-green-100',
                   color: 'text-orange-600',
                 }
               ].map((stat, index) => (
@@ -424,6 +483,9 @@ export default function AdminDashboard() {
                       }
                       {stat?.value3 && 
                         <p className='text-sm font-bold mt-1'>Teacher: Rs.{stat?.value3}</p>
+                      }
+                      {stat?.value4 && 
+                        <p className='text-sm font-bold mt-1'>This Month: Rs.{stat?.value4}</p>
                       }
                     </div>
                     <div className={`p-3 rounded-full ${stat.bg} ${stat.color}`}>
@@ -568,7 +630,7 @@ export default function AdminDashboard() {
 
               <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold font-heading'>Monthly Earnings</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Monthly Earnings Of Course</h3>
                   <div className='text-green-500'>
                     <FaMoneyBillWave size={18} />
                   </div>
@@ -621,8 +683,49 @@ export default function AdminDashboard() {
               </div>
 
               
+            {/* New Subscription Chart */}
+            <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100 mb-8`}>
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-lg font-semibold font-heading'>Monthly Subscription Earnings</h3>
+                <div className='text-orange-500'>
+                  <MdSubscriptions size={18} />
+                </div>
+              </div>
+              <div className='h-[250px]'>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={subscriptionChartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fontSize: 12 }}
+                    />
+                    <Tooltip 
+                      formatter={(value) => [`Rs.${value.toLocaleString()}`, 'Earnings']}
+                      labelFormatter={(label) => `Month: ${label}`}
+                    />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="subscriptions" 
+                      stroke="#f97316" 
+                      name="Subscription Earnings"
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                      activeDot={{ r: 5 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
 
-              
+            
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
@@ -679,9 +782,9 @@ export default function AdminDashboard() {
 
               <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
                 <div className='flex items-center justify-between mb-4'>
-                  <h3 className='text-lg font-semibold font-heading'>Recent Purchases</h3>
+                  <h3 className='text-lg font-semibold font-heading'>Recent Purchased Courses</h3>
                   <div className='text-green-500'>
-                    <FaMoneyBillWave size={18} />
+                    <FaMoneyBillWave size={18}/>
                   </div>
                 </div>
                 {recentPurchases && recentPurchases?.length > 0 ? (
@@ -696,7 +799,7 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} divide-y divide-gray-200`}>
                         {recentPurchases.map((purchase, index) => (
-                          <tr key={index} className="hover:bg-gray-50">
+                          <tr key={index} >
                             <td className='px-4 py-3 whitespace-nowrap text-sm font-medium '>{purchase?.courseId?.title}</td>
                             <td className='px-4 py-3 whitespace-nowrap text-sm '>
                               {moment(purchase?.createdAt || purchase?.orderDate).format("MMMM DD, YYYY")}
@@ -712,6 +815,45 @@ export default function AdminDashboard() {
                 ) : (
                   <div className='w-full p-2 text-center'>
                     <p className='text-gray-500'>No recent purchases data</p>
+                  </div>
+                )}
+              </div>
+
+              <div className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} p-5 rounded-xl shadow-sm border border-gray-100`}>
+                <div className='flex items-center justify-between mb-4'>
+                  <h3 className='text-lg font-semibold font-heading'>Recent Subscription Purchases</h3>
+                  <div className='text-orange-500'>
+                    <MdSubscriptions size={18}/>
+                  </div>
+                </div>
+                {recentSubscriptions && recentSubscriptions?.length > 0 ? (
+                  <div className='overflow-x-auto'>
+                    <table className={`min-w-full divide-y divide-gray-200 `}>
+                      <thead className={` ${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"}`}>
+                        <tr>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Type</th>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} divide-y divide-gray-200`}>
+                        {recentSubscriptions.map((purchase, index) => (
+                          <tr key={index}>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium '>{purchase?.subscriptionType}</td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm '>
+                              {moment(purchase?.createdAt || purchase?.orderDate).format("MMMM DD, YYYY")}
+                            </td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
+                              Rs.{Number(purchase?.amountPaid)?.toFixed(2)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className='w-full p-2 text-center'>
+                    <p className='text-gray-500'>No recent Subscription data</p>
                   </div>
                 )}
               </div>
