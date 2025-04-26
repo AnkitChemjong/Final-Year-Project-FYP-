@@ -1,4 +1,5 @@
-import { Schema,model } from "mongoose";
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 import contentProgressSchema from "./Content_Progress_Schema/index.mjs";
 
 const progressSchema = new Schema({
@@ -36,5 +37,5 @@ const progressSchema = new Schema({
       }
   },{timestamps:true});
   
-  const ProgressModel = model("ProgressModel", progressSchema);
+  const ProgressModel =models?.ProgressModel || model("ProgressModel", progressSchema);
   export default ProgressModel;

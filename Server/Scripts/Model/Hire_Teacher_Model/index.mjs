@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 
 const hireTeacherSchema=new Schema({
@@ -34,5 +35,5 @@ const hireTeacherSchema=new Schema({
         default:'pending'
     }
 },{timestamps:true});
-const HireTeacher=model("HireTeacher",hireTeacherSchema);
+const HireTeacher=models?.HireTeacher || model("HireTeacher",hireTeacherSchema);
 export default HireTeacher;

@@ -2,7 +2,7 @@ import React,{useContext} from 'react';
 import SignupForm from '@/Components/SingupForm';
 import { toast } from 'react-toastify';
 import { axiosService } from '@/Services';
-import { User_Route } from '@/Routes';
+import { User_Temp_Route } from '@/Routes';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/Components/Navbar';
 import { UseContextApi } from '@/Components/ContextApi';
@@ -17,16 +17,13 @@ export default function Signup() {
   const handlePost=async (data)=>{
     try{
       setLoadingSpin(true);
-       const returnData=await axiosService.post(User_Route,data);
+       const returnData=await axiosService.post(User_Temp_Route,data);
       if(returnData?.status===200){
         setLoadingSpin(false);
         toast.success(returnData?.data?.message);
-        navigate('/signin')
+        navigate('/checktemp',{state:returnData?.data?.email});
       }
-      if(returnData?.status===400){
-        toast.error(returnData?.data?.message);
-      }
-      if(returnData?.status===500){
+      if(returnData?.status===201){
         toast.error(returnData?.data?.message);
       }
     }

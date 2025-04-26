@@ -44,17 +44,13 @@ export default function SigninForm({func}) {
       try{
         setLoadingSpin(true);
             const returnData=await axiosService.post(User_Token_Gen_Route,data,{withCredentials:true,headers:{"Content-Type":"application/json"}});
-             if(returnData.status===200){
+             if(returnData?.status===200){
                 toast.success(returnData?.data?.message);
                 navigate('/resetcode',{state:returnData?.data?.email});
-             }
-             if(returnData.status===400){
-              toast.error(returnData?.data?.message)
-              window.location.reload();
-           }
+             }    
       }
       catch(error){
-        console.log(error);
+        toast.error(error?.response?.data?.message)
       }
       finally{
         setLoadingSpin(false);

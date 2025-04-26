@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '@/Store/Slices/User_Slice';
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoMdMenu, IoMdClose } from "react-icons/io";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { axiosService } from '@/Services';
 import { Avatar, AvatarImage } from "@/Components/ui/avatar";
@@ -11,12 +11,10 @@ import Logout from '../LogoutFunc';
 import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { MdOutlineLaptopChromebook } from "react-icons/md";
 import { MdOutlineContactMail } from "react-icons/md";
-import { FaRegComments } from "react-icons/fa";
 import {
     User_Upload_Profile_Image,
     User_Delete_Profile_Image,
   } from "@/Routes";
-
 
 export default function TeacherNavbar() {
   const dispatch = useDispatch();
@@ -24,6 +22,7 @@ export default function TeacherNavbar() {
   const pagePath = location?.pathname?.split("/").pop();
   const upProfileImage = useRef();
   const [hover, setHover] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const teacher = useSelector(state => state?.user?.data);
   const navigate = useNavigate();
 
@@ -113,91 +112,127 @@ export default function TeacherNavbar() {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
-    <div className={`h-screen md:min-w-80 w-fit p-4 flex flex-col  ${teacher?.theme? "bg-white":"bg-slate-900"} border-r-2 border-gray-200 rounded-tr-xl rounded-br-xl shadow-lg`}>
-  
-      <div className='flex flex-row justify-center items-center mb-8'>
-        <img className='w-20 h-20 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
-        <h1 className={`font-bold text-2xl  ${teacher?.theme? "text-blue-900":"text-white"} font-heading`} >E-Pathsala</h1>
-      </div>
-
-      <div className='flex flex-col gap-3'>
-        {teacherNavItem.map((item, index) => (
-          <Link
-            key={index}
-            to={item?.path}
-            className={`text-[18px] relative p-2 rounded-lg hover:scale-105 hover:bg-blue-500 shadow-md transition-all 
-              duration-100 flex items-center md:gap-16 gap-1 cursor-pointer
-              ${pagePath === item?.pageName ? 'bg-blue-500' : 'bg-green-500'}`}
-          >
-            <item.icon className='w-5 h-5 md:ml-2' />
-            <p className='text-gray-800 text-lg'>{item?.name}</p>
-          </Link>
-        ))}
-      </div>
-
-      <div className='mt-auto p-2'>
-        <div className='flex flex-row items-center gap-4 mb-4'>
-          <div
-            className="h-12 w-12 relative flex items-center justify-center"
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-          >
-            <Avatar className={`h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${teacher?.theme===false && "bg-white"}`}>
-              {teacher &&
-                (teacher?.userImage ? (
-                  <AvatarImage
-                    src={
-                      teacher?.userImage.startsWith("http")
-                        ? teacher?.userImage
-                        : `${import.meta.env.VITE_BACKEND_URL}/${teacher?.userImage}`
-                    }
-                    alt="profileImage"
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className={`bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full ${teacher?.theme===false && "text-black"}`}>
-                    {teacher?.userName?.split("")[0].toUpperCase()}
-                  </div>
-                ))}
-            </Avatar>
-            {hover && (
-              <div
-                className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
-                onClick={
-                  teacher?.userImage
-                    ? handleProfileImageDelete
-                    : handleFileInputClick
-                }
-              >
-                {teacher?.userImage ? (
-                  <FaTrash className="text-white text-lg cursor-pointer" />
-                ) : (
-                  <FaPlus className="text-white text-lg cursor-pointer" />
-                )}
-              </div>
-            )}
-            <input
-              type="file"
-              ref={upProfileImage}
-              onChange={handleImageChange}
-              className="hidden"
-              name="profile-image"
-              accept=".png, .jpg, .jpeg, .svg, .webp"
-            />
-          </div>
-          <p className='text-lg '>{teacher?.userName}</p>
+    <>
+      {/* Mobile Header */}
+      <div className={`md:hidden fixed top-0 left-0 right-0 z-50 ${teacher?.theme ? "bg-white" : "bg-slate-900"} p-4 flex justify-between items-center border-b-2 border-gray-200 shadow-md`}>
+        <div className='flex items-center'>
+          <img className='w-10 h-10 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
+          <h1 className={`font-bold text-xl ${teacher?.theme ? "text-blue-900" : "text-white"} font-heading`}>E-Pathsala</h1>
         </div>
-
-    
-        <div
-          className={`flex flex-row items-center gap-3   ${teacher?.theme? "bg-blue-100":"bg-slate-800"} hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg transition-transform duration-100 cursor-pointer`}
-          onClick={handleLogout}
+        <button 
+          onClick={toggleMobileMenu}
+          className={`p-2 rounded-lg ${teacher?.theme ? "text-blue-900" : "text-white"}`}
         >
-          <IoIosLogOut size={20} />
-          <p className='text-lg'>Log Out</p>
+          {mobileMenuOpen ? <IoMdClose size={24} /> : <IoMdMenu size={24} />}
+        </button>
+      </div>
+
+      {/* Sidebar - Desktop and Mobile */}
+      <div 
+        className={`fixed md:relative z-40 h-full md:h-screen md:min-w-80 w-72 p-4 flex flex-col ${teacher?.theme ? "bg-white" : "bg-slate-900"} border-r-2 border-gray-200 rounded-tr-xl rounded-br-xl shadow-lg transition-all duration-300 overflow-y-auto
+          ${mobileMenuOpen ? "left-0" : "-left-72 md:left-0"}`}
+        style={{ 
+          top: mobileMenuOpen ? '64px' : '0',
+          height: mobileMenuOpen ? 'calc(100vh - 64px)' : '100vh'
+        }}
+      >
+        {/* Logo - Hidden on mobile since we have it in the header */}
+        <div className='hidden md:flex flex-row justify-center items-center mb-8'>
+          <img className='w-20 h-20 mr-2' src="/images/logo.png" alt="logo of efficient pathsalsa" />
+          <h1 className={`font-bold text-2xl ${teacher?.theme ? "text-blue-900" : "text-white"} font-heading`}>E-Pathsala</h1>
+        </div>
+
+        <div className='flex flex-col gap-3 mt-4 md:mt-0'>
+          {teacherNavItem.map((item, index) => (
+            <Link
+              key={index}
+              to={item?.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`text-[18px] relative p-2 rounded-lg hover:scale-105 hover:bg-blue-500 shadow-md transition-all 
+                duration-100 flex items-center md:gap-16 gap-1 cursor-pointer
+                ${pagePath === item?.pageName ? 'bg-blue-500' : 'bg-green-500'}`}
+            >
+              <item.icon className='w-5 h-5 md:ml-2' />
+              <p className='text-gray-800 text-lg'>{item?.name}</p>
+            </Link>
+          ))}
+        </div>
+
+        <div className='mt-auto p-2 mb-4'>
+          <div className='flex flex-row items-center gap-4 mb-4'>
+            <div
+              className="h-12 w-12 relative flex items-center justify-center"
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+            >
+              <Avatar className={`h-12 w-12 rounded-full cursor-pointer flex justify-center items-center border-2 border-blue-900 ${teacher?.theme===false && "bg-white"}`}>
+                {teacher &&
+                  (teacher?.userImage ? (
+                    <AvatarImage
+                      src={
+                        teacher?.userImage.startsWith("http")
+                          ? teacher?.userImage
+                          : `${import.meta.env.VITE_BACKEND_URL}/${teacher?.userImage}`
+                      }
+                      alt="profileImage"
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className={`bg-white w-full h-full flex justify-center items-center px-5 py-3 rounded-full ${teacher?.theme===false && "text-black"}`}>
+                      {teacher?.userName?.split("")[0].toUpperCase()}
+                    </div>
+                  ))}
+              </Avatar>
+              {hover && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full"
+                  onClick={
+                    teacher?.userImage
+                      ? handleProfileImageDelete
+                      : handleFileInputClick
+                  }
+                >
+                  {teacher?.userImage ? (
+                    <FaTrash className="text-white text-lg cursor-pointer" />
+                  ) : (
+                    <FaPlus className="text-white text-lg cursor-pointer" />
+                  )}
+                </div>
+              )}
+              <input
+                type="file"
+                ref={upProfileImage}
+                onChange={handleImageChange}
+                className="hidden"
+                name="profile-image"
+                accept=".png, .jpg, .jpeg, .svg, .webp"
+              />
+            </div>
+            <p className='text-lg '>{teacher?.userName}</p>
+          </div>
+
+          <div
+            className={`flex flex-row items-center gap-3 ${teacher?.theme ? "bg-blue-100" : "bg-slate-800"} hover:scale-105 hover:text-blue-900 hover:bg-blue-200 p-2 rounded-lg transition-transform duration-100 cursor-pointer`}
+            onClick={handleLogout}
+          >
+            <IoIosLogOut size={20} />
+            <p className='text-lg'>Log Out</p>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Overlay for mobile menu */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+    </>
   );
 }

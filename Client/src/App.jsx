@@ -43,6 +43,7 @@ import AboutUs from "./Pages/AboutUs";
 import { getAllPurchaseData } from "./Store/Slices/Get_All_Purchase_Data";
 import AdminSubscription from "./Pages/AdminSubscription";
 import { getSubscriptionPaymentData } from "./Store/Slices/Get_All_Subscription_Payment";
+import CheckTempUserCode from "./Pages/CheckTempUserCode";
 
 
 let toastShown = false;
@@ -245,6 +246,7 @@ function App() {
           <Route path="/teacher/subscription" element={<TeacherRoute><Subscription/></TeacherRoute>}/>
           <Route path="/teacher/course" element={<TeacherRoute><TeacherCourse/></TeacherRoute>}/>
           <Route path="/resetcode" element={<ResetCode/>}/>
+          <Route path="/checktemp" element={<AuthRoute><CheckTempUserCode/></AuthRoute>}/>
           <Route path="/changePass" element={<ChangePass/>}/>
           <Route path="/studentCourse" element={<PrivateRoute><StudentCourses/></PrivateRoute>}/>
           <Route path="/contact" element={<PrivateRoute><Contact/></PrivateRoute>}/>

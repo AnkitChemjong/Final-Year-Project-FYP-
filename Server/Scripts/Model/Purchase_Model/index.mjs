@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 
 const purchaseSchema=new Schema({
@@ -53,5 +54,5 @@ const purchaseSchema=new Schema({
     required:true
   }
 },{timestamps:true});
-const PurchaseModel=model("PurchaseModel",purchaseSchema);
+const PurchaseModel=models?.PurchaseModel || model("PurchaseModel",purchaseSchema);
 export default PurchaseModel;

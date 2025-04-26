@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 const purchasedCoursesSchema = new Schema({
   userId: {
@@ -18,5 +19,5 @@ const purchasedCoursesSchema = new Schema({
   ],
 });
 
-const PurchasedCoursesModel = model("PurchasedCoursesModel", purchasedCoursesSchema);
+const PurchasedCoursesModel =models?.PurchasedCoursesModel || model("PurchasedCoursesModel", purchasedCoursesSchema);
 export default PurchasedCoursesModel;

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { createUser } from "../../Controllers/User_Controller/CreateUser/index.mjs";
 import getLogedUser from "../../Controllers/User_Controller/GetLogedUser/index.mjs";
 import logoutUser from "../../Controllers/User_Controller/LogoutUser/index.mjs";
 import passport from "passport";
@@ -20,12 +19,15 @@ import uploadCertificate from "../../Services/UserService/Multer/certificates/Te
 import handleStatus from "../../Controllers/User_Controller/HandleStatus/index.mjs";
 import getOnlineUsers from "../../Controllers/User_Controller/GetOnlineUsers/index.mjs";
 import toggleTheme from "../../Controllers/User_Controller/ToggleTheme/index.mjs";
+import temporaryStorage from "../../Controllers/User_Controller/Create_Temporary_Storage/index.mjs";
+import CheckTempCode from "../../Controllers/User_Controller/Check_Temp_Code/index.mjs";
 
 
 const userRoute=Router();
 
-userRoute.route('/').post(createUser).get(getLogedUser).delete(logoutUser);
-
+userRoute.route('/').get(getLogedUser).delete(logoutUser);
+userRoute.post('/temp',temporaryStorage);
+userRoute.post('/checktempcode',CheckTempCode);
 userRoute.get('/getAllUsers',getAllUsers);
 userRoute.post('/code',GenCode);
 userRoute.post('/check',CheckCode);

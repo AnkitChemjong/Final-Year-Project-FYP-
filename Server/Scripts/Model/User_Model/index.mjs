@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import teacherInfoSchema from './TeacherInfoSchema/index.mjs';
@@ -119,5 +120,5 @@ userSchema.methods.verifyPassword =async function(password) {
    }
   };
 
-  const User=model("User",userSchema);
+  const User=models?.User || model("User",userSchema);
   export default User;

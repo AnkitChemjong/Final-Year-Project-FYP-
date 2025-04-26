@@ -72,7 +72,6 @@ export default function TeacherApplication() {
   const amount = params.get('amount');
   const subscriptionType = params.get('subscriptionType');
 
-  
   const [paymentMessageDialog, setPaymentMessageDialog] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState('');
   const [paymentAmount, setPaymentAmount] = useState('');
@@ -82,7 +81,7 @@ export default function TeacherApplication() {
   const [topCourseRating, setTopCourseRating] = useState(null);
   const [earningOfThisMonth, setEarningOfThisMonth] = useState(0);
   const [enrollmentData, setEnrollmentData] = useState([]);
-  const [load,setLoad]=useState(true);
+  const [load, setLoad] = useState(true);
 
   const resetUserData = () => {
     setTeacherPurchaseData(null);
@@ -92,6 +91,7 @@ export default function TeacherApplication() {
     setEnrollmentData([]);
     setIsLoading(true);
   };
+
   useEffect(() => {
     if (status === 'success' && user?._id) {
       socket?.emit('subscription-bought', {
@@ -112,7 +112,6 @@ export default function TeacherApplication() {
       }
     }
   }, [status, socket, user?._id]);
-
 
   useEffect(() => {
     if (!user?._id) return;
@@ -136,7 +135,6 @@ export default function TeacherApplication() {
     };
   }, [user?._id]);
 
-
   useEffect(() => {
     if (teacherPurchaseData?.purchase) {
       setEnrollmentData(processEnrollmentData(teacherPurchaseData?.purchase));
@@ -145,7 +143,6 @@ export default function TeacherApplication() {
     }
   }, [teacherPurchaseData]);
 
- 
   useEffect(() => {
     if (course && user?._id) {
       const topCourse = course
@@ -169,7 +166,6 @@ export default function TeacherApplication() {
     }
   }, [topPerformingCourse, rating]);
 
-
   useEffect(() => {
     if (teacherPurchaseData?.purchase) {
       const now = new Date();
@@ -190,12 +186,12 @@ export default function TeacherApplication() {
       setEarningOfThisMonth(earnings);
     }
   }, [teacherPurchaseData]);
-  useEffect(()=>{
-    setTimeout(()=>{
-     setLoad(false);
-    },1000);
- },[]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoad(false);
+    }, 1000);
+  }, []);
 
   if (isLoading || !user || load) {
     return (
@@ -207,41 +203,43 @@ export default function TeacherApplication() {
   }
 
   return (
-    <div className={`flex flex-row gap-2 overflow-hidden min-h-screen  ${user?.theme? "bg-gray-50":"bg-zinc-900"}`}>
+    <div className={`flex flex-col md:flex-row gap-2 overflow-hidden min-h-screen ${user?.theme ? "bg-gray-50" : "bg-zinc-900"}`}>
       <TeacherNavbar />
-      <ScrollArea className="max-h-screen overflow-auto">
-        <div className='flex-1 p-6'>
-          <div className='flex justify-between items-center mb-8'>
-          <div className='flex gap-2 items-center'>
-            <h1 className={`text-3xl font-bold  ${user?.theme? "text-gray-800":"text-white"} font-heading`}>Teacher Dashboard</h1>
-          <LottieAnimation animationData={dashboard} width={150} height={150} speed={1}/>
-        </div>
-            <div className='flex items-center gap-4'>
-              <CommonButton func={()=>navigate('/')}  text="Go Home"/>
-              <Badge className='px-4 py-2 bg-green-600 hover:bg-blue-600 cursor-pointer'>
+      <ScrollArea className="w-full h-[calc(100vh-64px)] md:h-screen overflow-auto md:mt-0 mt-10">
+        <div className='flex-1 p-4 md:p-6'>
+          {/* Header Section */}
+          <div className='flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4'>
+            <div className='flex gap-2 items-center'>
+              <h1 className={`text-2xl md:text-3xl font-bold ${user?.theme ? "text-gray-800" : "text-white"} font-heading`}>Teacher Dashboard</h1>
+              <LottieAnimation animationData={dashboard} width={100} height={100} speed={1} className="hidden sm:block" />
+            </div>
+            <div className='flex flex-wrap items-center gap-2'>
+              <CommonButton func={() => navigate('/')} text="Go Home" className="text-xs sm:text-sm" />
+              <Badge className='px-3 py-1 sm:px-4 sm:py-2 bg-green-600 hover:bg-blue-600 cursor-pointer text-xs sm:text-sm'>
                 {user?.subscription?.subscriptionType || 'Basic'}
               </Badge>
               <CommonButton
                 func={() => navigate('/teacher/subscription')}
-                text="Upgrade Subscription"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                text="Upgrade"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm"
               />
             </div>
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+          {/* Stats Cards */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6'>
             {[
               {
                 title: 'Total Earnings',
                 value: `Rs.${teacherPurchaseData?.totalEarnings?.toFixed(2) || '0.00'}`,
-                icon: <FaMoneyBillWave size={24} />,
+                icon: <FaMoneyBillWave size={20} />,
                 bg: 'bg-green-100',
                 color: 'text-green-600'
               },
               {
                 title: 'This Month',
                 value: `Rs.${earningOfThisMonth}`,
-                icon: <FaMoneyBillWave size={24} />,
+                icon: <FaMoneyBillWave size={20} />,
                 bg: 'bg-blue-100',
                 color: 'text-blue-600'
               },
@@ -249,25 +247,25 @@ export default function TeacherApplication() {
                 title: 'Total Students',
                 value: course?.filter(c => c?.creator?._id === user._id)
                   .reduce((sum, c) => sum + (c?.students?.length || 0), 0),
-                icon: <FaUsers size={24} />,
+                icon: <FaUsers size={20} />,
                 bg: 'bg-orange-100',
                 color: 'text-orange-600'
               },
               {
                 title: 'Courses Uploaded',
                 value: course?.filter(c => c?.creator?._id === user._id).length,
-                icon: <FaBook size={24} />,
+                icon: <FaBook size={20} />,
                 bg: 'bg-purple-100',
                 color: 'text-purple-600'
               }
             ].map((stat, index) => (
-              <div key={index} className={` ${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-100`}>
-                <div className={`flex items-center justify-between ${user?.theme? "":"text-white"}`}>
+              <div key={index} className={`${user?.theme ? "bg-white" : "bg-black"} p-4 rounded-lg shadow-sm border border-gray-100`}>
+                <div className={`flex items-center justify-between ${user?.theme ? "" : "text-white"}`}>
                   <div>
-                    <p className=' font-medium'>{stat.title}</p>
-                    <h3 className='text-2xl font-bold mt-2'>{stat.value}</h3>
+                    <p className='text-sm font-medium'>{stat.title}</p>
+                    <h3 className='text-xl font-bold mt-1'>{stat.value}</h3>
                   </div>
-                  <div className={`p-3 rounded-full ${stat.bg} ${stat.color}`}>
+                  <div className={`p-2 rounded-full ${stat.bg} ${stat.color}`}>
                     {stat.icon}
                   </div>
                 </div>
@@ -275,17 +273,17 @@ export default function TeacherApplication() {
             ))}
           </div>
 
-        
-          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
-         
-            <div className={` ${user?.theme? "bg-white":"bg-black"} p-6 rounded-lg shadow-sm border border-gray-100 lg:col-span-2 `}>
-              <div className='flex items-center justify-between mb-4'>
-                <h3 className={`text-lg font-semibold font-heading ${user?.theme? "":"text-white"}`}>Monthly Enrollments ({new Date().getFullYear()})</h3>
+          {/* Charts and Top Course Section */}
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6'>
+            {/* Enrollment Chart */}
+            <div className={`${user?.theme ? "bg-white" : "bg-black"} p-4 rounded-lg shadow-sm border border-gray-100 lg:col-span-2`}>
+              <div className='flex items-center justify-between mb-3'>
+                <h3 className={`text-base font-semibold font-heading ${user?.theme ? "" : "text-white"}`}>Monthly Enrollments ({new Date().getFullYear()})</h3>
                 <div className='text-blue-500'>
-                  <FaChartLine size={20} />
+                  <FaChartLine size={18} />
                 </div>
               </div>
-              <div className='h-64'>
+              <div className='h-48 sm:h-64'>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={enrollmentData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -307,19 +305,19 @@ export default function TeacherApplication() {
               </div>
             </div>
 
-           
-            <div className={` ${user?.theme? "bg-white":"bg-black text-white"} p-6 rounded-lg shadow-sm border border-gray-100`}>
-              <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-lg font-semibold font-heading'>Top Performing Course</h3>
+            {/* Top Performing Course */}
+            <div className={`${user?.theme ? "bg-white" : "bg-black text-white"} p-4 rounded-lg shadow-sm border border-gray-100`}>
+              <div className='flex items-center justify-between mb-3'>
+                <h3 className='text-base font-semibold font-heading'>Top Performing Course</h3>
                 <div className='text-yellow-500'>
-                  <FaStar size={20} />
+                  <FaStar size={18} />
                 </div>
               </div>
               
               {topPerformingCourse ? (
                 <>
-                  <h4 className='text-xl font-bold mb-2'>{topPerformingCourse.title}</h4>
-                  <div className='space-y-3 mt-4'>
+                  <h4 className='text-lg font-bold mb-1'>{topPerformingCourse.title}</h4>
+                  <div className='space-y-2 mt-2'>
                     {[
                       {
                         label: 'Total course Earned',
@@ -353,15 +351,15 @@ export default function TeacherApplication() {
                         )
                       }
                     ].map((item, i) => (
-                      <div key={i} className='flex justify-between text-gray-500'>
-                        <span >{item.label}:</span>
+                      <div key={i} className='flex justify-between text-sm text-gray-500'>
+                        <span>{item.label}:</span>
                         <span className='font-medium'>{item.value}</span>
                       </div>
                     ))}
                   </div>
                   <Button
                     onClick={() => navigate('/teacher/course')}
-                    className='mt-6 w-full font-playfair py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition'
+                    className='mt-4 w-full font-playfair py-1 sm:py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition text-sm'
                   >
                     View All Courses
                   </Button>
@@ -372,43 +370,46 @@ export default function TeacherApplication() {
             </div>
           </div>
 
-          <div className={` ${user?.theme? "bg-white":"bg-black text-white"} p-6 rounded-lg shadow-sm border border-gray-100`}>
-            <h3 className='text-lg font-semibold mb-4 font-heading'>Recent Earnings</h3>
+          {/* Recent Earnings Table */}
+          <div className={`${user?.theme ? "bg-white" : "bg-black text-white"} p-4 rounded-lg shadow-sm border border-gray-100 mb-6`}>
+            <h3 className='text-base font-semibold mb-3 font-heading'>Recent Earnings</h3>
             
             {teacherPurchaseData?.purchase?.length ? (
-              <div className='overflow-x-auto'>
-                <ScrollArea className="max-h-96 overflow-auto">
-                  <table className='min-w-full divide-y divide-gray-200'>
-                    <thead className={` ${user?.theme? "bg-gray-100":"bg-black"}`}>
-                      <tr>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Course</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Student</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
-                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Earnings</th>
-                      </tr>
-                    </thead>
-                    <tbody className={` ${user?.theme? "bg-white":"bg-black"} divide-y divide-gray-200`}>
-                      {teacherPurchaseData.purchase.slice(0, 5).map((purchase, i) => {
-                        const courseData = course?.find(c => c._id === purchase.courseId);
-                        return (
-                          <tr key={i}>
-                            <td className='px-6 py-4 whitespace-nowrap'>
-                              {courseData?.title || 'Unknown Course'}
-                            </td>
-                            <td className='px-6 py-4 whitespace-nowrap'>
-                              {purchase.userId?.email || 'Unknown User'}
-                            </td>
-                            <td className='px-6 py-4 whitespace-nowrap'>
-                              {moment(purchase?.createdAt||purchase?.orderDate).format("MMMM DD, YYYY")}
-                            </td>
-                            <td className='px-6 py-4 whitespace-nowrap text-green-600 font-medium'>
-                              Rs.{parseFloat(purchase?.teacherAmount || 0).toFixed(2)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+              <div className='relative'>
+                <ScrollArea className="w-full h-[300px] sm:h-[400px] overflow-auto">
+                  <div className='min-w-[600px]'> {/* Minimum width to ensure table doesn't get too narrow */}
+                    <table className='w-full divide-y divide-gray-200'>
+                      <thead className={`${user?.theme ? "bg-gray-100" : "bg-black"}`}>
+                        <tr>
+                          <th className='px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Course</th>
+                          <th className='px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Student</th>
+                          <th className='px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
+                          <th className='px-3 py-2 sm:px-6 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Earnings</th>
+                        </tr>
+                      </thead>
+                      <tbody className={`${user?.theme ? "bg-white" : "bg-black"} divide-y divide-gray-200`}>
+                        {teacherPurchaseData.purchase.slice(0, 5).map((purchase, i) => {
+                          const courseData = course?.find(c => c._id === purchase.courseId);
+                          return (
+                            <tr key={i}>
+                              <td className='px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm'>
+                                {courseData?.title || 'Unknown Course'}
+                              </td>
+                              <td className='px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm'>
+                                {purchase.userId?.email || 'Unknown User'}
+                              </td>
+                              <td className='px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm'>
+                                {moment(purchase?.createdAt||purchase?.orderDate).format("MMM DD, YYYY")}
+                              </td>
+                              <td className='px-3 py-2 sm:px-6 sm:py-4 whitespace-nowrap text-sm text-green-600 font-medium'>
+                                Rs.{parseFloat(purchase?.teacherAmount || 0).toFixed(2)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </ScrollArea>
               </div>
             ) : (

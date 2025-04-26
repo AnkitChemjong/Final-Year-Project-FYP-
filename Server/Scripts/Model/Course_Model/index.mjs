@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 import lectureSchema from './Lecture_Schema/index.mjs';
 import quizSchema from './Quiz_Schema/index.mjs';
 
@@ -80,5 +81,5 @@ const courseSchema=new Schema({
        question:[quizSchema]
     }
 },{timestamps:true});
-const CourseModel=model("CourseModel",courseSchema);
+const CourseModel=models?.CourseModel || model("CourseModel",courseSchema);
 export default CourseModel;

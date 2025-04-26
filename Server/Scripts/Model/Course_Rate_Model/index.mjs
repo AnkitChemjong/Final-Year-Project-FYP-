@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 
 const rateCourseSchema=new Schema({
@@ -24,5 +25,5 @@ const rateCourseSchema=new Schema({
         required:true
     }
 },{timestamps:true});
-const RateCourse=model("RateCourse",rateCourseSchema);
+const RateCourse=models?.RateCourse || model("RateCourse",rateCourseSchema);
 export default RateCourse;

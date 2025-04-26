@@ -29,6 +29,7 @@ import DrawerForHireTeacherDataView from '../DrawerForHireTeacherDataView';
 import { useSocket } from '@/Services/Socket-Client-Provider';
 
 
+
 export default function CommonTableForHireApplication({ data, type, header, page }) {
   const [selectedApplication, setSelectedApplication] = useState([]);
   const [handleDrawer, setHandleDrawer] = useState(false);
@@ -193,7 +194,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
     if(response?.status === 200){
       toast.success(response?.data?.message);
       setLoadingSpin(false);
-      setHireDialogEdit(false)
+      setHireDialogEdit(false);
+      const result = await getStudentHireApplication(user?._id);
+      setStudentHireApplicationList(result);
       setHireTeacherApplicationEditId(null);
     }
 

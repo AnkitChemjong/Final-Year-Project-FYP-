@@ -65,6 +65,7 @@ export default function Course() {
         setUserPurchasedCourse(userPruchasedCourseData);
       }
     },[user,purchasedAllCourse,allProgress]);
+    
     useEffect(() => {
       if (status && status === 'failed' ) {
         setPaymentMessage(message);

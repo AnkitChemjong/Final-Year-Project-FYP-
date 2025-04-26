@@ -1,4 +1,5 @@
-import { Schema,model } from "mongoose";
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 const notificationSchema = new Schema({
     userId: {
@@ -33,6 +34,6 @@ const notificationSchema = new Schema({
     timestamps: true,
   });
 
-const NotificationModel=model("NotificationModel",notificationSchema);
+const NotificationModel=models?.NotificationModel || model("NotificationModel",notificationSchema);
 export default NotificationModel;
   

@@ -52,12 +52,12 @@ class KhaltiPayment{
       
       try {
         if(pidx===undefined){
-          await PaymentSubscription.deleteOne({
+          await PurchaseModel.deleteOne({
             userId:user?._id,
              paymentStatus:'processing',
               paymentMethod:'khalti'
           });
-        return res.redirect(`${process.env.EFAULURE_SUBSCRIPTION_URL}?payment=failed&message=Payment Cancelled`);
+        return res.redirect(`${process.env.EFAULURE_URL}?payment=failed&message=Payment Cancelled`);
         }
         const paymentInfo = await verifyKhaltiPayment(pidx);
         // Check if payment is completed and details match

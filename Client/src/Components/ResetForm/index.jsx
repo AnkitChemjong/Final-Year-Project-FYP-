@@ -19,14 +19,16 @@ export default function ResetForm({type,value,func}) {
       };
       const handleSubmit=(e)=>{
         if(type==="code"){
-            setError(codeValidation(data));
-            if(!error.code){
+            const errors=codeValidation(data);
+            setError(errors);
+            if(!errors?.code){
              func({code:data?.code})
             }}
             if(type==="password"){
-                setError(passwordValidation(data));
-                if(error.password === ""
-                      && error.confirmPassword===""
+                const errors=passwordValidation(data);
+                setError(errors);
+                if(errors?.password === ""
+                      && errors?.confirmPassword===""
                 ){
                     func({password:data?.password});
                    }}

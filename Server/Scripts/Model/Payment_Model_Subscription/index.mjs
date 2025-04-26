@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 
 const paymentSchema=new Schema({
@@ -45,5 +46,5 @@ const paymentSchema=new Schema({
     required:true
   }
 },{timestamps:true});
-const PaymentSubscription=model("PaymentSubscription",paymentSchema);
+const PaymentSubscription=models?.PaymentSubscription || model("PaymentSubscription",paymentSchema);
 export default PaymentSubscription;

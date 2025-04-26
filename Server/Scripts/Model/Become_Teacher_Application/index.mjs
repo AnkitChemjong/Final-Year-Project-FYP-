@@ -1,4 +1,5 @@
-import {Schema,model} from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models } = mongoose;
 
 
 const becomeTeacherSchema=new Schema({
@@ -17,5 +18,5 @@ const becomeTeacherSchema=new Schema({
         default:'pending'
     }
 },{timestamps:true});
-const BecomeTeacherApp=model("BecomeTeacherApp",becomeTeacherSchema);
+const BecomeTeacherApp=models?.BecomeTeacherApp || model("BecomeTeacherApp",becomeTeacherSchema);
 export default BecomeTeacherApp;

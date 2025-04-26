@@ -3,6 +3,8 @@
 export const Host=import.meta.env.VITE_BACKEND_URL;
 //user routes
 export const User_Route=`/user`;
+export const User_Temp_Route=`${User_Route}/temp`;
+export const User_Temp_Code_Route=`${User_Route}/checktempcode`;
 export const User_Login_Route=`${User_Route}/log`;
 export const User_GoogleAuth_Route=`${User_Route}/auth/google`;
 export const User_GitAuth_Route=`${User_Route}/auth/github`;
