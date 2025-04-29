@@ -137,6 +137,8 @@ export default function CreateNewCourse() {
        }
       setCourseLandingFormData(setCourseFormData);
       setCourseCurriculumFormData(courseDetails?.curriculum);
+      setCourseQuizFormData(courseDetails?.quizData?.question);
+
     }
   }
   useEffect(() => {

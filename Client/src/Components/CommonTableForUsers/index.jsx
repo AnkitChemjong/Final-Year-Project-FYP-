@@ -39,6 +39,8 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
   const [unBanSingle,setUnBanSingle]=useState(false);
   const [banMulti,setBanMulti]=useState(false);
   const [unBanMulti,setUnBanMulti]=useState(false);
+  const [userToBan,setUserToBan]=useState(null);
+  const [userToUnBan,setUserToUnBan]=useState(null);
 
   const handleUserStatus = async ({ type, data = "", status }) => {
     try {
@@ -64,6 +66,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
           }
           break;
         case 'single':
+          console.log(data);
           const response = await axiosService.patch(Handle_Status, { data, status });
           if (response?.status === 200) {
             toast.success(response?.data?.message);
@@ -261,7 +264,9 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                   ) : customer?.status === 'banned' ? (
                     <>
                     <Button
-                      onClick={() => setUnBanSingle(true)}
+                      onClick={() =>{
+                         setUnBanSingle(true);
+                        setUserToUnBan(customer);}}
                       className="px-3 py-1 font-playfair bg-green-500 text-white rounded hover:bg-green-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Unban
@@ -271,13 +276,16 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                                 setDeleteDialog={setUnBanSingle}
                                 title={`UnBan Single Users.`}
                                 description={"The process can be undone after Completion."}
-                                func={()=>handleUserStatus({ type: "single", data: customer, status: "unban" })}
+                                func={()=>handleUserStatus({ type: "single", data: userToUnBan, status: "unban" })}
                               />}
                     </>
                   ) : (
                     <>
                     <Button
-                      onClick={() =>setBanSingle(true) }
+                      onClick={() =>{
+                        setBanSingle(true);
+                      setUserToBan(customer);
+                    } }
                       className="px-3 py-1 font-playfair bg-red-500 text-white rounded hover:bg-red-600 hover:scale-105 transition-all ease-in-out"
                     >
                       Ban
@@ -287,7 +295,7 @@ export default function CommonTableForUsers({ tableFormat, customerList = [], st
                                 setDeleteDialog={setBanSingle}
                                 title={`Ban Single Users.`}
                                 description={"The process can be undone after Completion."}
-                                func={()=>handleUserStatus({ type: "single", data: customer, status: "ban" })}
+                                func={()=>handleUserStatus({ type: "single", data: userToBan, status: "ban" })}
                               />}
                     </>
                   )}

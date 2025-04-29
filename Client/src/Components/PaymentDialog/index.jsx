@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import qs from "qs";
 import {
   Dialog,
   DialogContent,

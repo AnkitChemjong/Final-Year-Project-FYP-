@@ -11,6 +11,9 @@ passport.use(new LocalStrategy(
         if (!user) {
           return done(null, false, { message: 'User is not avilable.',status:401});
         }
+        if(user?.status==="banned"){
+          return done(null, false, {message: 'User is banned.',status:403});
+        }
   
         const isMatch = await user.verifyPassword(password);
         if (!isMatch) {

@@ -43,6 +43,9 @@ userRoute.post('/log', (req, res, next) => {
         if (info.status===402) {
             return res.status(info.status || 402).json({ message:"Incorrect Password."});
         }
+        if (info.status===403) {
+            return res.status(info.status || 403).json({ message:"User is banned."});
+        }
 
         req.logIn(user, (err) => {
             if (err) return res.status(500).json({ message: 'Error in session handling' });
