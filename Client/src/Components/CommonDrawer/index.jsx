@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import {
     Drawer,
     DrawerContent,
@@ -19,10 +19,15 @@ import { GoDownload } from "react-icons/go";
 import { handleDwn } from '@/Services';
 import moment from 'moment';
 import { UseContextApi } from '../ContextApi';
+import DeleteDialog from '../DeleteDialog';
 
 export default function CommonDrawer({ handleDrawer, setHandleDrawer, data }) {
     const dispatch = useDispatch();
     const {setLoadingSpin}=useContext(UseContextApi);
+    const [applicationRejectDialog,setApplicationRejectDialog]=useState(false);
+    const [applicationRecruteDialog,setApplicationRecruteDialog]=useState(false);
+    const [applicationAcceptDialog,setApplicationAcceptDialog]=useState(false);
+    const [applicationToUpdate,setApplicationToUpdate]=useState(null);
 
     const closeDrawer = () => {
         setHandleDrawer(false);
@@ -164,23 +169,58 @@ export default function CommonDrawer({ handleDrawer, setHandleDrawer, data }) {
                         <div className="flex flex-col sm:flex-row gap-3">
                             <CommonButton 
                                 disable={data?.status === 'rejected' || data?.status === 'approved' || data?.status === 'recruted'} 
-                                func={() => handleApplicationStatus("approve", data)} 
+                                func={() =>{ setApplicationAcceptDialog(true);
+                                    setApplicationToUpdate(data);
+                                }} 
                                 text="Approve"
                                 className="bg-green-700 hover:bg-green-800 text-white"
                             />
+                            {applicationAcceptDialog && (
+                                              <DeleteDialog
+                                                deleteDialog={applicationAcceptDialog}
+                                                setDeleteDialog={setApplicationAcceptDialog}
+                                                title={`Accept the Application.`}
+                                                description={"The process cannot be undone after completion."}
+                                                func={() =>handleApplicationStatus("approve", applicationToUpdate)}
+                                              />
+                                            )}
                             <CommonButton 
                                 disable={data?.status === 'rejected' || data?.status === 'recruted'} 
-                                func={() => handleApplicationStatus("reject", data)} 
+                                func={() =>{setApplicationRejectDialog(true);
+                                    setApplicationToUpdate(data);
+                                }} 
                                 text="Reject"
                                 className="bg-red-700 hover:bg-red-800 text-white"
                             />
+                            {applicationRejectDialog && (
+                                              <DeleteDialog
+                                                deleteDialog={applicationRejectDialog}
+                                                setDeleteDialog={setApplicationRejectDialog}
+                                                title={`Accept the Application.`}
+                                                description={"The process cannot be undone after completion."}
+                                                func={() => handleApplicationStatus("reject", applicationToUpdate)}
+                                              />
+                                            )}
                         </div>
                         {data?.status === 'approved' && (
+                            <>
                             <CommonButton 
-                                func={() => handleApplicationStatus("recrute", data)} 
+                                func={() => {setApplicationRecruteDialog(true);
+                                    setApplicationToUpdate(data);
+                                }} 
                                 text="Recruit"
                                 className="bg-blue-700 hover:bg-blue-800 text-white"
                             />
+                            {applicationRecruteDialog && (
+                                <DeleteDialog
+                                  deleteDialog={applicationRecruteDialog}
+                                  setDeleteDialog={setApplicationRecruteDialog}
+                                  title={`Accept the Application.`}
+                                  description={"The process cannot be undone after completion."}
+                                  func={() =>handleApplicationStatus("recrute", applicationToUpdate)}
+                                />
+                              )}
+                            </>
                         )}
                     </div>
                 </div>

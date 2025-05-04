@@ -50,6 +50,8 @@ export default function CommonTableForHireApplication({ data, type, header, page
   const [acceptSingle, setAcceptSingle] = useState(false);
   const [rejectMulti, setRejectMulti] = useState(false);
   const [acceptMulti, setAcceptMulti] = useState(false);
+  const [applicationToDelete,setApplicationToDelete]=useState(null);
+  const [applicationToUpdate,setApplicationToUpdate]=useState(null);
 
   const deleteHireApplication = async ({ data = null, type, status }) => {
     try {
@@ -351,7 +353,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
                                 <Button 
                                   variant="ghost" 
                                   size="sm"
-                                  onClick={() => setDialogSingle(true)}
+                                  onClick={() =>{ setDialogSingle(true);
+                                    setApplicationToDelete(item);
+                                  }}
                                   className="hover:bg-gray-200 p-2"
                                 >
                                   <RiDeleteBin6Line className="text-red-600" size={16} />
@@ -361,7 +365,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
               setDeleteDialog={setDialogSingle}
               title={"Delete Single Hire Application."}
               description={"The process cannot be undone after deletion."}
-              func={()=>deleteHireApplication({ data: item, type: "single" })}
+              func={()=>deleteHireApplication({ data: applicationToDelete, type: "single" })}
             />}
                               </>
                             )}
@@ -371,7 +375,9 @@ export default function CommonTableForHireApplication({ data, type, header, page
                                 <>
                                   <div className="flex gap-2">
                                     <Button
-                                      onClick={() => setAcceptSingle(true)}
+                                      onClick={() =>{ setAcceptSingle(true);
+                                        setApplicationToUpdate(item);
+                                      }}
                                       className="bg-green-500 font-playfair text-white hover:bg-green-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Accept
@@ -381,10 +387,12 @@ export default function CommonTableForHireApplication({ data, type, header, page
               setDeleteDialog={setAcceptSingle}
               title={"Accept Single Hire Application."}
               description={"The process cannot be undone after completion."}
-              func={()=>updateHireApplication({type:"single",data:item,status:"approved"})}
+              func={()=>updateHireApplication({type:"single",data:applicationToUpdate,status:"approved"})}
             />}
                                     <Button
-                                      onClick={() => setRejectSingle(true)}
+                                      onClick={() =>{ setRejectSingle(true);
+                                        setApplicationToUpdate(item);
+                                      }}
                                       className="bg-red-500 font-playfair text-white hover:bg-red-600 h-8 px-3 text-xs sm:text-sm"
                                     >
                                       Reject
@@ -394,7 +402,7 @@ export default function CommonTableForHireApplication({ data, type, header, page
               setDeleteDialog={setRejectSingle}
               title={"Reject Single Hire Application."}
               description={"The process cannot be undone after completion."}
-              func={()=>updateHireApplication({type:"single",data:item,status:"rejected"})}
+              func={()=>updateHireApplication({type:"single",data:applicationToUpdate,status:"rejected"})}
             />}
                                   </div>
                                   <Button 

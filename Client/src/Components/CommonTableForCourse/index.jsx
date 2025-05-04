@@ -46,6 +46,9 @@ export default function CommonTableForCourse({data,header,type="",page}){
   const [toggleDrawer,setToggleDrawer]=useState(false);
   const [temporaryCourseData,setTemporaryCourseData]=useState(null);
   const [purchasedData,setPurchasedData]=useState([]);
+  const [courseToPublish,setCourseToPublish]=useState(null);
+  const [courseToUnPublish,setCourseToUnPublish]=useState(null);
+  const [courseToDelete,setCourseToDelete]=useState(null);
 
   const deleteCourse=async ({data=null,type,status})=>{
     try{
@@ -270,13 +273,15 @@ export default function CommonTableForCourse({data,header,type="",page}){
                     {
                       page === "admin-page" &&
                       <>
-                     <RiDeleteBin6Line onClick={()=>setDeleteSingle(true)} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+                     <RiDeleteBin6Line onClick={()=>{setDeleteSingle(true);
+                      setCourseToDelete(item);
+                     }} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
                      {deleteSingle && <DeleteDialog
                                 deleteDialog={deleteSingle}
                                 setDeleteDialog={setDeleteSingle}
                                 title={`Delete Single Courses.`}
                                 description={"The process cannot be undone after Completion."}
-                                func={()=>deleteCourse({data:item,type:"single"})}
+                                func={()=>deleteCourse({data:courseToDelete,type:"single"})}
                               />}
                       </>
                     }
@@ -286,7 +291,10 @@ export default function CommonTableForCourse({data,header,type="",page}){
                         item?.isPublished? 
                         <>
                         <Button
-                        onClick={() => setUnPublishSingle(true)}
+                        onClick={() =>{ 
+                          setUnPublishSingle(true);
+                          setCourseToUnPublish(item);
+                        }}
                         className="bg-red-500 font-playfair hover:scale-105 ease-in-out text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-200"
                       >
                         unPublish
@@ -296,13 +304,16 @@ export default function CommonTableForCourse({data,header,type="",page}){
                                   setDeleteDialog={setUnPublishSingle}
                                   title={"UnPublish Single Course."}
                                   description={"The process can be undone after completion."}
-                                  func={()=>updateCourse({type:"single",data:item,status:false})}
+                                  func={()=>updateCourse({type:"single",data:courseToUnPublish,status:false})}
                                 />}
                         </>
                                     :
                                     <>
                                     <Button
-                                  onClick={() =>setPublishSingle(true) }
+                                  onClick={() =>{
+                                    setPublishSingle(true);
+                                    setCourseToPublish(item);
+                                  } }
                                   className="bg-green-500 font-playfair text-white hover:scale-105 ease-in-out px-3 py-1 rounded-lg hover:bg-green-600 transition-colors duration-200"
                                 >
                                   Publish
@@ -312,7 +323,7 @@ export default function CommonTableForCourse({data,header,type="",page}){
                                   setDeleteDialog={setPublishSingle}
                                   title={"Publish Single Course."}
                                   description={"The process can be undone after completion."}
-                                  func={()=>updateCourse({type:"single",data:item,status:true})}
+                                  func={()=>updateCourse({type:"single",data:courseToPublish,status:true})}
                                 />}
                                     </>
                       )

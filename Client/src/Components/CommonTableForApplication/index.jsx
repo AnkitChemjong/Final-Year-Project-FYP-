@@ -26,13 +26,16 @@ export default function CommonTable({data,header,type}){
   const [handleDrawer,setHandleDrawer]=useState(false);
   const userState=useSelector(state=>state?.user);
   const {data:user}=userState;
-  const handleDrawerFunction=()=>{
-    setHandleDrawer(true);  
-
-  }
   const [selectedApplication,setSelectedApplication]=useState([]);
   const [deleteMulti,setDeleteMulti]=useState(false);
   const [deleteSingle,setDeleteSingle]=useState(false);
+  const [applicationToDelete,setApplicationToDelete]=useState(null);
+  const [currentApplication,setCurrentApplication]=useState(null);
+  const handleDrawerFunction=(item)=>{
+    setHandleDrawer(true);
+    setCurrentApplication(item);
+  }
+  
 
   const deleteApplication=async ({data=null,type,status=null})=>{
     try{
@@ -133,23 +136,26 @@ export default function CommonTable({data,header,type}){
             {
               type!=="all" && (
                 <>
-              <CommonButton func={handleDrawerFunction} text="View"/>
+              <CommonButton func={()=>handleDrawerFunction(item)} text="View"/>
               <CommonDrawer 
             handleDrawer={handleDrawer} 
             setHandleDrawer={setHandleDrawer} 
-            data={item} 
+            data={currentApplication} 
           />
                 </>
               )
             }
               
-            <RiDeleteBin6Line onClick={()=>setDeleteSingle(true)} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
+            <RiDeleteBin6Line onClick={()=>{
+              setDeleteSingle(true);
+              setApplicationToDelete(item);
+              }} className='cursor-pointer hover:scale-110 transition-transform duration-100 ease-in-out' size={20}/>
             {deleteSingle && <DeleteDialog
                                 deleteDialog={deleteSingle}
                                 setDeleteDialog={setDeleteSingle}
                                 title={`Delete Single Application.`}
                                 description={"The process cannot be undone after Completion."}
-                                func={()=>deleteApplication({data:item,type:"single"})}
+                                func={()=>deleteApplication({data:applicationToDelete,type:"single"})}
                               />}
             </TableCell>
             
