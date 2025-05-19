@@ -36,8 +36,8 @@ export default function SigninForm({func}) {
     const errors=signinValidation(data);
     setError(errors);
     if(errors.email === '' &&
-      errors.password === '' &&
-      errors.confirmPassword === ''){
+      errors.password === ''
+     ){
       func(data);
     }}
     const handleEvent=async (data)=>{

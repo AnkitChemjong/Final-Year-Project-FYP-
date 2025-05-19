@@ -62,14 +62,6 @@ export const loginForm=[
     placeholder:'Enter Password'
 
 },
-{
-    label:'Confirm Password',
-    name:"confirmPassword",
-    componentType:"input",
-    type:'password',
-    placeholder:'Password Confirmation'
-
-},
 ]
 export const emailDialogInitialState={email:""}
 

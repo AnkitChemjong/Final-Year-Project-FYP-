@@ -74,7 +74,15 @@ class GetPurchaseData{
 
     static getAllPurchasedDataOfCourse=async(req,res)=>{
       try{
-         const getAllpurchase=await PurchaseModel.find({}).populate('userId').populate('courseId').sort({createdAt:-1});
+        const getAllpurchase = await PurchaseModel.find({})
+        .populate('userId')
+        .populate({
+          path: 'courseId',
+          populate: {
+            path: 'creator',
+          }
+        })
+        .sort({ createdAt: -1 });
          if(getAllpurchase){
           return res.status(200).json({message:"all purchased data get.",data:getAllpurchase});
          }

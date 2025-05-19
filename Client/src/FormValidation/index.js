@@ -71,17 +71,6 @@ export function signinValidation(value) {
     else{
         error.password="";
     }
-    if (value.confirmPassword===""){
-        error.confirmPassword="confirmPassword should not be empty";
-
-    }
-    else if(value.password!=value.confirmPassword){
-        error.confirmPassword="Both password should match";
-
-    }
-    else{
-        error.confirmPassword="";
-    }
   return error;
 };
 

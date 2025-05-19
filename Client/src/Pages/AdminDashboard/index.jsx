@@ -167,12 +167,14 @@ export default function AdminDashboard() {
   const [recentSubscriptions, setRecentSubscriptions] = useState(null);
   const dispatch=useDispatch();
 
+
   const toggleUserTheme=async()=>{
     if(user){
       await toggleTheme(user?._id);
       dispatch(getUser());
     }
   }
+
 
   const updateProfileInputs = [
     {
@@ -240,6 +242,7 @@ export default function AdminDashboard() {
   const toggleDialog2 = () => {
     setDialog2(!dialog2);
   };
+  
   const handleEvent2 = async (data) => {
     try {
       setLoadingSpin(true);
@@ -259,6 +262,7 @@ export default function AdminDashboard() {
       setLoadingSpin(false);
     }
   };
+ 
   const handleEvent1 = async (data) => {
     try {
       setLoadingSpin(true);
@@ -287,7 +291,6 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
   return (
     <div className={`flex h-screen  ${user?.theme===true && "bg-gray-50"} ${user?.theme===false && "bg-zinc-900"}`}>
       <AdminNavbar />
@@ -795,6 +798,8 @@ export default function AdminDashboard() {
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Course</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Amount</th>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Creator</th>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Purchased by</th>
                         </tr>
                       </thead>
                       <tbody className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} divide-y divide-gray-200`}>
@@ -806,6 +811,12 @@ export default function AdminDashboard() {
                             </td>
                             <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
                               Rs.{Number(purchase?.amountPaid)?.toFixed(2)}
+                            </td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
+                              {purchase?.courseId?.creator?.userName}
+                            </td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
+                              {purchase?.userId?.userName}
                             </td>
                           </tr>
                         ))}
@@ -834,6 +845,7 @@ export default function AdminDashboard() {
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Type</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Date</th>
                           <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Amount</th>
+                          <th className='px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Purchased By</th>
                         </tr>
                       </thead>
                       <tbody className={`${user?.theme & "bg-white"} ${user?.theme===false && "bg-black text-white"} divide-y divide-gray-200`}>
@@ -845,6 +857,9 @@ export default function AdminDashboard() {
                             </td>
                             <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
                               Rs.{Number(purchase?.amountPaid)?.toFixed(2)}
+                            </td>
+                            <td className='px-4 py-3 whitespace-nowrap text-sm font-medium text-green-600'>
+                              {purchase?.userId?.userName}
                             </td>
                           </tr>
                         ))}
