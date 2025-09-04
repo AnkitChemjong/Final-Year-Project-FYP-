@@ -14,13 +14,13 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdownmenu";
 import { LuArrowUpDown } from "react-icons/lu";
 import { Button } from '@/Components/ui/button';
 import { filterOptions, sortOptions } from '@/Utils';
 import { Label } from '@/Components/ui/label';
 import { Checkbox } from '@/Components/ui/checkbox';
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/Components/ui/Card";
 import { UseContextApi } from '@/Components/ContextApi';
 import { Get_All_Course, Get_Purchase_Detail } from '@/Routes';
 import { axiosService } from '@/Services';

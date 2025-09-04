@@ -1,6 +1,6 @@
 import React,{useContext,useEffect} from 'react';
 import CommonButton from '@/Components/CommonButton';
-import { Card,CardContent } from '@/Components/ui/card';
+import { Card,CardContent } from '@/Components/ui/Card';
 import { Tabs,TabsList,TabsTrigger,TabsContent } from '@/Components/ui/tabs';
 import CourseCurriculum from '@/Components/AddNewCourse/CourseCurriculum';
 import CourseLanding from '@/Components/AddNewCourse/CourseLanding';

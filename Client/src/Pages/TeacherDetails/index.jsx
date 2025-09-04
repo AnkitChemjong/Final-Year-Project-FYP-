@@ -22,7 +22,7 @@ import verified from '@/assets/verified.json';
 import { RateDialog } from '@/Components/RateDialog';
 import CommonButton from '@/Components/CommonButton';
 import renderStars from '@/Components/RenderStars';
-import { Card } from '@/Components/ui/card';
+import { Card } from '@/Components/ui/Card';
 import student from '@/assets/student.json';
 import { Avatar,AvatarImage } from '@/Components/ui/avatar';
 import { useSocket } from '@/Services/Socket-Client-Provider';

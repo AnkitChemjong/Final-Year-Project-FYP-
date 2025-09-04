@@ -6,7 +6,7 @@ import Navbar from '@/Components/Navbar';
 import { UseContextApi } from '@/Components/ContextApi';
 import { axiosService } from '@/Services';
 import { Get_Enrolled_Course } from '@/Routes';
-import { Card,CardContent,CardFooter } from '@/Components/ui/card';
+import { Card,CardContent,CardFooter } from '@/Components/ui/Card';
 import { Button } from '@/Components/ui/button';
 import { IoStopwatchOutline } from "react-icons/io5";
 import Footer from '@/Components/Footer';
