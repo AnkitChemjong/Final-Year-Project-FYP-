@@ -23,6 +23,7 @@ import notificationRouter from "../Routes/Notification_Routes/index.mjs";
 import dotenv from "dotenv";
 //Configuration of dotenv to excess the dotenv files
 dotenv.config();
+console.log(process.env.NODE_ENV)
 
 const DB_URL = process.env.MONGOOSE_URL;
 const PORT = process.env.APP_PORT || 3000;
@@ -53,8 +54,8 @@ const main = () => {
       cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV == 'production',
+        sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'lax',
       },
       name: "hook",
     })
