@@ -41,8 +41,7 @@ const main = () => {
       origin:"*",
       methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
       credentials: true,
-      allowedHeaders: ["Content-Type", "Authorization"],
-    })
+        })
   );
   const store = storeDB(session);
   app.use(
