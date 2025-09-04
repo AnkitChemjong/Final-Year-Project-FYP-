@@ -19,7 +19,6 @@ passport.use(new LocalStrategy(
         if (!isMatch) {
           return done(null, false, { message: 'Incorrect password.',status:402});
         }
-  
         return done(null, user,{message:"Loged in successfully",status:200});
       } catch (error) {
         return done(err,null,{message:"Error in login",status:500});
