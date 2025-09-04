@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/Components/ui/table"
 import { subscribedUsers } from '@/Utils';
 import CommonButton from '../CommonButton';
 import DrawerForCustomer from '../Drawer_For_Customer';

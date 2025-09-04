@@ -3,7 +3,7 @@ import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/Components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/Components/ui/avatar';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/Components/ui/carousel';
 import { FaStar } from "react-icons/fa";
 import { bannerSlides, features } from '@/Utils';
 import { useSelector } from 'react-redux';
