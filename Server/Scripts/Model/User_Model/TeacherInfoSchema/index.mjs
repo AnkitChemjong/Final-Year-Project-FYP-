@@ -30,5 +30,5 @@ const teacherInfoSchema=new Schema({
     primaryLanguage:{
         type:String
     }
-},{ _id: false });
+},{ _id: false});
 export default teacherInfoSchema;
