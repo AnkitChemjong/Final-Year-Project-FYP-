@@ -38,7 +38,7 @@ const main = () => {
   app.use(express.json());
   app.use(
     cors({
-      origin: [CLIENT_URL],
+      origin:"*",
       methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
