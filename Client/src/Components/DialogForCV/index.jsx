@@ -11,7 +11,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-  } from "@/components/ui/dialog";
+  } from "@/Components/ui/dialog";
   import { GoDownload } from "react-icons/go";
   import { handleDwn } from '@/Services';
   import { becomeTeacherForm,becomeTeacherInitialState } from '@/Utils';

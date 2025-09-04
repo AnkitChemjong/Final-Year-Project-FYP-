@@ -6,7 +6,7 @@ import {
     DialogHeader,
     DialogDescription,
     DialogTitle
-  } from "@/components/ui/dialog";
+  } from "@/Components/ui/dialog";
   import CommonButton from '../CommonButton';
 import { useNavigate } from 'react-router-dom';
 

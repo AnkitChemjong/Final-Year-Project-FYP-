@@ -6,7 +6,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-  } from "@/components/ui/dialog";
+  } from "@/Components/ui/dialog";
   import CommonButton from '../CommonButton';
 
 export default function DeleteDialog({deleteDialog,setDeleteDialog,func,title,description}) {

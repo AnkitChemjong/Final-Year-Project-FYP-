@@ -23,7 +23,7 @@ import {
     DialogContent,
     DialogFooter,
     DialogHeader,
-    DialogTitle,} from "@/components/ui/dialog";
+    DialogTitle,} from "@/Components/ui/dialog";
 import { FaGlobeAsia } from "react-icons/fa";
 import { axiosService } from '@/Services';
 import renderStars from '@/Components/RenderStars';

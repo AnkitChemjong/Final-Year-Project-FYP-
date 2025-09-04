@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 import { Card, CardContent } from "@/Components/ui/card";
 import { toast } from "react-toastify";
 import { Initialize_Esewa_Payment,Initialize_Esewa_Payment_Subscription,Initialize_Khalti_Payment, Initialize_Khalti_Payment_Subscription } from "@/Routes";
