@@ -38,7 +38,7 @@ const main = () => {
   app.use(express.json());
   app.use(
     cors({
-      origin:"*",
+      origin:[CLIENT_URL],
       methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
       credentials: true,
         })
@@ -53,8 +53,8 @@ const main = () => {
       cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure:true,
-        sameSite:'none' // 'lax',
+        secure:process.env.NODE_ENV=="production" && true,
+        sameSite:process.env.NODE_ENV=="production"? "none":"lax" // 'lax',
       },
       name: "hook",
     })
