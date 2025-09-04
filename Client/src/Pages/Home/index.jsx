@@ -13,7 +13,7 @@ import { Avatar, AvatarImage } from "@/Components/ui/avatar";
 import LottieAnimation from '@/Components/LottieAnimation';
 import category from '@/assets/category.json';
 import homeanimation from '@/assets/homeanimation.json';
-import { Card,CardContent,CardTitle,CardHeader,CardDescription} from '@/Components/ui/Card';
+import { Card,CardContent,CardTitle,CardHeader,CardDescription} from '@/Components/ui/card';
 import moment from 'moment';
 import { FaStar} from "react-icons/fa";
 import teacher from '@/assets/teacher.json';

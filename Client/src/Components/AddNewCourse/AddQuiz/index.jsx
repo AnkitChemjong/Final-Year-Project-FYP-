@@ -1,6 +1,6 @@
 import React, { useContext,useEffect } from "react";
 import { UseContextApi } from "@/Components/ContextApi";
-import { Card, CardContent, CardTitle, CardHeader } from "@/Components/ui/Card";
+import { Card, CardContent, CardTitle, CardHeader } from "@/Components/ui/card";
 import CommonButton from "@/Components/CommonButton";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";

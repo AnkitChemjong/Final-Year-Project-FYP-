@@ -13,7 +13,7 @@ import CommonButton from '@/Components/CommonButton';
 import moment from 'moment';
 import VideoPlayerReact from '@/Components/VideoPlayerReact';
 import { Card, CardContent, 
-    CardHeader, CardTitle } from "@/Components/ui/Card";
+    CardHeader, CardTitle } from "@/Components/ui/card";
 import PaymentDialog from '@/Components/PaymentDialog';
 import { Get_Course_Detail } from '@/Routes';
 import { FaStar} from "react-icons/fa";

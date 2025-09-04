@@ -20,7 +20,7 @@ import { Button } from '@/Components/ui/button';
 import { filterOptions, sortOptions } from '@/Utils';
 import { Label } from '@/Components/ui/label';
 import { Checkbox } from '@/Components/ui/checkbox';
-import { Card, CardContent, CardTitle } from "@/Components/ui/Card";
+import { Card, CardContent, CardTitle } from "@/Components/ui/card";
 import { UseContextApi } from '@/Components/ContextApi';
 import { Get_All_Course, Get_Purchase_Detail } from '@/Routes';
 import { axiosService } from '@/Services';

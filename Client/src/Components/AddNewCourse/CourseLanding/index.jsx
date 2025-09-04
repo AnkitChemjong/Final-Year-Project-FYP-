@@ -2,7 +2,7 @@ import React,{ useContext,useState } from 'react';
 import CommonRenderFormInput from '@/Components/CommonRenderFormInput';
 import { courseLandingPageFormControls } from '@/Utils';
 import { UseContextApi } from '@/Components/ContextApi';
-import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/Card';
+import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/card';
 import { courseLandingFormValidation } from '@/FormValidation';
 
 export default function CourseLanding() {

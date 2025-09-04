@@ -1,5 +1,5 @@
 import React,{useContext,useEffect,useState} from 'react';
-import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/Card';
+import { Card,CardContent,CardTitle,CardHeader } from '@/Components/ui/card';
 import { UseContextApi } from '@/Components/ContextApi';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
